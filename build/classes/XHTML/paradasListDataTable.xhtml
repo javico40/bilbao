@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableParadas" header="ParadasData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{paradasView.data}" var="paradas"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{paradas.paradasId}" sortBy="#{paradas.paradasId}" >
+										 <f:facet name="header">
+										<h:outputText value="paradasId"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.paradasId}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{paradas.causa}" sortBy="#{paradas.causa}" >
+										 <f:facet name="header">
+										<h:outputText value="Causa"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.causa}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.duracion}" sortBy="#{paradas.duracion}" >
+										 <f:facet name="header">
+										<h:outputText value="Duracion"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.duracion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.equipo}" sortBy="#{paradas.equipo}" >
+										 <f:facet name="header">
+										<h:outputText value="Equipo"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.equipo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.fecha}" sortBy="#{paradas.fecha}" >
+										 <f:facet name="header">
+										<h:outputText value="Fecha"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.fecha}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.observaciones}" sortBy="#{paradas.observaciones}" >
+										 <f:facet name="header">
+										<h:outputText value="Observaciones"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.observaciones}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.parte}" sortBy="#{paradas.parte}" >
+										 <f:facet name="header">
+										<h:outputText value="Parte"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.parte}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.sistema}" sortBy="#{paradas.sistema}" >
+										 <f:facet name="header">
+										<h:outputText value="Sistema"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.sistema}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.subcausa}" sortBy="#{paradas.subcausa}" >
+										 <f:facet name="header">
+										<h:outputText value="Subcausa"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.subcausa}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.subequipo}" sortBy="#{paradas.subequipo}" >
+										 <f:facet name="header">
+										<h:outputText value="Subequipo"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.subequipo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{paradas.produccionId_Produccion}" sortBy="#{paradas.produccionId_Produccion}" >
+										 <f:facet name="header">
+										<h:outputText value="ProduccionId_Produccion"/>
+										</f:facet>
+										 <h:outputText value="#{paradas.produccionId_Produccion}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogParadas"
+										actionListener="#{paradasView.action_edit}">
+										<f:attribute name="selectedParadas" value="#{paradas}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{paradasView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedParadas" value="#{paradas}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{paradasView.action_new()}" update=":dialogParadas" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogParadas" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{paradasView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelParadas" header="Paradas">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgParadasId" value="ParadasId"/>
+									 <p:inputText id="txtParadasId" binding="#{paradasView.txtParadasId}">
+									 <p:ajax update=":dialogParadas" listener="#{paradasView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCausa" value=" Causa"/>
+									<p:inputText id="txtCausa" disabled="true" binding="#{paradasView.txtCausa}"/>
+																		<h:outputText id="msgDuracion" value=" Duracion"/>
+									<p:inputText id="txtDuracion" disabled="true" binding="#{paradasView.txtDuracion}"/>
+																		<h:outputText id="msgEquipo" value=" Equipo"/>
+									<p:inputText id="txtEquipo" disabled="true" binding="#{paradasView.txtEquipo}"/>
+																		<h:outputText id="msgObservaciones" value=" Observaciones"/>
+									<p:inputText id="txtObservaciones" disabled="true" binding="#{paradasView.txtObservaciones}"/>
+																		<h:outputText id="msgParte" value=" Parte"/>
+									<p:inputText id="txtParte" disabled="true" binding="#{paradasView.txtParte}"/>
+																		<h:outputText id="msgSistema" value=" Sistema"/>
+									<p:inputText id="txtSistema" disabled="true" binding="#{paradasView.txtSistema}"/>
+																		<h:outputText id="msgSubcausa" value=" Subcausa"/>
+									<p:inputText id="txtSubcausa" disabled="true" binding="#{paradasView.txtSubcausa}"/>
+																		<h:outputText id="msgSubequipo" value=" Subequipo"/>
+									<p:inputText id="txtSubequipo" disabled="true" binding="#{paradasView.txtSubequipo}"/>
+																		<h:outputText id="msgProduccionId_Produccion" value=" ProduccionId_Produccion"/>
+									<p:inputText id="txtProduccionId_Produccion" disabled="true" binding="#{paradasView.txtProduccionId_Produccion}"/>
+																		
+																													<h:outputText id="msgFecha" value=" Fecha"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{paradasView.txtFecha}" >
+										<p:ajax event="dateSelect" listener="#{paradasView.listener_txtFecha}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{paradasView.btnSave}" value="Save" action="#{paradasView.action_save()}" update=":dialogParadas :frm:panelDataTableParadas" />
+									<p:commandButton id="btnClear" value="Clear" action="#{paradasView.action_clear()}" update=":dialogParadas" />
+									<p:commandButton id="btnExit" value="Exit" action="#{paradasView.action_closeDialog()}" update=":dialogParadas" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.TiposDatos" table="TIPOS_DATOS" schema="PRODUCTIVIDADJCI">
+        <comment>Define de que tipo de datos sera un campo especial</comment>
+        <id name="tiposDatosId" type="java.lang.Long">
+            <column name="TIPOS_DATOS_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="45" />
+        </property>
+        <set name="camposEspecialeses" table="CAMPOS_ESPECIALES" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TIPOS_DATOS_TIPOS_DATOS_ID" precision="22" scale="0" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.CamposEspeciales" />
+        </set>
+    </class>
+</hibernate-mapping>

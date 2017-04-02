@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Produccion" table="PRODUCCION" schema="PRODUCTIVIDADJCI">
+        <comment>Almacena la informacion del reporte de produccion por turno</comment>
+        <id name="produccionId" type="java.lang.Long">
+            <column name="PRODUCCION_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="area" class="com.jci.testeo.modelo.Area" fetch="select">
+            <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="procesos" class="com.jci.testeo.modelo.Procesos" fetch="select">
+            <column name="PROCESOS_PROCESOS_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="turnos" class="com.jci.testeo.modelo.Turnos" fetch="select">
+            <column name="TURNOS_TURNOS_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="globalid" type="java.lang.String">
+            <column name="GLOBALID" length="45" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" length="7" />
+        </property>
+        <property name="hora" type="java.util.Date">
+            <column name="HORA" length="7" />
+        </property>
+        <property name="total" type="java.lang.Long">
+            <column name="TOTAL" precision="38" scale="0" />
+        </property>
+        <property name="custom1" type="java.lang.String">
+            <column name="CUSTOM1" length="45" />
+        </property>
+        <property name="custom2" type="java.lang.String">
+            <column name="CUSTOM2" length="45" />
+        </property>
+        <property name="custom3" type="java.lang.String">
+            <column name="CUSTOM3" length="45" />
+        </property>
+        <property name="custom4" type="java.lang.String">
+            <column name="CUSTOM4" length="45" />
+        </property>
+        <property name="custom5" type="java.lang.String">
+            <column name="CUSTOM5" length="45" />
+        </property>
+        <property name="custom6" type="java.lang.String">
+            <column name="CUSTOM6" length="45" />
+        </property>
+        <property name="custom7" type="java.lang.String">
+            <column name="CUSTOM7" length="45" />
+        </property>
+        <property name="custom8" type="java.lang.String">
+            <column name="CUSTOM8" length="45" />
+        </property>
+        <property name="custom9" type="java.lang.String">
+            <column name="CUSTOM9" length="45" />
+        </property>
+        <property name="custom10" type="java.lang.String">
+            <column name="CUSTOM10" length="45" />
+        </property>
+        <set name="paradases" table="PARADAS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PRODUCCION_PRODUCCION_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.Paradas" />
+        </set>
+        <set name="produccionReferenciases" table="PRODUCCION_REFERENCIAS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PRODUCCION_PRODUCCION_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.ProduccionReferencias" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Parte" table="PARTE" schema="PRODUCTIVIDADJCI">
+        <composite-id name="id" class="com.jci.testeo.modelo.ParteId">
+            <key-property name="partesId" type="java.lang.Long">
+                <column name="PARTES_ID" precision="22" scale="0" />
+            </key-property>
+            <key-property name="descripcion" type="java.lang.String">
+                <column name="DESCRIPCION" length="200" />
+            </key-property>
+            <key-property name="codigo" type="java.lang.String">
+                <column name="CODIGO" length="20" />
+            </key-property>
+            <key-property name="origen" type="java.lang.String">
+                <column name="ORIGEN" length="20" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

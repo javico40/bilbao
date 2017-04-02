@@ -1,0 +1,401 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="MaestroPlanEnsambleData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{maestroPlanEnsambleView.data}" var="maestroPlanEnsamble"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{maestroPlanEnsambleView.rowEventListener}" />
+					
+															<p:column filterBy="#{maestroPlanEnsamble.id}" sortBy="#{maestroPlanEnsamble.id}" headerText="id">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{maestroPlanEnsamble.id}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{maestroPlanEnsamble.id}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{maestroPlanEnsamble.acudia}" sortBy="#{maestroPlanEnsamble.acudia}" 
+							headerText="acudia">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.acudia}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.acudia}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.acumes}" sortBy="#{maestroPlanEnsamble.acumes}" 
+							headerText="acumes">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.acumes}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.acumes}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.anio}" sortBy="#{maestroPlanEnsamble.anio}" 
+							headerText="anio">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.anio}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.anio}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.disp}" sortBy="#{maestroPlanEnsamble.disp}" 
+							headerText="disp">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.disp}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.disp}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.fecha}" sortBy="#{maestroPlanEnsamble.fecha}" 
+							headerText="fecha">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.fecha}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.fecha}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.ifm}" sortBy="#{maestroPlanEnsamble.ifm}" 
+							headerText="ifm">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.ifm}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.ifm}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.invrio}" sortBy="#{maestroPlanEnsamble.invrio}" 
+							headerText="invrio">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.invrio}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.invrio}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.ldia}" sortBy="#{maestroPlanEnsamble.ldia}" 
+							headerText="ldia">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.ldia}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.ldia}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.linea1}" sortBy="#{maestroPlanEnsamble.linea1}" 
+							headerText="linea1">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.linea1}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.linea1}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.linea2}" sortBy="#{maestroPlanEnsamble.linea2}" 
+							headerText="linea2">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.linea2}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.linea2}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.linea3}" sortBy="#{maestroPlanEnsamble.linea3}" 
+							headerText="linea3">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.linea3}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.linea3}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.linea4}" sortBy="#{maestroPlanEnsamble.linea4}" 
+							headerText="linea4">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.linea4}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.linea4}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.mes}" sortBy="#{maestroPlanEnsamble.mes}" 
+							headerText="mes">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.mes}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.mes}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.placad}" sortBy="#{maestroPlanEnsamble.placad}" 
+							headerText="placad">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.placad}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.placad}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.turno1}" sortBy="#{maestroPlanEnsamble.turno1}" 
+							headerText="turno1">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.turno1}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.turno1}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.turno2}" sortBy="#{maestroPlanEnsamble.turno2}" 
+							headerText="turno2">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.turno2}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.turno2}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.turno3}" sortBy="#{maestroPlanEnsamble.turno3}" 
+							headerText="turno3">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.turno3}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.turno3}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.turno4}" sortBy="#{maestroPlanEnsamble.turno4}" 
+							headerText="turno4">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.turno4}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.turno4}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{maestroPlanEnsamble.usuario}" sortBy="#{maestroPlanEnsamble.usuario}" 
+							headerText="usuario">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.usuario}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{maestroPlanEnsamble.usuario}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{maestroPlanEnsamble.fechaCreado}" sortBy="#{maestroPlanEnsamble.fechaCreado}" 
+							headerText="fechaCreado">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{maestroPlanEnsamble.fechaCreado}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{maestroPlanEnsamble.fechaCreado}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{maestroPlanEnsambleView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{maestroPlanEnsambleView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedMaestroPlanEnsamble" value="#{maestroPlanEnsamble}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

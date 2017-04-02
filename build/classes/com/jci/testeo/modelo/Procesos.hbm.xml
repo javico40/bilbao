@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Procesos" table="PROCESOS" schema="PRODUCTIVIDADJCI">
+        <comment>Define en que proceso de produccion se reporta, por ejemplo, linea 1, linea 2. fundicion, entre otros.</comment>
+        <id name="procesosId" type="java.lang.Long">
+            <column name="PROCESOS_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="area" class="com.jci.testeo.modelo.Area" fetch="select">
+            <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="100" />
+        </property>
+        <property name="estandard" type="java.lang.Long">
+            <column name="ESTANDARD" precision="22" scale="0" />
+        </property>
+        <property name="estandard2" type="java.lang.Long">
+            <column name="ESTANDARD2" precision="22" scale="0" />
+        </property>
+        <set name="estandareses" table="ESTANDARES" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROCESOS_PROCESOS_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.Estandares" />
+        </set>
+        <set name="produccions" table="PRODUCCION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROCESOS_PROCESOS_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.Produccion" />
+        </set>
+    </class>
+</hibernate-mapping>

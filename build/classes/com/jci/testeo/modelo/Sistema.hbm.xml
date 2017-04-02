@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Sistema" table="SISTEMA" schema="PRODUCTIVIDADJCI">
+        <comment>Define los sistemas que pueden fallar durante una parada</comment>
+        <id name="sistema" type="java.lang.Long">
+            <column name="SISTEMA" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="equipo" class="com.jci.testeo.modelo.Equipo" fetch="select">
+            <column name="EQUIPO_EQUIPO_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="100" />
+        </property>
+        <property name="codigo" type="java.lang.Long">
+            <column name="CODIGO" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.ReferenciasTerminadoEnsamble" table="REFERENCIAS_TERMINADO_ENSAMBLE" schema="PRODUCTIVIDADJCI">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="codigoTerminado" type="java.lang.String">
+            <column name="CODIGO_TERMINADO" length="45" />
+        </property>
+        <property name="descTerminado" type="java.lang.String">
+            <column name="DESC_TERMINADO" length="200" />
+        </property>
+        <property name="familia" type="java.lang.String">
+            <column name="FAMILIA" length="100" />
+        </property>
+        <property name="codigoEnsamble" type="java.lang.String">
+            <column name="CODIGO_ENSAMBLE" length="45" />
+        </property>
+        <property name="descEnsamble" type="java.lang.String">
+            <column name="DESC_ENSAMBLE" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

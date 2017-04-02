@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="hibernate.connection.password">adminadmin</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+        <property name="hibernate.connection.username">PRODUCTIVIDADJCI</property>
+        <mapping resource="com/jci/testeo/modelo/Equipo.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Subcausas.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Parte.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/EspecialesProduccion.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/MaestroVersionesRamas.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/ProduccionReferencias.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Sistema.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Subequipo.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/MaestroPlanEnsamble.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Procesos.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Paradas.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/BcpEstandares.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Area.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/ReferenciasTerminadoEnsamble.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/CamposEspeciales.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Turnos.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Produccion.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/AreaCausas.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Causas.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/Estandares.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/TiposDatos.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/MaestroDetallado.hbm.xml" />
+        <mapping resource="com/jci/testeo/modelo/MaestroVersionesArbol.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

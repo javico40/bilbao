@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.MaestroDetallado" table="MAESTRO_DETALLADO" schema="PRODUCTIVIDADJCI">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" length="7" />
+        </property>
+        <property name="turnos" type="java.lang.Long">
+            <column name="TURNOS" precision="22" scale="0" />
+        </property>
+        <property name="referencia" type="java.lang.Long">
+            <column name="REFERENCIA" precision="22" scale="0" />
+        </property>
+        <property name="cantidad" type="java.lang.Double">
+            <column name="CANTIDAD" precision="28" scale="6" />
+        </property>
+        <property name="fechaCreado" type="java.util.Date">
+            <column name="FECHA_CREADO" length="7" />
+        </property>
+        <property name="usuario" type="java.lang.String">
+            <column name="USUARIO" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

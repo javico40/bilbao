@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Paradas" table="PARADAS" schema="PRODUCTIVIDADJCI">
+        <comment>Define que paradas hubo en la produccion</comment>
+        <id name="paradasId" type="java.lang.Long">
+            <column name="PARADAS_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="produccion" class="com.jci.testeo.modelo.Produccion" fetch="select">
+            <column name="PRODUCCION_PRODUCCION_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="causa" type="java.lang.Long">
+            <column name="CAUSA" precision="22" scale="0" />
+        </property>
+        <property name="subcausa" type="java.lang.Long">
+            <column name="SUBCAUSA" precision="22" scale="0" />
+        </property>
+        <property name="equipo" type="java.lang.Long">
+            <column name="EQUIPO" precision="22" scale="0" />
+        </property>
+        <property name="sistema" type="java.lang.Long">
+            <column name="SISTEMA" precision="22" scale="0" />
+        </property>
+        <property name="subequipo" type="java.lang.Long">
+            <column name="SUBEQUIPO" precision="22" scale="0" />
+        </property>
+        <property name="duracion" type="java.lang.Long">
+            <column name="DURACION" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="parte" type="java.lang.Long">
+            <column name="PARTE" precision="22" scale="0" />
+        </property>
+        <property name="observaciones" type="java.lang.String">
+            <column name="OBSERVACIONES" length="500" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" length="7" />
+        </property>
+    </class>
+</hibernate-mapping>

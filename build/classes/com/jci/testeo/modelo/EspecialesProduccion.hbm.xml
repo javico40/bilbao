@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.EspecialesProduccion" table="ESPECIALES_PRODUCCION" schema="PRODUCTIVIDADJCI">
+        <comment>Define campos especiales en la tabla de produccion</comment>
+        <id name="especialesProduccionId" type="java.lang.Long">
+            <column name="ESPECIALES_PRODUCCION_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="45" />
+        </property>
+        <set name="camposEspecialeses" table="CAMPOS_ESPECIALES" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ESPECIALES_PRODUCCION" precision="22" scale="0" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.CamposEspeciales" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="CamposEspecialesData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{camposEspecialesView.data}" var="camposEspeciales"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{camposEspecialesView.rowEventListener}" />
+					
+															<p:column filterBy="#{camposEspeciales.camposEspecialesId}" sortBy="#{camposEspeciales.camposEspecialesId}" headerText="camposEspecialesId">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{camposEspeciales.camposEspecialesId}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{camposEspeciales.camposEspecialesId}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{camposEspeciales.areaId_Area}" sortBy="#{camposEspeciales.areaId_Area}" 
+							headerText="areaId_Area">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{camposEspeciales.areaId_Area}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{camposEspeciales.areaId_Area}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{camposEspeciales.especialesProduccionId_EspecialesProduccion}" sortBy="#{camposEspeciales.especialesProduccionId_EspecialesProduccion}" 
+							headerText="especialesProduccionId_EspecialesProduccion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{camposEspeciales.especialesProduccionId_EspecialesProduccion}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{camposEspeciales.especialesProduccionId_EspecialesProduccion}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{camposEspeciales.tiposDatosId_TiposDatos}" sortBy="#{camposEspeciales.tiposDatosId_TiposDatos}" 
+							headerText="tiposDatosId_TiposDatos">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{camposEspeciales.tiposDatosId_TiposDatos}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{camposEspeciales.tiposDatosId_TiposDatos}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{camposEspecialesView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedCamposEspeciales" value="#{camposEspeciales}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

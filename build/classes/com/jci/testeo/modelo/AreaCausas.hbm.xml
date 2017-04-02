@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.AreaCausas" table="AREA_CAUSAS" schema="PRODUCTIVIDADJCI">
+        <comment>Relaciona el area con las causas</comment>
+        <composite-id name="id" class="com.jci.testeo.modelo.AreaCausasId">
+            <key-property name="areaAreaId" type="java.lang.Long">
+                <column name="AREA_AREA_ID" precision="22" scale="0" />
+            </key-property>
+            <key-property name="causasCausasId" type="java.lang.Long">
+                <column name="CAUSAS_CAUSAS_ID" precision="22" scale="0" />
+            </key-property>
+            <key-property name="areaCausasId" type="java.lang.Long">
+                <column name="AREA_CAUSAS_ID" precision="22" scale="0" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="area" class="com.jci.testeo.modelo.Area" update="false" insert="false" fetch="select">
+            <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="causas" class="com.jci.testeo.modelo.Causas" update="false" insert="false" fetch="select">
+            <column name="CAUSAS_CAUSAS_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

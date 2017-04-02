@@ -1,0 +1,357 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="ProduccionData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{produccionView.data}" var="produccion"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{produccionView.rowEventListener}" />
+					
+															<p:column filterBy="#{produccion.produccionId}" sortBy="#{produccion.produccionId}" headerText="produccionId">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{produccion.produccionId}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{produccion.produccionId}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{produccion.custom1}" sortBy="#{produccion.custom1}" 
+							headerText="custom1">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom1}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom1}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom10}" sortBy="#{produccion.custom10}" 
+							headerText="custom10">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom10}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom10}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom2}" sortBy="#{produccion.custom2}" 
+							headerText="custom2">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom2}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom2}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom3}" sortBy="#{produccion.custom3}" 
+							headerText="custom3">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom3}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom3}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom4}" sortBy="#{produccion.custom4}" 
+							headerText="custom4">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom4}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom4}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom5}" sortBy="#{produccion.custom5}" 
+							headerText="custom5">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom5}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom5}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom6}" sortBy="#{produccion.custom6}" 
+							headerText="custom6">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom6}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom6}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom7}" sortBy="#{produccion.custom7}" 
+							headerText="custom7">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom7}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom7}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom8}" sortBy="#{produccion.custom8}" 
+							headerText="custom8">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom8}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom8}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.custom9}" sortBy="#{produccion.custom9}" 
+							headerText="custom9">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.custom9}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.custom9}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.globalid}" sortBy="#{produccion.globalid}" 
+							headerText="globalid">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.globalid}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.globalid}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.total}" sortBy="#{produccion.total}" 
+							headerText="total">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.total}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.total}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.areaId_Area}" sortBy="#{produccion.areaId_Area}" 
+							headerText="areaId_Area">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.areaId_Area}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.areaId_Area}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.procesosId_Procesos}" sortBy="#{produccion.procesosId_Procesos}" 
+							headerText="procesosId_Procesos">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.procesosId_Procesos}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.procesosId_Procesos}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccion.turnosId_Turnos}" sortBy="#{produccion.turnosId_Turnos}" 
+							headerText="turnosId_Turnos">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.turnosId_Turnos}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccion.turnosId_Turnos}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{produccion.fecha}" sortBy="#{produccion.fecha}" 
+							headerText="fecha">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.fecha}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{produccion.fecha}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{produccionView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   						 
+						 <p:column filterBy="#{produccion.hora}" sortBy="#{produccion.hora}" 
+							headerText="hora">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccion.hora}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{produccion.hora}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{produccionView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{produccionView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedProduccion" value="#{produccion}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

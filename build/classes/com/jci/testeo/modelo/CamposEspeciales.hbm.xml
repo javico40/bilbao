@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.CamposEspeciales" table="CAMPOS_ESPECIALES" schema="PRODUCTIVIDADJCI">
+        <comment>Permite definir que se almacene informacion en los campos CUSTOM de la tabla de produccion para campos adicionales</comment>
+        <id name="camposEspecialesId" type="java.lang.Long">
+            <column name="CAMPOS_ESPECIALES_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="especialesProduccion" class="com.jci.testeo.modelo.EspecialesProduccion" fetch="select">
+            <column name="ESPECIALES_PRODUCCION" precision="22" scale="0" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="area" class="com.jci.testeo.modelo.Area" fetch="select">
+            <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="tiposDatos" class="com.jci.testeo.modelo.TiposDatos" fetch="select">
+            <column name="TIPOS_DATOS_TIPOS_DATOS_ID" precision="22" scale="0" not-null="true" unique="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			
+			<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelMaestroDetallado" header="MaestroDetallado">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgId" value="Id"/>
+						 	<p:inputText id="txtId" binding="#{maestroDetalladoView.txtId}">
+						 		<p:ajax update="panelMaestroDetallado,msg,panelBotones" listener="#{maestroDetalladoView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgCantidad" value=" Cantidad"/>
+							<p:inputText id="txtCantidad" disabled="true" binding="#{maestroDetalladoView.txtCantidad}"/>
+													<h:outputText id="msgReferencia" value=" Referencia"/>
+							<p:inputText id="txtReferencia" disabled="true" binding="#{maestroDetalladoView.txtReferencia}"/>
+													<h:outputText id="msgTurnos" value=" Turnos"/>
+							<p:inputText id="txtTurnos" disabled="true" binding="#{maestroDetalladoView.txtTurnos}"/>
+													<h:outputText id="msgUsuario" value=" Usuario"/>
+							<p:inputText id="txtUsuario" disabled="true" binding="#{maestroDetalladoView.txtUsuario}"/>
+												
+																				<h:outputText id="msgFecha" value=" Fecha"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{maestroDetalladoView.txtFecha}" >
+								<p:ajax event="dateSelect" listener="#{maestroDetalladoView.listener_txtFecha}"  />
+							</p:calendar>
+														<h:outputText id="msgFechaCreado" value=" FechaCreado"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{maestroDetalladoView.txtFechaCreado}" >
+								<p:ajax event="dateSelect" listener="#{maestroDetalladoView.listener_txtFechaCreado}"  />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{maestroDetalladoView.btnSave}" disabled="true" value="Save" action="#{maestroDetalladoView.action_save()}" update="panelMaestroDetallado,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{maestroDetalladoView.btnDelete}" disabled="true" value="Delete" action="#{maestroDetalladoView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelMaestroDetallado,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{maestroDetalladoView.action_clear()}" update="panelMaestroDetallado,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

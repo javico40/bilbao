@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.MaestroVersionesArbol" table="MAESTRO_VERSIONES_ARBOL" schema="PRODUCTIVIDADJCI">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="fechaCreacion" type="java.util.Date">
+            <column name="FECHA_CREACION" length="7" />
+        </property>
+        <property name="usuario" type="java.lang.String">
+            <column name="USUARIO" length="20" />
+        </property>
+        <property name="globalid" type="java.lang.String">
+            <column name="GLOBALID" length="20" />
+        </property>
+        <property name="estado" type="java.lang.Long">
+            <column name="ESTADO" precision="22" scale="0" />
+        </property>
+        <property name="versiones" type="java.lang.Long">
+            <column name="VERSIONES" precision="22" scale="0" />
+        </property>
+        <property name="versionActiva" type="java.lang.Long">
+            <column name="VERSION_ACTIVA" precision="22" scale="0" />
+        </property>
+        <property name="fechaUltimaVersion" type="java.util.Date">
+            <column name="FECHA_ULTIMA_VERSION" length="7" />
+        </property>
+        <property name="usuarioUltimaVersion" type="java.lang.String">
+            <column name="USUARIO_ULTIMA_VERSION" length="20" />
+        </property>
+        <property name="globalidUltimaVersion" type="java.lang.String">
+            <column name="GLOBALID_ULTIMA_VERSION" length="20" />
+        </property>
+        <property name="area" type="java.lang.Long">
+            <column name="AREA" precision="22" scale="0" />
+        </property>
+        <property name="anio" type="java.lang.Long">
+            <column name="ANIO" precision="22" scale="0" />
+        </property>
+        <property name="mes" type="java.lang.Long">
+            <column name="MES" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

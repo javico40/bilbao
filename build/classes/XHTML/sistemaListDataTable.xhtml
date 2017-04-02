@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableSistema" header="SistemaData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{sistemaView.data}" var="sistema"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{sistema.sistema}" sortBy="#{sistema.sistema}" >
+										 <f:facet name="header">
+										<h:outputText value="sistema"/>
+										</f:facet>
+										 <h:outputText value="#{sistema.sistema}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{sistema.codigo}" sortBy="#{sistema.codigo}" >
+										 <f:facet name="header">
+										<h:outputText value="Codigo"/>
+										</f:facet>
+										 <h:outputText value="#{sistema.codigo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{sistema.descripcion}" sortBy="#{sistema.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{sistema.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{sistema.equipoId_Equipo}" sortBy="#{sistema.equipoId_Equipo}" >
+										 <f:facet name="header">
+										<h:outputText value="EquipoId_Equipo"/>
+										</f:facet>
+										 <h:outputText value="#{sistema.equipoId_Equipo}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogSistema"
+										actionListener="#{sistemaView.action_edit}">
+										<f:attribute name="selectedSistema" value="#{sistema}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{sistemaView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedSistema" value="#{sistema}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{sistemaView.action_new()}" update=":dialogSistema" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogSistema" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{sistemaView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelSistema" header="Sistema">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgSistema" value="Sistema"/>
+									 <p:inputText id="txtSistema" binding="#{sistemaView.txtSistema}">
+									 <p:ajax update=":dialogSistema" listener="#{sistemaView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCodigo" value=" Codigo"/>
+									<p:inputText id="txtCodigo" disabled="true" binding="#{sistemaView.txtCodigo}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{sistemaView.txtDescripcion}"/>
+																		<h:outputText id="msgEquipoId_Equipo" value=" EquipoId_Equipo"/>
+									<p:inputText id="txtEquipoId_Equipo" disabled="true" binding="#{sistemaView.txtEquipoId_Equipo}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{sistemaView.btnSave}" value="Save" action="#{sistemaView.action_save()}" update=":dialogSistema :frm:panelDataTableSistema" />
+									<p:commandButton id="btnClear" value="Clear" action="#{sistemaView.action_clear()}" update=":dialogSistema" />
+									<p:commandButton id="btnExit" value="Exit" action="#{sistemaView.action_closeDialog()}" update=":dialogSistema" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

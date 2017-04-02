@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			
+			<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelProduccion" header="Produccion">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgProduccionId" value="ProduccionId"/>
+						 	<p:inputText id="txtProduccionId" binding="#{produccionView.txtProduccionId}">
+						 		<p:ajax update="panelProduccion,msg,panelBotones" listener="#{produccionView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgCustom1" value=" Custom1"/>
+							<p:inputText id="txtCustom1" disabled="true" binding="#{produccionView.txtCustom1}"/>
+													<h:outputText id="msgCustom10" value=" Custom10"/>
+							<p:inputText id="txtCustom10" disabled="true" binding="#{produccionView.txtCustom10}"/>
+													<h:outputText id="msgCustom2" value=" Custom2"/>
+							<p:inputText id="txtCustom2" disabled="true" binding="#{produccionView.txtCustom2}"/>
+													<h:outputText id="msgCustom3" value=" Custom3"/>
+							<p:inputText id="txtCustom3" disabled="true" binding="#{produccionView.txtCustom3}"/>
+													<h:outputText id="msgCustom4" value=" Custom4"/>
+							<p:inputText id="txtCustom4" disabled="true" binding="#{produccionView.txtCustom4}"/>
+													<h:outputText id="msgCustom5" value=" Custom5"/>
+							<p:inputText id="txtCustom5" disabled="true" binding="#{produccionView.txtCustom5}"/>
+													<h:outputText id="msgCustom6" value=" Custom6"/>
+							<p:inputText id="txtCustom6" disabled="true" binding="#{produccionView.txtCustom6}"/>
+													<h:outputText id="msgCustom7" value=" Custom7"/>
+							<p:inputText id="txtCustom7" disabled="true" binding="#{produccionView.txtCustom7}"/>
+													<h:outputText id="msgCustom8" value=" Custom8"/>
+							<p:inputText id="txtCustom8" disabled="true" binding="#{produccionView.txtCustom8}"/>
+													<h:outputText id="msgCustom9" value=" Custom9"/>
+							<p:inputText id="txtCustom9" disabled="true" binding="#{produccionView.txtCustom9}"/>
+													<h:outputText id="msgGlobalid" value=" Globalid"/>
+							<p:inputText id="txtGlobalid" disabled="true" binding="#{produccionView.txtGlobalid}"/>
+													<h:outputText id="msgTotal" value=" Total"/>
+							<p:inputText id="txtTotal" disabled="true" binding="#{produccionView.txtTotal}"/>
+													<h:outputText id="msgAreaId_Area" value=" AreaId_Area"/>
+							<p:inputText id="txtAreaId_Area" disabled="true" binding="#{produccionView.txtAreaId_Area}"/>
+													<h:outputText id="msgProcesosId_Procesos" value=" ProcesosId_Procesos"/>
+							<p:inputText id="txtProcesosId_Procesos" disabled="true" binding="#{produccionView.txtProcesosId_Procesos}"/>
+													<h:outputText id="msgTurnosId_Turnos" value=" TurnosId_Turnos"/>
+							<p:inputText id="txtTurnosId_Turnos" disabled="true" binding="#{produccionView.txtTurnosId_Turnos}"/>
+												
+																				<h:outputText id="msgFecha" value=" Fecha"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{produccionView.txtFecha}" >
+								<p:ajax event="dateSelect" listener="#{produccionView.listener_txtFecha}"  />
+							</p:calendar>
+														<h:outputText id="msgHora" value=" Hora"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{produccionView.txtHora}" >
+								<p:ajax event="dateSelect" listener="#{produccionView.listener_txtHora}"  />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{produccionView.btnSave}" disabled="true" value="Save" action="#{produccionView.action_save()}" update="panelProduccion,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{produccionView.btnDelete}" disabled="true" value="Delete" action="#{produccionView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelProduccion,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{produccionView.action_clear()}" update="panelProduccion,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

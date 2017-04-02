@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.Area" table="AREA" schema="PRODUCTIVIDADJCI">
+        <comment>Define las areas que hacen parte del sistema, Ensamble, OREC por ejemplo</comment>
+        <id name="areaId" type="java.lang.Long">
+            <column name="AREA_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="45" />
+        </property>
+        <set name="camposEspecialeses" table="CAMPOS_ESPECIALES" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.CamposEspeciales" />
+        </set>
+        <set name="produccions" table="PRODUCCION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.Produccion" />
+        </set>
+        <set name="procesoses" table="PROCESOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.Procesos" />
+        </set>
+        <set name="areaCausases" table="AREA_CAUSAS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AREA_AREA_ID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.jci.testeo.modelo.AreaCausas" />
+        </set>
+    </class>
+</hibernate-mapping>

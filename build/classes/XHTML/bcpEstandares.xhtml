@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			
+			<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelBcpEstandares" header="BcpEstandares">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgEstandaresId" value="EstandaresId"/>
+						 	<p:inputText id="txtEstandaresId" binding="#{bcpEstandaresView.txtEstandaresId}">
+						 		<p:ajax update="panelBcpEstandares,msg,panelBotones" listener="#{bcpEstandaresView.listener_txtId}"/>
+						 	</p:inputText>	
+												 	<h:outputText id="msgFamiliaPlaca" value="FamiliaPlaca"/>
+						 	<p:inputText id="txtFamiliaPlaca" binding="#{bcpEstandaresView.txtFamiliaPlaca}">
+						 		<p:ajax update="panelBcpEstandares,msg,panelBotones" listener="#{bcpEstandaresView.listener_txtId}"/>
+						 	</p:inputText>	
+												 	<h:outputText id="msgEstandard" value="Estandard"/>
+						 	<p:inputText id="txtEstandard" binding="#{bcpEstandaresView.txtEstandard}">
+						 		<p:ajax update="panelBcpEstandares,msg,panelBotones" listener="#{bcpEstandaresView.listener_txtId}"/>
+						 	</p:inputText>	
+												 	<h:outputText id="msgProcesosProcesosId" value="ProcesosProcesosId"/>
+						 	<p:inputText id="txtProcesosProcesosId" binding="#{bcpEstandaresView.txtProcesosProcesosId}">
+						 		<p:ajax update="panelBcpEstandares,msg,panelBotones" listener="#{bcpEstandaresView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{bcpEstandaresView.btnSave}" disabled="true" value="Save" action="#{bcpEstandaresView.action_save()}" update="panelBcpEstandares,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{bcpEstandaresView.btnDelete}" disabled="true" value="Delete" action="#{bcpEstandaresView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelBcpEstandares,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{bcpEstandaresView.action_clear()}" update="panelBcpEstandares,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.MaestroPlanEnsamble" table="MAESTRO_PLAN_ENSAMBLE" schema="PRODUCTIVIDADJCI">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="fechaCreado" type="java.util.Date">
+            <column name="FECHA_CREADO" length="7" />
+        </property>
+        <property name="usuario" type="java.lang.String">
+            <column name="USUARIO" length="90" />
+        </property>
+        <property name="mes" type="java.lang.Long">
+            <column name="MES" precision="22" scale="0" />
+        </property>
+        <property name="anio" type="java.lang.Long">
+            <column name="ANIO" precision="22" scale="0" />
+        </property>
+        <property name="fecha" type="java.lang.String">
+            <column name="FECHA" length="2" />
+        </property>
+        <property name="ifm" type="java.lang.String">
+            <column name="IFM" length="2" />
+        </property>
+        <property name="turno1" type="java.lang.Double">
+            <column name="TURNO1" precision="28" scale="6" />
+        </property>
+        <property name="linea1" type="java.lang.Double">
+            <column name="LINEA1" precision="28" scale="6" />
+        </property>
+        <property name="turno2" type="java.lang.Double">
+            <column name="TURNO2" precision="28" scale="6" />
+        </property>
+        <property name="linea2" type="java.lang.Double">
+            <column name="LINEA2" precision="28" scale="6" />
+        </property>
+        <property name="turno3" type="java.lang.Double">
+            <column name="TURNO3" precision="28" scale="6" />
+        </property>
+        <property name="linea3" type="java.lang.Double">
+            <column name="LINEA3" precision="28" scale="6" />
+        </property>
+        <property name="turno4" type="java.lang.Double">
+            <column name="TURNO4" precision="28" scale="6" />
+        </property>
+        <property name="linea4" type="java.lang.Double">
+            <column name="LINEA4" precision="28" scale="6" />
+        </property>
+        <property name="ldia" type="java.lang.Double">
+            <column name="LDIA" precision="28" scale="6" />
+        </property>
+        <property name="acudia" type="java.lang.Double">
+            <column name="ACUDIA" precision="28" scale="6" />
+        </property>
+        <property name="acumes" type="java.lang.Double">
+            <column name="ACUMES" precision="28" scale="6" />
+        </property>
+        <property name="disp" type="java.lang.Double">
+            <column name="DISP" precision="28" scale="6" />
+        </property>
+        <property name="placad" type="java.lang.Double">
+            <column name="PLACAD" precision="28" scale="6" />
+        </property>
+        <property name="invrio" type="java.lang.Double">
+            <column name="INVRIO" precision="28" scale="6" />
+        </property>
+    </class>
+</hibernate-mapping>

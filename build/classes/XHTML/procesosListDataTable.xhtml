@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableProcesos" header="ProcesosData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{procesosView.data}" var="procesos"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{procesos.procesosId}" sortBy="#{procesos.procesosId}" >
+										 <f:facet name="header">
+										<h:outputText value="procesosId"/>
+										</f:facet>
+										 <h:outputText value="#{procesos.procesosId}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{procesos.descripcion}" sortBy="#{procesos.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{procesos.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{procesos.estandard}" sortBy="#{procesos.estandard}" >
+										 <f:facet name="header">
+										<h:outputText value="Estandard"/>
+										</f:facet>
+										 <h:outputText value="#{procesos.estandard}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{procesos.estandard2}" sortBy="#{procesos.estandard2}" >
+										 <f:facet name="header">
+										<h:outputText value="Estandard2"/>
+										</f:facet>
+										 <h:outputText value="#{procesos.estandard2}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{procesos.areaId_Area}" sortBy="#{procesos.areaId_Area}" >
+										 <f:facet name="header">
+										<h:outputText value="AreaId_Area"/>
+										</f:facet>
+										 <h:outputText value="#{procesos.areaId_Area}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogProcesos"
+										actionListener="#{procesosView.action_edit}">
+										<f:attribute name="selectedProcesos" value="#{procesos}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{procesosView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedProcesos" value="#{procesos}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{procesosView.action_new()}" update=":dialogProcesos" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogProcesos" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{procesosView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelProcesos" header="Procesos">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgProcesosId" value="ProcesosId"/>
+									 <p:inputText id="txtProcesosId" binding="#{procesosView.txtProcesosId}">
+									 <p:ajax update=":dialogProcesos" listener="#{procesosView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{procesosView.txtDescripcion}"/>
+																		<h:outputText id="msgEstandard" value=" Estandard"/>
+									<p:inputText id="txtEstandard" disabled="true" binding="#{procesosView.txtEstandard}"/>
+																		<h:outputText id="msgEstandard2" value=" Estandard2"/>
+									<p:inputText id="txtEstandard2" disabled="true" binding="#{procesosView.txtEstandard2}"/>
+																		<h:outputText id="msgAreaId_Area" value=" AreaId_Area"/>
+									<p:inputText id="txtAreaId_Area" disabled="true" binding="#{procesosView.txtAreaId_Area}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{procesosView.btnSave}" value="Save" action="#{procesosView.action_save()}" update=":dialogProcesos :frm:panelDataTableProcesos" />
+									<p:commandButton id="btnClear" value="Clear" action="#{procesosView.action_clear()}" update=":dialogProcesos" />
+									<p:commandButton id="btnExit" value="Exit" action="#{procesosView.action_closeDialog()}" update=":dialogProcesos" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableSubcausas" header="SubcausasData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{subcausasView.data}" var="subcausas"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{subcausas.subcausasId}" sortBy="#{subcausas.subcausasId}" >
+										 <f:facet name="header">
+										<h:outputText value="subcausasId"/>
+										</f:facet>
+										 <h:outputText value="#{subcausas.subcausasId}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{subcausas.codigo}" sortBy="#{subcausas.codigo}" >
+										 <f:facet name="header">
+										<h:outputText value="Codigo"/>
+										</f:facet>
+										 <h:outputText value="#{subcausas.codigo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{subcausas.descripcion}" sortBy="#{subcausas.descripcion}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{subcausas.descripcion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{subcausas.indice}" sortBy="#{subcausas.indice}" >
+										 <f:facet name="header">
+										<h:outputText value="Indice"/>
+										</f:facet>
+										 <h:outputText value="#{subcausas.indice}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{subcausas.causasId_Causas}" sortBy="#{subcausas.causasId_Causas}" >
+										 <f:facet name="header">
+										<h:outputText value="CausasId_Causas"/>
+										</f:facet>
+										 <h:outputText value="#{subcausas.causasId_Causas}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogSubcausas"
+										actionListener="#{subcausasView.action_edit}">
+										<f:attribute name="selectedSubcausas" value="#{subcausas}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{subcausasView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedSubcausas" value="#{subcausas}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{subcausasView.action_new()}" update=":dialogSubcausas" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogSubcausas" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{subcausasView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelSubcausas" header="Subcausas">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgSubcausasId" value="SubcausasId"/>
+									 <p:inputText id="txtSubcausasId" binding="#{subcausasView.txtSubcausasId}">
+									 <p:ajax update=":dialogSubcausas" listener="#{subcausasView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCodigo" value=" Codigo"/>
+									<p:inputText id="txtCodigo" disabled="true" binding="#{subcausasView.txtCodigo}"/>
+																		<h:outputText id="msgDescripcion" value=" Descripcion"/>
+									<p:inputText id="txtDescripcion" disabled="true" binding="#{subcausasView.txtDescripcion}"/>
+																		<h:outputText id="msgIndice" value=" Indice"/>
+									<p:inputText id="txtIndice" disabled="true" binding="#{subcausasView.txtIndice}"/>
+																		<h:outputText id="msgCausasId_Causas" value=" CausasId_Causas"/>
+									<p:inputText id="txtCausasId_Causas" disabled="true" binding="#{subcausasView.txtCausasId_Causas}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{subcausasView.btnSave}" value="Save" action="#{subcausasView.action_save()}" update=":dialogSubcausas :frm:panelDataTableSubcausas" />
+									<p:commandButton id="btnClear" value="Clear" action="#{subcausasView.action_clear()}" update=":dialogSubcausas" />
+									<p:commandButton id="btnExit" value="Exit" action="#{subcausasView.action_closeDialog()}" update=":dialogSubcausas" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

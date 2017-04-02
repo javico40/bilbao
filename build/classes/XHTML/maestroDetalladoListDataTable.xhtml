@@ -1,0 +1,154 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableMaestroDetallado" header="MaestroDetalladoData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{maestroDetalladoView.data}" var="maestroDetallado"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{maestroDetallado.id}" sortBy="#{maestroDetallado.id}" >
+										 <f:facet name="header">
+										<h:outputText value="id"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.id}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{maestroDetallado.cantidad}" sortBy="#{maestroDetallado.cantidad}" >
+										 <f:facet name="header">
+										<h:outputText value="Cantidad"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.cantidad}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroDetallado.fecha}" sortBy="#{maestroDetallado.fecha}" >
+										 <f:facet name="header">
+										<h:outputText value="Fecha"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.fecha}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroDetallado.fechaCreado}" sortBy="#{maestroDetallado.fechaCreado}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreado"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.fechaCreado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroDetallado.referencia}" sortBy="#{maestroDetallado.referencia}" >
+										 <f:facet name="header">
+										<h:outputText value="Referencia"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.referencia}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroDetallado.turnos}" sortBy="#{maestroDetallado.turnos}" >
+										 <f:facet name="header">
+										<h:outputText value="Turnos"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.turnos}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroDetallado.usuario}" sortBy="#{maestroDetallado.usuario}" >
+										 <f:facet name="header">
+										<h:outputText value="Usuario"/>
+										</f:facet>
+										 <h:outputText value="#{maestroDetallado.usuario}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogMaestroDetallado"
+										actionListener="#{maestroDetalladoView.action_edit}">
+										<f:attribute name="selectedMaestroDetallado" value="#{maestroDetallado}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{maestroDetalladoView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedMaestroDetallado" value="#{maestroDetallado}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{maestroDetalladoView.action_new()}" update=":dialogMaestroDetallado" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogMaestroDetallado" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{maestroDetalladoView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelMaestroDetallado" header="MaestroDetallado">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgId" value="Id"/>
+									 <p:inputText id="txtId" binding="#{maestroDetalladoView.txtId}">
+									 <p:ajax update=":dialogMaestroDetallado" listener="#{maestroDetalladoView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCantidad" value=" Cantidad"/>
+									<p:inputText id="txtCantidad" disabled="true" binding="#{maestroDetalladoView.txtCantidad}"/>
+																		<h:outputText id="msgReferencia" value=" Referencia"/>
+									<p:inputText id="txtReferencia" disabled="true" binding="#{maestroDetalladoView.txtReferencia}"/>
+																		<h:outputText id="msgTurnos" value=" Turnos"/>
+									<p:inputText id="txtTurnos" disabled="true" binding="#{maestroDetalladoView.txtTurnos}"/>
+																		<h:outputText id="msgUsuario" value=" Usuario"/>
+									<p:inputText id="txtUsuario" disabled="true" binding="#{maestroDetalladoView.txtUsuario}"/>
+																		
+																													<h:outputText id="msgFecha" value=" Fecha"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{maestroDetalladoView.txtFecha}" >
+										<p:ajax event="dateSelect" listener="#{maestroDetalladoView.listener_txtFecha}" />
+										</p:calendar>
+																				<h:outputText id="msgFechaCreado" value=" FechaCreado"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{maestroDetalladoView.txtFechaCreado}" >
+										<p:ajax event="dateSelect" listener="#{maestroDetalladoView.listener_txtFechaCreado}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{maestroDetalladoView.btnSave}" value="Save" action="#{maestroDetalladoView.action_save()}" update=":dialogMaestroDetallado :frm:panelDataTableMaestroDetallado" />
+									<p:commandButton id="btnClear" value="Clear" action="#{maestroDetalladoView.action_clear()}" update=":dialogMaestroDetallado" />
+									<p:commandButton id="btnExit" value="Exit" action="#{maestroDetalladoView.action_closeDialog()}" update=":dialogMaestroDetallado" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

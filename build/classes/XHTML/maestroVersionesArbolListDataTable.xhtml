@@ -1,0 +1,208 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableMaestroVersionesArbol" header="MaestroVersionesArbolData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{maestroVersionesArbolView.data}" var="maestroVersionesArbol"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{maestroVersionesArbol.id}" sortBy="#{maestroVersionesArbol.id}" >
+										 <f:facet name="header">
+										<h:outputText value="id"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.id}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{maestroVersionesArbol.anio}" sortBy="#{maestroVersionesArbol.anio}" >
+										 <f:facet name="header">
+										<h:outputText value="Anio"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.anio}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.area}" sortBy="#{maestroVersionesArbol.area}" >
+										 <f:facet name="header">
+										<h:outputText value="Area"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.area}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.estado}" sortBy="#{maestroVersionesArbol.estado}" >
+										 <f:facet name="header">
+										<h:outputText value="Estado"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.estado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.fechaCreacion}" sortBy="#{maestroVersionesArbol.fechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.fechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.fechaUltimaVersion}" sortBy="#{maestroVersionesArbol.fechaUltimaVersion}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaUltimaVersion"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.fechaUltimaVersion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.globalid}" sortBy="#{maestroVersionesArbol.globalid}" >
+										 <f:facet name="header">
+										<h:outputText value="Globalid"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.globalid}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.globalidUltimaVersion}" sortBy="#{maestroVersionesArbol.globalidUltimaVersion}" >
+										 <f:facet name="header">
+										<h:outputText value="GlobalidUltimaVersion"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.globalidUltimaVersion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.mes}" sortBy="#{maestroVersionesArbol.mes}" >
+										 <f:facet name="header">
+										<h:outputText value="Mes"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.mes}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.usuario}" sortBy="#{maestroVersionesArbol.usuario}" >
+										 <f:facet name="header">
+										<h:outputText value="Usuario"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.usuario}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.usuarioUltimaVersion}" sortBy="#{maestroVersionesArbol.usuarioUltimaVersion}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuarioUltimaVersion"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.usuarioUltimaVersion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.versionActiva}" sortBy="#{maestroVersionesArbol.versionActiva}" >
+										 <f:facet name="header">
+										<h:outputText value="VersionActiva"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.versionActiva}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroVersionesArbol.versiones}" sortBy="#{maestroVersionesArbol.versiones}" >
+										 <f:facet name="header">
+										<h:outputText value="Versiones"/>
+										</f:facet>
+										 <h:outputText value="#{maestroVersionesArbol.versiones}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogMaestroVersionesArbol"
+										actionListener="#{maestroVersionesArbolView.action_edit}">
+										<f:attribute name="selectedMaestroVersionesArbol" value="#{maestroVersionesArbol}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{maestroVersionesArbolView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedMaestroVersionesArbol" value="#{maestroVersionesArbol}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{maestroVersionesArbolView.action_new()}" update=":dialogMaestroVersionesArbol" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogMaestroVersionesArbol" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{maestroVersionesArbolView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelMaestroVersionesArbol" header="MaestroVersionesArbol">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgId" value="Id"/>
+									 <p:inputText id="txtId" binding="#{maestroVersionesArbolView.txtId}">
+									 <p:ajax update=":dialogMaestroVersionesArbol" listener="#{maestroVersionesArbolView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgAnio" value=" Anio"/>
+									<p:inputText id="txtAnio" disabled="true" binding="#{maestroVersionesArbolView.txtAnio}"/>
+																		<h:outputText id="msgArea" value=" Area"/>
+									<p:inputText id="txtArea" disabled="true" binding="#{maestroVersionesArbolView.txtArea}"/>
+																		<h:outputText id="msgEstado" value=" Estado"/>
+									<p:inputText id="txtEstado" disabled="true" binding="#{maestroVersionesArbolView.txtEstado}"/>
+																		<h:outputText id="msgGlobalid" value=" Globalid"/>
+									<p:inputText id="txtGlobalid" disabled="true" binding="#{maestroVersionesArbolView.txtGlobalid}"/>
+																		<h:outputText id="msgGlobalidUltimaVersion" value=" GlobalidUltimaVersion"/>
+									<p:inputText id="txtGlobalidUltimaVersion" disabled="true" binding="#{maestroVersionesArbolView.txtGlobalidUltimaVersion}"/>
+																		<h:outputText id="msgMes" value=" Mes"/>
+									<p:inputText id="txtMes" disabled="true" binding="#{maestroVersionesArbolView.txtMes}"/>
+																		<h:outputText id="msgUsuario" value=" Usuario"/>
+									<p:inputText id="txtUsuario" disabled="true" binding="#{maestroVersionesArbolView.txtUsuario}"/>
+																		<h:outputText id="msgUsuarioUltimaVersion" value=" UsuarioUltimaVersion"/>
+									<p:inputText id="txtUsuarioUltimaVersion" disabled="true" binding="#{maestroVersionesArbolView.txtUsuarioUltimaVersion}"/>
+																		<h:outputText id="msgVersionActiva" value=" VersionActiva"/>
+									<p:inputText id="txtVersionActiva" disabled="true" binding="#{maestroVersionesArbolView.txtVersionActiva}"/>
+																		<h:outputText id="msgVersiones" value=" Versiones"/>
+									<p:inputText id="txtVersiones" disabled="true" binding="#{maestroVersionesArbolView.txtVersiones}"/>
+																		
+																													<h:outputText id="msgFechaCreacion" value=" FechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{maestroVersionesArbolView.txtFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{maestroVersionesArbolView.listener_txtFechaCreacion}" />
+										</p:calendar>
+																				<h:outputText id="msgFechaUltimaVersion" value=" FechaUltimaVersion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{maestroVersionesArbolView.txtFechaUltimaVersion}" >
+										<p:ajax event="dateSelect" listener="#{maestroVersionesArbolView.listener_txtFechaUltimaVersion}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{maestroVersionesArbolView.btnSave}" value="Save" action="#{maestroVersionesArbolView.action_save()}" update=":dialogMaestroVersionesArbol :frm:panelDataTableMaestroVersionesArbol" />
+									<p:commandButton id="btnClear" value="Clear" action="#{maestroVersionesArbolView.action_clear()}" update=":dialogMaestroVersionesArbol" />
+									<p:commandButton id="btnExit" value="Exit" action="#{maestroVersionesArbolView.action_closeDialog()}" update=":dialogMaestroVersionesArbol" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

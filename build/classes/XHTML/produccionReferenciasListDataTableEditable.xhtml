@@ -1,0 +1,417 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="ProduccionReferenciasData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{produccionReferenciasView.data}" var="produccionReferencias"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{produccionReferenciasView.rowEventListener}" />
+					
+															<p:column filterBy="#{produccionReferencias.produccionReferenciaId}" sortBy="#{produccionReferencias.produccionReferenciaId}" headerText="produccionReferenciaId">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{produccionReferencias.produccionReferenciaId}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{produccionReferencias.produccionReferenciaId}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{produccionReferencias.cantidad}" sortBy="#{produccionReferencias.cantidad}" 
+							headerText="cantidad">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.cantidad}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.cantidad}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.codigo}" sortBy="#{produccionReferencias.codigo}" 
+							headerText="codigo">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.codigo}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.codigo}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom1}" sortBy="#{produccionReferencias.custom1}" 
+							headerText="custom1">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom1}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom1}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom10}" sortBy="#{produccionReferencias.custom10}" 
+							headerText="custom10">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom10}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom10}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom2}" sortBy="#{produccionReferencias.custom2}" 
+							headerText="custom2">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom2}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom2}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom3}" sortBy="#{produccionReferencias.custom3}" 
+							headerText="custom3">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom3}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom3}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom4}" sortBy="#{produccionReferencias.custom4}" 
+							headerText="custom4">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom4}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom4}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom5}" sortBy="#{produccionReferencias.custom5}" 
+							headerText="custom5">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom5}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom5}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom6}" sortBy="#{produccionReferencias.custom6}" 
+							headerText="custom6">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom6}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom6}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom7}" sortBy="#{produccionReferencias.custom7}" 
+							headerText="custom7">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom7}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom7}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom8}" sortBy="#{produccionReferencias.custom8}" 
+							headerText="custom8">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom8}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom8}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.custom9}" sortBy="#{produccionReferencias.custom9}" 
+							headerText="custom9">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.custom9}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.custom9}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.descripcion}" sortBy="#{produccionReferencias.descripcion}" 
+							headerText="descripcion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.descripcion}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.descripcion}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.estandard}" sortBy="#{produccionReferencias.estandard}" 
+							headerText="estandard">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.estandard}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.estandard}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.fampla}" sortBy="#{produccionReferencias.fampla}" 
+							headerText="fampla">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.fampla}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.fampla}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.malas}" sortBy="#{produccionReferencias.malas}" 
+							headerText="malas">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.malas}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.malas}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.minutos}" sortBy="#{produccionReferencias.minutos}" 
+							headerText="minutos">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.minutos}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.minutos}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.minutosbuenas}" sortBy="#{produccionReferencias.minutosbuenas}" 
+							headerText="minutosbuenas">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.minutosbuenas}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.minutosbuenas}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.minutosmalas}" sortBy="#{produccionReferencias.minutosmalas}" 
+							headerText="minutosmalas">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.minutosmalas}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.minutosmalas}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{produccionReferencias.produccionId_Produccion}" sortBy="#{produccionReferencias.produccionId_Produccion}" 
+							headerText="produccionId_Produccion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.produccionId_Produccion}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{produccionReferencias.produccionId_Produccion}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{produccionReferencias.fecha}" sortBy="#{produccionReferencias.fecha}" 
+							headerText="fecha">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{produccionReferencias.fecha}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{produccionReferencias.fecha}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{produccionReferenciasView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{produccionReferenciasView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedProduccionReferencias" value="#{produccionReferencias}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

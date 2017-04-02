@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.ProduccionReferencias" table="PRODUCCION_REFERENCIAS" schema="PRODUCTIVIDADJCI">
+        <comment>Almacena las referencias producidad durante el turno</comment>
+        <id name="produccionReferenciaId" type="java.lang.Long">
+            <column name="PRODUCCION_REFERENCIA_ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="produccion" class="com.jci.testeo.modelo.Produccion" fetch="select">
+            <column name="PRODUCCION_PRODUCCION_ID" precision="22" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="codigo" type="java.lang.Long">
+            <column name="CODIGO" precision="22" scale="0" />
+        </property>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" length="45" />
+        </property>
+        <property name="cantidad" type="java.lang.Long">
+            <column name="CANTIDAD" precision="10" scale="0" />
+        </property>
+        <property name="malas" type="java.lang.Long">
+            <column name="MALAS" precision="10" scale="0" />
+        </property>
+        <property name="minutos" type="java.lang.Long">
+            <column name="MINUTOS" precision="22" scale="0" />
+        </property>
+        <property name="fampla" type="java.lang.String">
+            <column name="FAMPLA" length="45" />
+        </property>
+        <property name="estandard" type="java.lang.Long">
+            <column name="ESTANDARD" precision="22" scale="0" />
+        </property>
+        <property name="minutosbuenas" type="java.lang.Long">
+            <column name="MINUTOSBUENAS" precision="22" scale="0" />
+        </property>
+        <property name="minutosmalas" type="java.lang.Long">
+            <column name="MINUTOSMALAS" precision="22" scale="0" />
+        </property>
+        <property name="custom1" type="java.lang.String">
+            <column name="CUSTOM1" length="100" />
+        </property>
+        <property name="custom2" type="java.lang.String">
+            <column name="CUSTOM2" length="100" />
+        </property>
+        <property name="custom3" type="java.lang.String">
+            <column name="CUSTOM3" length="100" />
+        </property>
+        <property name="custom4" type="java.lang.String">
+            <column name="CUSTOM4" length="100" />
+        </property>
+        <property name="custom5" type="java.lang.String">
+            <column name="CUSTOM5" length="100" />
+        </property>
+        <property name="custom6" type="java.lang.String">
+            <column name="CUSTOM6" length="100" />
+        </property>
+        <property name="custom7" type="java.lang.String">
+            <column name="CUSTOM7" length="100" />
+        </property>
+        <property name="custom8" type="java.lang.String">
+            <column name="CUSTOM8" length="100" />
+        </property>
+        <property name="custom9" type="java.lang.String">
+            <column name="CUSTOM9" length="100" />
+        </property>
+        <property name="custom10" type="java.lang.String">
+            <column name="CUSTOM10" length="100" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" length="7" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,85 @@
+<jsp:root jsfc="f:view" xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+   
+   <html>
+		<body>
+			<f:view>
+				<ui:composition>
+					<!-- Beging Menu -->
+				
+							<h:form>
+							
+								<p:megaMenu style="width:989px">  
+									<p:submenu label="Master" icon="ui-icon-pencil">  
+							            <p:column>
+							            
+							            	 								            	 <p:submenu label="AccountType">  
+								                    <p:menuitem value="Master AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountType.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Options">  
+								                    <p:menuitem value="Master Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/options.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Profile">  
+								                    <p:menuitem value="Master Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profile.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Users">  
+								                    <p:menuitem value="Master Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/users.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>
+							        </p:submenu>  
+															
+															
+							  
+							        <p:submenu label="Data Table" icon="ui-icon-document">
+							           <p:column>  
+							                								            	 <p:submenu label="AccountType">  
+								                    <p:menuitem value="AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountTypeListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Options">  
+								                    <p:menuitem value="Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/optionsListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Profile">  
+								                    <p:menuitem value="Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profileListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Users">  
+								                    <p:menuitem value="Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usersListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>
+							        </p:submenu>  
+							  
+							        
+							  
+							  
+							        <p:submenu label="Edit Data Table" icon="ui-icon-contact">  
+							            <p:column>  
+							                								            	 <p:submenu label="AccountType">  
+								                    <p:menuitem value="AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountTypeListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Options">  
+								                    <p:menuitem value="Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/optionsListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Profile">  
+								                    <p:menuitem value="Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profileListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Users">  
+								                    <p:menuitem value="Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usersListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>  
+							        </p:submenu>  
+						  
+						        	<p:menuitem value="Quit" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/index.jsp" icon="ui-icon-close" />  
+						    
+						    </p:megaMenu>  
+						</h:form>
+					
+					<!-- end menu -->
+				</ui:composition>
+			</f:view>
+		</body>
+	</html>
+</jsp:root>

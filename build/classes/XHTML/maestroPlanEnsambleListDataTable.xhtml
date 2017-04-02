@@ -1,0 +1,277 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableMaestroPlanEnsamble" header="MaestroPlanEnsambleData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{maestroPlanEnsambleView.data}" var="maestroPlanEnsamble"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{maestroPlanEnsamble.id}" sortBy="#{maestroPlanEnsamble.id}" >
+										 <f:facet name="header">
+										<h:outputText value="id"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.id}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{maestroPlanEnsamble.acudia}" sortBy="#{maestroPlanEnsamble.acudia}" >
+										 <f:facet name="header">
+										<h:outputText value="Acudia"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.acudia}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.acumes}" sortBy="#{maestroPlanEnsamble.acumes}" >
+										 <f:facet name="header">
+										<h:outputText value="Acumes"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.acumes}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.anio}" sortBy="#{maestroPlanEnsamble.anio}" >
+										 <f:facet name="header">
+										<h:outputText value="Anio"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.anio}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.disp}" sortBy="#{maestroPlanEnsamble.disp}" >
+										 <f:facet name="header">
+										<h:outputText value="Disp"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.disp}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.fecha}" sortBy="#{maestroPlanEnsamble.fecha}" >
+										 <f:facet name="header">
+										<h:outputText value="Fecha"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.fecha}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.fechaCreado}" sortBy="#{maestroPlanEnsamble.fechaCreado}" >
+										 <f:facet name="header">
+										<h:outputText value="FechaCreado"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.fechaCreado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.ifm}" sortBy="#{maestroPlanEnsamble.ifm}" >
+										 <f:facet name="header">
+										<h:outputText value="Ifm"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.ifm}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.invrio}" sortBy="#{maestroPlanEnsamble.invrio}" >
+										 <f:facet name="header">
+										<h:outputText value="Invrio"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.invrio}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.ldia}" sortBy="#{maestroPlanEnsamble.ldia}" >
+										 <f:facet name="header">
+										<h:outputText value="Ldia"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.ldia}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.linea1}" sortBy="#{maestroPlanEnsamble.linea1}" >
+										 <f:facet name="header">
+										<h:outputText value="Linea1"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.linea1}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.linea2}" sortBy="#{maestroPlanEnsamble.linea2}" >
+										 <f:facet name="header">
+										<h:outputText value="Linea2"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.linea2}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.linea3}" sortBy="#{maestroPlanEnsamble.linea3}" >
+										 <f:facet name="header">
+										<h:outputText value="Linea3"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.linea3}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.linea4}" sortBy="#{maestroPlanEnsamble.linea4}" >
+										 <f:facet name="header">
+										<h:outputText value="Linea4"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.linea4}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.mes}" sortBy="#{maestroPlanEnsamble.mes}" >
+										 <f:facet name="header">
+										<h:outputText value="Mes"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.mes}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.placad}" sortBy="#{maestroPlanEnsamble.placad}" >
+										 <f:facet name="header">
+										<h:outputText value="Placad"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.placad}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.turno1}" sortBy="#{maestroPlanEnsamble.turno1}" >
+										 <f:facet name="header">
+										<h:outputText value="Turno1"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.turno1}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.turno2}" sortBy="#{maestroPlanEnsamble.turno2}" >
+										 <f:facet name="header">
+										<h:outputText value="Turno2"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.turno2}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.turno3}" sortBy="#{maestroPlanEnsamble.turno3}" >
+										 <f:facet name="header">
+										<h:outputText value="Turno3"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.turno3}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.turno4}" sortBy="#{maestroPlanEnsamble.turno4}" >
+										 <f:facet name="header">
+										<h:outputText value="Turno4"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.turno4}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{maestroPlanEnsamble.usuario}" sortBy="#{maestroPlanEnsamble.usuario}" >
+										 <f:facet name="header">
+										<h:outputText value="Usuario"/>
+										</f:facet>
+										 <h:outputText value="#{maestroPlanEnsamble.usuario}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogMaestroPlanEnsamble"
+										actionListener="#{maestroPlanEnsambleView.action_edit}">
+										<f:attribute name="selectedMaestroPlanEnsamble" value="#{maestroPlanEnsamble}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{maestroPlanEnsambleView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedMaestroPlanEnsamble" value="#{maestroPlanEnsamble}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{maestroPlanEnsambleView.action_new()}" update=":dialogMaestroPlanEnsamble" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogMaestroPlanEnsamble" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{maestroPlanEnsambleView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelMaestroPlanEnsamble" header="MaestroPlanEnsamble">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgId" value="Id"/>
+									 <p:inputText id="txtId" binding="#{maestroPlanEnsambleView.txtId}">
+									 <p:ajax update=":dialogMaestroPlanEnsamble" listener="#{maestroPlanEnsambleView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgAcudia" value=" Acudia"/>
+									<p:inputText id="txtAcudia" disabled="true" binding="#{maestroPlanEnsambleView.txtAcudia}"/>
+																		<h:outputText id="msgAcumes" value=" Acumes"/>
+									<p:inputText id="txtAcumes" disabled="true" binding="#{maestroPlanEnsambleView.txtAcumes}"/>
+																		<h:outputText id="msgAnio" value=" Anio"/>
+									<p:inputText id="txtAnio" disabled="true" binding="#{maestroPlanEnsambleView.txtAnio}"/>
+																		<h:outputText id="msgDisp" value=" Disp"/>
+									<p:inputText id="txtDisp" disabled="true" binding="#{maestroPlanEnsambleView.txtDisp}"/>
+																		<h:outputText id="msgFecha" value=" Fecha"/>
+									<p:inputText id="txtFecha" disabled="true" binding="#{maestroPlanEnsambleView.txtFecha}"/>
+																		<h:outputText id="msgIfm" value=" Ifm"/>
+									<p:inputText id="txtIfm" disabled="true" binding="#{maestroPlanEnsambleView.txtIfm}"/>
+																		<h:outputText id="msgInvrio" value=" Invrio"/>
+									<p:inputText id="txtInvrio" disabled="true" binding="#{maestroPlanEnsambleView.txtInvrio}"/>
+																		<h:outputText id="msgLdia" value=" Ldia"/>
+									<p:inputText id="txtLdia" disabled="true" binding="#{maestroPlanEnsambleView.txtLdia}"/>
+																		<h:outputText id="msgLinea1" value=" Linea1"/>
+									<p:inputText id="txtLinea1" disabled="true" binding="#{maestroPlanEnsambleView.txtLinea1}"/>
+																		<h:outputText id="msgLinea2" value=" Linea2"/>
+									<p:inputText id="txtLinea2" disabled="true" binding="#{maestroPlanEnsambleView.txtLinea2}"/>
+																		<h:outputText id="msgLinea3" value=" Linea3"/>
+									<p:inputText id="txtLinea3" disabled="true" binding="#{maestroPlanEnsambleView.txtLinea3}"/>
+																		<h:outputText id="msgLinea4" value=" Linea4"/>
+									<p:inputText id="txtLinea4" disabled="true" binding="#{maestroPlanEnsambleView.txtLinea4}"/>
+																		<h:outputText id="msgMes" value=" Mes"/>
+									<p:inputText id="txtMes" disabled="true" binding="#{maestroPlanEnsambleView.txtMes}"/>
+																		<h:outputText id="msgPlacad" value=" Placad"/>
+									<p:inputText id="txtPlacad" disabled="true" binding="#{maestroPlanEnsambleView.txtPlacad}"/>
+																		<h:outputText id="msgTurno1" value=" Turno1"/>
+									<p:inputText id="txtTurno1" disabled="true" binding="#{maestroPlanEnsambleView.txtTurno1}"/>
+																		<h:outputText id="msgTurno2" value=" Turno2"/>
+									<p:inputText id="txtTurno2" disabled="true" binding="#{maestroPlanEnsambleView.txtTurno2}"/>
+																		<h:outputText id="msgTurno3" value=" Turno3"/>
+									<p:inputText id="txtTurno3" disabled="true" binding="#{maestroPlanEnsambleView.txtTurno3}"/>
+																		<h:outputText id="msgTurno4" value=" Turno4"/>
+									<p:inputText id="txtTurno4" disabled="true" binding="#{maestroPlanEnsambleView.txtTurno4}"/>
+																		<h:outputText id="msgUsuario" value=" Usuario"/>
+									<p:inputText id="txtUsuario" disabled="true" binding="#{maestroPlanEnsambleView.txtUsuario}"/>
+																		
+																													<h:outputText id="msgFechaCreado" value=" FechaCreado"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{maestroPlanEnsambleView.txtFechaCreado}" >
+										<p:ajax event="dateSelect" listener="#{maestroPlanEnsambleView.listener_txtFechaCreado}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{maestroPlanEnsambleView.btnSave}" value="Save" action="#{maestroPlanEnsambleView.action_save()}" update=":dialogMaestroPlanEnsamble :frm:panelDataTableMaestroPlanEnsamble" />
+									<p:commandButton id="btnClear" value="Clear" action="#{maestroPlanEnsambleView.action_clear()}" update=":dialogMaestroPlanEnsamble" />
+									<p:commandButton id="btnExit" value="Exit" action="#{maestroPlanEnsambleView.action_closeDialog()}" update=":dialogMaestroPlanEnsamble" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

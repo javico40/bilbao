@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2016 2:35:49 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.jci.testeo.modelo.MaestroVersionesRamas" table="MAESTRO_VERSIONES_RAMAS" schema="PRODUCTIVIDADJCI">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="fechaCreacion" type="java.util.Date">
+            <column name="FECHA_CREACION" length="7" />
+        </property>
+        <property name="usuario" type="java.lang.String">
+            <column name="USUARIO" length="90" />
+        </property>
+        <property name="globalid" type="java.lang.String">
+            <column name="GLOBALID" length="2" />
+        </property>
+        <property name="estado" type="java.lang.Long">
+            <column name="ESTADO" precision="22" scale="0" />
+        </property>
+        <property name="tieneRama" type="java.lang.Long">
+            <column name="TIENE_RAMA" precision="22" scale="0" />
+        </property>
+        <property name="idRama" type="java.lang.Long">
+            <column name="ID_RAMA" precision="22" scale="0" />
+        </property>
+        <property name="area" type="java.lang.Long">
+            <column name="AREA" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>
