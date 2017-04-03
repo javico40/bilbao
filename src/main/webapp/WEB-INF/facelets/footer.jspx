@@ -8,9 +8,13 @@
 		<body>
 			<f:view>
 				<ui:composition>
-					<div id="footer">
-						<a href="http://www.zathuracode.org">Powered by Zathuracode 5.0.1</a>
-					</div>
+				
+	  <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 1.0
+        </div>
+       <strong>Desarrollado por <a href="http://www.mac.com.co">Mac-JCI 2015</a> powered by <a href="http://almsaeedstudio.com">AdminLTE v2.1.1</a> </strong>.
+      </footer>
 				</ui:composition>
 			</f:view>
 		</body>

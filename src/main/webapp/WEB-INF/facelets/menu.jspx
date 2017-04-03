@@ -11,75 +11,51 @@
 			<f:view>
 				<ui:composition>
 					<!-- Beging Menu -->
-				
-							<h:form>
-							
-								<p:megaMenu style="width:989px">  
-									<p:submenu label="Master" icon="ui-icon-pencil">  
-							            <p:column>
-							            
-							            	 								            	 <p:submenu label="AccountType">  
-								                    <p:menuitem value="Master AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountType.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Options">  
-								                    <p:menuitem value="Master Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/options.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Profile">  
-								                    <p:menuitem value="Master Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profile.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Users">  
-								                    <p:menuitem value="Master Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/users.xhtml" />  
-								               	 </p:submenu>
-											 							            </p:column>
-							        </p:submenu>  
-															
-															
-							  
-							        <p:submenu label="Data Table" icon="ui-icon-document">
-							           <p:column>  
-							                								            	 <p:submenu label="AccountType">  
-								                    <p:menuitem value="AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountTypeListDataTable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Options">  
-								                    <p:menuitem value="Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/optionsListDataTable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Profile">  
-								                    <p:menuitem value="Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profileListDataTable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Users">  
-								                    <p:menuitem value="Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usersListDataTable.xhtml" />  
-								               	 </p:submenu>
-											 							            </p:column>
-							        </p:submenu>  
-							  
-							        
-							  
-							  
-							        <p:submenu label="Edit Data Table" icon="ui-icon-contact">  
-							            <p:column>  
-							                								            	 <p:submenu label="AccountType">  
-								                    <p:menuitem value="AccountType" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/accountTypeListDataTableEditable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Options">  
-								                    <p:menuitem value="Options" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/optionsListDataTableEditable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Profile">  
-								                    <p:menuitem value="Profile" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/profileListDataTableEditable.xhtml" />  
-								               	 </p:submenu>
-											 								            	 <p:submenu label="Users">  
-								                    <p:menuitem value="Users" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usersListDataTableEditable.xhtml" />  
-								               	 </p:submenu>
-											 							            </p:column>  
-							        </p:submenu>  
-						  
-						        	<p:menuitem value="Quit" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/index.jsp" icon="ui-icon-close" />  
-						    
-						    </p:megaMenu>  
-						</h:form>
-					
+					<h:form>
+						<aside class="main-sidebar">
+							<!-- sidebar: style can be found in sidebar.less -->
+        						<section class="sidebar">
+          							<!-- Sidebar user panel -->
+          							
+          	<div class="user-panel">
+            <div class="pull-left image">
+            <h:graphicImage value="/images/dynamic/?id=#{menusView.userimage}"  styleClass="img-circle"/>
+            </div>
+            <div class="pull-left info">
+              <p>#{menusView.usuarioapp.usrnombre}</p>
+
+              <a href="#"><i class="fa fa-circle text-success"></i> En Linea</a>
+            </div>
+          </div>
+          			
+          							
+            						
+            						<!-- sidebar menu: : style can be found in sidebar.less -->
+         <ul class="sidebar-menu">
+            <li class="header">Menu Principal</li>
+             <ui:repeat id="menurepeat" value="#{menusView.dataapp}" var="menu">
+	            <li class="treeview">
+	              <a href="#">
+	                <i class="#{menu.menicon}"></i> <span>#{menu.mendescvjci}</span> <i class="fa fa-angle-left pull-right"></i>
+	              </a>
+	              <ul class="treeview-menu">
+	                <ui:repeat value="#{menu.opciones}" var="opcion">  
+		                <li><a href="../#{menu.menpath}#{opcion.opcenlacev}" title="#{opcion.opcdescripv}"><i class="fa fa-circle-o"></i> #{opcion.opcdescripv}</a></li>		                
+	                </ui:repeat>  
+	              </ul>
+	            </li>
+	          </ui:repeat>	       
+       
+          </ul>
+                							    
+      							    
+          					 	</section>
+						</aside>
+					</h:form>
 					<!-- end menu -->
 				</ui:composition>
 			</f:view>
 		</body>
 	</html>
 </jsp:root>
+
