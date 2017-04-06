@@ -36,9 +36,9 @@ public class CustomFilterSecurityMetadataSource implements FilterInvocationSecur
 		
 		try {
 			
-    		Map<String, Object> mapparameter=new HashMap<String, Object>();
-    		mapparameter.put("seguridadjci", "SEGURIDADJCI%");
-    		List<Object[]> rolesObject;
+    		//Map<String, Object> mapparameter=new HashMap<String, Object>();
+    		//mapparameter.put("seguridadjci", "SEGURIDADJCI%");
+    		//List<Object[]> rolesObject;
     		
     		if(url.contains("inicio")||url.contains("images")){
     			//rolesObject=businessDelegatorView.findConsultaNombre("consultaRolesAppIni", mapparameter);

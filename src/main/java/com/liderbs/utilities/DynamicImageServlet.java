@@ -40,13 +40,19 @@ public class DynamicImageServlet implements HttpRequestHandler {
 	@Override
 	public void handleRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		InputStream my_banner_image=null;
-		try { 		
+		
+		try { 
+			
             String id = request.getParameter("id");
             String manual = request.getParameter("manual");
+            
             if(manual!=null&&manual.equals("jci")){
+            	
             	my_banner_image = getClass().getClassLoader().getResourceAsStream("manualSEGURIDAD.pdf");
-				try {
+				
+            	try {
 					byte[] bytes = IOUtils.toByteArray(my_banner_image);
 					response.getOutputStream().write(bytes);
 				} catch (IOException e1) {					

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 05-abr-2017 21:53:29 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Menu" table="menu" catalog="liderbs_virfit">
+        <id name="idMenu" type="java.lang.Integer">
+            <column name="idMenu" />
+            <generator class="identity" />
+        </id>
+        <property name="description" type="java.lang.String">
+            <column name="description" length="100" />
+        </property>
+        <property name="caption" type="java.lang.String">
+            <column name="caption" length="45" />
+        </property>
+        <property name="path" type="java.lang.String">
+            <column name="path" length="1000" />
+        </property>
+        <property name="icon" type="java.lang.String">
+            <column name="icon" length="45" />
+        </property>
+        <set name="menuHasOptionses" table="menu_has_options" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Menu_idMenu" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.MenuHasOptions" />
+        </set>
+    </class>
+</hibernate-mapping>

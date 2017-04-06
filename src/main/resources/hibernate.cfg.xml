@@ -10,9 +10,11 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/liderbs_virfit</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.default_schema">liderbs_virfit</property>
-        <mapping resource="com/liderbs/modelo/Users.hbm.xml" />
-        <mapping resource="com/liderbs/modelo/Profile.hbm.xml" />
-        <mapping resource="com/liderbs/modelo/AccountType.hbm.xml" />
-        <mapping resource="com/liderbs/modelo/Options.hbm.xml" />
+        <mapping resource="persistence/Menu.hbm.xml" />
+        <mapping resource="persistence/MenuHasOptions.hbm.xml" />
+        <mapping resource="persistence/Options.hbm.xml" />
+        <mapping resource="persistence/Profile.hbm.xml" />
+        <mapping resource="persistence/Users.hbm.xml" />
+        
     </session-factory>
 </hibernate-configuration>

@@ -55,19 +55,20 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
 	
 			if(password==null||password.trim().equals("")){
 				throw new BadCredentialsException("Contraseña invalida");	
-			}
-			else if (user == null){
-				throw new BadCredentialsException("Authentication Fail. User no valid");	        	           
+			}else if (user == null){
+				throw new BadCredentialsException("Usuario no valido");	        	           
 	        }else{	
 	        	
-	        	 String hash=password;
+	        	 String hash = password;
 	        	
-	        	 byte[] defaultBytes = password.getBytes();	        	
+	        	 byte[] defaultBytes = password.getBytes();	
+	        	 
 	        			MessageDigest algorithm = MessageDigest.getInstance("MD5");
 	        			algorithm.reset();
 	        			algorithm.update(defaultBytes);
 	        			byte messageDigest[] = algorithm.digest();	        		            
 	        			StringBuffer hexString = new StringBuffer();
+	        			
 	        			for (int i=0;i<messageDigest.length;i++) {
 	        				 int val = 0xff &  messageDigest[i];
 	        				  if (val < 16)
@@ -96,9 +97,7 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
             }//end if-else	        
 		} catch (Exception e) {
 			throw new BadCredentialsException("Authentication Fail.");
-		}
-		
-		
+		}//end try-catch	
     } 
 	
     @Override
