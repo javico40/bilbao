@@ -46,6 +46,13 @@ public class ProfileLogic implements IProfileLogic {
     @Autowired
     private IProfileDAO profileDAO;
 
+    /**
+    * DAO injected by Spring that manages Users entities
+    *
+    */
+    @Autowired
+    private IUsersDAO usersDAO;
+
     @Transactional(readOnly = true)
     public List<Profile> getProfile() throws Exception {
         log.debug("finding all Profile instances");
@@ -109,7 +116,16 @@ public class ProfileLogic implements IProfileLogic {
             throw new ZMessManager().new EmptyFieldException("idprofile");
         }
 
+        List<Users> userses = null;
+
         try {
+            userses = usersDAO.findByProperty("profile.idprofile",
+                    entity.getIdprofile());
+
+            if (Utilities.validationsList(userses) == true) {
+                throw new ZMessManager().new DeletingException("userses");
+            }
+
             profileDAO.delete(entity);
 
             log.debug("delete Profile successful");

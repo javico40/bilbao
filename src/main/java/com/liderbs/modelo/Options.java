@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 02-abr-2017 11:42:14 by Hibernate Tools 4.0.0
+// Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0
 
 
 import java.util.HashSet;

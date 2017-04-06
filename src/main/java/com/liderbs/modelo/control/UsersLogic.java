@@ -37,6 +37,7 @@ import java.util.Set;
 @Scope("singleton")
 @Service("UsersLogic")
 public class UsersLogic implements IUsersLogic {
+	
     private static final Logger log = LoggerFactory.getLogger(UsersLogic.class);
 
     /**
@@ -45,6 +46,13 @@ public class UsersLogic implements IUsersLogic {
      */
     @Autowired
     private IUsersDAO usersDAO;
+
+    /**
+    * Logic injected by Spring that manages Profile entities
+    *
+    */
+    @Autowired
+    IProfileLogic logicProfile1;
 
     @Transactional(readOnly = true)
     public List<Users> getUsers() throws Exception {
@@ -69,9 +77,30 @@ public class UsersLogic implements IUsersLogic {
         log.debug("saving Users instance");
 
         try {
-            if (entity.getAccountIdaccount() == null) {
+            if (entity.getProfile() == null) {
+                throw new ZMessManager().new ForeignException("profile");
+            }
+
+            if (entity.getId()== null) {
+                throw new ZMessManager().new EmptyFieldException("idusers");
+            }
+
+            if ((entity.getId() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getId(), 0, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException("idusers");
+            }
+
+            if (entity.getProfile() == null) {
                 throw new ZMessManager().new EmptyFieldException(
-                    "accountIdaccount");
+                    "profileIdprofile");
+            }
+
+            if ((entity.getProfile() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getProfile(), 0, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException(
+                    "profileIdprofile");
             }
 
             if ((entity.getCellphone() != null) &&
@@ -105,6 +134,12 @@ public class UsersLogic implements IUsersLogic {
                 throw new ZMessManager().new NotValidFormatException("password");
             }
 
+            if ((entity.getSaldo() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getSaldo(), 12, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException("saldo");
+            }
+
             if ((entity.getUserid() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getUserid(),
                         45) == false)) {
@@ -117,7 +152,12 @@ public class UsersLogic implements IUsersLogic {
                 throw new ZMessManager().new NotValidFormatException("username");
             }
 
-            if (getUsers(entity.getIdusers()) != null) {
+            if (entity.getProfile().getIdprofile() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idprofile_Profile");
+            }
+
+            if (getUsers(entity.getId()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
@@ -139,8 +179,12 @@ public class UsersLogic implements IUsersLogic {
             throw new ZMessManager().new NullEntityExcepcion("Users");
         }
 
-        if (entity.getIdusers() == null) {
+        if (entity.getId() == null) {
             throw new ZMessManager().new EmptyFieldException("idusers");
+        }
+
+        if (entity.getProfile() == null) {
+            throw new ZMessManager().new EmptyFieldException("profileIdprofile");
         }
 
         try {
@@ -163,9 +207,30 @@ public class UsersLogic implements IUsersLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Users");
             }
 
-            if (entity.getAccountIdaccount() == null) {
+            if (entity.getProfile() == null) {
+                throw new ZMessManager().new ForeignException("profile");
+            }
+
+            if (entity.getId() == null) {
+                throw new ZMessManager().new EmptyFieldException("idusers");
+            }
+
+            if ((entity.getId() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getId(), 0, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException("idusers");
+            }
+
+            if (entity.getProfile() == null) {
                 throw new ZMessManager().new EmptyFieldException(
-                    "accountIdaccount");
+                    "profileIdprofile");
+            }
+
+            if ((entity.getProfile() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getProfile(), 0, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException(
+                    "profileIdprofile");
             }
 
             if ((entity.getCellphone() != null) &&
@@ -199,6 +264,12 @@ public class UsersLogic implements IUsersLogic {
                 throw new ZMessManager().new NotValidFormatException("password");
             }
 
+            if ((entity.getSaldo() != null) &&
+                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
+                        entity.getSaldo(), 12, 0) == false)) {
+                throw new ZMessManager().new NotValidFormatException("saldo");
+            }
+
             if ((entity.getUserid() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getUserid(),
                         45) == false)) {
@@ -209,6 +280,11 @@ public class UsersLogic implements IUsersLogic {
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getUsername(), 45) == false)) {
                 throw new ZMessManager().new NotValidFormatException("username");
+            }
+
+            if (entity.getProfile().getIdprofile() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idprofile_Profile");
             }
 
             usersDAO.update(entity);
@@ -231,9 +307,11 @@ public class UsersLogic implements IUsersLogic {
             for (Users usersTmp : users) {
                 UsersDTO usersDTO2 = new UsersDTO();
 
+                /*
                 usersDTO2.setIdusers(usersTmp.getIdusers());
-                usersDTO2.setAccountIdaccount((usersTmp.getAccountIdaccount() != null)
-                    ? usersTmp.getAccountIdaccount() : null);
+                usersDTO2.setProfileIdprofile(usersTmp.getId()
+                                                      .getProfileIdprofile());
+                */
                 usersDTO2.setCellphone((usersTmp.getCellphone() != null)
                     ? usersTmp.getCellphone() : null);
                 usersDTO2.setCreated(usersTmp.getCreated());
@@ -246,10 +324,17 @@ public class UsersLogic implements IUsersLogic {
                     ? usersTmp.getName() : null);
                 usersDTO2.setPassword((usersTmp.getPassword() != null)
                     ? usersTmp.getPassword() : null);
+                usersDTO2.setSaldo((usersTmp.getSaldo() != null)
+                    ? usersTmp.getSaldo() : null);
+                usersDTO2.setStatus((usersTmp.getStatus() != null)
+                    ? usersTmp.getStatus() : null);
                 usersDTO2.setUserid((usersTmp.getUserid() != null)
                     ? usersTmp.getUserid() : null);
                 usersDTO2.setUsername((usersTmp.getUsername() != null)
                     ? usersTmp.getUsername() : null);
+                usersDTO2.setIdprofile_Profile((usersTmp.getProfile()
+                                                        .getIdprofile() != null)
+                    ? usersTmp.getProfile().getIdprofile() : null);
                 usersDTO.add(usersDTO2);
             }
 
@@ -260,13 +345,13 @@ public class UsersLogic implements IUsersLogic {
     }
 
     @Transactional(readOnly = true)
-    public Users getUsers(Integer idusers) throws Exception {
+    public Users getUsers(Long id) throws Exception {
         log.debug("getting Users instance");
 
         Users entity = null;
 
         try {
-            entity = usersDAO.findById(idusers);
+            entity = usersDAO.findById(id);
         } catch (Exception e) {
             log.error("get Users failed", e);
             throw new ZMessManager().new FindingException("Users");

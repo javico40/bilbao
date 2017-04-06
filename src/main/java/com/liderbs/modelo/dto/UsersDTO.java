@@ -19,25 +19,20 @@ import java.util.Date;
 public class UsersDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsersDTO.class);
-    private Integer accountIdaccount;
     private String cellphone;
     private Date created;
     private String fixedphone;
     private Integer idusers;
+    private Integer profileIdprofile;
     private Date lastlogin;
     private String lastname;
     private String name;
     private String password;
+    private Float saldo;
+    private Integer status;
     private String userid;
     private String username;
-
-    public Integer getAccountIdaccount() {
-        return accountIdaccount;
-    }
-
-    public void setAccountIdaccount(Integer accountIdaccount) {
-        this.accountIdaccount = accountIdaccount;
-    }
+    private Integer idprofile_Profile;
 
     public String getCellphone() {
         return cellphone;
@@ -69,6 +64,14 @@ public class UsersDTO implements Serializable {
 
     public void setIdusers(Integer idusers) {
         this.idusers = idusers;
+    }
+
+    public Integer getProfileIdprofile() {
+        return profileIdprofile;
+    }
+
+    public void setProfileIdprofile(Integer profileIdprofile) {
+        this.profileIdprofile = profileIdprofile;
     }
 
     public Date getLastlogin() {
@@ -103,6 +106,22 @@ public class UsersDTO implements Serializable {
         this.password = password;
     }
 
+    public Float getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Float saldo) {
+        this.saldo = saldo;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getUserid() {
         return userid;
     }
@@ -117,5 +136,13 @@ public class UsersDTO implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getIdprofile_Profile() {
+        return idprofile_Profile;
+    }
+
+    public void setIdprofile_Profile(Integer idprofile_Profile) {
+        this.idprofile_Profile = idprofile_Profile;
     }
 }

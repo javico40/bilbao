@@ -3,6 +3,7 @@ package com.liderbs.dataaccess.dao;
 import com.liderbs.dataaccess.api.HibernateDaoImpl;
 
 import com.liderbs.modelo.Users;
+import com.liderbs.modelo.UsersId;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -42,7 +43,7 @@ import javax.annotation.Resource;
  */
 @Scope("singleton")
 @Repository("UsersDAO")
-public class UsersDAO extends HibernateDaoImpl<Users, Integer>
+public class UsersDAO extends HibernateDaoImpl<Users, Long>
     implements IUsersDAO {
     private static final Logger log = LoggerFactory.getLogger(UsersDAO.class);
     @Resource

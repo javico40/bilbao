@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 02-abr-2017 11:42:14 by Hibernate Tools 4.0.0
+// Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0
 
 
 import java.util.Date;
@@ -10,8 +10,8 @@ import java.util.Date;
 public class Users  implements java.io.Serializable {
 
 
-     private Integer idusers;
-     private Integer accountIdaccount;
+     private Long id;
+     private Profile profile;
      private String username;
      private String password;
      private String name;
@@ -21,16 +21,20 @@ public class Users  implements java.io.Serializable {
      private String cellphone;
      private Date created;
      private Date lastlogin;
+     private Integer status;
+     private Float saldo;
 
     public Users() {
     }
 
 	
-    public Users(Integer accountIdaccount) {
-        this.accountIdaccount = accountIdaccount;
+    public Users(Long id, Profile profile) {
+        this.id = id;
+        this.profile = profile;
     }
-    public Users(Integer accountIdaccount, String username, String password, String name, String lastname, String userid, String fixedphone, String cellphone, Date created, Date lastlogin) {
-       this.accountIdaccount = accountIdaccount;
+    public Users(Long id, Profile profile, String username, String password, String name, String lastname, String userid, String fixedphone, String cellphone, Date created, Date lastlogin, Integer status, Float saldo) {
+       this.id = id;
+       this.profile = profile;
        this.username = username;
        this.password = password;
        this.name = name;
@@ -40,21 +44,23 @@ public class Users  implements java.io.Serializable {
        this.cellphone = cellphone;
        this.created = created;
        this.lastlogin = lastlogin;
+       this.status = status;
+       this.saldo = saldo;
     }
    
-    public Integer getIdusers() {
-        return this.idusers;
+    public Long getId() {
+        return this.id;
     }
     
-    public void setIdusers(Integer idusers) {
-        this.idusers = idusers;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public Integer getAccountIdaccount() {
-        return this.accountIdaccount;
+    public Profile getProfile() {
+        return this.profile;
     }
     
-    public void setAccountIdaccount(Integer accountIdaccount) {
-        this.accountIdaccount = accountIdaccount;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
     public String getUsername() {
         return this.username;
@@ -118,6 +124,20 @@ public class Users  implements java.io.Serializable {
     
     public void setLastlogin(Date lastlogin) {
         this.lastlogin = lastlogin;
+    }
+    public Integer getStatus() {
+        return this.status;
+    }
+    
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    public Float getSaldo() {
+        return this.saldo;
+    }
+    
+    public void setSaldo(Float saldo) {
+        this.saldo = saldo;
     }
 
 

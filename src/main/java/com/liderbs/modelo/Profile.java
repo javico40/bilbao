@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 02-abr-2017 11:42:14 by Hibernate Tools 4.0.0
+// Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0
 
 
 import java.util.HashSet;
@@ -14,14 +14,16 @@ public class Profile  implements java.io.Serializable {
      private Integer idprofile;
      private String profileName;
      private String profileDescription;
+     private Set<Users> userses = new HashSet<Users>(0);
      private Set<Options> optionses = new HashSet<Options>(0);
 
     public Profile() {
     }
 
-    public Profile(String profileName, String profileDescription, Set<Options> optionses) {
+    public Profile(String profileName, String profileDescription, Set<Users> userses, Set<Options> optionses) {
        this.profileName = profileName;
        this.profileDescription = profileDescription;
+       this.userses = userses;
        this.optionses = optionses;
     }
    
@@ -45,6 +47,13 @@ public class Profile  implements java.io.Serializable {
     
     public void setProfileDescription(String profileDescription) {
         this.profileDescription = profileDescription;
+    }
+    public Set<Users> getUserses() {
+        return this.userses;
+    }
+    
+    public void setUserses(Set<Users> userses) {
+        this.userses = userses;
     }
     public Set<Options> getOptionses() {
         return this.optionses;

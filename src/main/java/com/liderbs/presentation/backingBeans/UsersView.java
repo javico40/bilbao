@@ -47,17 +47,21 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class UsersView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsersView.class);
-    private InputText txtAccountIdaccount;
     private InputText txtCellphone;
     private InputText txtFixedphone;
     private InputText txtLastname;
     private InputText txtName;
     private InputText txtPassword;
+    private InputText txtSaldo;
+    private InputText txtStatus;
     private InputText txtUserid;
     private InputText txtUsername;
+    private InputText txtIdprofile_Profile;
     private InputText txtIdusers;
+    private InputText txtProfileIdprofile;
     private Calendar txtCreated;
     private Calendar txtLastlogin;
     private CommandButton btnSave;
@@ -78,12 +82,6 @@ public class UsersView implements Serializable {
     public void rowEventListener(RowEditEvent e) {
         try {
             UsersDTO usersDTO = (UsersDTO) e.getObject();
-
-            if (txtAccountIdaccount == null) {
-                txtAccountIdaccount = new InputText();
-            }
-
-            txtAccountIdaccount.setValue(usersDTO.getAccountIdaccount());
 
             if (txtCellphone == null) {
                 txtCellphone = new InputText();
@@ -115,6 +113,18 @@ public class UsersView implements Serializable {
 
             txtPassword.setValue(usersDTO.getPassword());
 
+            if (txtSaldo == null) {
+                txtSaldo = new InputText();
+            }
+
+            txtSaldo.setValue(usersDTO.getSaldo());
+
+            if (txtStatus == null) {
+                txtStatus = new InputText();
+            }
+
+            txtStatus.setValue(usersDTO.getStatus());
+
             if (txtUserid == null) {
                 txtUserid = new InputText();
             }
@@ -127,11 +137,23 @@ public class UsersView implements Serializable {
 
             txtUsername.setValue(usersDTO.getUsername());
 
+            if (txtIdprofile_Profile == null) {
+                txtIdprofile_Profile = new InputText();
+            }
+
+            txtIdprofile_Profile.setValue(usersDTO.getIdprofile_Profile());
+
             if (txtIdusers == null) {
                 txtIdusers = new InputText();
             }
 
             txtIdusers.setValue(usersDTO.getIdusers());
+
+            if (txtProfileIdprofile == null) {
+                txtProfileIdprofile = new InputText();
+            }
+
+            txtProfileIdprofile.setValue(usersDTO.getProfileIdprofile());
 
             if (txtCreated == null) {
                 txtCreated = new Calendar();
@@ -145,8 +167,16 @@ public class UsersView implements Serializable {
 
             txtLastlogin.setValue(usersDTO.getLastlogin());
 
-            Integer idusers = FacesUtils.checkInteger(txtIdusers);
-            entity = businessDelegatorView.getUsers(idusers);
+            UsersId id = new UsersId();
+            id.setIdusers((((txtIdusers.getValue()) == null) ||
+                (txtIdusers.getValue()).equals("")) ? null
+                                                    : FacesUtils.checkInteger(
+                    txtIdusers));
+            id.setProfileIdprofile((((txtProfileIdprofile.getValue()) == null) ||
+                (txtProfileIdprofile.getValue()).equals("")) ? null
+                                                             : FacesUtils.checkInteger(
+                    txtProfileIdprofile));
+            //entity = businessDelegatorView.getUsers(id);
 
             action_modify();
         } catch (Exception ex) {
@@ -164,11 +194,6 @@ public class UsersView implements Serializable {
     public String action_clear() {
         entity = null;
         selectedUsers = null;
-
-        if (txtAccountIdaccount != null) {
-            txtAccountIdaccount.setValue(null);
-            txtAccountIdaccount.setDisabled(true);
-        }
 
         if (txtCellphone != null) {
             txtCellphone.setValue(null);
@@ -195,6 +220,16 @@ public class UsersView implements Serializable {
             txtPassword.setDisabled(true);
         }
 
+        if (txtSaldo != null) {
+            txtSaldo.setValue(null);
+            txtSaldo.setDisabled(true);
+        }
+
+        if (txtStatus != null) {
+            txtStatus.setValue(null);
+            txtStatus.setDisabled(true);
+        }
+
         if (txtUserid != null) {
             txtUserid.setValue(null);
             txtUserid.setDisabled(true);
@@ -203,6 +238,11 @@ public class UsersView implements Serializable {
         if (txtUsername != null) {
             txtUsername.setValue(null);
             txtUsername.setDisabled(true);
+        }
+
+        if (txtIdprofile_Profile != null) {
+            txtIdprofile_Profile.setValue(null);
+            txtIdprofile_Profile.setDisabled(true);
         }
 
         if (txtCreated != null) {
@@ -218,6 +258,11 @@ public class UsersView implements Serializable {
         if (txtIdusers != null) {
             txtIdusers.setValue(null);
             txtIdusers.setDisabled(false);
+        }
+
+        if (txtProfileIdprofile != null) {
+            txtProfileIdprofile.setValue(null);
+            txtProfileIdprofile.setDisabled(false);
         }
 
         if (btnSave != null) {
@@ -249,29 +294,37 @@ public class UsersView implements Serializable {
 
     public void listener_txtId() {
         try {
-            Integer idusers = FacesUtils.checkInteger(txtIdusers);
-            entity = (idusers != null)
-                ? businessDelegatorView.getUsers(idusers) : null;
+            UsersId id = new UsersId();
+            id.setIdusers((((txtIdusers.getValue()) == null) ||
+                (txtIdusers.getValue()).equals("")) ? null
+                                                    : FacesUtils.checkInteger(
+                    txtIdusers));
+            id.setProfileIdprofile((((txtProfileIdprofile.getValue()) == null) ||
+                (txtProfileIdprofile.getValue()).equals("")) ? null
+                                                             : FacesUtils.checkInteger(
+                    txtProfileIdprofile));
+            //entity = (id != null) ? businessDelegatorView.getUsers(id) : null;
         } catch (Exception e) {
             entity = null;
         }
 
         if (entity == null) {
-            txtAccountIdaccount.setDisabled(false);
             txtCellphone.setDisabled(false);
             txtFixedphone.setDisabled(false);
             txtLastname.setDisabled(false);
             txtName.setDisabled(false);
             txtPassword.setDisabled(false);
+            txtSaldo.setDisabled(false);
+            txtStatus.setDisabled(false);
             txtUserid.setDisabled(false);
             txtUsername.setDisabled(false);
+            txtIdprofile_Profile.setDisabled(false);
             txtCreated.setDisabled(false);
             txtLastlogin.setDisabled(false);
             txtIdusers.setDisabled(false);
+            txtProfileIdprofile.setDisabled(false);
             btnSave.setDisabled(false);
         } else {
-            txtAccountIdaccount.setValue(entity.getAccountIdaccount());
-            txtAccountIdaccount.setDisabled(false);
             txtCellphone.setValue(entity.getCellphone());
             txtCellphone.setDisabled(false);
             txtCreated.setValue(entity.getCreated());
@@ -286,12 +339,20 @@ public class UsersView implements Serializable {
             txtName.setDisabled(false);
             txtPassword.setValue(entity.getPassword());
             txtPassword.setDisabled(false);
+            txtSaldo.setValue(entity.getSaldo());
+            txtSaldo.setDisabled(false);
+            txtStatus.setValue(entity.getStatus());
+            txtStatus.setDisabled(false);
             txtUserid.setValue(entity.getUserid());
             txtUserid.setDisabled(false);
             txtUsername.setValue(entity.getUsername());
             txtUsername.setDisabled(false);
-            txtIdusers.setValue(entity.getIdusers());
+            txtIdprofile_Profile.setValue(entity.getProfile().getIdprofile());
+            txtIdprofile_Profile.setDisabled(false);
+            txtIdusers.setValue(entity.getId());
             txtIdusers.setDisabled(true);
+            txtProfileIdprofile.setValue(entity.getProfile());
+            txtProfileIdprofile.setDisabled(true);
             btnSave.setDisabled(false);
 
             if (btnDelete != null) {
@@ -303,8 +364,6 @@ public class UsersView implements Serializable {
     public String action_edit(ActionEvent evt) {
         selectedUsers = (UsersDTO) (evt.getComponent().getAttributes()
                                        .get("selectedUsers"));
-        txtAccountIdaccount.setValue(selectedUsers.getAccountIdaccount());
-        txtAccountIdaccount.setDisabled(false);
         txtCellphone.setValue(selectedUsers.getCellphone());
         txtCellphone.setDisabled(false);
         txtCreated.setValue(selectedUsers.getCreated());
@@ -319,12 +378,20 @@ public class UsersView implements Serializable {
         txtName.setDisabled(false);
         txtPassword.setValue(selectedUsers.getPassword());
         txtPassword.setDisabled(false);
+        txtSaldo.setValue(selectedUsers.getSaldo());
+        txtSaldo.setDisabled(false);
+        txtStatus.setValue(selectedUsers.getStatus());
+        txtStatus.setDisabled(false);
         txtUserid.setValue(selectedUsers.getUserid());
         txtUserid.setDisabled(false);
         txtUsername.setValue(selectedUsers.getUsername());
         txtUsername.setDisabled(false);
+        txtIdprofile_Profile.setValue(selectedUsers.getIdprofile_Profile());
+        txtIdprofile_Profile.setDisabled(false);
         txtIdusers.setValue(selectedUsers.getIdusers());
         txtIdusers.setDisabled(true);
+        txtProfileIdprofile.setValue(selectedUsers.getProfileIdprofile());
+        txtProfileIdprofile.setDisabled(true);
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -351,20 +418,33 @@ public class UsersView implements Serializable {
         try {
             entity = new Users();
 
-            Integer idusers = FacesUtils.checkInteger(txtIdusers);
-
-            entity.setAccountIdaccount(FacesUtils.checkInteger(
-                    txtAccountIdaccount));
+            UsersId id = new UsersId();
+            
+            /*
+            id.setIdusers((((txtIdusers.getValue()) == null) ||
+                (txtIdusers.getValue()).equals("")) ? null
+                                                    : FacesUtils.checkInteger(
+                    txtIdusers));
+            id.setProfileIdprofile((((txtProfileIdprofile.getValue()) == null) ||
+                (txtProfileIdprofile.getValue()).equals("")) ? null
+                                                             : FacesUtils.checkInteger(
+                    txtProfileIdprofile));
+            */
+            
             entity.setCellphone(FacesUtils.checkString(txtCellphone));
             entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
-            entity.setIdusers(idusers);
+            entity.setId(0L);
             entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
             entity.setLastname(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
             entity.setPassword(FacesUtils.checkString(txtPassword));
+            entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
+            entity.setStatus(FacesUtils.checkInteger(txtStatus));
             entity.setUserid(FacesUtils.checkString(txtUserid));
             entity.setUsername(FacesUtils.checkString(txtUsername));
+            entity.setProfile(businessDelegatorView.getProfile(
+                    entity.getProfile().getIdprofile()));
             businessDelegatorView.saveUsers(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
@@ -379,12 +459,12 @@ public class UsersView implements Serializable {
     public String action_modify() {
         try {
             if (entity == null) {
-                Integer idusers = new Integer(selectedUsers.getIdusers());
-                entity = businessDelegatorView.getUsers(idusers);
+                UsersId id = new UsersId();
+                id.setIdusers(selectedUsers.getIdusers());
+                id.setProfileIdprofile(selectedUsers.getProfileIdprofile());
+                //entity = businessDelegatorView.getUsers(id);
             }
 
-            entity.setAccountIdaccount(FacesUtils.checkInteger(
-                    txtAccountIdaccount));
             entity.setCellphone(FacesUtils.checkString(txtCellphone));
             entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
@@ -392,6 +472,8 @@ public class UsersView implements Serializable {
             entity.setLastname(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
             entity.setPassword(FacesUtils.checkString(txtPassword));
+            entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
+            entity.setStatus(FacesUtils.checkInteger(txtStatus));
             entity.setUserid(FacesUtils.checkString(txtUserid));
             entity.setUsername(FacesUtils.checkString(txtUsername));
             businessDelegatorView.updateUsers(entity);
@@ -409,8 +491,10 @@ public class UsersView implements Serializable {
             selectedUsers = (UsersDTO) (evt.getComponent().getAttributes()
                                            .get("selectedUsers"));
 
-            Integer idusers = new Integer(selectedUsers.getIdusers());
-            entity = businessDelegatorView.getUsers(idusers);
+            UsersId id = new UsersId();
+            id.setIdusers(selectedUsers.getIdusers());
+            id.setProfileIdprofile(selectedUsers.getProfileIdprofile());
+            //entity = businessDelegatorView.getUsers(id);
             action_delete();
         } catch (Exception e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -421,8 +505,16 @@ public class UsersView implements Serializable {
 
     public String action_delete_master() {
         try {
-            Integer idusers = FacesUtils.checkInteger(txtIdusers);
-            entity = businessDelegatorView.getUsers(idusers);
+            UsersId id = new UsersId();
+            id.setIdusers((((txtIdusers.getValue()) == null) ||
+                (txtIdusers.getValue()).equals("")) ? null
+                                                    : FacesUtils.checkInteger(
+                    txtIdusers));
+            id.setProfileIdprofile((((txtProfileIdprofile.getValue()) == null) ||
+                (txtProfileIdprofile.getValue()).equals("")) ? null
+                                                             : FacesUtils.checkInteger(
+                    txtProfileIdprofile));
+            //entity = businessDelegatorView.getUsers(id);
             action_delete();
         } catch (Exception e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -454,8 +546,10 @@ public class UsersView implements Serializable {
             selectedUsers = (UsersDTO) (evt.getComponent().getAttributes()
                                            .get("selectedUsers"));
 
-            Integer idusers = new Integer(selectedUsers.getIdusers());
-            entity = businessDelegatorView.getUsers(idusers);
+            UsersId id = new UsersId();
+            id.setIdusers(selectedUsers.getIdusers());
+            id.setProfileIdprofile(selectedUsers.getProfileIdprofile());
+            //entity = businessDelegatorView.getUsers(id);
             businessDelegatorView.deleteUsers(entity);
             data.remove(selectedUsers);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
@@ -467,12 +561,12 @@ public class UsersView implements Serializable {
         return "";
     }
 
-    public String action_modifyWitDTO(Integer accountIdaccount,
-        String cellphone, Date created, String fixedphone, Integer idusers,
-        Date lastlogin, String lastname, String name, String password,
-        String userid, String username) throws Exception {
+    public String action_modifyWitDTO(Integer idusers,
+        Integer profileIdprofile, String cellphone, Date created,
+        String fixedphone, Date lastlogin, String lastname, String name,
+        String password, Float saldo, Integer status, String userid,
+        String username, Integer idprofile_Profile) throws Exception {
         try {
-            entity.setAccountIdaccount(FacesUtils.checkInteger(accountIdaccount));
             entity.setCellphone(FacesUtils.checkString(cellphone));
             entity.setCreated(FacesUtils.checkDate(created));
             entity.setFixedphone(FacesUtils.checkString(fixedphone));
@@ -480,6 +574,8 @@ public class UsersView implements Serializable {
             entity.setLastname(FacesUtils.checkString(lastname));
             entity.setName(FacesUtils.checkString(name));
             entity.setPassword(FacesUtils.checkString(password));
+            entity.setSaldo(FacesUtils.checkFloat(saldo));
+            entity.setStatus(FacesUtils.checkInteger(status));
             entity.setUserid(FacesUtils.checkString(userid));
             entity.setUsername(FacesUtils.checkString(username));
             businessDelegatorView.updateUsers(entity);
@@ -491,14 +587,6 @@ public class UsersView implements Serializable {
         }
 
         return "";
-    }
-
-    public InputText getTxtAccountIdaccount() {
-        return txtAccountIdaccount;
-    }
-
-    public void setTxtAccountIdaccount(InputText txtAccountIdaccount) {
-        this.txtAccountIdaccount = txtAccountIdaccount;
     }
 
     public InputText getTxtCellphone() {
@@ -541,6 +629,22 @@ public class UsersView implements Serializable {
         this.txtPassword = txtPassword;
     }
 
+    public InputText getTxtSaldo() {
+        return txtSaldo;
+    }
+
+    public void setTxtSaldo(InputText txtSaldo) {
+        this.txtSaldo = txtSaldo;
+    }
+
+    public InputText getTxtStatus() {
+        return txtStatus;
+    }
+
+    public void setTxtStatus(InputText txtStatus) {
+        this.txtStatus = txtStatus;
+    }
+
     public InputText getTxtUserid() {
         return txtUserid;
     }
@@ -555,6 +659,14 @@ public class UsersView implements Serializable {
 
     public void setTxtUsername(InputText txtUsername) {
         this.txtUsername = txtUsername;
+    }
+
+    public InputText getTxtIdprofile_Profile() {
+        return txtIdprofile_Profile;
+    }
+
+    public void setTxtIdprofile_Profile(InputText txtIdprofile_Profile) {
+        this.txtIdprofile_Profile = txtIdprofile_Profile;
     }
 
     public Calendar getTxtCreated() {
@@ -579,6 +691,14 @@ public class UsersView implements Serializable {
 
     public void setTxtIdusers(InputText txtIdusers) {
         this.txtIdusers = txtIdusers;
+    }
+
+    public InputText getTxtProfileIdprofile() {
+        return txtProfileIdprofile;
+    }
+
+    public void setTxtProfileIdprofile(InputText txtProfileIdprofile) {
+        this.txtProfileIdprofile = txtProfileIdprofile;
     }
 
     public List<UsersDTO> getData() {
