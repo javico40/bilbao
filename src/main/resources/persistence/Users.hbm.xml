@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Users" table="users" catalog="liderbs_virfit">
+    
+         <id name="idusers" type="java.lang.Integer">
+            <column name="idusers" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="profile" class="com.liderbs.modelo.Profile" update="false" insert="false" fetch="select">
+            <column name="profile_idprofile" not-null="true" />
+        </many-to-one>
+        <property name="username" type="java.lang.String">
+            <column name="username" length="45" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="password" length="45" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="45" />
+        </property>
+        <property name="lastname" type="java.lang.String">
+            <column name="lastname" length="45" />
+        </property>
+        <property name="userid" type="java.lang.String">
+            <column name="userid" length="45" />
+        </property>
+        <property name="fixedphone" type="java.lang.String">
+            <column name="fixedphone" length="45" />
+        </property>
+        <property name="cellphone" type="java.lang.String">
+            <column name="cellphone" length="45" />
+        </property>
+        <property name="created" type="java.util.Date">
+            <column name="created" length="19" />
+        </property>
+        <property name="lastlogin" type="java.util.Date">
+            <column name="lastlogin" length="19" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="status" />
+        </property>
+        <property name="saldo" type="java.lang.Float">
+            <column name="saldo" precision="12" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

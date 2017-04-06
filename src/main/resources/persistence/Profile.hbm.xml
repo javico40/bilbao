@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Profile" table="profile" catalog="liderbs_virfit">
+        <id name="idprofile" type="java.lang.Integer">
+            <column name="idprofile" />
+            <generator class="identity" />
+        </id>
+        <property name="profileName" type="java.lang.String">
+            <column name="profile_name" length="45" />
+        </property>
+        <property name="profileDescription" type="java.lang.String">
+            <column name="profile_description" length="65535" />
+        </property>
+        <set name="userses" table="users" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="profile_idprofile" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.Users" />
+        </set>
+        <set name="optionses" table="profile_has_options" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="profile_idprofile" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Options">
+                <column name="options_idoptions" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

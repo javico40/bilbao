@@ -1,0 +1,71 @@
+.flag {
+	width: 32px;
+	height: 32px;
+	background:url(flags.png) no-repeat
+}
+
+.flag.flag-pt {background-position: -32px 0}
+.flag.flag-es {background-position: 0 -32px}
+.flag.flag-en {background-position: -32px -32px}
+
+.flag-image{float:left;width:32px;height:25px;margin-right:10px;margin-top:-2px}
+.ui-selectonemenu .ui-selectonemenu-trigger{  width: 18px; padding: 0 0px}
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger{  width: 18px; padding: 0 0px}
+.ui-growl{  top: 90px; }
+.colored {
+background-color: #C0C0C0;
+color: #000000;
+}
+.red{
+background-color: #CC6633;
+color: #FFFFFF;
+}
+
+.yellow {
+background-color: #FFFF33;
+color: #000000;
+}
+
+.green {
+background-color: #006633;
+color: #FFFFFF;
+}
+
+.tablaRefefencias td:nth-child(1),.myTable th:nth-child(1) {
+   width: 400px;
+}
+
+.customDialog {
+	
+}
+
+.ui-dialog.customDialog .ui-dialog-titlebar {
+     display: none !important;
+}
+
+.noBorderGrid.ui-panelgrid>*>tr,
+.noBorderGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+.GOOD{
+background-color : green !important;
+}
+
+.SOSO{
+background-color : yellow !important;
+}
+
+.BAD{
+background-color : red !important;
+}
+
+.no-border {
+    border-style: hidden !important ; /* or none */
+}
+
+.noBorderGrid.ui-panelgrid>*>tr,
+.noBorderGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}  
+    
+
