@@ -69,6 +69,7 @@ public class OptionsLogic implements IOptionsLogic {
         log.debug("saving Options instance");
 
         try {
+        	
             if ((entity.getOptionsName() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getOptionsName(), 45) == false)) {
@@ -90,9 +91,6 @@ public class OptionsLogic implements IOptionsLogic {
                     "optionsUrl");
             }
 
-            if (getOptions(entity.getIdoptions()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             optionsDAO.save(entity);
 

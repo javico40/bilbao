@@ -23,7 +23,6 @@ public class UsersDTO implements Serializable {
     private Date created;
     private String fixedphone;
     private Integer idusers;
-    private Integer profileIdprofile;
     private Date lastlogin;
     private String lastname;
     private String name;
@@ -32,7 +31,6 @@ public class UsersDTO implements Serializable {
     private Integer status;
     private String userid;
     private String username;
-    private Integer idprofile_Profile;
 
     public String getCellphone() {
         return cellphone;
@@ -64,14 +62,6 @@ public class UsersDTO implements Serializable {
 
     public void setIdusers(Integer idusers) {
         this.idusers = idusers;
-    }
-
-    public Integer getProfileIdprofile() {
-        return profileIdprofile;
-    }
-
-    public void setProfileIdprofile(Integer profileIdprofile) {
-        this.profileIdprofile = profileIdprofile;
     }
 
     public Date getLastlogin() {
@@ -136,13 +126,5 @@ public class UsersDTO implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Integer getIdprofile_Profile() {
-        return idprofile_Profile;
-    }
-
-    public void setIdprofile_Profile(Integer idprofile_Profile) {
-        this.idprofile_Profile = idprofile_Profile;
     }
 }

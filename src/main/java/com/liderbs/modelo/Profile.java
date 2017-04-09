@@ -1,7 +1,8 @@
 package com.liderbs.modelo;
-// Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0
+// Generated 07-abr-2017 10:59:26 by Hibernate Tools 4.0.0
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,16 +15,20 @@ public class Profile  implements java.io.Serializable {
      private Integer idprofile;
      private String profileName;
      private String profileDescription;
-     private Set<Users> userses = new HashSet<Users>(0);
+     private Date profileCreated;
+     private String profileUserCreated;
+     private Set<Account> accounts = new HashSet<Account>(0);
      private Set<Options> optionses = new HashSet<Options>(0);
 
     public Profile() {
     }
 
-    public Profile(String profileName, String profileDescription, Set<Users> userses, Set<Options> optionses) {
+    public Profile(String profileName, String profileDescription, Date profileCreated, String profileUserCreated, Set<Account> accounts, Set<Options> optionses) {
        this.profileName = profileName;
        this.profileDescription = profileDescription;
-       this.userses = userses;
+       this.profileCreated = profileCreated;
+       this.profileUserCreated = profileUserCreated;
+       this.accounts = accounts;
        this.optionses = optionses;
     }
    
@@ -48,12 +53,26 @@ public class Profile  implements java.io.Serializable {
     public void setProfileDescription(String profileDescription) {
         this.profileDescription = profileDescription;
     }
-    public Set<Users> getUserses() {
-        return this.userses;
+    public Date getProfileCreated() {
+        return this.profileCreated;
     }
     
-    public void setUserses(Set<Users> userses) {
-        this.userses = userses;
+    public void setProfileCreated(Date profileCreated) {
+        this.profileCreated = profileCreated;
+    }
+    public String getProfileUserCreated() {
+        return this.profileUserCreated;
+    }
+    
+    public void setProfileUserCreated(String profileUserCreated) {
+        this.profileUserCreated = profileUserCreated;
+    }
+    public Set<Account> getAccounts() {
+        return this.accounts;
+    }
+    
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
     public Set<Options> getOptionses() {
         return this.optionses;

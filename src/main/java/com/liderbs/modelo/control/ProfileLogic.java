@@ -47,11 +47,11 @@ public class ProfileLogic implements IProfileLogic {
     private IProfileDAO profileDAO;
 
     /**
-    * DAO injected by Spring that manages Users entities
+    * DAO injected by Spring that manages Account entities
     *
     */
     @Autowired
-    private IUsersDAO usersDAO;
+    private IAccountDAO accountDAO;
 
     @Transactional(readOnly = true)
     public List<Profile> getProfile() throws Exception {
@@ -90,6 +90,13 @@ public class ProfileLogic implements IProfileLogic {
                     "profileName");
             }
 
+            if ((entity.getProfileUserCreated() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(
+                        entity.getProfileUserCreated(), 45) == false)) {
+                throw new ZMessManager().new NotValidFormatException(
+                    "profileUserCreated");
+            }
+
             if (getProfile(entity.getIdprofile()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
@@ -116,14 +123,14 @@ public class ProfileLogic implements IProfileLogic {
             throw new ZMessManager().new EmptyFieldException("idprofile");
         }
 
-        List<Users> userses = null;
+        List<Account> accounts = null;
 
         try {
-            userses = usersDAO.findByProperty("profile.idprofile",
+            accounts = accountDAO.findByProperty("profile.idprofile",
                     entity.getIdprofile());
 
-            if (Utilities.validationsList(userses) == true) {
-                throw new ZMessManager().new DeletingException("userses");
+            if (Utilities.validationsList(accounts) == true) {
+                throw new ZMessManager().new DeletingException("accounts");
             }
 
             profileDAO.delete(entity);
@@ -159,6 +166,13 @@ public class ProfileLogic implements IProfileLogic {
                     "profileName");
             }
 
+            if ((entity.getProfileUserCreated() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(
+                        entity.getProfileUserCreated(), 45) == false)) {
+                throw new ZMessManager().new NotValidFormatException(
+                    "profileUserCreated");
+            }
+
             profileDAO.update(entity);
 
             log.debug("update Profile successful");
@@ -180,10 +194,16 @@ public class ProfileLogic implements IProfileLogic {
                 ProfileDTO profileDTO2 = new ProfileDTO();
 
                 profileDTO2.setIdprofile(profileTmp.getIdprofile());
+                profileDTO2.setProfileCreated(profileTmp.getProfileCreated());
                 profileDTO2.setProfileDescription((profileTmp.getProfileDescription() != null)
                     ? profileTmp.getProfileDescription() : null);
                 profileDTO2.setProfileName((profileTmp.getProfileName() != null)
                     ? profileTmp.getProfileName() : null);
+                profileDTO2.setProfileUserCreated((profileTmp.getProfileUserCreated() != null)
+                    ? profileTmp.getProfileUserCreated() : null);
+                profileDTO2.setOptionses((profileTmp.getOptionses() != null)
+                        ? profileTmp.getOptionses() : null);
+                
                 profileDTO.add(profileDTO2);
             }
 

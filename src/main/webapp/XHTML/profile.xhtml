@@ -42,8 +42,15 @@
 							<p:inputText id="txtProfileDescription" disabled="true" binding="#{profileView.txtProfileDescription}"/>
 													<h:outputText id="msgProfileName" value=" ProfileName"/>
 							<p:inputText id="txtProfileName" disabled="true" binding="#{profileView.txtProfileName}"/>
+													<h:outputText id="msgProfileUserCreated" value=" ProfileUserCreated"/>
+							<p:inputText id="txtProfileUserCreated" disabled="true" binding="#{profileView.txtProfileUserCreated}"/>
 												
-										   </h:panelGrid>
+																				<h:outputText id="msgProfileCreated" value=" ProfileCreated"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{profileView.txtProfileCreated}" >
+								<p:ajax event="dateSelect" listener="#{profileView.listener_txtProfileCreated}"  />
+							</p:calendar>
+																	   </h:panelGrid>
 				</p:panel>
 	   			<p:panel id="panelBotones">
 					<div align="center">					

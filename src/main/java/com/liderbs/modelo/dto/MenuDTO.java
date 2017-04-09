@@ -2,12 +2,13 @@ package com.liderbs.modelo.dto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.liderbs.modelo.Options;
 import java.io.Serializable;
-
 import java.sql.*;
-
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -24,6 +25,8 @@ public class MenuDTO implements Serializable {
     private String icon;
     private Integer idMenu;
     private String path;
+    private List<Options> opciones;
+    private Set<Options> optionses = new HashSet<Options>(0);
 
     public String getCaption() {
         return caption;
@@ -64,4 +67,22 @@ public class MenuDTO implements Serializable {
     public void setPath(String path) {
         this.path = path;
     }
+
+	public List<Options> getOpciones() {
+		return opciones;
+	}
+
+	public void setOpciones(List<Options> opciones) {
+		this.opciones = opciones;
+	}
+
+	public Set<Options> getOptionses() {
+		return optionses;
+	}
+
+	public void setOptionses(Set<Options> optionses) {
+		this.optionses = optionses;
+	}
+    
+    
 }

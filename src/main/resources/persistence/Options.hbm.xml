@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0 -->
+<!-- Generated 07-abr-2017 10:59:26 by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
     <class name="com.liderbs.modelo.Options" table="options" catalog="liderbs_virfit">
         <id name="idoptions" type="java.lang.Integer">
@@ -17,7 +17,15 @@
         <property name="optionsStatus" type="java.lang.String">
             <column name="options_status" length="45" />
         </property>
-        <set name="profiles" table="profile_has_options" inverse="false" lazy="true" fetch="select">
+        <set name="menus" table="menu_has_options" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="options_idoptions" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Menu">
+                <column name="Menu_idMenu" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="profiles" table="profile_has_options" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="options_idoptions" not-null="true" />
             </key>

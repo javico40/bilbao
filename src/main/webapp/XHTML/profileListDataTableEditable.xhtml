@@ -82,8 +82,44 @@
 								</p:cellEditor>	
 							</p:column>
 						
-										
 											
+						<p:column filterBy="#{profile.profileUserCreated}" sortBy="#{profile.profileUserCreated}" 
+							headerText="profileUserCreated">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{profile.profileUserCreated}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{profile.profileUserCreated}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{profile.profileCreated}" sortBy="#{profile.profileCreated}" 
+							headerText="profileCreated">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{profile.profileCreated}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{profile.profileCreated}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{profileView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
 					<p:column headerText="Options" >
 						<p:rowEditor id="row"/>
 						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />

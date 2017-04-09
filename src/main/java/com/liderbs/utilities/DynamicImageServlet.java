@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.HttpRequestHandler;
 
 import com.liderbs.modelo.Users;
-import com.liderbs.modelo.UsersId;
 import com.liderbs.presentation.backingBeans.MenusView;
 import com.liderbs.presentation.businessDelegate.IBusinessDelegatorView;
 
@@ -60,7 +59,7 @@ public class DynamicImageServlet implements HttpRequestHandler {
 				}	
             }else{
             	
-            	Users usuario = businessDelegatorView.getUsers(new Long(id));
+            	Users usuario = businessDelegatorView.getUsers(new Integer(id));
             	
 				if(usuario!=null){
 				   //byte[] bytes =usuario.getLogo(); 

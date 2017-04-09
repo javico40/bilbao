@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -541,7 +542,7 @@ public class MenusView implements Serializable {
 	public Users getUsuarioapp() {
 		if(usuarioapp==null) {				
 			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.getProfile().getIdprofile());				
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
 		}
 		return usuarioapp;
 	}
@@ -575,40 +576,124 @@ public class MenusView implements Serializable {
     	
     	if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()&&dataapp==null) {
     		
-    		List<Menu> menusobject =new ArrayList<Menu>();
+    		List<Menu> menusobject = new ArrayList<Menu>();
     		
-    		dataapp=new ArrayList<MenuDTO>();
+    		dataapp = new ArrayList<MenuDTO>();
     		
     		  try {
     			
     			Users user = getUsuarioapp();
-    			List<Options>	opcroles = businessDelegatorView.findByCriteriaInOptions(new Object[]{"estado",false,1L,"=","roles",false,user.getProfile().getIdprofile(),"=","opciones.opcvarlan",true,"SEGURIDADJCI%"," LIKE ","opciones.opcdescripv",true,"%"+(busqueda!=null&&!busqueda.equals("")?busqueda.toUpperCase():"")+"%"," LIKE "} , null, null);
-    		     
-    			for (Options opcrole : opcroles) {
-    				/*
-    		    	 if(!menusobject.contains(opcrole.getOpciones().getMenus())){
+    			Set<Account> list = user.getAccounts();
+    			Integer idProfile = 0;
+    			
+    			
+    			 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+         		 	Account act = it.next();
+         	        
+         		 	//Si tiene cuenta activa
+         		 	if(act.getAccountStatus() == 1){
+         		 		if(act.getAccountDefault() == 1){
+         		 			idProfile = act.getProfile().getIdprofile();
+         		 		}
+         		 	}
+         	    }
+    			 
+    			Profile profile = businessDelegatorView.getProfile(idProfile);
+    			
+    			//Sacando las opciones del perfil
+    			
+    			
+    			Set<Options> opciones = profile.getOptionses();
+    			
+    			//Llenando el menu
+    			
+    			List<Options> opcList = new ArrayList<Options>();
+    			
+    			int found = 0;
+    			
+    			for (Iterator<Options> it = opciones.iterator(); it.hasNext(); ) {
+    					
+    				Options opt = it.next();
+    				Set<Menu> menuList = opt.getMenus();
+    				
+    				found = 0;
+    				
+    				for(Menu men: menusobject){
+    					 for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
+    						 Menu menu = im.next();
+    						 
+    						 if(men.getCaption().equalsIgnoreCase(menu.getCaption())){
+    							 found = 1; 
+    						 }
+    					 }
+    				}
+    				
+    				if(found == 0){
     		    		 
-    		    		     Menus menu = opcrole.getOpciones().getMenus();
-    		    		     List<Opciones> opciones=new ArrayList<Opciones>();
-    		    		     opciones.add(opcrole.getOpciones());
-    		    		     menu.setOpcioneses(new LinkedHashSet<Opciones>(opciones));
-    		    		     menusobject.add(menu);
+    		    		 	opcList.clear();
+    		    		 	
+    		    		     for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
+    		    		    	 Menu men = im.next();
+    		    		    	 opcList.add(opt);
+    		    		    	 men.setOptionses(new LinkedHashSet<Options>(opcList));
+    		    		    	 menusobject.add(men);
+    		    		     }
     		    		     
     					}else{
-    						for (Menus mens : menusobject) {						
-    							if(opcrole.getOpciones().getMenus().getMendescv().equals(mens.getMendescv().toString())){
-    								mens.getOpcioneses().add(opcrole.getOpciones());						
+    						
+    						opcList.clear();
+    						
+    						for (Menu mens : menusobject) {
+    							
+    							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
+    								
+    								Options opc = opit.next();
+    								
+    								if(!opt.getOptionsName().equals(opc.getOptionsName())){
+    									
+    									Set<Options> options = mens.getOptionses();
+    									options.add(opt);	
+        								mens.setOptionses(options);						
+        							}
     							}
-    						}
-    					}*/
+    							
+    						}//end for
+    					}
     			}
     		  } catch (Exception e) {	
-    			e.printStackTrace();
-    		}
+    			log.info("Error al generar opciones"+e.toString());
+    		  }//end try
+    		  
+    		  //Adding home
+    		  
+    		  MenuDTO home = new MenuDTO();
+    		  home.setCaption("Home");
+    		  home.setPath("inicio/initialMenu.xhtml");
+    		  home.setIcon("fa fa-gears"); 
+    		  dataapp.add(home);
+    		  
     		  for (Menu menus : menusobject) {
-    			  MenuDTO meDto=new MenuDTO();
+    			  
+    			  MenuDTO men = new MenuDTO();
+    			  
+    			  men.setCaption(menus.getCaption());
+    			  men.setDescription(menus.getDescription());
+    			  men.setIcon(menus.getIcon());
+    			  men.setIdMenu(men.getIdMenu());
+    			  men.setPath(menus.getPath());
+    			  
+    			  List<Options> opciones = new ArrayList<Options>();
+    			  
+    			  for (Iterator<Options> opc = menus.getOptionses().iterator(); opc.hasNext();) {
+    				  Options opt = opc.next();
+    				  opt.setOptionsUrl(menus.getDescription()+"/"+opt.getOptionsUrl());
+    				  opciones.add(opt);
+				  }
+    			  
     			  
     			  /*
+    			  MenuDTO meDto = new MenuDTO();
+    			 
     			  meDto.setMendescv(menus.getMendescv());
     			  meDto.setMenpath(menus.getMenpath());
     			  meDto.setMenuidn(menus.getMenuidn());
@@ -624,8 +709,12 @@ public class MenusView implements Serializable {
     			  
     			  meDto.setOpciones(opciones);
     			  */
-    			  dataapp.add(meDto);
+    			  
+    			  men.setOpciones(opciones);
+    			  
+    			  dataapp.add(men);
     		 } 
+    		  
     		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("menuseguridad_session", dataapp);
     	}    	
 		return dataapp;
@@ -660,7 +749,8 @@ public class MenusView implements Serializable {
 	 public String getUserimage() {
 			if(userimage==null){				
 	        	try{
-	        	  Users usuario=businessDelegatorView.getUsers(getUsuarioapp().getId());	        	
+	        		
+	        	  Users usuario=businessDelegatorView.getUsers(getUsuarioapp().getIdusers());	        	
 	        	  userimage=usuario.getUserid().toString();
 	        	
 	        	}catch(Exception e){        		

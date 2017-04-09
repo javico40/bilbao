@@ -18,11 +18,8 @@
           							<!-- Sidebar user panel -->
           							
           	<div class="user-panel">
-            <div class="pull-left image">
-            <h:graphicImage value="/images/dynamic/?id=#{menusView.userimage}"  styleClass="img-circle"/>
-            </div>
-            <div class="pull-left info">
-              <p>#{menusView.usuarioapp.usrnombre}</p>
+          	<div class="pull-left info">
+              <p>Bienvenido #{menusView.usuarioapp.name}</p>
 
               <a href="#"><i class="fa fa-circle text-success"></i> En Linea</a>
             </div>
@@ -36,11 +33,11 @@
              <ui:repeat id="menurepeat" value="#{menusView.dataapp}" var="menu">
 	            <li class="treeview">
 	              <a href="#">
-	                <i class="#{menu.menicon}"></i> <span>#{menu.mendescvjci}</span> <i class="fa fa-angle-left pull-right"></i>
+	                <i class="#{menu.icon}"></i> <span>#{menu.caption}</span> <i class="fa fa-angle-left pull-right"></i>
 	              </a>
 	              <ul class="treeview-menu">
 	                <ui:repeat value="#{menu.opciones}" var="opcion">  
-		                <li><a href="../#{menu.menpath}#{opcion.opcenlacev}" title="#{opcion.opcdescripv}"><i class="fa fa-circle-o"></i> #{opcion.opcdescripv}</a></li>		                
+		                <li><a href="../#{opcion.optionsUrl}" title="#{opcion.optionsName}"><i class="fa fa-circle-o"></i> #{opcion.optionsName}</a></li>		                
 	                </ui:repeat>  
 	              </ul>
 	            </li>

@@ -41,13 +41,6 @@
 										 <h:outputText value="#{users.idusers}"/>
 										 </p:column>
 			                    																									
-										<p:column filterBy="#{users.accountIdaccount}" sortBy="#{users.accountIdaccount}" >
-										 <f:facet name="header">
-										<h:outputText value="AccountIdaccount"/>
-										</f:facet>
-										 <h:outputText value="#{users.accountIdaccount}"/>
-										</p:column>   
-			                    									
 										<p:column filterBy="#{users.cellphone}" sortBy="#{users.cellphone}" >
 										 <f:facet name="header">
 										<h:outputText value="Cellphone"/>
@@ -95,6 +88,20 @@
 										<h:outputText value="Password"/>
 										</f:facet>
 										 <h:outputText value="#{users.password}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{users.saldo}" sortBy="#{users.saldo}" >
+										 <f:facet name="header">
+										<h:outputText value="Saldo"/>
+										</f:facet>
+										 <h:outputText value="#{users.saldo}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{users.status}" sortBy="#{users.status}" >
+										 <f:facet name="header">
+										<h:outputText value="Status"/>
+										</f:facet>
+										 <h:outputText value="#{users.status}"/>
 										</p:column>   
 			                    									
 										<p:column filterBy="#{users.userid}" sortBy="#{users.userid}" >
@@ -145,8 +152,6 @@
 									 <p:ajax update=":dialogUsers" listener="#{usersView.listener_txtId}"/>
 									 </p:inputText>	
 																											
-																		<h:outputText id="msgAccountIdaccount" value=" AccountIdaccount"/>
-									<p:inputText id="txtAccountIdaccount" disabled="true" binding="#{usersView.txtAccountIdaccount}"/>
 																		<h:outputText id="msgCellphone" value=" Cellphone"/>
 									<p:inputText id="txtCellphone" disabled="true" binding="#{usersView.txtCellphone}"/>
 																		<h:outputText id="msgFixedphone" value=" Fixedphone"/>
@@ -157,6 +162,10 @@
 									<p:inputText id="txtName" disabled="true" binding="#{usersView.txtName}"/>
 																		<h:outputText id="msgPassword" value=" Password"/>
 									<p:inputText id="txtPassword" disabled="true" binding="#{usersView.txtPassword}"/>
+																		<h:outputText id="msgSaldo" value=" Saldo"/>
+									<p:inputText id="txtSaldo" disabled="true" binding="#{usersView.txtSaldo}"/>
+																		<h:outputText id="msgStatus" value=" Status"/>
+									<p:inputText id="txtStatus" disabled="true" binding="#{usersView.txtStatus}"/>
 																		<h:outputText id="msgUserid" value=" Userid"/>
 									<p:inputText id="txtUserid" disabled="true" binding="#{usersView.txtUserid}"/>
 																		<h:outputText id="msgUsername" value=" Username"/>

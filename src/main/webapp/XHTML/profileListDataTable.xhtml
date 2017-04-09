@@ -41,6 +41,13 @@
 										 <h:outputText value="#{profile.idprofile}"/>
 										 </p:column>
 			                    																									
+										<p:column filterBy="#{profile.profileCreated}" sortBy="#{profile.profileCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="ProfileCreated"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileCreated}"/>
+										</p:column>   
+			                    									
 										<p:column filterBy="#{profile.profileDescription}" sortBy="#{profile.profileDescription}" >
 										 <f:facet name="header">
 										<h:outputText value="ProfileDescription"/>
@@ -53,6 +60,13 @@
 										<h:outputText value="ProfileName"/>
 										</f:facet>
 										 <h:outputText value="#{profile.profileName}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{profile.profileUserCreated}" sortBy="#{profile.profileUserCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="ProfileUserCreated"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileUserCreated}"/>
 										</p:column>   
 			                    			                    
 								<p:column headerText="Options">
@@ -93,8 +107,15 @@
 									<p:inputText id="txtProfileDescription" disabled="true" binding="#{profileView.txtProfileDescription}"/>
 																		<h:outputText id="msgProfileName" value=" ProfileName"/>
 									<p:inputText id="txtProfileName" disabled="true" binding="#{profileView.txtProfileName}"/>
+																		<h:outputText id="msgProfileUserCreated" value=" ProfileUserCreated"/>
+									<p:inputText id="txtProfileUserCreated" disabled="true" binding="#{profileView.txtProfileUserCreated}"/>
 																		
-																    </h:panelGrid>
+																													<h:outputText id="msgProfileCreated" value=" ProfileCreated"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{profileView.txtProfileCreated}" >
+										<p:ajax event="dateSelect" listener="#{profileView.listener_txtProfileCreated}" />
+										</p:calendar>
+																										    </h:panelGrid>
 							</p:panel>						   
 							<p:panel id="panelBotones">
 								<div align="center">					

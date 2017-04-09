@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -24,8 +27,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.stereotype.Component;
 
+import com.liderbs.modelo.Account;
 import com.liderbs.modelo.Users;
-import com.liderbs.modelo.UsersId;
 import com.liderbs.presentation.businessDelegate.IBusinessDelegatorView;
 
 @Scope("singleton")
@@ -41,17 +44,20 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
 		String username = authentication.getName();
         String password = (String) authentication.getCredentials();
         Object[] busqueda=new Object[8];
-        busqueda[0]="usrlogin";
+        busqueda[0]="username";
         busqueda[1]=true;
         busqueda[2]=username.toUpperCase();
         busqueda[3]="=";
-        busqueda[4]="estado";
+        busqueda[4]="status";
         busqueda[5]=false;
-        busqueda[6]=1L;
+        busqueda[6]=1;
         busqueda[7]="=";        
         
         try {
-			Users user =businessDelegatorView.findByCriteriaInUsers(busqueda,null,null).get(0);
+        	
+			Users user =businessDelegatorView.findByCriteriaInUsers(new Object[]{"username",true, username.toUpperCase(), "=","status",false, 1, "="},
+																	null,
+																	null).get(0);
 	
 			if(password==null||password.trim().equals("")){
 				throw new BadCredentialsException("Contraseña invalida");	
@@ -81,21 +87,55 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
 	             if (user.getPassword().equalsIgnoreCase(hash)!= true){
 	            	 throw new BadCredentialsException("Contraseña invalida");      
 	             } else {
+	            	 
 	            	 user.setLastlogin(new Date());
 	            	 //user.setNumentradas(user.getNumentradas()!=null?new Long(user.getNumentradas().intValue()+1):0L);
+	            	 
 	            	 businessDelegatorView.updateUsers(user);
 	            	 ArrayList<GrantedAuthority> x = new ArrayList<GrantedAuthority>();	
-	            	 GrantedAuthority g = new GrantedAuthorityImpl(user.getProfile().getProfileDescription());
-	 	        	 
-	            	 //se agregan los roles que tiene el usuario autrizado
-	 	        	 
-	            	 x.add(g);
 	            	 
-	            	 return new UsernamePasswordAuthenticationToken(user, hash, x);
-	             }
-	           
+	            	 
+	            	 Hibernate.initialize(user.getAccounts());
+	            	 Set<Account> list = user.getAccounts();
+	            	 
+	            	 
+	            	 /*
+	            	 for(Account act: list){
+	            		 Hibernate.initialize(act.getIdAccount());
+	            	 }*/
+	            	 
+	            	 if(list.size() == 0){
+	            		 throw new BadCredentialsException("Su usuario no tiene una cuenta asociada");     
+	            	 }else{
+	            		 
+	            		 String profileDescription = "";
+		            	 
+		            	 for (Iterator<Account> it = list.iterator(); it.hasNext(); ) {
+		            		 
+		            		 	Account act = it.next();
+		            	        
+		            		 	//Si tiene cuenta activa
+		            		 	if(act.getAccountStatus() == 1){
+		            		 		if(act.getAccountDefault() == 1){
+		            		 			Hibernate.initialize(act.getProfile());
+		            		 			profileDescription = act.getProfile().getProfileName();
+		            		 		}
+		            		 	}
+		            	    }
+		            	 
+		            	 GrantedAuthority g = new GrantedAuthorityImpl(profileDescription);
+		 	        	 
+		            	 //se agregan los roles que tiene el usuario autrizado
+		 	        	 
+		            	 x.add(g);
+		            	 
+		            	 return new UsernamePasswordAuthenticationToken(user, hash, x);
+		            	 
+	            	 }//end
+	             }//validador contraseña
             }//end if-else	        
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			throw new BadCredentialsException("Authentication Fail.");
 		}//end try-catch	
     } 

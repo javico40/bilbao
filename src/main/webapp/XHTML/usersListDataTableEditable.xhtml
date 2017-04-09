@@ -51,22 +51,6 @@
 					</p:column>
                     										
 											
-						<p:column filterBy="#{users.accountIdaccount}" sortBy="#{users.accountIdaccount}" 
-							headerText="accountIdaccount">
-							
-								<p:cellEditor>
-								
-								<f:facet name="output">
-									<h:outputText value="#{users.accountIdaccount}"/>
-								</f:facet>
-							
-								<f:facet name="input">
-									<p:inputText value="#{users.accountIdaccount}"/>
-								</f:facet>
-								</p:cellEditor>	
-							</p:column>
-						
-											
 						<p:column filterBy="#{users.cellphone}" sortBy="#{users.cellphone}" 
 							headerText="cellphone">
 							
@@ -142,6 +126,38 @@
 							
 								<f:facet name="input">
 									<p:inputText value="#{users.password}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{users.saldo}" sortBy="#{users.saldo}" 
+							headerText="saldo">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{users.saldo}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{users.saldo}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{users.status}" sortBy="#{users.status}" 
+							headerText="status">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{users.status}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{users.status}"/>
 								</f:facet>
 								</p:cellEditor>	
 							</p:column>

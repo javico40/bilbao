@@ -1,21 +1,22 @@
 package com.liderbs.presentation.businessDelegate;
 
-import com.liderbs.modelo.control.IMenuHasOptionsLogic;
-import com.liderbs.modelo.control.IMenuLogic;
+import com.liderbs.modelo.Account;
 import com.liderbs.modelo.Menu;
-import com.liderbs.modelo.MenuHasOptions;
-import com.liderbs.modelo.dto.MenuDTO;
-import com.liderbs.modelo.dto.MenuHasOptionsDTO;
 import com.liderbs.modelo.Options;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Users;
-import com.liderbs.modelo.UsersId;
+import com.liderbs.modelo.control.AccountLogic;
+import com.liderbs.modelo.control.IAccountLogic;
+import com.liderbs.modelo.control.IMenuLogic;
 import com.liderbs.modelo.control.IOptionsLogic;
 import com.liderbs.modelo.control.IProfileLogic;
 import com.liderbs.modelo.control.IUsersLogic;
+import com.liderbs.modelo.control.MenuLogic;
 import com.liderbs.modelo.control.OptionsLogic;
 import com.liderbs.modelo.control.ProfileLogic;
 import com.liderbs.modelo.control.UsersLogic;
+import com.liderbs.modelo.dto.AccountDTO;
+import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.UsersDTO;
@@ -84,18 +85,117 @@ import java.util.Set;
 @Scope("singleton")
 @Service("BusinessDelegatorView")
 public class BusinessDelegatorView implements IBusinessDelegatorView {
-	
     private static final Logger log = LoggerFactory.getLogger(BusinessDelegatorView.class);
+    @Autowired
+    private IAccountLogic accountLogic;
+    @Autowired
+    private IMenuLogic menuLogic;
     @Autowired
     private IOptionsLogic optionsLogic;
     @Autowired
     private IProfileLogic profileLogic;
     @Autowired
     private IUsersLogic usersLogic;
-    @Autowired
-    private IMenuLogic menuLogic;
-    @Autowired
-    private IMenuHasOptionsLogic menuHasOptionsLogic;
+
+    public List<Account> getAccount() throws Exception {
+        return accountLogic.getAccount();
+    }
+
+    public void saveAccount(Account entity) throws Exception {
+        accountLogic.saveAccount(entity);
+    }
+
+    public void deleteAccount(Account entity) throws Exception {
+        accountLogic.deleteAccount(entity);
+    }
+
+    public void updateAccount(Account entity) throws Exception {
+        accountLogic.updateAccount(entity);
+    }
+
+    public Account getAccount(Integer idAccount) throws Exception {
+        Account account = null;
+
+        try {
+            account = accountLogic.getAccount(idAccount);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return account;
+    }
+
+    public List<Account> findByCriteriaInAccount(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return accountLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Account> findPageAccount(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return accountLogic.findPageAccount(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberAccount() throws Exception {
+        return accountLogic.findTotalNumberAccount();
+    }
+
+    public List<AccountDTO> getDataAccount() throws Exception {
+        return accountLogic.getDataAccount();
+    }
+
+    public List<Menu> getMenu() throws Exception {
+        return menuLogic.getMenu();
+    }
+
+    public void saveMenu(Menu entity) throws Exception {
+        menuLogic.saveMenu(entity);
+    }
+
+    public void deleteMenu(Menu entity) throws Exception {
+        menuLogic.deleteMenu(entity);
+    }
+
+    public void updateMenu(Menu entity) throws Exception {
+        menuLogic.updateMenu(entity);
+    }
+
+    public Menu getMenu(Integer idMenu) throws Exception {
+        Menu menu = null;
+
+        try {
+            menu = menuLogic.getMenu(idMenu);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return menu;
+    }
+
+    public List<Menu> findByCriteriaInMenu(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return menuLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Menu> findPageMenu(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return menuLogic.findPageMenu(sortColumnName, sortAscending, startRow,
+            maxResults);
+    }
+
+    public Long findTotalNumberMenu() throws Exception {
+        return menuLogic.findTotalNumberMenu();
+    }
+
+    public List<MenuDTO> getDataMenu() throws Exception {
+        return menuLogic.getDataMenu();
+    }
 
     public List<Options> getOptions() throws Exception {
         return optionsLogic.getOptions();
@@ -213,11 +313,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         usersLogic.updateUsers(entity);
     }
 
-    public Users getUsers(Long id) throws Exception {
+    public Users getUsers(Integer idusers) throws Exception {
         Users users = null;
 
         try {
-            users = usersLogic.getUsers(id);
+            users = usersLogic.getUsers(idusers);
         } catch (Exception e) {
             throw e;
         }
@@ -246,117 +346,4 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<UsersDTO> getDataUsers() throws Exception {
         return usersLogic.getDataUsers();
     }
-    
-    public List<Menu> getMenu() throws Exception {
-        return menuLogic.getMenu();
-    }
-
-    public void saveMenu(Menu entity) throws Exception {
-        menuLogic.saveMenu(entity);
-    }
-
-    public void deleteMenu(Menu entity) throws Exception {
-        menuLogic.deleteMenu(entity);
-    }
-
-    public void updateMenu(Menu entity) throws Exception {
-        menuLogic.updateMenu(entity);
-    }
-
-    public Menu getMenu(Integer idMenu) throws Exception {
-        Menu menu = null;
-
-        try {
-            menu = menuLogic.getMenu(idMenu);
-        } catch (Exception e) {
-            throw e;
-        }
-
-        return menu;
-    }
-
-    public List<Menu> findByCriteriaInMenu(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        return menuLogic.findByCriteria(variables, variablesBetween,
-            variablesBetweenDates);
-    }
-
-    public List<Menu> findPageMenu(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        return menuLogic.findPageMenu(sortColumnName, sortAscending, startRow,
-            maxResults);
-    }
-
-    public Long findTotalNumberMenu() throws Exception {
-        return menuLogic.findTotalNumberMenu();
-    }
-
-    public List<MenuDTO> getDataMenu() throws Exception {
-        return menuLogic.getDataMenu();
-    }
-
-    public List<MenuHasOptions> getMenuHasOptions() throws Exception {
-        return menuHasOptionsLogic.getMenuHasOptions();
-    }
-
-    public void saveMenuHasOptions(MenuHasOptions entity)
-        throws Exception {
-        menuHasOptionsLogic.saveMenuHasOptions(entity);
-    }
-
-    public void deleteMenuHasOptions(MenuHasOptions entity)
-        throws Exception {
-        menuHasOptionsLogic.deleteMenuHasOptions(entity);
-    }
-
-    public void updateMenuHasOptions(MenuHasOptions entity)
-        throws Exception {
-        menuHasOptionsLogic.updateMenuHasOptions(entity);
-    }
-
-    public MenuHasOptions getMenuHasOptions(Long id)
-        throws Exception {
-        MenuHasOptions menuHasOptions = null;
-
-        try {
-            //menuHasOptions = menuHasOptionsLogic.getMenuHasOptions(id.getId());
-        } catch (Exception e) {
-            throw e;
-        }
-
-        return menuHasOptions;
-    }
-
-    public List<MenuHasOptions> findByCriteriaInMenuHasOptions(
-        Object[] variables, Object[] variablesBetween,
-        Object[] variablesBetweenDates) throws Exception {
-        return menuHasOptionsLogic.findByCriteria(variables, variablesBetween,
-            variablesBetweenDates);
-    }
-
-    public List<MenuHasOptions> findPageMenuHasOptions(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        return menuHasOptionsLogic.findPageMenuHasOptions(sortColumnName,
-            sortAscending, startRow, maxResults);
-    }
-
-    public Long findTotalNumberMenuHasOptions() throws Exception {
-        return menuHasOptionsLogic.findTotalNumberMenuHasOptions();
-    }
-
-    public List<MenuHasOptionsDTO> getDataMenuHasOptions()
-        throws Exception {
-        return menuHasOptionsLogic.getDataMenuHasOptions();
-    }
-
-	@Override
-	public MenuHasOptions getMenuHasOptions(MenuHasOptions id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-
 }

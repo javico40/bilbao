@@ -1,17 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-abr-2017 20:45:37 by Hibernate Tools 4.0.0 -->
+<!-- Generated 07-abr-2017 10:59:26 by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
     <class name="com.liderbs.modelo.Users" table="users" catalog="liderbs_virfit">
-    
-         <id name="idusers" type="java.lang.Integer">
+        <id name="idusers" type="java.lang.Integer">
             <column name="idusers" />
             <generator class="identity" />
         </id>
-        <many-to-one name="profile" class="com.liderbs.modelo.Profile" update="false" insert="false" fetch="select">
-            <column name="profile_idprofile" not-null="true" />
-        </many-to-one>
         <property name="username" type="java.lang.String">
             <column name="username" length="45" />
         </property>
@@ -45,5 +41,13 @@
         <property name="saldo" type="java.lang.Float">
             <column name="saldo" precision="12" scale="0" />
         </property>
+        <set name="accounts" table="users_has_account" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="users_idusers" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Account">
+                <column name="Account_idAccount" not-null="true" />
+            </many-to-many>
+        </set>
     </class>
 </hibernate-mapping>

@@ -46,13 +46,6 @@ public class MenuLogic implements IMenuLogic {
     @Autowired
     private IMenuDAO menuDAO;
 
-    /**
-    * DAO injected by Spring that manages MenuHasOptions entities
-    *
-    */
-    @Autowired
-    private IMenuHasOptionsDAO menuHasOptionsDAO;
-
     @Transactional(readOnly = true)
     public List<Menu> getMenu() throws Exception {
         log.debug("finding all Menu instances");
@@ -126,17 +119,7 @@ public class MenuLogic implements IMenuLogic {
             throw new ZMessManager().new EmptyFieldException("idMenu");
         }
 
-        List<MenuHasOptions> menuHasOptionses = null;
-
         try {
-            menuHasOptionses = menuHasOptionsDAO.findByProperty("menu.idMenu",
-                    entity.getIdMenu());
-
-            if (Utilities.validationsList(menuHasOptionses) == true) {
-                throw new ZMessManager().new DeletingException(
-                    "menuHasOptionses");
-            }
-
             menuDAO.delete(entity);
 
             log.debug("delete Menu successful");
@@ -198,6 +181,7 @@ public class MenuLogic implements IMenuLogic {
             List<MenuDTO> menuDTO = new ArrayList<MenuDTO>();
 
             for (Menu menuTmp : menu) {
+            	
                 MenuDTO menuDTO2 = new MenuDTO();
 
                 menuDTO2.setIdMenu(menuTmp.getIdMenu());
@@ -209,6 +193,8 @@ public class MenuLogic implements IMenuLogic {
                     ? menuTmp.getIcon() : null);
                 menuDTO2.setPath((menuTmp.getPath() != null)
                     ? menuTmp.getPath() : null);
+                menuDTO2.setOptionses((menuTmp.getOptionses() != null)
+                        ? menuTmp.getOptionses() : null);
                 menuDTO.add(menuDTO2);
             }
 

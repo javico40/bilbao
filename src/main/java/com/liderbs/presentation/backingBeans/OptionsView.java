@@ -118,26 +118,21 @@ public class OptionsView implements Serializable {
 
         if (txtOptionsName != null) {
             txtOptionsName.setValue(null);
-            txtOptionsName.setDisabled(true);
+            txtOptionsName.setDisabled(false);
         }
 
         if (txtOptionsStatus != null) {
             txtOptionsStatus.setValue(null);
-            txtOptionsStatus.setDisabled(true);
+            txtOptionsStatus.setDisabled(false);
         }
 
         if (txtOptionsUrl != null) {
             txtOptionsUrl.setValue(null);
-            txtOptionsUrl.setDisabled(true);
-        }
-
-        if (txtIdoptions != null) {
-            txtIdoptions.setValue(null);
-            txtIdoptions.setDisabled(false);
+            txtOptionsUrl.setDisabled(false);
         }
 
         if (btnSave != null) {
-            btnSave.setDisabled(true);
+            btnSave.setDisabled(false);
         }
 
         if (btnDelete != null) {
@@ -180,6 +175,7 @@ public class OptionsView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
+    	
         selectedOptions = (OptionsDTO) (evt.getComponent().getAttributes()
                                            .get("selectedOptions"));
         txtOptionsName.setValue(selectedOptions.getOptionsName());
@@ -188,8 +184,6 @@ public class OptionsView implements Serializable {
         txtOptionsStatus.setDisabled(false);
         txtOptionsUrl.setValue(selectedOptions.getOptionsUrl());
         txtOptionsUrl.setDisabled(false);
-        txtIdoptions.setValue(selectedOptions.getIdoptions());
-        txtIdoptions.setDisabled(true);
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -214,17 +208,17 @@ public class OptionsView implements Serializable {
 
     public String action_create() {
         try {
+        	
             entity = new Options();
-
-            Integer idoptions = FacesUtils.checkInteger(txtIdoptions);
-
-            entity.setIdoptions(idoptions);
             entity.setOptionsName(FacesUtils.checkString(txtOptionsName));
-            entity.setOptionsStatus(FacesUtils.checkString(txtOptionsStatus));
             entity.setOptionsUrl(FacesUtils.checkString(txtOptionsUrl));
+            entity.setOptionsStatus(FacesUtils.checkString(txtOptionsStatus));
+            
+            //entity.setMenus(FacesUtils.checkMenu(txtMenus));
             //entity.setProfiles(FacesUtils.checkProfile(txtProfiles));
+            
             businessDelegatorView.saveOptions(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+            FacesUtils.addInfoMessage("Opcion creada satisfactoriamente");
             action_clear();
         } catch (Exception e) {
             entity = null;
@@ -236,6 +230,7 @@ public class OptionsView implements Serializable {
 
     public String action_modify() {
         try {
+        	
             if (entity == null) {
                 Integer idoptions = new Integer(selectedOptions.getIdoptions());
                 entity = businessDelegatorView.getOptions(idoptions);
@@ -244,9 +239,10 @@ public class OptionsView implements Serializable {
             entity.setOptionsName(FacesUtils.checkString(txtOptionsName));
             entity.setOptionsStatus(FacesUtils.checkString(txtOptionsStatus));
             entity.setOptionsUrl(FacesUtils.checkString(txtOptionsUrl));
+            //entity.setMenus(FacesUtils.checkMenu(txtMenus));
             //entity.setProfiles(FacesUtils.checkProfile(txtProfiles));
             businessDelegatorView.updateOptions(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+            FacesUtils.addInfoMessage("Opcion modificada satisfactoriamente");
         } catch (Exception e) {
             data = null;
             FacesUtils.addErrorMessage(e.getMessage());

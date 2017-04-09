@@ -1,7 +1,6 @@
 package com.liderbs.modelo.control;
 
 import com.liderbs.modelo.Users;
-import com.liderbs.modelo.UsersId;
 import com.liderbs.modelo.dto.UsersDTO;
 
 import java.math.BigDecimal;
@@ -41,7 +40,7 @@ public interface IUsersLogic {
          * Load an existing Users entity
          *
          */
-    public Users getUsers(Long id) throws Exception;
+    public Users getUsers(Integer idusers) throws Exception;
 
     public List<Users> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)
