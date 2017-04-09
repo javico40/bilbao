@@ -47,6 +47,7 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class UsersView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsersView.class);
     private InputText txtCellphone;
@@ -169,62 +170,63 @@ public class UsersView implements Serializable {
     }
 
     public String action_clear() {
+    	
         entity = null;
         selectedUsers = null;
 
         if (txtCellphone != null) {
             txtCellphone.setValue(null);
-            txtCellphone.setDisabled(true);
+            txtCellphone.setDisabled(false);
         }
 
         if (txtFixedphone != null) {
             txtFixedphone.setValue(null);
-            txtFixedphone.setDisabled(true);
+            txtFixedphone.setDisabled(false);
         }
 
         if (txtLastname != null) {
             txtLastname.setValue(null);
-            txtLastname.setDisabled(true);
+            txtLastname.setDisabled(false);
         }
 
         if (txtName != null) {
             txtName.setValue(null);
-            txtName.setDisabled(true);
+            txtName.setDisabled(false);
         }
 
         if (txtPassword != null) {
             txtPassword.setValue(null);
-            txtPassword.setDisabled(true);
+            txtPassword.setDisabled(false);
         }
 
         if (txtSaldo != null) {
             txtSaldo.setValue(null);
-            txtSaldo.setDisabled(true);
+            txtSaldo.setDisabled(false);
         }
 
         if (txtStatus != null) {
             txtStatus.setValue(null);
-            txtStatus.setDisabled(true);
+            txtStatus.setDisabled(false);
         }
 
         if (txtUserid != null) {
             txtUserid.setValue(null);
-            txtUserid.setDisabled(true);
+            txtUserid.setDisabled(false);
         }
 
         if (txtUsername != null) {
             txtUsername.setValue(null);
-            txtUsername.setDisabled(true);
+            txtUsername.setDisabled(false);
         }
 
         if (txtCreated != null) {
             txtCreated.setValue(null);
-            txtCreated.setDisabled(true);
+            txtCreated.setDisabled(false);
         }
 
         if (txtLastlogin != null) {
             txtLastlogin.setValue(null);
-            txtLastlogin.setDisabled(true);
+            txtLastlogin.setDisabled(false);
         }
 
         if (txtIdusers != null) {
@@ -233,11 +235,11 @@ public class UsersView implements Serializable {
         }
 
         if (btnSave != null) {
-            btnSave.setDisabled(true);
+            btnSave.setDisabled(false);
         }
 
         if (btnDelete != null) {
-            btnDelete.setDisabled(true);
+            btnDelete.setDisabled(false);
         }
 
         return "";
@@ -368,12 +370,10 @@ public class UsersView implements Serializable {
         try {
             entity = new Users();
 
-            Integer idusers = FacesUtils.checkInteger(txtIdusers);
-
+            
             entity.setCellphone(FacesUtils.checkString(txtCellphone));
             entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
-            entity.setIdusers(idusers);
             entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
             entity.setLastname(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
@@ -384,7 +384,7 @@ public class UsersView implements Serializable {
             entity.setUsername(FacesUtils.checkString(txtUsername));
             //entity.setAccounts(FacesUtils.checkAccount(txtAccounts));
             businessDelegatorView.saveUsers(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+            FacesUtils.addInfoMessage("Usuario creado satisfactoriamente");
             action_clear();
         } catch (Exception e) {
             entity = null;
@@ -414,7 +414,7 @@ public class UsersView implements Serializable {
             entity.setUsername(FacesUtils.checkString(txtUsername));
             //entity.setAccounts(FacesUtils.checkAccount(txtAccounts));
             businessDelegatorView.updateUsers(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+            FacesUtils.addInfoMessage("Usuario modificado satisfactoriamente");
         } catch (Exception e) {
             data = null;
             FacesUtils.addErrorMessage(e.getMessage());

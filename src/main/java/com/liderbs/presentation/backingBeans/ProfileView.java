@@ -301,6 +301,8 @@ public class ProfileView implements Serializable {
             entity.setProfileDescription(FacesUtils.checkString(
                     txtProfileDescription));
             
+            businessDelegatorView.updateProfile(entity);
+            
             Set<Options> opciones = entity.getOptionses();   
             opciones.clear();
             

@@ -619,6 +619,7 @@ public class MenusView implements Serializable {
     				found = 0;
     				
     				for(Menu men: menusobject){
+    					
     					 for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
     						 Menu menu = im.next();
     						 
@@ -641,21 +642,29 @@ public class MenusView implements Serializable {
     		    		     
     					}else{
     						
-    						opcList.clear();
+    						
     						
     						for (Menu mens : menusobject) {
     							
+    							Set<Options> options = mens.getOptionses();
+    							opcList.clear();
+								
     							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
     								
-    								Options opc = opit.next();
+    								Options opc = new Options();
+    								opc = opit.next();
     								
     								if(!opt.getOptionsName().equals(opc.getOptionsName())){
-    									
-    									Set<Options> options = mens.getOptionses();
-    									options.add(opt);	
-        								mens.setOptionses(options);						
-        							}
+    									opcList.add(opt);
+    									//options.add(opt);	
+        							}//end if
+    							}//end for
+    							
+    							for(Options opc: opcList){
+    								options.add(opc);
     							}
+    							
+    							mens.setOptionses(options);
     							
     						}//end for
     					}
