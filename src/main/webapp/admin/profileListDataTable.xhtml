@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Virfit <small>Lider Business Group</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Opciones</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableProfile" header="Perfiles">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{profileView.data}" var="profile"
+								paginator="true" rows="5">
+										
+										<p:column filterBy="#{profile.profileName}" sortBy="#{profile.profileName}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileName}"/>
+										</p:column>
+										
+										<p:column filterBy="#{profile.profileDescription}" sortBy="#{profile.profileDescription}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileDescription}"/>
+										</p:column>
+			                    																									
+										<p:column filterBy="#{profile.profileCreated}" sortBy="#{profile.profileCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="Creado en"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileCreated}"/>
+										</p:column>   
+							
+										<p:column filterBy="#{profile.profileUserCreated}" sortBy="#{profile.profileUserCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="Creado por"/>
+										</f:facet>
+										 <h:outputText value="#{profile.profileUserCreated}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogProfile"
+										actionListener="#{profileView.action_edit}">
+										<f:attribute name="selectedProfile" value="#{profile}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{profileView.action_delete_datatable}"
+										onclick="if(!confirm('¿Esta seguro de eliminar este perfil?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedProfile" value="#{profile}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="Nuevo"
+									action="#{profileView.action_new()}" update=":dialogProfile" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogProfile" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{profileView.showDialog}" resizable="false"
+						modal="true" width="400">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelProfile" header="Profile">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+							    
+							    	<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+									
+									<h:outputText id="msgProfileName" value=" Nombre"/>
+									<p:inputText id="txtProfileName" binding="#{profileView.txtProfileName}"/>
+																	
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />								
+																											
+									<h:outputText id="msgProfileDescription" value=" Descripcion"/>
+									<p:inputText id="txtProfileDescription" binding="#{profileView.txtProfileDescription}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+									
+									<h:outputText id="msgOptionsList" value=" Opciones"/>
+									<p:selectCheckboxMenu id="opc" value="#{profileView.selectOpciones}" label="Opciones"
+								                              filter="true" filterMatchMode="startsWith" styleClass="form-control">
+								            <f:selectItems value="#{profileView.opciones}" />
+								     </p:selectCheckboxMenu>
+								     
+								     <h:outputText value="&#160;" />
+									 <h:outputText value="&#160;" />
+									 
+								 </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{profileView.btnSave}" value="Guardar" action="#{profileView.action_save()}" update=":dialogProfile :frm:panelDataTableProfile" />
+									<p:commandButton id="btnClear" value="Limpiar" action="#{profileView.action_clear()}" update=":dialogProfile" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{profileView.action_closeDialog()}" update=":dialogProfile" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+					
+					
+				</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
+				

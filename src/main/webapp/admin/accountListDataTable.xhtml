@@ -1,0 +1,164 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Virfit <small>Lider Business Group</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Opciones</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableAccount" header="Cuentas">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{accountView.data}" var="account"
+								paginator="true" rows="5">
+										
+										<p:column filterBy="#{account.idAccount}" sortBy="#{account.idAccount}" >
+										 <f:facet name="header">
+										<h:outputText value="Codigo"/>
+										</f:facet>
+										 <h:outputText value="#{account.idAccount}"/>
+										 </p:column>
+										 
+										 <p:column filterBy="#{account.accountName}" sortBy="#{account.accountName}" >
+										 <f:facet name="header">
+										<h:outputText value="Identificador"/>
+										</f:facet>
+										 <h:outputText value="#{account.accountName}"/>
+										</p:column>   
+										 
+										 <p:column filterBy="#{account.accountDescription}" sortBy="#{account.accountDescription}" >
+										 <f:facet name="header">
+										<h:outputText value="Descripcion"/>
+										</f:facet>
+										 <h:outputText value="#{account.accountDescription}"/>
+										</p:column> 
+										
+										<p:column filterBy="#{account.accountStatus}" sortBy="#{account.accountStatus}" >
+										 <f:facet name="header">
+										<h:outputText value="Estado"/>
+										</f:facet>
+										 <h:outputText value="#{account.accountStatus}"/>
+										</p:column> 
+			                    																									
+										<p:column sortBy="#{account.accountCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="Creada"/>
+										</f:facet>
+										 <h:outputText value="#{account.accountCreated}"/>
+										</p:column>   
+			                    									
+										  <p:column  sortBy="#{account.accountUserCreated}" >
+										 <f:facet name="header">
+										<h:outputText value="Creada por"/>
+										</f:facet>
+										 <h:outputText value="#{account.accountUserCreated}"/>
+										</p:column>
+			                    									
+										<p:column sortBy="#{account.idprofile_Profile}" >
+										 <f:facet name="header">
+										<h:outputText value="Perfil asociado"/>
+										</f:facet>
+										 <h:outputText value="#{account.idprofile_Profile}"/>
+										</p:column>   
+			                    									
+			                    
+								<p:column headerText="Opciones">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogAccount"
+										actionListener="#{accountView.action_edit}">
+										<f:attribute name="selectedAccount" value="#{account}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{accountView.action_delete_datatable}"
+										onclick="if(!confirm('¿Esta seguro de eliminar esta cuenta?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedAccount" value="#{account}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="Nueva"
+									action="#{accountView.action_new()}" update=":dialogAccount" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogAccount" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{accountView.showDialog}" resizable="false"
+						modal="true" width="400">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelAccount" header="Cuenta">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+							    
+							    	<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+							    
+							    	<h:outputText id="msgAccountName" value=" Identificador"/>
+									<p:inputText id="txtAccountName" binding="#{accountView.txtAccountName}"/>
+									
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+																										
+									<h:outputText id="msgAccountDescription" value=" Descripcion"/>
+									<p:inputText id="txtAccountDescription" binding="#{accountView.txtAccountDescription}"/>
+									
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
+									<h:outputText id="msgAccountStatus" value=" Estado"/>
+									<p:inputText id="txtAccountStatus" binding="#{accountView.txtAccountStatus}"/>
+									
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
+									<h:outputText id="msgIdprofile_Profile" value=" Perfil asociado"/>
+									<p:inputText id="txtIdprofile_Profile" binding="#{accountView.txtIdprofile_Profile}"/>
+																		
+								
+								</h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{accountView.btnSave}" value="Guardar" action="#{accountView.action_save()}" update=":dialogAccount :frm:panelDataTableAccount" />
+									<p:commandButton id="btnClear" value="Limpiar" action="#{accountView.action_clear()}" update=":dialogAccount" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{accountView.action_closeDialog()}" update=":dialogAccount" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+					
+				</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-abr-2017 11:54:12 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Account" table="account" catalog="liderbs_virfit">
+        <id name="idAccount" type="java.lang.Integer">
+            <column name="idAccount" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="profile" class="com.liderbs.modelo.Profile" lazy="false" fetch="select">
+            <column name="profile_idprofile" not-null="true" />
+        </many-to-one>
+        <property name="accountName" type="java.lang.String">
+            <column name="Account_name" length="45" />
+        </property>
+        <property name="accountDescription" type="java.lang.String">
+            <column name="Account_description" length="300" />
+        </property>
+        <property name="accountCreated" type="java.util.Date">
+            <column name="Account_created" length="19" />
+        </property>
+        <property name="accountStatus" type="java.lang.Integer">
+            <column name="Account_status" />
+        </property>
+        <property name="accountUserCreated" type="java.lang.String">
+            <column name="Account_user_created" length="45" />
+        </property>
+        <property name="accountDefault" type="java.lang.Integer">
+            <column name="Account_default" />
+        </property>
+        <set name="userses" table="users_has_account" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="Account_idAccount" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Users">
+                <column name="users_idusers" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
