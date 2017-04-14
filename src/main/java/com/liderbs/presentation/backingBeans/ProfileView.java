@@ -261,11 +261,9 @@ public class ProfileView implements Serializable {
         	
         	entity = new Profile();
         	entity.setProfileName(FacesUtils.checkString(txtProfileName));
-        	entity.setProfileDescription(FacesUtils.checkString(
-                    txtProfileDescription));  
-            entity.setProfileCreated(FacesUtils.checkDate(today));
-            entity.setProfileUserCreated(FacesUtils.checkString(
-                    user.getUsername()));
+        	entity.setProfileDescription(FacesUtils.checkString(txtProfileDescription));  
+            entity.setProfileCreated(today);
+            entity.setProfileUserCreated(user.getUsername());
             
             if(selectOpciones!=null && selectOpciones.length>0){
             	Set<Options> opciones = new HashSet();

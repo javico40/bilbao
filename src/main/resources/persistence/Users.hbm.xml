@@ -17,8 +17,8 @@
         <property name="name" type="java.lang.String">
             <column name="name" length="45" />
         </property>
-        <property name="lastname" type="java.lang.String">
-            <column name="lastname" length="45" />
+        <property name="email" type="java.lang.String">
+            <column name="email" length="45" />
         </property>
         <property name="userid" type="java.lang.String">
             <column name="userid" length="45" />

@@ -106,9 +106,7 @@ public class AccountLogic implements IAccountLogic {
                     "idprofile_Profile");
             }
 
-            if (getAccount(entity.getIdAccount()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+        
 
             accountDAO.save(entity);
 

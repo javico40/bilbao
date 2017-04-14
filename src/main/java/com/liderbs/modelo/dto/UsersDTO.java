@@ -24,7 +24,7 @@ public class UsersDTO implements Serializable {
     private String fixedphone;
     private Integer idusers;
     private Date lastlogin;
-    private String lastname;
+    private String email;
     private String name;
     private String password;
     private Float saldo;
@@ -72,15 +72,17 @@ public class UsersDTO implements Serializable {
         this.lastlogin = lastlogin;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
+   
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public String getEmail() {
+		return email;
+	}
 
-    public String getName() {
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
         return name;
     }
 

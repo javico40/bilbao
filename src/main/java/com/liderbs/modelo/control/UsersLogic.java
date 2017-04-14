@@ -69,23 +69,10 @@ public class UsersLogic implements IUsersLogic {
         log.debug("saving Users instance");
 
         try {
-            if ((entity.getCellphone() != null) &&
+        	
+            if ((entity.getEmail() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
-                        entity.getCellphone(), 45) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "cellphone");
-            }
-
-            if ((entity.getFixedphone() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getFixedphone(), 45) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "fixedphone");
-            }
-
-            if ((entity.getLastname() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getLastname(), 45) == false)) {
+                        entity.getEmail(), 45) == false)) {
                 throw new ZMessManager().new NotValidFormatException("lastname");
             }
 
@@ -100,27 +87,12 @@ public class UsersLogic implements IUsersLogic {
                 throw new ZMessManager().new NotValidFormatException("password");
             }
 
-            if ((entity.getSaldo() != null) &&
-                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
-                        entity.getSaldo(), 12, 0) == false)) {
-                throw new ZMessManager().new NotValidFormatException("saldo");
-            }
-
-            if ((entity.getUserid() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getUserid(),
-                        45) == false)) {
-                throw new ZMessManager().new NotValidFormatException("userid");
-            }
-
             if ((entity.getUsername() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getUsername(), 45) == false)) {
                 throw new ZMessManager().new NotValidFormatException("username");
             }
 
-            if (getUsers(entity.getIdusers()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             usersDAO.save(entity);
 
@@ -178,9 +150,9 @@ public class UsersLogic implements IUsersLogic {
                     "fixedphone");
             }
 
-            if ((entity.getLastname() != null) &&
+            if ((entity.getEmail() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
-                        entity.getLastname(), 45) == false)) {
+                        entity.getEmail(), 45) == false)) {
                 throw new ZMessManager().new NotValidFormatException("lastname");
             }
 
@@ -240,8 +212,8 @@ public class UsersLogic implements IUsersLogic {
                 usersDTO2.setFixedphone((usersTmp.getFixedphone() != null)
                     ? usersTmp.getFixedphone() : null);
                 usersDTO2.setLastlogin(usersTmp.getLastlogin());
-                usersDTO2.setLastname((usersTmp.getLastname() != null)
-                    ? usersTmp.getLastname() : null);
+                usersDTO2.setEmail((usersTmp.getEmail() != null)
+                    ? usersTmp.getEmail() : null);
                 usersDTO2.setName((usersTmp.getName() != null)
                     ? usersTmp.getName() : null);
                 usersDTO2.setPassword((usersTmp.getPassword() != null)

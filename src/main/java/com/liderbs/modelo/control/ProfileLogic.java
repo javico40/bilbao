@@ -97,10 +97,6 @@ public class ProfileLogic implements IProfileLogic {
                     "profileUserCreated");
             }
 
-            if (getProfile(entity.getIdprofile()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
             profileDAO.save(entity);
 
             log.debug("save Profile successful");

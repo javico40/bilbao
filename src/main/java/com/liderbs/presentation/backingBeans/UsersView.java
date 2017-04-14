@@ -97,7 +97,7 @@ public class UsersView implements Serializable {
                 txtLastname = new InputText();
             }
 
-            txtLastname.setValue(usersDTO.getLastname());
+            txtLastname.setValue(usersDTO.getEmail());
 
             if (txtName == null) {
                 txtName = new InputText();
@@ -293,7 +293,7 @@ public class UsersView implements Serializable {
             txtFixedphone.setDisabled(false);
             txtLastlogin.setValue(entity.getLastlogin());
             txtLastlogin.setDisabled(false);
-            txtLastname.setValue(entity.getLastname());
+            txtLastname.setValue(entity.getEmail());
             txtLastname.setDisabled(false);
             txtName.setValue(entity.getName());
             txtName.setDisabled(false);
@@ -328,7 +328,7 @@ public class UsersView implements Serializable {
         txtFixedphone.setDisabled(false);
         txtLastlogin.setValue(selectedUsers.getLastlogin());
         txtLastlogin.setDisabled(false);
-        txtLastname.setValue(selectedUsers.getLastname());
+        txtLastname.setValue(selectedUsers.getEmail());
         txtLastname.setDisabled(false);
         txtName.setValue(selectedUsers.getName());
         txtName.setDisabled(false);
@@ -375,7 +375,7 @@ public class UsersView implements Serializable {
             entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
             entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
-            entity.setLastname(FacesUtils.checkString(txtLastname));
+            entity.setEmail(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
             entity.setPassword(FacesUtils.checkString(txtPassword));
             entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
@@ -405,7 +405,7 @@ public class UsersView implements Serializable {
             entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
             entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
-            entity.setLastname(FacesUtils.checkString(txtLastname));
+            entity.setEmail(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
             entity.setPassword(FacesUtils.checkString(txtPassword));
             entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
@@ -495,7 +495,7 @@ public class UsersView implements Serializable {
             entity.setCreated(FacesUtils.checkDate(created));
             entity.setFixedphone(FacesUtils.checkString(fixedphone));
             entity.setLastlogin(FacesUtils.checkDate(lastlogin));
-            entity.setLastname(FacesUtils.checkString(lastname));
+            entity.setEmail(FacesUtils.checkString(lastname));
             entity.setName(FacesUtils.checkString(name));
             entity.setPassword(FacesUtils.checkString(password));
             entity.setSaldo(FacesUtils.checkFloat(saldo));

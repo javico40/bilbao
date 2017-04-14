@@ -47,6 +47,7 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class AccountView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(AccountView.class);
     private InputText txtAccountDescription;

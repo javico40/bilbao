@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,10 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
 	@Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
+		
 		String username = authentication.getName();
-        String password = (String) authentication.getCredentials();
+        String password = (String) authentication.getCredentials();  
+       
         Object[] busqueda=new Object[8];
         busqueda[0]="username";
         busqueda[1]=true;
