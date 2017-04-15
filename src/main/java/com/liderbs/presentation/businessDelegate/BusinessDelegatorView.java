@@ -1,14 +1,20 @@
 package com.liderbs.presentation.businessDelegate;
 
 import com.liderbs.modelo.Account;
+import com.liderbs.modelo.Autorization;
+import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Menu;
 import com.liderbs.modelo.Options;
+import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.control.AccountLogic;
 import com.liderbs.modelo.control.IAccountLogic;
+import com.liderbs.modelo.control.IAutorizationLogic;
+import com.liderbs.modelo.control.IAutorizationtypeLogic;
 import com.liderbs.modelo.control.IMenuLogic;
 import com.liderbs.modelo.control.IOptionsLogic;
+import com.liderbs.modelo.control.IPlaceLogic;
 import com.liderbs.modelo.control.IProfileLogic;
 import com.liderbs.modelo.control.IUsersLogic;
 import com.liderbs.modelo.control.MenuLogic;
@@ -16,8 +22,11 @@ import com.liderbs.modelo.control.OptionsLogic;
 import com.liderbs.modelo.control.ProfileLogic;
 import com.liderbs.modelo.control.UsersLogic;
 import com.liderbs.modelo.dto.AccountDTO;
+import com.liderbs.modelo.dto.AutorizationDTO;
+import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
+import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 
@@ -96,6 +105,13 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private IProfileLogic profileLogic;
     @Autowired
     private IUsersLogic usersLogic;
+    @Autowired
+    private IAutorizationLogic autorizationLogic;
+    @Autowired
+    private IAutorizationtypeLogic autorizationtypeLogic;
+    @Autowired
+    private IPlaceLogic placeLogic;
+
 
     public List<Account> getAccount() throws Exception {
         return accountLogic.getAccount();
@@ -345,5 +361,165 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<UsersDTO> getDataUsers() throws Exception {
         return usersLogic.getDataUsers();
+    }
+    
+    public List<Autorization> getAutorization() throws Exception {
+        return autorizationLogic.getAutorization();
+    }
+
+    public void saveAutorization(Autorization entity) throws Exception {
+        autorizationLogic.saveAutorization(entity);
+    }
+
+    public void deleteAutorization(Autorization entity)
+        throws Exception {
+        autorizationLogic.deleteAutorization(entity);
+    }
+
+    public void updateAutorization(Autorization entity)
+        throws Exception {
+        autorizationLogic.updateAutorization(entity);
+    }
+
+    public Autorization getAutorization(Integer idAutorization)
+        throws Exception {
+        Autorization autorization = null;
+
+        try {
+            autorization = autorizationLogic.getAutorization(idAutorization);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return autorization;
+    }
+
+    public List<Autorization> findByCriteriaInAutorization(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return autorizationLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Autorization> findPageAutorization(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return autorizationLogic.findPageAutorization(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberAutorization() throws Exception {
+        return autorizationLogic.findTotalNumberAutorization();
+    }
+
+    public List<AutorizationDTO> getDataAutorization()
+        throws Exception {
+        return autorizationLogic.getDataAutorization();
+    }
+
+    public List<Autorizationtype> getAutorizationtype()
+        throws Exception {
+        return autorizationtypeLogic.getAutorizationtype();
+    }
+
+    public void saveAutorizationtype(Autorizationtype entity)
+        throws Exception {
+        autorizationtypeLogic.saveAutorizationtype(entity);
+    }
+
+    public void deleteAutorizationtype(Autorizationtype entity)
+        throws Exception {
+        autorizationtypeLogic.deleteAutorizationtype(entity);
+    }
+
+    public void updateAutorizationtype(Autorizationtype entity)
+        throws Exception {
+        autorizationtypeLogic.updateAutorizationtype(entity);
+    }
+
+    public Autorizationtype getAutorizationtype(Integer idAutorizationtype)
+        throws Exception {
+        Autorizationtype autorizationtype = null;
+
+        try {
+            autorizationtype = autorizationtypeLogic.getAutorizationtype(idAutorizationtype);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return autorizationtype;
+    }
+
+    public List<Autorizationtype> findByCriteriaInAutorizationtype(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception {
+        return autorizationtypeLogic.findByCriteria(variables,
+            variablesBetween, variablesBetweenDates);
+    }
+
+    public List<Autorizationtype> findPageAutorizationtype(
+        String sortColumnName, boolean sortAscending, int startRow,
+        int maxResults) throws Exception {
+        return autorizationtypeLogic.findPageAutorizationtype(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberAutorizationtype() throws Exception {
+        return autorizationtypeLogic.findTotalNumberAutorizationtype();
+    }
+
+    public List<AutorizationtypeDTO> getDataAutorizationtype()
+        throws Exception {
+        return autorizationtypeLogic.getDataAutorizationtype();
+    }
+
+    public List<Place> getPlace() throws Exception {
+        return placeLogic.getPlace();
+    }
+
+    public void savePlace(Place entity) throws Exception {
+        placeLogic.savePlace(entity);
+    }
+
+    public void deletePlace(Place entity) throws Exception {
+        placeLogic.deletePlace(entity);
+    }
+
+    public void updatePlace(Place entity) throws Exception {
+        placeLogic.updatePlace(entity);
+    }
+
+    public Place getPlace(Integer idPlace) throws Exception {
+        Place place = null;
+
+        try {
+            place = placeLogic.getPlace(idPlace);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return place;
+    }
+
+    public List<Place> findByCriteriaInPlace(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return placeLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Place> findPagePlace(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return placeLogic.findPagePlace(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberPlace() throws Exception {
+        return placeLogic.findTotalNumberPlace();
+    }
+
+    public List<PlaceDTO> getDataPlace() throws Exception {
+        return placeLogic.getDataPlace();
     }
 }

@@ -50,11 +50,11 @@
 										 <h:outputText value="#{users.name}"/>
 										</p:column>   
 			                    		
-			                    		<p:column filterBy="#{users.lastname}" sortBy="#{users.lastname}" >
+			                    		<p:column filterBy="#{users.email}" sortBy="#{users.lastname}" >
 										 <f:facet name="header">
-										<h:outputText value="Apellidos"/>
+										<h:outputText value="Correo"/>
 										</f:facet>
-										 <h:outputText value="#{users.lastname}"/>
+										 <h:outputText value="#{users.email}"/>
 										</p:column>   
 			                    		
 			                    		<p:column filterBy="#{users.fixedphone}" sortBy="#{users.fixedphone}" >
@@ -152,7 +152,7 @@
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
 								    
-									<h:outputText id="msgLastname" value=" Apellidos"/>
+									<h:outputText id="msgLastname" value=" Correo"/>
 									<p:inputText id="txtLastname" binding="#{usersView.txtLastname}"/>
 									
 									<h:outputText value="&#160;" />

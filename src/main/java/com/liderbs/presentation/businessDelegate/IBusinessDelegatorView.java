@@ -1,8 +1,11 @@
 package com.liderbs.presentation.businessDelegate;
 
 import com.liderbs.modelo.Account;
+import com.liderbs.modelo.Autorization;
+import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Menu;
 import com.liderbs.modelo.Options;
+import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.control.AccountLogic;
@@ -16,8 +19,11 @@ import com.liderbs.modelo.control.OptionsLogic;
 import com.liderbs.modelo.control.ProfileLogic;
 import com.liderbs.modelo.control.UsersLogic;
 import com.liderbs.modelo.dto.AccountDTO;
+import com.liderbs.modelo.dto.AutorizationDTO;
+import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
+import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 
@@ -40,6 +46,7 @@ import java.util.Set;
 *
 */
 public interface IBusinessDelegatorView {
+	
     public List<Account> getAccount() throws Exception;
 
     public void saveAccount(Account entity) throws Exception;
@@ -149,4 +156,80 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberUsers() throws Exception;
 
     public List<UsersDTO> getDataUsers() throws Exception;
+    
+    public List<Autorization> getAutorization() throws Exception;
+
+    public void saveAutorization(Autorization entity) throws Exception;
+
+    public void deleteAutorization(Autorization entity)
+        throws Exception;
+
+    public void updateAutorization(Autorization entity)
+        throws Exception;
+
+    public Autorization getAutorization(Integer idAutorization)
+        throws Exception;
+
+    public List<Autorization> findByCriteriaInAutorization(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Autorization> findPageAutorization(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberAutorization() throws Exception;
+
+    public List<AutorizationDTO> getDataAutorization()
+        throws Exception;
+
+    public List<Autorizationtype> getAutorizationtype()
+        throws Exception;
+
+    public void saveAutorizationtype(Autorizationtype entity)
+        throws Exception;
+
+    public void deleteAutorizationtype(Autorizationtype entity)
+        throws Exception;
+
+    public void updateAutorizationtype(Autorizationtype entity)
+        throws Exception;
+
+    public Autorizationtype getAutorizationtype(Integer idAutorizationtype)
+        throws Exception;
+
+    public List<Autorizationtype> findByCriteriaInAutorizationtype(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<Autorizationtype> findPageAutorizationtype(
+        String sortColumnName, boolean sortAscending, int startRow,
+        int maxResults) throws Exception;
+
+    public Long findTotalNumberAutorizationtype() throws Exception;
+
+    public List<AutorizationtypeDTO> getDataAutorizationtype()
+        throws Exception;
+
+    public List<Place> getPlace() throws Exception;
+
+    public void savePlace(Place entity) throws Exception;
+
+    public void deletePlace(Place entity) throws Exception;
+
+    public void updatePlace(Place entity) throws Exception;
+
+    public Place getPlace(Integer idPlace) throws Exception;
+
+    public List<Place> findByCriteriaInPlace(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Place> findPagePlace(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberPlace() throws Exception;
+
+    public List<PlaceDTO> getDataPlace() throws Exception;
 }
