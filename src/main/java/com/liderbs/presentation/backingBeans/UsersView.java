@@ -72,6 +72,9 @@ public class UsersView implements Serializable {
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    
+    //Perfil virfit
+    private InputText namesProfile;
 
     public UsersView() {
         super();
@@ -685,4 +688,14 @@ public class UsersView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public InputText getNamesProfile() {
+		return namesProfile;
+	}
+
+	public void setNamesProfile(InputText namesProfile) {
+		this.namesProfile = namesProfile;
+	}
+    
+    
 }

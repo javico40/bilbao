@@ -28,7 +28,66 @@
 
 					<!-- Main content -->
 					<section class="content">
-					
+					<h:form id="form">
+						<p:steps activeIndex="0" styleClass="custom" readonly="false">
+    							<p:menuitem value="Completar el perfil" url="#"/>
+    							<p:menuitem value="Perfil por verificar" url="#"/>
+    							<p:menuitem value="Perfil Aprobado" url="#"/>
+    							<p:menuitem value="Cuenta Activa" url="#"/>
+						</p:steps>
+
+						<br/>
+						<p:tabView>
+							<p:tab title="Mi Perfil Virfit">
+								<p:panel id="panelPersonalData" header="Datos Personales">
+						
+								</p:panel>
+								<br/>
+								<p:panel id="panelProfesionalData" header="Datos profesionales">
+						
+								</p:panel>
+								<br/>
+								<p:panel id="panelAcademicFormation" header="Formacion Academica">
+						
+								</p:panel>
+								<br/>
+								<p:panel id="panelProfesionalExperience" header="Experiencia profesional">
+						
+								</p:panel>
+							</p:tab>
+							<p:tab title="Datos personales">
+								<p:panel header="Ingrese sus datos personales">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textNames" value=" NOMBRES" /></p:column>
+											<p:column><p:inputText id="txtNames" binding="#{usersView.namesProfile}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textLastNames" value=" APELLIDOS" /></p:column>
+											<p:column></p:column>
+										</p:row>
+										<p:row>
+											<p:column></p:column>
+											<p:column></p:column>
+										</p:row>
+										<p:row>
+											<p:column></p:column>
+											<p:column></p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Datos profesionales">
+							
+							</p:tab>
+							<p:tab title="Formacion Academica">
+							
+							</p:tab>
+							<p:tab title="Experiencia profesional">
+							
+							</p:tab>
+						</p:tabView>
+					</h:form>
 		  			</section>
 				</div>
 				<!-- /.content-wrapper -->
