@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14-abr-2017 19:41:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Autorization" table="autorization" catalog="liderbs_virfit">
+        <id name="idAutorization" type="java.lang.Integer">
+            <column name="idAutorization" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="autorizationtype" class="com.liderbs.modelo.Autorizationtype" fetch="select">
+            <column name="Autorizationtype_idAutorizationtype" not-null="true" />
+        </many-to-one>
+        <many-to-one name="place" class="com.liderbs.modelo.Place" fetch="select">
+            <column name="Place_idPlace" not-null="true" />
+        </many-to-one>
+        <property name="autorizationDate" type="java.util.Date">
+            <column name="Autorization_date" length="19" />
+        </property>
+        <property name="autorizationStatus" type="java.lang.Integer">
+            <column name="Autorization_status" />
+        </property>
+        <property name="usersIdusers" type="java.lang.Integer">
+            <column name="users_idusers" not-null="true" />
+        </property>
+        <property name="autorizationCreator" type="java.lang.Integer">
+            <column name="Autorization_creator" />
+        </property>
+    </class>
+</hibernate-mapping>

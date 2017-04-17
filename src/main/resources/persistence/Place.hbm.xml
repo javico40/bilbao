@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14-abr-2017 19:41:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Place" table="place" catalog="liderbs_virfit">
+        <id name="idPlace" type="java.lang.Integer">
+            <column name="idPlace" />
+            <generator class="identity" />
+        </id>
+        <property name="placeName" type="java.lang.String">
+            <column name="Place_name" length="45" />
+        </property>
+        <property name="placeAddress" type="java.lang.String">
+            <column name="Place_address" length="45" />
+        </property>
+        <property name="placePhone" type="java.lang.String">
+            <column name="Place_phone" length="45" />
+        </property>
+        <property name="placePhoneAlt" type="java.lang.String">
+            <column name="Place_phone_alt" length="45" />
+        </property>
+        <property name="placeCreated" type="java.util.Date">
+            <column name="Place_created" length="19" />
+        </property>
+        <property name="placeStatus" type="java.lang.Integer">
+            <column name="Place_status" />
+        </property>
+        <property name="placeOwner" type="java.lang.Integer">
+            <column name="Place_owner" />
+        </property>
+        <property name="placeIsVzone" type="java.lang.Integer">
+            <column name="Place_is_vzone" />
+        </property>
+        <set name="autorizations" table="autorization" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Place_idPlace" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.Autorization" />
+        </set>
+    </class>
+</hibernate-mapping>
