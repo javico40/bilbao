@@ -11,6 +11,21 @@
         <mapping resource="persistence/Options.hbm.xml" />
         <mapping resource="persistence/Profile.hbm.xml" />
         <mapping resource="persistence/Users.hbm.xml" />
+        <mapping resource="persistence/Courses.hbm.xml" />
+        <mapping resource="persistence/Vprofile.hbm.xml" />
+        <mapping resource="persistence/Identification.hbm.xml" />
+        <mapping resource="persistence/Trainer.hbm.xml" />
+        <mapping resource="persistence/Job.hbm.xml" />
+        <mapping resource="persistence/Pais.hbm.xml" />
+        <mapping resource="persistence/Experience.hbm.xml" />
+        <mapping resource="persistence/Academiclevel.hbm.xml" />
+        <mapping resource="persistence/Estado.hbm.xml" />
+        <mapping resource="persistence/Place.hbm.xml" />
+        <mapping resource="persistence/Autorization.hbm.xml" />
+        <mapping resource="persistence/Autorizationtype.hbm.xml" />   
+        <mapping resource="persistence/Category.hbm.xml" />
+        <mapping resource="persistence/Level.hbm.xml" />
+        <mapping resource="persistence/UsuariosCategorias.hbm.xml" />
         
     </session-factory>
 </hibernate-configuration>

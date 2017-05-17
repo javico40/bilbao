@@ -28,6 +28,12 @@ public class PlaceDTO implements Serializable {
     private String placePhone;
     private String placePhoneAlt;
     private Integer placeStatus;
+    private Integer accountID;
+    private String fiscalID;
+    private Integer country;
+    private Integer province;
+    private String city;
+    private String owner_name;
 
     public Integer getIdPlace() {
         return idPlace;
@@ -100,4 +106,56 @@ public class PlaceDTO implements Serializable {
     public void setPlaceStatus(Integer placeStatus) {
         this.placeStatus = placeStatus;
     }
+
+	public Integer getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(Integer accountID) {
+		this.accountID = accountID;
+	}
+
+	public String getFiscalID() {
+		return fiscalID;
+	}
+
+	public void setFiscalID(String fiscalID) {
+		this.fiscalID = fiscalID;
+	}
+
+	public Integer getCountry() {
+		return country;
+	}
+
+	public void setCountry(Integer country) {
+		this.country = country;
+	}
+
+	public Integer getProvince() {
+		return province;
+	}
+
+	public void setProvince(Integer province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getOwner_name() {
+		return owner_name;
+	}
+
+	public void setOwner_name(String owner_name) {
+		this.owner_name = owner_name;
+	}
+	
+	
+    
+    
 }

@@ -3,6 +3,7 @@ package com.liderbs.presentation.backingBeans;
 import com.liderbs.exceptions.*;
 
 import com.liderbs.modelo.*;
+import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
 
 import com.liderbs.presentation.businessDelegate.*;
@@ -12,7 +13,7 @@ import com.liderbs.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -47,8 +49,11 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class PlaceView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(PlaceView.class);
+    
+    private InputText txtPlaceNit;
     private InputText txtPlaceAddress;
     private InputText txtPlaceIsVzone;
     private InputText txtPlaceName;
@@ -65,12 +70,89 @@ public class PlaceView implements Serializable {
     private List<PlaceDTO> data;
     private PlaceDTO selectedPlace;
     private Place entity;
+    private SelectOneMenu selectPais;
+    private List<SelectItem> listPaises;
+    private boolean lockDepto = true;
+    private SelectOneMenu selectDepto;
+    private List<SelectItem> listDeptos;
+    private InputText txtCiudad;
+    private InputText txtAssocAct;
+    private InputText txtAssocActOwner;
+    private Integer assocAct;
+    
+    
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
     public PlaceView() {
         super();
+    }
+    
+    public void buscarAssocAct(){
+    	
+    	try{
+    		
+    	if(FacesUtils.checkString(txtAssocAct) == null){
+    		FacesUtils.addErrorMessage("Escriba una cuenta asociada valida");
+    	}else{
+    		
+    		String accountName = FacesUtils.checkString(txtAssocAct);
+    		
+    		List<Account> list = businessDelegatorView.findByCriteriaInAccount(new Object[]{"accountName",false, accountName, "="},
+					   null,
+					   null);	
+
+    		if(list.size() == 0){
+    			FacesUtils.addErrorMessage("No se encontraron cuentas asociadas al identificador ingresado");
+    			txtAssocActOwner.setValue("");
+    		}else{
+    			
+    			String accountDesc= "";
+    			
+    			for(Account act:list){
+    				assocAct = act.getIdAccount();
+    				accountDesc = act.getAccountDescription();
+    			}
+    			
+    			txtAssocActOwner.setValue(accountDesc);
+    			
+    		}	
+    	}
+    	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    }
+    
+    public void buscarDepto(){
+    	if(FacesUtils.checkLong(selectPais) != null){
+    		
+    	this.listDeptos = new ArrayList<SelectItem>();	
+    	
+    	try{
+    		long idPais = FacesUtils.checkLong(selectPais);
+    		
+    		this.listDeptos.clear();
+    		
+    		List<Estado> list = businessDelegatorView.findByCriteriaInEstado(new Object[]{"pais.idpais",false, idPais, "="},
+    																		 null,
+    																		 null);
+    		
+    		if(list.size() > 0){
+    			
+    			for(Estado estado:list){
+    				this.listDeptos.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    			}
+    			
+    			setLockDepto(false);
+    			
+    		}
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    	}
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -153,42 +235,42 @@ public class PlaceView implements Serializable {
 
         if (txtPlaceAddress != null) {
             txtPlaceAddress.setValue(null);
-            txtPlaceAddress.setDisabled(true);
+            txtPlaceAddress.setDisabled(false);
         }
 
         if (txtPlaceIsVzone != null) {
             txtPlaceIsVzone.setValue(null);
-            txtPlaceIsVzone.setDisabled(true);
+            txtPlaceIsVzone.setDisabled(false);
         }
 
         if (txtPlaceName != null) {
             txtPlaceName.setValue(null);
-            txtPlaceName.setDisabled(true);
+            txtPlaceName.setDisabled(false);
         }
 
         if (txtPlaceOwner != null) {
             txtPlaceOwner.setValue(null);
-            txtPlaceOwner.setDisabled(true);
+            txtPlaceOwner.setDisabled(false);
         }
 
         if (txtPlacePhone != null) {
             txtPlacePhone.setValue(null);
-            txtPlacePhone.setDisabled(true);
+            txtPlacePhone.setDisabled(false);
         }
 
         if (txtPlacePhoneAlt != null) {
             txtPlacePhoneAlt.setValue(null);
-            txtPlacePhoneAlt.setDisabled(true);
+            txtPlacePhoneAlt.setDisabled(false);
         }
 
         if (txtPlaceStatus != null) {
             txtPlaceStatus.setValue(null);
-            txtPlaceStatus.setDisabled(true);
+            txtPlaceStatus.setDisabled(false);
         }
 
         if (txtPlaceCreated != null) {
             txtPlaceCreated.setValue(null);
-            txtPlaceCreated.setDisabled(true);
+            txtPlaceCreated.setDisabled(false);
         }
 
         if (txtIdPlace != null) {
@@ -197,7 +279,7 @@ public class PlaceView implements Serializable {
         }
 
         if (btnSave != null) {
-            btnSave.setDisabled(true);
+            btnSave.setDisabled(false);
         }
 
         if (btnDelete != null) {
@@ -304,24 +386,35 @@ public class PlaceView implements Serializable {
 
         return "";
     }
+    
+    public void validarDepto(){
+    	
+    }
 
     public String action_create() {
         try {
+        	
             entity = new Place();
 
-            Integer idPlace = FacesUtils.checkInteger(txtIdPlace);
-
-            entity.setIdPlace(idPlace);
-            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
-            entity.setPlaceCreated(FacesUtils.checkDate(txtPlaceCreated));
-            entity.setPlaceIsVzone(FacesUtils.checkInteger(txtPlaceIsVzone));
+            Date today = new Date();
+            
+            entity.setAccountID(assocAct);
+            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
             entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
-            entity.setPlaceOwner(FacesUtils.checkInteger(txtPlaceOwner));
+            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+            entity.setCountry(FacesUtils.checkInteger(selectPais));
+            //entity.setProvince(FacesUtils.checkInteger(selectDepto));
+            entity.setProvince(1722);
+            entity.setCity(FacesUtils.checkString(txtCiudad));
+            entity.setPlaceIsVzone(0);
             entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
-            entity.setPlaceStatus(FacesUtils.checkInteger(txtPlaceStatus));
+            entity.setPlaceOwner(assocAct);
+            entity.setPlaceCreated(today);
+            entity.setPlaceStatus(2);
             businessDelegatorView.savePlace(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+            
+            FacesUtils.addInfoMessage("Centro deportivo registrado satisfactoriamente");
             action_clear();
         } catch (Exception e) {
             entity = null;
@@ -591,4 +684,98 @@ public class PlaceView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public InputText getTxtPlaceNit() {
+		return txtPlaceNit;
+	}
+
+	public void setTxtPlaceNit(InputText txtPlaceNit) {
+		this.txtPlaceNit = txtPlaceNit;
+	}
+
+	public SelectOneMenu getSelectPais() {
+		return selectPais;
+	}
+
+	public void setSelectPais(SelectOneMenu selectPais) {
+		this.selectPais = selectPais;
+	}
+
+	public List<SelectItem> getListPaises() {
+		
+		if(this.listPaises == null){
+			
+			try{
+			
+			this.listPaises = new ArrayList<SelectItem>();
+			
+			List<PaisDTO> list = businessDelegatorView.getDataPais();
+			
+			for(PaisDTO pais: list){
+				this.listPaises.add(new SelectItem(pais.getIdpais(), pais.getPaisnombre()));
+			}
+			
+			
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+			
+		}
+		
+		return listPaises;
+	}
+
+	public void setListPaises(List<SelectItem> listPaises) {
+		this.listPaises = listPaises;
+	}
+
+	public boolean isLockDepto() {
+		return lockDepto;
+	}
+
+	public void setLockDepto(boolean lockDepto) {
+		this.lockDepto = lockDepto;
+	}
+
+	public SelectOneMenu getSelectDepto() {
+		return selectDepto;
+	}
+
+	public void setSelectDepto(SelectOneMenu selectDepto) {
+		this.selectDepto = selectDepto;
+	}
+
+	public List<SelectItem> getListDeptos() {
+		return listDeptos;
+	}
+
+	public void setListDeptos(List<SelectItem> listDeptos) {
+		this.listDeptos = listDeptos;
+	}
+
+	public InputText getTxtCiudad() {
+		return txtCiudad;
+	}
+
+	public void setTxtCiudad(InputText txtCiudad) {
+		this.txtCiudad = txtCiudad;
+	}
+
+	public InputText getTxtAssocAct() {
+		return txtAssocAct;
+	}
+
+	public void setTxtAssocAct(InputText txtAssocAct) {
+		this.txtAssocAct = txtAssocAct;
+	}
+
+	public InputText getTxtAssocActOwner() {
+		return txtAssocActOwner;
+	}
+
+	public void setTxtAssocActOwner(InputText txtAssocActOwner) {
+		this.txtAssocActOwner = txtAssocActOwner;
+	}
+    
+    
 }

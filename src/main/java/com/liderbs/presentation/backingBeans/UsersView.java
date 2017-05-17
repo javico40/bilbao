@@ -3,6 +3,7 @@ package com.liderbs.presentation.backingBeans;
 import com.liderbs.exceptions.*;
 
 import com.liderbs.modelo.*;
+import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 
 import com.liderbs.presentation.businessDelegate.*;
@@ -12,14 +13,16 @@ import com.liderbs.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 import java.text.DateFormat;
@@ -37,6 +40,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -52,8 +56,6 @@ public class UsersView implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(UsersView.class);
     private InputText txtCellphone;
     private InputText txtFixedphone;
-    private InputText txtLastname;
-    private InputText txtName;
     private InputText txtPassword;
     private InputText txtSaldo;
     private InputText txtStatus;
@@ -75,9 +77,142 @@ public class UsersView implements Serializable {
     
     //Perfil virfit
     private InputText namesProfile;
+    
+    //Personal data
+    private InputText txtName;
+    private InputText txtLastname;
+    private SelectOneMenu selectIdentificacion;
+    private InputText txtNumeroIdentificacion;
+    private InputText txtNacionalidad;
+    private Date txtFechaNacimiento;
+    private SelectOneMenu selectPais;
+    private List<SelectItem> listPaises;
+    private boolean lockDepto = true;
+    private SelectOneMenu selectDepto;
+    private List<SelectItem> listDeptos;
+    private InputText txtCiudad;
+    private InputText txtDireccion;
+    
+    //Profesional data
+    private SelectOneMenu selectTipoEntrenador;
+    private InputTextarea txtDescripcionPerfil;
+    
+   //Academic data
+    private SelectOneMenu selectNivelEstudio;
+    private InputText txtAreaEstudio;
+    private InputText txtCertificacion;
+    private InputTextarea txtCertificacionDesc;
+    
+    //Profesional profile
+    private InputTextarea txtProfesionalProfile;
+    
+    //Profesional Experience
+    private InputText txtEmpresa;
+    private SelectOneMenu selectPaisExp;
+    private List<SelectItem> listPaisesExp;
+    private SelectOneMenu selectDeptoExp;
+    private List<SelectItem> listDeptosExp;
+    private InputText txtCiudadExp;
+    private boolean lockDeptoExp = true;
+    private InputText txtCargo;
+    private Date txtPeriodoInicio;
+    private Date txtPeriodoFin;
+    private InputTextarea txtFuncionCargo;
+    
 
     public UsersView() {
         super();
+    }
+    
+    public void addStaff(){
+    	
+    }
+    
+    public void savePersonalData(){
+    	 	
+    }
+    
+    public void saveDatosProf(){
+	 	
+    }
+    
+    public void saveAcademic(){
+	 	
+    }
+    
+    public void saveCertificacion(){
+	 	
+    }
+    
+    public void saveProfProfile(){
+	 	
+    }
+    
+    public void saveProfExp(){
+	 	
+    }
+    
+    
+    
+    public void buscarDeptoExp(){
+    	
+    	if(FacesUtils.checkLong(selectPaisExp) != null){
+    		
+    	this.listDeptosExp = new ArrayList<SelectItem>();	
+    	
+    	try{
+    		long idPais = FacesUtils.checkLong(selectPaisExp);
+    		
+    		this.listDeptosExp.clear();
+    		
+    		List<Estado> list = businessDelegatorView.findByCriteriaInEstado(new Object[]{"pais.idpais",false, idPais, "="},
+    																		 null,
+    																		 null);
+    		
+    		if(list.size() > 0){
+    			
+    			for(Estado estado:list){
+    				this.listDeptosExp.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    			}
+    			
+    			setLockDeptoExp(false);
+    			
+    		}
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    	}
+    }
+    
+    public void buscarDepto(){
+    	if(FacesUtils.checkLong(selectPais) != null){
+    		
+    	this.listDeptos = new ArrayList<SelectItem>();	
+    	
+    	try{
+    		long idPais = FacesUtils.checkLong(selectPais);
+    		
+    		this.listDeptos.clear();
+    		
+    		List<Estado> list = businessDelegatorView.findByCriteriaInEstado(new Object[]{"pais.idpais",false, idPais, "="},
+    																		 null,
+    																		 null);
+    		
+    		if(list.size() > 0){
+    			
+    			for(Estado estado:list){
+    				this.listDeptos.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    			}
+    			
+    			setLockDepto(false);
+    			
+    		}
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    	}
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -321,32 +456,43 @@ public class UsersView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
+    	
         selectedUsers = (UsersDTO) (evt.getComponent().getAttributes()
                                        .get("selectedUsers"));
-        txtCellphone.setValue(selectedUsers.getCellphone());
-        txtCellphone.setDisabled(false);
-        txtCreated.setValue(selectedUsers.getCreated());
-        txtCreated.setDisabled(false);
-        txtFixedphone.setValue(selectedUsers.getFixedphone());
-        txtFixedphone.setDisabled(false);
-        txtLastlogin.setValue(selectedUsers.getLastlogin());
-        txtLastlogin.setDisabled(false);
-        txtLastname.setValue(selectedUsers.getEmail());
-        txtLastname.setDisabled(false);
-        txtName.setValue(selectedUsers.getName());
-        txtName.setDisabled(false);
-        txtPassword.setValue(selectedUsers.getPassword());
-        txtPassword.setDisabled(false);
-        txtSaldo.setValue(selectedUsers.getSaldo());
-        txtSaldo.setDisabled(false);
-        txtStatus.setValue(selectedUsers.getStatus());
-        txtStatus.setDisabled(false);
-        txtUserid.setValue(selectedUsers.getUserid());
-        txtUserid.setDisabled(false);
-        txtUsername.setValue(selectedUsers.getUsername());
-        txtUsername.setDisabled(false);
-        txtIdusers.setValue(selectedUsers.getIdusers());
-        txtIdusers.setDisabled(true);
+        
+        if (txtCellphone != null) {
+        	txtCellphone.setValue(selectedUsers.getCellphone());
+        	txtCellphone.setDisabled(false);
+        }
+        
+        if (txtFixedphone != null) {
+        	txtFixedphone.setValue(selectedUsers.getFixedphone());
+            txtFixedphone.setDisabled(false);
+        }
+        
+        if (txtLastname != null) {
+        	if(selectedUsers.getEmail() != null){
+        		txtLastname.setValue(selectedUsers.getEmail().toUpperCase());
+                txtLastname.setDisabled(false);
+        	}
+        }
+        
+        if (txtName != null) {
+        	txtName.setValue(selectedUsers.getName());
+            txtName.setDisabled(false);
+        }
+        
+        if (txtPassword != null) {
+        	txtPassword.setValue(selectedUsers.getPassword());
+            txtPassword.setDisabled(false);
+        }
+        
+        if (txtUsername != null) {
+        	txtUsername.setValue(selectedUsers.getUsername().toUpperCase());
+            txtUsername.setDisabled(false);
+        }
+        
+        
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -371,11 +517,13 @@ public class UsersView implements Serializable {
 
     public String action_create() {
         try {
+        	
+        	Date today = new Date();
+        	
             entity = new Users();
 
-            
             entity.setCellphone(FacesUtils.checkString(txtCellphone));
-            entity.setCreated(FacesUtils.checkDate(txtCreated));
+            entity.setCreated(today);
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
             entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
             entity.setEmail(FacesUtils.checkString(txtLastname));
@@ -384,7 +532,8 @@ public class UsersView implements Serializable {
             entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
             entity.setStatus(FacesUtils.checkInteger(txtStatus));
             entity.setUserid(FacesUtils.checkString(txtUserid));
-            entity.setUsername(FacesUtils.checkString(txtUsername));
+            entity.setUsername(FacesUtils.checkString(txtUsername).toUpperCase());
+            
             //entity.setAccounts(FacesUtils.checkAccount(txtAccounts));
             businessDelegatorView.saveUsers(entity);
             FacesUtils.addInfoMessage("Usuario creado satisfactoriamente");
@@ -405,17 +554,14 @@ public class UsersView implements Serializable {
             }
 
             entity.setCellphone(FacesUtils.checkString(txtCellphone));
-            entity.setCreated(FacesUtils.checkDate(txtCreated));
             entity.setFixedphone(FacesUtils.checkString(txtFixedphone));
-            entity.setLastlogin(FacesUtils.checkDate(txtLastlogin));
             entity.setEmail(FacesUtils.checkString(txtLastname));
             entity.setName(FacesUtils.checkString(txtName));
             entity.setPassword(FacesUtils.checkString(txtPassword));
             entity.setSaldo(FacesUtils.checkFloat(txtSaldo));
             entity.setStatus(FacesUtils.checkInteger(txtStatus));
-            entity.setUserid(FacesUtils.checkString(txtUserid));
-            entity.setUsername(FacesUtils.checkString(txtUsername));
-            //entity.setAccounts(FacesUtils.checkAccount(txtAccounts));
+            entity.setUsername(FacesUtils.checkString(txtUsername).toUpperCase());
+            
             businessDelegatorView.updateUsers(entity);
             FacesUtils.addInfoMessage("Usuario modificado satisfactoriamente");
         } catch (Exception e) {
@@ -500,7 +646,8 @@ public class UsersView implements Serializable {
             entity.setLastlogin(FacesUtils.checkDate(lastlogin));
             entity.setEmail(FacesUtils.checkString(lastname));
             entity.setName(FacesUtils.checkString(name));
-            entity.setPassword(FacesUtils.checkString(password));
+            String hash = texMD5(FacesUtils.checkString(password));
+            entity.setPassword(hash);
             entity.setSaldo(FacesUtils.checkFloat(saldo));
             entity.setStatus(FacesUtils.checkInteger(status));
             entity.setUserid(FacesUtils.checkString(userid));
@@ -515,6 +662,30 @@ public class UsersView implements Serializable {
 
         return "";
     }
+    
+	public String texMD5(String cadena) {
+		String hash=cadena;
+       	 byte[] defaultBytes =cadena.getBytes();	        	
+       	 MessageDigest algorithm;
+		try {
+			algorithm = MessageDigest.getInstance("MD5");		
+			algorithm.reset();
+			algorithm.update(defaultBytes);
+			byte messageDigest[] = algorithm.digest();	        		            
+			StringBuffer hexString = new StringBuffer();
+			for (int i=0;i<messageDigest.length;i++) {
+				 int val = 0xff &  messageDigest[i];
+				  if (val < 16)
+                     hexString.append("0");
+                 hexString.append(Integer.toHexString(val));
+                 //hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+			}	        			        			
+			hash=hexString+"";	
+		return hash;
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}	
+	}
 
     public InputText getTxtCellphone() {
         return txtCellphone;
@@ -696,6 +867,281 @@ public class UsersView implements Serializable {
 	public void setNamesProfile(InputText namesProfile) {
 		this.namesProfile = namesProfile;
 	}
+
+	public SelectOneMenu getSelectIdentificacion() {
+		return selectIdentificacion;
+	}
+
+	public void setSelectIdentificacion(SelectOneMenu selectIdentificacion) {
+		this.selectIdentificacion = selectIdentificacion;
+	}
+
+	public InputText getTxtNumeroIdentificacion() {
+		return txtNumeroIdentificacion;
+	}
+
+	public void setTxtNumeroIdentificacion(InputText txtNumeroIdentificacion) {
+		this.txtNumeroIdentificacion = txtNumeroIdentificacion;
+	}
+
+	public InputText getTxtNacionalidad() {
+		return txtNacionalidad;
+	}
+
+	public void setTxtNacionalidad(InputText txtNacionalidad) {
+		this.txtNacionalidad = txtNacionalidad;
+	}
+
+	public Date getTxtFechaNacimiento() {
+		return txtFechaNacimiento;
+	}
+
+	public void setTxtFechaNacimiento(Date txtFechaNacimiento) {
+		this.txtFechaNacimiento = txtFechaNacimiento;
+	}
+
+	public SelectOneMenu getSelectPais() {
+		return selectPais;
+	}
+
+	public void setSelectPais(SelectOneMenu selectPais) {
+		this.selectPais = selectPais;
+	}
+
+	public SelectOneMenu getSelectDepto() {
+		return selectDepto;
+	}
+
+	public void setSelectDepto(SelectOneMenu selectDepto) {
+		this.selectDepto = selectDepto;
+	}
+
+
+	public InputText getTxtDireccion() {
+		return txtDireccion;
+	}
+
+	public void setTxtDireccion(InputText txtDireccion) {
+		this.txtDireccion = txtDireccion;
+	}
+
+	public SelectOneMenu getSelectTipoEntrenador() {
+		return selectTipoEntrenador;
+	}
+
+	public void setSelectTipoEntrenador(SelectOneMenu selectTipoEntrenador) {
+		this.selectTipoEntrenador = selectTipoEntrenador;
+	}
+
+	public InputTextarea getTxtDescripcionPerfil() {
+		return txtDescripcionPerfil;
+	}
+
+	public void setTxtDescripcionPerfil(InputTextarea txtDescripcionPerfil) {
+		this.txtDescripcionPerfil = txtDescripcionPerfil;
+	}
+
+	public SelectOneMenu getSelectNivelEstudio() {
+		return selectNivelEstudio;
+	}
+
+	public void setSelectNivelEstudio(SelectOneMenu selectNivelEstudio) {
+		this.selectNivelEstudio = selectNivelEstudio;
+	}
+
+	public InputText getTxtAreaEstudio() {
+		return txtAreaEstudio;
+	}
+
+	public void setTxtAreaEstudio(InputText txtAreaEstudio) {
+		this.txtAreaEstudio = txtAreaEstudio;
+	}
+
+	public InputText getTxtCertificacion() {
+		return txtCertificacion;
+	}
+
+	public void setTxtCertificacion(InputText txtCertificacion) {
+		this.txtCertificacion = txtCertificacion;
+	}
+
+	public InputTextarea getTxtCertificacionDesc() {
+		return txtCertificacionDesc;
+	}
+
+	public void setTxtCertificacionDesc(InputTextarea txtCertificacionDesc) {
+		this.txtCertificacionDesc = txtCertificacionDesc;
+	}
+
+	public InputTextarea getTxtProfesionalProfile() {
+		return txtProfesionalProfile;
+	}
+
+	public void setTxtProfesionalProfile(InputTextarea txtProfesionalProfile) {
+		this.txtProfesionalProfile = txtProfesionalProfile;
+	}
+
+	public InputText getTxtEmpresa() {
+		return txtEmpresa;
+	}
+
+	public void setTxtEmpresa(InputText txtEmpresa) {
+		this.txtEmpresa = txtEmpresa;
+	}
+
+	public SelectOneMenu getSelectPaisExp() {
+		return selectPaisExp;
+	}
+
+	public void setSelectPaisExp(SelectOneMenu selectPaisExp) {
+		this.selectPaisExp = selectPaisExp;
+	}
+
+	public SelectOneMenu getSelectDeptoExp() {
+		return selectDeptoExp;
+	}
+
+	public void setSelectDeptoExp(SelectOneMenu selectDeptoExp) {
+		this.selectDeptoExp = selectDeptoExp;
+	}
+
+	public InputText getTxtCiudadExp() {
+		return txtCiudadExp;
+	}
+
+	public void setTxtCiudadExp(InputText txtCiudadExp) {
+		this.txtCiudadExp = txtCiudadExp;
+	}
+
+	public InputText getTxtCargo() {
+		return txtCargo;
+	}
+
+	public void setTxtCargo(InputText txtCargo) {
+		this.txtCargo = txtCargo;
+	}
+
+	public Date getTxtPeriodoInicio() {
+		return txtPeriodoInicio;
+	}
+
+	public void setTxtPeriodoInicio(Date txtPeriodoInicio) {
+		this.txtPeriodoInicio = txtPeriodoInicio;
+	}
+
+	public Date getTxtPeriodoFin() {
+		return txtPeriodoFin;
+	}
+
+	public void setTxtPeriodoFin(Date txtPeriodoFin) {
+		this.txtPeriodoFin = txtPeriodoFin;
+	}
+
+	public InputTextarea getTxtFuncionCargo() {
+		return txtFuncionCargo;
+	}
+
+	public void setTxtFuncionCargo(InputTextarea txtFuncionCargo) {
+		this.txtFuncionCargo = txtFuncionCargo;
+	}
+
+	public List<SelectItem> getListPaises() {
+		
+		if(this.listPaises == null){
+			
+			try{
+			
+			this.listPaises = new ArrayList<SelectItem>();
+			
+			List<PaisDTO> list = businessDelegatorView.getDataPais();
+			
+			for(PaisDTO pais: list){
+				this.listPaises.add(new SelectItem(pais.getIdpais(), pais.getPaisnombre()));
+			}
+			
+			
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+			
+		}
+		
+		return listPaises;
+	}
+
+	public void setListPaises(List<SelectItem> listPaises) {
+		this.listPaises = listPaises;
+	}
+
+	public List<SelectItem> getListDeptos() {
+		return listDeptos;
+	}
+
+	public void setListDeptos(List<SelectItem> listDeptos) {
+		this.listDeptos = listDeptos;
+	}
+
+	public InputText getTxtCiudad() {
+		return txtCiudad;
+	}
+
+	public void setTxtCiudad(InputText txtCiudad) {
+		this.txtCiudad = txtCiudad;
+	}
+
+	public boolean isLockDepto() {
+		return lockDepto;
+	}
+
+	public void setLockDepto(boolean lockDepto) {
+		this.lockDepto = lockDepto;
+	}
+
+	public List<SelectItem> getListPaisesExp() {
+		
+		if(this.listPaisesExp == null){
+			
+			try{
+			
+			this.listPaisesExp = new ArrayList<SelectItem>();
+			
+			List<PaisDTO> list = businessDelegatorView.getDataPais();
+			
+			for(PaisDTO pais: list){
+				this.listPaisesExp.add(new SelectItem(pais.getIdpais(), pais.getPaisnombre()));
+			}
+			
+			
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+			
+		}
+		
+		return listPaisesExp;
+	}
+
+	public void setListPaisesExp(List<SelectItem> listPaisesExp) {
+		this.listPaisesExp = listPaisesExp;
+	}
+
+	public List<SelectItem> getListDeptosExp() {
+		return listDeptosExp;
+	}
+
+	public void setListDeptosExp(List<SelectItem> listDeptosExp) {
+		this.listDeptosExp = listDeptosExp;
+	}
+
+	public boolean isLockDeptoExp() {
+		return lockDeptoExp;
+	}
+
+	public void setLockDeptoExp(boolean lockDeptoExp) {
+		this.lockDeptoExp = lockDeptoExp;
+	}
+	
+	
     
     
 }

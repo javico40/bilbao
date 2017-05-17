@@ -26,8 +26,31 @@ public class AutorizationDTO implements Serializable {
     private Integer usersIdusers;
     private Integer idAutorizationtype_Autorizationtype;
     private Integer idPlace_Place;
+    private String trainerName;
+    private Integer trainerAge;
+    private String trainerCategory;
+    private String place;
+    
+    public AutorizationDTO(){
+    	
+    }
 
-    public Integer getAutorizationCreator() {
+    public AutorizationDTO(Integer idAutorization, Integer usersIdusers, Integer autorizationStatus,
+			Integer autorizationCreator, Date autorizationDate, String trainerName, Integer trainerAge,
+			String trainerCategory, String place) {
+		super();
+		this.idAutorization = idAutorization;
+		this.usersIdusers = usersIdusers;
+		this.autorizationStatus = autorizationStatus;
+		this.autorizationCreator = autorizationCreator;
+		this.autorizationDate = autorizationDate;
+		this.trainerName = trainerName;
+		this.trainerAge = trainerAge;
+		this.trainerCategory = trainerCategory;
+		this.place = place;
+	}
+
+	public Integer getAutorizationCreator() {
         return autorizationCreator;
     }
 
@@ -83,4 +106,38 @@ public class AutorizationDTO implements Serializable {
     public void setIdPlace_Place(Integer idPlace_Place) {
         this.idPlace_Place = idPlace_Place;
     }
+
+	public String getTrainerName() {
+		return trainerName;
+	}
+
+	public void setTrainerName(String trainerName) {
+		this.trainerName = trainerName;
+	}
+
+	public Integer getTrainerAge() {
+		return trainerAge;
+	}
+
+	public void setTrainerAge(Integer trainerAge) {
+		this.trainerAge = trainerAge;
+	}
+
+	public String getTrainerCategory() {
+		return trainerCategory;
+	}
+
+	public void setTrainerCategory(String trainerCategory) {
+		this.trainerCategory = trainerCategory;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+    
+    
 }

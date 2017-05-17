@@ -600,24 +600,28 @@ public class MenusView implements Serializable {
     			 
     			Profile profile = businessDelegatorView.getProfile(idProfile);
     			
-    			//Sacando las opciones del perfil
-    			
+    			//Sacando las opciones a las que tiene acceso el perfil
     			
     			Set<Options> opciones = profile.getOptionses();
-    			
-    			//Llenando el menu
     			
     			List<Options> opcList = new ArrayList<Options>();
     			
     			int found = 0;
+    			int valid = 0;
+    			
+    			//Para cada opcion
     			
     			for (Iterator<Options> it = opciones.iterator(); it.hasNext(); ) {
     					
+    				//Consulto la opcion
     				Options opt = it.next();
+    				
+    				//Consulto el menu al que pertenece
     				Set<Menu> menuList = opt.getMenus();
     				
     				found = 0;
     				
+    				//Recorro la lista de menis para detectar si ese menu ya existe
     				for(Menu men: menusobject){
     					
     					 for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
@@ -629,10 +633,13 @@ public class MenusView implements Serializable {
     					 }
     				}
     				
+    				// Si el menu no ha sido agregado, lo agrego
     				if(found == 0){
     		    		 
+    						//Limpio la lista de opciones
     		    		 	opcList.clear();
     		    		 	
+    		    		 	//Recorro el menu encontrado y le añado la opcion, luego lo agrego al listado de menus
     		    		     for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
     		    		    	 Menu men = im.next();
     		    		    	 opcList.add(opt);
@@ -642,29 +649,51 @@ public class MenusView implements Serializable {
     		    		     
     					}else{
     						
-    						
-    						
+    					//Si el menu ya esta en listado de opcions
     						for (Menu mens : menusobject) {
     							
+    							valid = 0;
+    							
+    							//Saco las opciones que tiene ese menu
     							Set<Options> options = mens.getOptionses();
     							opcList.clear();
-								
-    							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
-    								
-    								Options opc = new Options();
-    								opc = opit.next();
-    								
-    								if(!opt.getOptionsName().equals(opc.getOptionsName())){
-    									opcList.add(opt);
-    									//options.add(opt);	
-        							}//end if
-    							}//end for
     							
-    							for(Options opc: opcList){
-    								options.add(opc);
-    							}
+    							//Busco si la opcion pertenece a ese menu
     							
-    							mens.setOptionses(options);
+    							Set<Menu> menuListValidate = opt.getMenus();
+    							
+    							for (Iterator<Menu> im = menuListValidate.iterator(); im.hasNext(); ) {
+    	    						 
+    								Menu menu = im.next();
+    	    						 
+    	    						 if(mens.getCaption().equalsIgnoreCase(menu.getCaption())){
+    	    							 valid = 1; 
+    	    						 }
+    	    					 }
+    							
+    							if(valid == 1){
+    								
+    								//Busco si la opcion actual ya fue agregada al menu, sino la agrego a un listado
+        							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
+        								
+        								Options opc = new Options();
+        								opc = opit.next();
+        								
+        								if(!opt.getOptionsName().equals(opc.getOptionsName())){
+        									opcList.add(opt);
+        									//options.add(opt);	
+            							}//end if
+        							}//end for
+        							
+        							//Se recorre ese listado y se agrega las opciones al menu
+        							for(Options opc: opcList){
+        								options.add(opc);
+        							}
+        							
+        							mens.setOptionses(options);
+        							
+    								
+    							}// end validator
     							
     						}//end for
     					}

@@ -1,13 +1,26 @@
 package com.liderbs.presentation.businessDelegate;
 
+import com.liderbs.modelo.Academiclevel;
 import com.liderbs.modelo.Account;
 import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
+import com.liderbs.modelo.Category;
+import com.liderbs.modelo.Courses;
+import com.liderbs.modelo.Estado;
+import com.liderbs.modelo.EstadoId;
+import com.liderbs.modelo.Experience;
+import com.liderbs.modelo.Identification;
+import com.liderbs.modelo.Job;
+import com.liderbs.modelo.Level;
 import com.liderbs.modelo.Menu;
 import com.liderbs.modelo.Options;
+import com.liderbs.modelo.Pais;
 import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Profile;
+import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
+import com.liderbs.modelo.UsuariosCategorias;
+import com.liderbs.modelo.Vprofile;
 import com.liderbs.modelo.control.AccountLogic;
 import com.liderbs.modelo.control.IAccountLogic;
 import com.liderbs.modelo.control.IMenuLogic;
@@ -18,14 +31,26 @@ import com.liderbs.modelo.control.MenuLogic;
 import com.liderbs.modelo.control.OptionsLogic;
 import com.liderbs.modelo.control.ProfileLogic;
 import com.liderbs.modelo.control.UsersLogic;
+import com.liderbs.modelo.dto.AcademiclevelDTO;
 import com.liderbs.modelo.dto.AccountDTO;
 import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
+import com.liderbs.modelo.dto.CategoryDTO;
+import com.liderbs.modelo.dto.CoursesDTO;
+import com.liderbs.modelo.dto.EstadoDTO;
+import com.liderbs.modelo.dto.ExperienceDTO;
+import com.liderbs.modelo.dto.IdentificationDTO;
+import com.liderbs.modelo.dto.JobDTO;
+import com.liderbs.modelo.dto.LevelDTO;
 import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
+import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
+import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
+import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
+import com.liderbs.modelo.dto.VprofileDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -232,4 +257,285 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberPlace() throws Exception;
 
     public List<PlaceDTO> getDataPlace() throws Exception;
+    
+    public List<Academiclevel> getAcademiclevel() throws Exception;
+
+    public void saveAcademiclevel(Academiclevel entity)
+        throws Exception;
+
+    public void deleteAcademiclevel(Academiclevel entity)
+        throws Exception;
+
+    public void updateAcademiclevel(Academiclevel entity)
+        throws Exception;
+
+    public Academiclevel getAcademiclevel(Integer idacademiclevel)
+        throws Exception;
+
+    public List<Academiclevel> findByCriteriaInAcademiclevel(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<Academiclevel> findPageAcademiclevel(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberAcademiclevel() throws Exception;
+
+    public List<AcademiclevelDTO> getDataAcademiclevel()
+        throws Exception;
+
+    public List<Courses> getCourses() throws Exception;
+
+    public void saveCourses(Courses entity) throws Exception;
+
+    public void deleteCourses(Courses entity) throws Exception;
+
+    public void updateCourses(Courses entity) throws Exception;
+
+    public Courses getCourses(Integer idcourses) throws Exception;
+
+    public List<Courses> findByCriteriaInCourses(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Courses> findPageCourses(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberCourses() throws Exception;
+
+    public List<CoursesDTO> getDataCourses() throws Exception;
+
+    public List<Estado> getEstado() throws Exception;
+
+    public void saveEstado(Estado entity) throws Exception;
+
+    public void deleteEstado(Estado entity) throws Exception;
+
+    public void updateEstado(Estado entity) throws Exception;
+
+    public Estado getEstado(EstadoId id) throws Exception;
+
+    public List<Estado> findByCriteriaInEstado(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Estado> findPageEstado(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberEstado() throws Exception;
+
+    public List<EstadoDTO> getDataEstado() throws Exception;
+
+    public List<Experience> getExperience() throws Exception;
+
+    public void saveExperience(Experience entity) throws Exception;
+
+    public void deleteExperience(Experience entity) throws Exception;
+
+    public void updateExperience(Experience entity) throws Exception;
+
+    public Experience getExperience(Integer idexperience)
+        throws Exception;
+
+    public List<Experience> findByCriteriaInExperience(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Experience> findPageExperience(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberExperience() throws Exception;
+
+    public List<ExperienceDTO> getDataExperience() throws Exception;
+
+    public List<Identification> getIdentification() throws Exception;
+
+    public void saveIdentification(Identification entity)
+        throws Exception;
+
+    public void deleteIdentification(Identification entity)
+        throws Exception;
+
+    public void updateIdentification(Identification entity)
+        throws Exception;
+
+    public Identification getIdentification(Integer ididentification)
+        throws Exception;
+
+    public List<Identification> findByCriteriaInIdentification(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<Identification> findPageIdentification(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberIdentification() throws Exception;
+
+    public List<IdentificationDTO> getDataIdentification()
+        throws Exception;
+
+    public List<Job> getJob() throws Exception;
+
+    public void saveJob(Job entity) throws Exception;
+
+    public void deleteJob(Job entity) throws Exception;
+
+    public void updateJob(Job entity) throws Exception;
+
+    public Job getJob(Integer idjob) throws Exception;
+
+    public List<Job> findByCriteriaInJob(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Job> findPageJob(String sortColumnName, boolean sortAscending,
+        int startRow, int maxResults) throws Exception;
+
+    public Long findTotalNumberJob() throws Exception;
+
+    public List<JobDTO> getDataJob() throws Exception;
+
+    public List<Pais> getPais() throws Exception;
+
+    public void savePais(Pais entity) throws Exception;
+
+    public void deletePais(Pais entity) throws Exception;
+
+    public void updatePais(Pais entity) throws Exception;
+
+    public Pais getPais(Integer idpais) throws Exception;
+
+    public List<Pais> findByCriteriaInPais(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Pais> findPagePais(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberPais() throws Exception;
+
+    public List<PaisDTO> getDataPais() throws Exception;
+
+    public List<Trainer> getTrainer() throws Exception;
+
+    public void saveTrainer(Trainer entity) throws Exception;
+
+    public void deleteTrainer(Trainer entity) throws Exception;
+
+    public void updateTrainer(Trainer entity) throws Exception;
+
+    public Trainer getTrainer(Integer idtrainer) throws Exception;
+
+    public List<Trainer> findByCriteriaInTrainer(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Trainer> findPageTrainer(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberTrainer() throws Exception;
+
+    public List<TrainerDTO> getDataTrainer() throws Exception;
+
+    public List<Vprofile> getVprofile() throws Exception;
+
+    public void saveVprofile(Vprofile entity) throws Exception;
+
+    public void deleteVprofile(Vprofile entity) throws Exception;
+
+    public void updateVprofile(Vprofile entity) throws Exception;
+
+    public Vprofile getVprofile(Integer idvprofile) throws Exception;
+
+    public List<Vprofile> findByCriteriaInVprofile(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Vprofile> findPageVprofile(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberVprofile() throws Exception;
+
+    public List<VprofileDTO> getDataVprofile() throws Exception;
+    
+    public List<Category> getCategory() throws Exception;
+
+    public void saveCategory(Category entity) throws Exception;
+
+    public void deleteCategory(Category entity) throws Exception;
+
+    public void updateCategory(Category entity) throws Exception;
+
+    public Category getCategory(Integer idcategory) throws Exception;
+
+    public List<Category> findByCriteriaInCategory(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Category> findPageCategory(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberCategory() throws Exception;
+
+    public List<CategoryDTO> getDataCategory() throws Exception;
+
+    public List<Level> getLevel() throws Exception;
+
+    public void saveLevel(Level entity) throws Exception;
+
+    public void deleteLevel(Level entity) throws Exception;
+
+    public void updateLevel(Level entity) throws Exception;
+
+    public Level getLevel(Integer idlevel) throws Exception;
+
+    public List<Level> findByCriteriaInLevel(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Level> findPageLevel(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberLevel() throws Exception;
+
+    public List<LevelDTO> getDataLevel() throws Exception;
+
+    public List<UsuariosCategorias> getUsuariosCategorias()
+        throws Exception;
+
+    public void saveUsuariosCategorias(UsuariosCategorias entity)
+        throws Exception;
+
+    public void deleteUsuariosCategorias(UsuariosCategorias entity)
+        throws Exception;
+
+    public void updateUsuariosCategorias(UsuariosCategorias entity)
+        throws Exception;
+
+    public UsuariosCategorias getUsuariosCategorias(
+        Integer idusuariosCategorias) throws Exception;
+
+    public List<UsuariosCategorias> findByCriteriaInUsuariosCategorias(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<UsuariosCategorias> findPageUsuariosCategorias(
+        String sortColumnName, boolean sortAscending, int startRow,
+        int maxResults) throws Exception;
+
+    public Long findTotalNumberUsuariosCategorias() throws Exception;
+
+    public List<UsuariosCategoriasDTO> getDataUsuariosCategorias()
+        throws Exception;
+
 }

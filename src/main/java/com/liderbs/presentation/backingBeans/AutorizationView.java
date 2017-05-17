@@ -4,7 +4,8 @@ import com.liderbs.exceptions.*;
 
 import com.liderbs.modelo.*;
 import com.liderbs.modelo.dto.AutorizationDTO;
-
+import com.liderbs.modelo.dto.MenuDTO;
+import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
@@ -17,6 +18,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 
@@ -27,6 +29,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -66,6 +69,8 @@ public class AutorizationView implements Serializable {
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    private Users usuarioapp;
+    private List<AutorizationDTO> dataAutorizedTrainers;
 
     public AutorizationView() {
         super();
@@ -557,4 +562,98 @@ public class AutorizationView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+    
+    public Users getUsuarioapp() {
+		if(usuarioapp==null) {				
+			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+		}
+		return usuarioapp;
+	}
+
+	public List<AutorizationDTO> getDataAutorizedTrainers() {
+		
+	try{	
+		
+		if(this.dataAutorizedTrainers == null){
+			
+			Users user = getUsuarioapp();
+			Set<Account> list = user.getAccounts();
+			Integer idAccount = 0;
+			
+			
+			 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+     		 	Account act = it.next();
+     	        
+     		 	//Si tiene cuenta activa
+     		 	if(act.getAccountStatus() == 1){
+     		 		if(act.getAccountDefault() == 1){
+     		 			idAccount = act.getIdAccount();
+     		 		}
+     		 	}
+     	    }
+			 
+			//Busco los lugares asociados a la cuenta del usuario
+			 
+			List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+																				null,
+																				null);
+			 
+			//Si tiene centro deportivos
+			
+			if(placeList.size() > 0){
+				
+				this.dataAutorizedTrainers = new ArrayList<AutorizationDTO>();
+				
+				
+				for(Place place: placeList){
+					
+					int idPlace = place.getIdPlace();
+					
+					List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "=","autorizationStatus",false, 1L, "="},
+																								 null,
+																								 null);
+					
+					for(Autorization auth: listAuth){
+						
+						Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
+						
+						if(trainer != null){
+							this.dataAutorizedTrainers.add(new AutorizationDTO(auth.getIdAutorization(),
+																			   auth.getUsersIdusers(),
+																			   auth.getAutorizationStatus(),
+																			   auth.getAutorizationCreator(),
+																			   auth.getAutorizationDate(),
+																			   trainer.getName(),
+																			   25,
+																			   "Funcionales",
+																			   place.getPlaceName()));
+						}//end if
+					}// end for
+				}
+				
+				
+				
+				
+			}//validador tiene centros deportivos
+			
+			
+			
+			
+			
+		}
+	
+	}catch(Exception e){
+		log.info(e.toString());
+	}
+		
+		return dataAutorizedTrainers;
+	
+	}
+
+	public void setDataAutorizedTrainers(List<AutorizationDTO> dataAutorizedTrainers) {
+		this.dataAutorizedTrainers = dataAutorizedTrainers;
+	}
+    
+    
 }

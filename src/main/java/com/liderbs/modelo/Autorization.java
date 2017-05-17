@@ -17,6 +17,9 @@ public class Autorization  implements java.io.Serializable {
      private Integer autorizationStatus;
      private Integer usersIdusers;
      private Integer autorizationCreator;
+     private String trainerName;
+     private Integer trainerAge;
+     private String trainerCategory;
 
     public Autorization() {
     }
@@ -85,6 +88,36 @@ public class Autorization  implements java.io.Serializable {
     public void setAutorizationCreator(Integer autorizationCreator) {
         this.autorizationCreator = autorizationCreator;
     }
+
+
+	public String getTrainerName() {
+		return trainerName;
+	}
+
+
+	public void setTrainerName(String trainerName) {
+		this.trainerName = trainerName;
+	}
+
+
+	public Integer getTrainerAge() {
+		return trainerAge;
+	}
+
+
+	public void setTrainerAge(Integer trainerAge) {
+		this.trainerAge = trainerAge;
+	}
+
+
+	public String getTrainerCategory() {
+		return trainerCategory;
+	}
+
+
+	public void setTrainerCategory(String trainerCategory) {
+		this.trainerCategory = trainerCategory;
+	}
 
 
 

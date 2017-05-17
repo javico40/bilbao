@@ -32,6 +32,25 @@
         <property name="placeIsVzone" type="java.lang.Integer">
             <column name="Place_is_vzone" />
         </property>
+        <property name="accountID" type="java.lang.Integer">
+            <column name="account_idAccount" />
+        </property>
+        <property name="fiscalID" type="java.lang.String">
+            <column name="fiscal_id" length="100" />
+        </property> 
+        <property name="country" type="java.lang.Integer">
+            <column name="country" />
+        </property>
+        <property name="province" type="java.lang.Integer">
+            <column name="province" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="city" length="100" />
+        </property>
+        <property name="owner_name" type="java.lang.String">
+            <column name="owner_name" length="100" />
+        </property>
+       
         <set name="autorizations" table="autorization" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="Place_idPlace" not-null="true" />

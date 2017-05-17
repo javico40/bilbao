@@ -22,12 +22,13 @@
               <p>Bienvenido #{menusView.usuarioapp.name}</p>
 
               <a href="#"><i class="fa fa-circle text-success"></i> En Linea</a>
+              <br/>
             </div>
           </div>
           			
           							
-            						
-            						<!-- sidebar menu: : style can be found in sidebar.less -->
+          <br/>  						
+          <!-- sidebar menu: : style can be found in sidebar.less -->
          <ul class="sidebar-menu">
             <li class="header">Menu Principal</li>
              <ui:repeat id="menurepeat" value="#{menusView.dataapp}" var="menu">

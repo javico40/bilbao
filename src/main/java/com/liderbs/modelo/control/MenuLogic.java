@@ -93,9 +93,6 @@ public class MenuLogic implements IMenuLogic {
                 throw new ZMessManager().new NotValidFormatException("path");
             }
 
-            if (getMenu(entity.getIdMenu()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             menuDAO.save(entity);
 

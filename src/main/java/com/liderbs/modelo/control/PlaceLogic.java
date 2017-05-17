@@ -76,36 +76,13 @@ public class PlaceLogic implements IPlaceLogic {
         log.debug("saving Place instance");
 
         try {
-            if ((entity.getPlaceAddress() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getPlaceAddress(), 45) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "placeAddress");
-            }
+        	
 
             if ((entity.getPlaceName() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getPlaceName(), 45) == false)) {
                 throw new ZMessManager().new NotValidFormatException(
                     "placeName");
-            }
-
-            if ((entity.getPlacePhone() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getPlacePhone(), 45) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "placePhone");
-            }
-
-            if ((entity.getPlacePhoneAlt() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getPlacePhoneAlt(), 45) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "placePhoneAlt");
-            }
-
-            if (getPlace(entity.getIdPlace()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
             placeDAO.save(entity);
