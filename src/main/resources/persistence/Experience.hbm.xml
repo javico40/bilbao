@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-abr-2017 15:46:43 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Experience" table="experience" catalog="liderbs_virfit">
+        <id name="idexperience" type="java.lang.Integer">
+            <column name="idexperience" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="job" class="com.liderbs.modelo.Job" fetch="select">
+            <column name="job_idjob" not-null="true" />
+        </many-to-one>
+        <property name="company" type="java.lang.String">
+            <column name="company" length="45" />
+        </property>
+        <property name="country" type="java.lang.Integer">
+            <column name="country" />
+        </property>
+        <property name="region" type="java.lang.Integer">
+            <column name="region" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="city" length="100" />
+        </property>
+        <property name="startdate" type="java.util.Date">
+            <column name="startdate" length="10" />
+        </property>
+        <property name="enddate" type="java.util.Date">
+            <column name="enddate" length="10" />
+        </property>
+        <property name="function" type="java.lang.String">
+            <column name="function" length="500" />
+        </property>
+        <set name="trainers" table="trainer_has_experience" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="experience_idexperience" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Trainer">
+                <column name="trainer_idtrainer" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-may-2017 16:24:06 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.UsuariosCategorias" table="usuarios_categorias" catalog="liderbs_virfit">
+        <id name="idusuariosCategorias" type="java.lang.Integer">
+            <column name="idusuarios_categorias" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="category" class="com.liderbs.modelo.Category" fetch="select">
+            <column name="category_idcategory" not-null="true" />
+        </many-to-one>
+        <property name="usuario" type="java.lang.Integer">
+            <column name="usuario" />
+        </property>
+    </class>
+</hibernate-mapping>

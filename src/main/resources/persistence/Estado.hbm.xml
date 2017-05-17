@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-abr-2017 15:46:43 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Estado" table="estado" catalog="liderbs_virfit">
+        <composite-id name="id" class="com.liderbs.modelo.EstadoId">
+            <key-property name="idestado" type="java.lang.Integer">
+                <column name="idestado" />
+            </key-property>
+            <key-property name="paisId" type="java.lang.Integer">
+                <column name="pais_ID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="pais" class="com.liderbs.modelo.Pais" update="false" insert="false" fetch="select">
+            <column name="pais_ID" not-null="true" />
+        </many-to-one>
+        <property name="estadonombre" type="java.lang.String">
+            <column name="estadonombre" />
+        </property>
+    </class>
+</hibernate-mapping>

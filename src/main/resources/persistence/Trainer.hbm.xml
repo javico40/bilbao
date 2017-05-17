@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-abr-2017 15:46:43 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Trainer" table="trainer" catalog="liderbs_virfit">
+        <id name="idtrainer" type="java.lang.Integer">
+            <column name="idtrainer" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="vprofile" class="com.liderbs.modelo.Vprofile" fetch="select">
+            <column name="vprofile_idvprofile" not-null="true" />
+        </many-to-one>
+        <many-to-one name="academiclevel" class="com.liderbs.modelo.Academiclevel" fetch="select">
+            <column name="academiclevel_idacademiclevel" not-null="true" />
+        </many-to-one>
+        <many-to-one name="identification" class="com.liderbs.modelo.Identification" fetch="select">
+            <column name="identification_ididentification" not-null="true" />
+        </many-to-one>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="100" />
+        </property>
+        <property name="lastname" type="java.lang.String">
+            <column name="lastname" length="100" />
+        </property>
+        <property name="citizenship" type="java.lang.String">
+            <column name="citizenship" length="100" />
+        </property>
+        <property name="borndate" type="java.util.Date">
+            <column name="borndate" length="10" />
+        </property>
+        <property name="country" type="java.lang.Integer">
+            <column name="country" />
+        </property>
+        <property name="region" type="java.lang.Integer">
+            <column name="region" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="city" length="100" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="address" length="200" />
+        </property>
+        <property name="trainerAcknowledgement" type="java.lang.String">
+            <column name="trainer_acknowledgement" length="600" />
+        </property>
+        <property name="academicArea" type="java.lang.String">
+            <column name="academic_area" length="100" />
+        </property>
+        <property name="resumefile" type="java.lang.String">
+            <column name="resumefile" length="100" />
+        </property>
+        <property name="usersIdusers" type="java.lang.Integer">
+            <column name="users_idusers" not-null="true" />
+        </property>
+        <set name="experiences" table="trainer_has_experience" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="trainer_idtrainer" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Experience">
+                <column name="experience_idexperience" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="courseses" table="trainer_has_courses" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="trainer_idtrainer" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Courses">
+                <column name="courses_idcourses" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

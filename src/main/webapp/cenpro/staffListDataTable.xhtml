@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Virfit <small>Lider Business Group</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Opciones</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					<h:form id="form">
+					
+						<p:panel id="panelDataTableUsers" header="Staff de entrenadores">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{autorizationView.dataAutorizedTrainers}" var="users"
+								paginator="true" rows="5">
+								
+								<p:column filterBy="#{users.trainerName}" sortBy="#{users.trainerName}" >
+										 <f:facet name="header">
+										<h:outputText value="Entrenador"/>
+										</f:facet>
+										 <h:outputText value="#{users.trainerName}"/>
+										</p:column>   
+								
+								<p:column filterBy="#{users.place}" sortBy="#{users.place}" >
+										 <f:facet name="header">
+										<h:outputText value="Centro deportivo"/>
+										</f:facet>
+										 <h:outputText value="#{users.place}"/>
+										</p:column>
+										
+								<p:column filterBy="#{users.trainerAge}" sortBy="#{users.trainerAge}" >
+										 <f:facet name="header">
+										<h:outputText value="Edad"/>
+										</f:facet>
+										 <h:outputText value="#{users.trainerAge}"/>
+										</p:column>   
+							</p:dataTable>
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="Nuevo"
+									action="#{usersView.addStaff}" update="" />
+							</div>
+						</p:panel>
+					
+					</h:form>
+		  			</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,369 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Virfit <small>Lider Business Group</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Opciones</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					<h:form id="form">
+						<p:steps activeIndex="0" styleClass="custom" readonly="false">
+    							<p:menuitem value="Completar el perfil" url="#"/>
+    							<p:menuitem value="Perfil por verificar" url="#"/>
+    							<p:menuitem value="Perfil Aprobado" url="#"/>
+    							<p:menuitem value="Cuenta Activa" url="#"/>
+						</p:steps>
+
+						<br/>
+						<p:tabView>
+							<p:tab title="Mi Perfil Virfit">
+								
+								<h3>Porcentaje del perfil Virfit completado</h3>
+    							<p:progressBar value="50" labelTemplate="{value}%" displayOnly="true"/>
+							
+								<p:panel id="panelPersonalData" header="Datos Personales">
+									<p:panelGrid>
+										<p:row>
+											<p:column rowspan="6">FOTO</p:column>
+											<p:column><strong><h:outputText id="textNamesDesc" value=" NOMBRES" /></strong></p:column>
+											<p:column><h:outputText id="textNamesVal" value="JAVIER ALBERTO" /></p:column>
+											<p:column><strong><h:outputText id="textLastNamesDesc" value=" APELLIDOS" /></strong></p:column>
+											<p:column><h:outputText id="textLastNamesVal" value=" PORTILLA CERON" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textTipoIdentificacionDesc" value=" TIPO DE IDENTIFICACION" /></strong></p:column>
+											<p:column><h:outputText id="textTipoIdentificacionVal" value="CC" /></p:column>
+											<p:column><strong><h:outputText id="textNumeroIdentificacionDesc" value="NUMERO IDENTIFICACION" /></strong></p:column>
+											<p:column><h:outputText id="textNumeroIdentificacionVal" value="1124034250" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textNacionalidadDesc" value=" NACIONALIDAD" /></strong></p:column>
+											<p:column><h:outputText id="textNacionalidadVal" value="COLOMBIANA" /></p:column>
+											<p:column><strong><h:outputText id="textFechaNacimientoDesc" value="FECHA DE NACIMIENTO" /></strong></p:column>
+											<p:column><h:outputText id="textFechaNacimientoVal" value="14-09-1988" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="4"><div align="center">LUGAR DE NACIMIENTO</div></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textPaisDesc" value=" PAIS" /></strong></p:column>
+											<p:column><h:outputText id="textPaisVal" value="COLOMBIA" /></p:column>
+											<p:column><strong><h:outputText id="textDeptoDesc" value="DEPARTAMENTO" /></strong></p:column>
+											<p:column><h:outputText id="textDeptoVal" value="NARIÑO" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textCiudadDesc" value=" CIUDAD" /></strong></p:column>
+											<p:column><h:outputText id="textCiudadVal" value="CALI" /></p:column>
+											<p:column><strong><h:outputText id="textDirDesc" value="DIRECCION DE RESIDENCIA" /></strong></p:column>
+											<p:column><h:outputText id="textDirVal" value="AVENIDA 2" /></p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+								<br/>
+								<p:panel id="panelProfesionalData" header="Datos profesionales">
+									<p:panelGrid>
+										<p:row>
+											<p:column><strong><h:outputText id="textTipoEntrenadorDesc" value=" TIPO DE ENTRENADOR" /></strong></p:column>
+											<p:column><h:outputText id="textTipoEntrenadorVal" value="ENTRENADOR PERSONALIZADO" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column rowspan="3"><strong><h:outputText id="textDescPerfilDesc" value=" DESCRIPCION DEL PERFIL" /></strong></p:column>
+											<p:column><h:outputText id="textDescPerfilVal" value=" ME GUSTA ENTRENAR" /></p:column>
+										
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+								<br/>
+								<p:panel id="panelAcademicFormation" header="Formacion Academica">
+									<p:panelGrid>
+										<p:row>
+											<p:column><strong><h:outputText id="textNivelEDesc" value=" NIVEL DE ESTUDIO" /></strong></p:column>
+											<p:column><h:outputText id="textNivelEVal" value="UNIVERSITARIO" /></p:column>
+											<p:column><strong><h:outputText id="textAreaEDesc" value=" AREA DE ESTUDIO" /></strong></p:column>
+											<p:column><h:outputText id="textAreaEVal" value=" INFORMATICA" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="4"><div align="center">CERTIFICACIONES</div></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textCertiDesc" value=" CERTIFICACIONES" /></strong></p:column>
+											<p:column><h:outputText id="textCertiVal" value="IBM" /></p:column>
+											<p:column><strong><h:outputText id="textCertiConsDesc" value=" DESCRIPCION" /></strong></p:column>
+											<p:column><h:outputText id="textCertiConsVal" value=" SABER PROGRAMAR" /></p:column>
+											<p:column><p:commandButton id="btnVerDiploma"
+											                           value="Ver certificado"
+											                           action="#{usersView.savePersonalData}" /></p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+								<br/>
+								<p:panel id="panelProfesionalExperience" header="Experiencia profesional">
+									<p:panelGrid>
+										<p:row>
+											<p:column><strong><h:outputText id="textEmpresaDesc" value=" EMPRESA O CENTRO DEPORTIVO" /></strong></p:column>
+											<p:column><h:outputText id="textEmpresaVal" value="COMERCIAL BELLOSO C.A" /></p:column>
+											<p:column><p:commandButton id="btnVerExperiencia"
+											                           value="Ver Expeciencia"
+											                           action="#{usersView.savePersonalData}" /></p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Datos personales">
+								<p:panel header="Ingrese sus datos personales">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textNames" value=" NOMBRES" /></p:column>
+											<p:column><p:inputText id="txtNames" binding="#{usersView.namesProfile}" /></p:column>
+											<p:column><h:outputText id="textLastNames" value=" APELLIDOS" /></p:column>
+											<p:column><p:inputText id="txtLastname" binding="#{usersView.txtLastname}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textTipoIdentificacion" value=" TIPO DE IDENTIFICACION" /></p:column>
+											<p:column>
+											<p:selectOneMenu id="selectIdentificacion" binding="#{usersView.selectIdentificacion}" style="width:125px">
+            								<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            									<f:selectItem itemLabel="CEDULA DE CIUDADANIA" itemValue="1" />
+            									<f:selectItem itemLabel="CEDULA DE EXTRANJERIA" itemValue="2" />
+            									<f:selectItem itemLabel="TARJETA DE IDENTIDAD" itemValue="3" />
+            									<f:selectItem itemLabel="PASAPORTE" itemValue="4" />
+        									</p:selectOneMenu>					
+        									</p:column>
+											<p:column><h:outputText id="textNumeroIdentificacion" value=" NUMERO IDENTIFICACION" /></p:column>
+											<p:column><p:inputText id="txtNumeroIdentificacion" binding="#{usersView.txtNumeroIdentificacion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textNacionalidad" value=" NACIONALIDAD" /></p:column>
+											<p:column><p:inputText id="txtNacionalidad" binding="#{usersView.txtNacionalidad}" /></p:column>
+											<p:column><h:outputText id="textFechaNacimiento" value=" FECHA DE NACIMIENTO" /></p:column>
+											<p:column><p:calendar id="txtFechaNacimiento" navigator="true" value="#{usersView.txtFechaNacimiento}" /></p:column>
+										</p:row>
+										
+										<p:row>
+											<p:column><h:outputText id="textPais" value=" PAIS" /></p:column>
+											<p:column>
+											<p:selectOneMenu id="selectPais" binding="#{usersView.selectPais}" style="width:125px">
+            									<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            									<f:selectItems value="#{usersView.listPaises}" />
+            									<p:ajax event="change"
+														listener="#{usersView.buscarDepto}" process="@this"
+															update="selectDepto" />
+        									</p:selectOneMenu>
+											</p:column>
+											<p:column><h:outputText id="textDepto" value=" DEPARTAMENTO" /></p:column>
+											<p:column>
+													<p:selectOneMenu id="selectDepto" disabled="#{usersView.lockDepto}" binding="#{usersView.selectDepto}" style="width:125px">
+            											<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            											<f:selectItems value="#{usersView.listDeptos}" />
+        											</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textCiudad" value=" CIUDAD" /></p:column>
+											<p:column><p:inputText id="txtCiudad" binding="#{usersView.txtCiudad}" /></p:column>
+											<p:column><h:outputText id="textDireccion" value=" DIRECCION DE RESIDENCIA" /></p:column>
+											<p:column><p:inputText id="txtDireccion" size="20" binding="#{usersView.txtDireccion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="4"></p:column>
+										</p:row>
+										<p:row>
+										
+											<p:column colspan="4">
+											<div align="center">
+											<p:commandButton id="btnGuardarPersonalData"
+											                                        value="Guardar"
+											                                        action="#{usersView.savePersonalData}" />
+											</div>                                        
+											</p:column>
+										</p:row>
+										
+										
+										
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Datos profesionales">
+								<p:panel header="Ingrese sus datos profesionales">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textTipoEntrenador" value=" TIPO DE ENTRENADOR" /></p:column>
+											<p:column>
+												<p:selectOneMenu id="selectTipoEntrenador" binding="#{usersView.selectTipoEntrenador}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItem itemLabel="ENTRENADOR PERSONALIZADO" itemValue="1" />
+            										<f:selectItem itemLabel="ENTRENADOR DE CLASES GRUPALES" itemValue="2" />
+            										<f:selectItem itemLabel="PROFESOR DE CLASES DE BAILE" itemValue="3" />
+        										</p:selectOneMenu>		
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textDescPerfil" value=" DESCRIPCION DEL PERFIL" /></p:column>
+											<p:column>
+													<p:inputTextarea id="txtDescripcionPerfil" binding="#{usersView.txtDescripcionPerfil}" cols="40" rows="3" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="2">
+											<div align="center">
+											<p:commandButton id="btnGuardarDatosProfesionales"
+											                 value="Guardar"
+											                 action="#{usersView.saveDatosProf}" />
+											</div>                                        
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Formacion Academica">
+								<p:panel header="Ingrese su formacion academica">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textNivelEstudio" value=" NIVEL DE ESTUDIOS" /></p:column>
+											<p:column>
+												 <p:selectOneMenu id="selectNivelEstudio" binding="#{usersView.selectNivelEstudio}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItem itemLabel="EDUCACION BASICA PRIMARIA" itemValue="1" />
+            										<f:selectItem itemLabel="EDUCACION BASICA SECUNDARIA" itemValue="2" />
+            										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA TECNICA" itemValue="3" />
+            										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA TECNOLOGICA" itemValue="4" />
+            										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA PROFESIONAL" itemValue="5" />
+        										</p:selectOneMenu>	
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textAreaEstudio" value=" AREA DE ESTUDIO" /></p:column>
+											<p:column><p:inputText id="txtAreaEstudio" binding="#{usersView.txtAreaEstudio}" /></p:column>
+										</p:row>
+												<p:row>
+											<p:column><h:outputText id="textCertificaciones" value=" CERTIFICACION O CURSOS DE ENTRENAMIENTO" /></p:column>
+											<p:column><p:inputText id="txtCertificacion" binding="#{usersView.txtCertificacion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textDesCerti" value=" EN QUE CONSISTE" /></p:column>
+											<p:column><p:inputTextarea id="txtCertificacionDesc" binding="#{usersView.txtCertificacionDesc}" cols="40" rows="3" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="2">
+												<div align="center">
+													<p:commandButton id="btnGuardarCertifications"
+											                                        value="Agregar"
+											                                        action="#{usersView.saveCertificacion}" />
+												</div>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Perfil profesional">
+								<p:panel header="Explique brevemente su perfil profesional">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textPerfilPro" value=" Explique su perfil" /></p:column>
+											<p:column><p:inputTextarea id="txtProfesionalProfile" binding="#{usersView.txtProfesionalProfile}" cols="40" rows="3" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="2">
+												<div align="center">
+													<p:commandButton id="btnGuardarProfesionalProfile"
+											                         value="Guardar"
+											                         action="#{usersView.saveProfProfile}" />
+												</div>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+							<p:tab title="Experiencia profesional">
+								<p:panel header="Ingrese su perfil profesional">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="textCentroDeportivo" value=" EMPRESA O CENTRO DEPORTIVO" /></p:column>
+											<p:column><p:inputText id="txtEmpresa" binding="#{usersView.txtEmpresa}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textPaisExp" value=" PAIS" /></p:column>
+											<p:column>
+												<p:selectOneMenu id="selectPaisExp" binding="#{usersView.selectPaisExp}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItems value="#{usersView.listPaisesExp}" />
+            										<p:ajax event="change"
+															listener="#{usersView.buscarDeptoExp}" process="@this"
+															update="selectDepto" />
+        									</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textDepartamentoExp" value=" DEPARTAMENTO" /></p:column>
+											<p:column>
+													<p:selectOneMenu id="selectDeptoExp" disabled="#{usersView.lockDeptoExp}" binding="#{usersView.selectDeptoExp}" style="width:125px">
+            											<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            											<f:selectItems value="#{usersView.listDeptosExp}" />
+        											</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textCiudadExp" value=" CIUDAD" /></p:column>
+											<p:column><p:inputText id="txtCiudadExp" size="20" binding="#{usersView.txtCiudadExp}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textCargoExp" value=" CARGO" /></p:column>
+											<p:column><p:inputText id="txtCargo" size="20" binding="#{usersView.txtCargo}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textPeriodoInicio" value=" PERIODO INICIO" /></p:column>
+											<p:column><p:calendar id="txtPeriodoInicio" navigator="true" value="#{usersView.txtPeriodoInicio}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textPeriodoFin" value=" PERIODO FIN" /></p:column>
+											<p:column><p:calendar id="txtPeriodoFin" navigator="true" value="#{usersView.txtPeriodoFin}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textFuncion" value=" FUNCION Y LOGRO EN EL CARGO" /></p:column>
+											<p:column><p:inputTextarea id="txtFuncionCargo" binding="#{usersView.txtFuncionCargo}" cols="40" rows="3" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="2">
+												<div align="center">
+													<p:commandButton id="btnGuardarProfExp"
+											                         value="Guardar"
+											                         action="#{usersView.saveProfExp}" />
+												</div>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							</p:tab>
+						</p:tabView>
+					</h:form>
+		  			</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
