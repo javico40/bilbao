@@ -12,6 +12,7 @@
 	<http security="none" pattern="/javax.faces.resource/**"/>
 	<http security="none" pattern="/accessdenied.xhtml" />
 	<http security="none" pattern="/register.xhtml" />
+	<http security="none" pattern="/registercenpro.xhtml" />
 	<http security="none" pattern="/sucess.xhtml" />	
 	
 	 <http auto-config="true" access-decision-manager-ref="accessDecisionManager" use-expressions="true">

@@ -206,6 +206,7 @@ public class CategoryView implements Serializable {
             entity.setLevel((FacesUtils.checkInteger(txtIdlevel_Level) != null)
                 ? businessDelegatorView.getLevel(FacesUtils.checkInteger(
                         txtIdlevel_Level)) : null);
+            //entity.setUserses(FacesUtils.checkUsers(txtUserses));
             businessDelegatorView.saveCategory(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
@@ -228,6 +229,7 @@ public class CategoryView implements Serializable {
             entity.setLevel((FacesUtils.checkInteger(txtIdlevel_Level) != null)
                 ? businessDelegatorView.getLevel(FacesUtils.checkInteger(
                         txtIdlevel_Level)) : null);
+            //entity.setUserses(FacesUtils.checkUsers(txtUserses));
             businessDelegatorView.updateCategory(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
         } catch (Exception e) {

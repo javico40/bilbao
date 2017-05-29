@@ -31,8 +31,21 @@ public class UsersDTO implements Serializable {
     private Integer status;
     private String userid;
     private String username;
+    
+    
+    public UsersDTO() {
+		super();
+	}
+    
+    
+    public UsersDTO(Integer idusers, String username){
+    	
+    	this.idusers = idusers;
+    	this.username = username;
+    }
+    
 
-    public String getCellphone() {
+	public String getCellphone() {
         return cellphone;
     }
 

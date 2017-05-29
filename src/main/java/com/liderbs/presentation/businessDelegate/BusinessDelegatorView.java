@@ -1093,7 +1093,7 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<CategoryDTO> getDataCategory() throws Exception {
         return categoryLogic.getDataCategory();
     }
-
+    
     public List<Level> getLevel() throws Exception {
         return levelLogic.getLevel();
     }

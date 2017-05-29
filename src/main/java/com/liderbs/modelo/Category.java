@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 16-may-2017 16:24:06 by Hibernate Tools 4.0.0
+// Generated 17-may-2017 14:50:38 by Hibernate Tools 4.0.0
 
 
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class Category  implements java.io.Serializable {
      private Integer idcategory;
      private Level level;
      private String description;
-     private Set<UsuariosCategorias> usuariosCategoriases = new HashSet<UsuariosCategorias>(0);
+     private Set<Users> userses = new HashSet<Users>(0);
 
     public Category() {
     }
@@ -23,10 +23,10 @@ public class Category  implements java.io.Serializable {
     public Category(Level level) {
         this.level = level;
     }
-    public Category(Level level, String description, Set<UsuariosCategorias> usuariosCategoriases) {
+    public Category(Level level, String description, Set<Users> userses) {
        this.level = level;
        this.description = description;
-       this.usuariosCategoriases = usuariosCategoriases;
+       this.userses = userses;
     }
    
     public Integer getIdcategory() {
@@ -50,12 +50,12 @@ public class Category  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Set<UsuariosCategorias> getUsuariosCategoriases() {
-        return this.usuariosCategoriases;
+    public Set<Users> getUserses() {
+        return this.userses;
     }
     
-    public void setUsuariosCategoriases(Set<UsuariosCategorias> usuariosCategoriases) {
-        this.usuariosCategoriases = usuariosCategoriases;
+    public void setUserses(Set<Users> userses) {
+        this.userses = userses;
     }
 
 

@@ -18,7 +18,7 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Govirfit <small>Lider Business Group</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -29,8 +29,10 @@
 					<!-- Main content -->
 					<section class="content">
 					<h:form id="form">
-					
-						<p:panel id="panelDataTableUsers" header="Staff de entrenadores">
+					<p:tabView>
+						<p:tab id="tabTrainer" title="Staff de entrenadores">
+							
+							<p:panel id="panelDataTableUsers" header="Staff de #{autorizationView.userPlaceName}">
 							<p:growl id="men"/>				
 							<p:dataTable value="#{autorizationView.dataAutorizedTrainers}" var="users"
 								paginator="true" rows="5">
@@ -59,12 +61,127 @@
 						</p:panel>
 						<p:panel id="panelBoton">
 							<div align="center">
-								<p:commandButton id="btnNew" value="Nuevo"
-									action="#{usersView.addStaff}" update="" />
+								<p:commandButton id="btnNew" value="Invitar entrenador a Staff"
+									action="#{usersView.addStaff}" update=":dialogSearch" />
 							</div>
 						</p:panel>
+						</p:tab>
+						
+						<p:tab id="tabRequest" title="Invitaciones enviadas">
+							
+							<p:panel id="panelRequest" header="Invitaciones a pertener al Staff de #{autorizationView.userPlaceName}">
+								<p:growl id="mens"/>				
+								<p:dataTable value="#{autorizationView.dataInvitedTrainers}"
+								 			 var="users"
+											 paginator="true" rows="5">
+											 			 
+								<p:column filterBy="#{users.trainerName}" sortBy="#{users.trainerName}" >
+										 <f:facet name="header">
+										<h:outputText value="Entrenador"/>
+										</f:facet>
+										 <h:outputText value="#{users.trainerName}"/>
+										</p:column>   
+								
+								<p:column sortBy="#{users.autorizationDate}" >
+										 <f:facet name="header">
+										<h:outputText value="Fecha de invitacion"/>
+										</f:facet>
+										 <h:outputText value="#{users.autorizationDate}"/>
+										</p:column>
+										
+								<p:column sortBy="#{users.autorizationStatusDescription}" >
+										 <f:facet name="header">
+										<h:outputText value="Estado de invitacion"/>
+										</f:facet>
+										 <h:outputText value="#{users.autorizationStatusDescription}"/>
+										</p:column>   
+										
+								</p:dataTable>
+							</p:panel>
+							
+						</p:tab>
+					
+					</p:tabView>
+					
+			
 					
 					</h:form>
+						<p:dialog id="dialogSearch"
+						          appendTo="@(body)"
+						          draggable="true"
+						          closable="false"
+						          visible="#{usersView.showSearchDialog}"
+						          resizable="false"
+						          modal="true"
+						          position="top"
+						          style="margin:50px;"
+						          width="750">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelSearch" header="Busqueda Virfit">
+								<p:panelGrid>
+									<p:row>
+										<p:column><h:outputText id="textSearchCat" value=" Categoria" /></p:column>
+										<p:column>
+													<p:selectOneMenu id="selectCategory" binding="#{usersView.selectCategory}" style="width:150px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItems value="#{usersView.listCategory}" />
+        									</p:selectOneMenu>
+										</p:column>
+										<p:column><p:commandButton id="btnSearch" value="Buscar" action="#{usersView.search}" update="listTrainers" /></p:column>
+									</p:row>
+								</p:panelGrid>
+								
+								<p:dataList id="listTrainers"
+											value="#{usersView.listTrainers}"
+										    var="trainer"
+										    type="unordered"
+										    itemType="none"
+										    paginator="true"
+										    rows="10"
+										    styleClass="paginated">
+										    
+								<f:facet name="header">
+            						Entrenadores
+        						</f:facet>
+        						
+        						<p:panelGrid>
+        							<p:row>
+        							      <p:column rowspan="3"><p:graphicImage width="64" name="images/pictrain.JPG"/></p:column>
+        								  <p:column><strong><h:outputText value="#{trainer.username}" style="display:inline-block"/></strong></p:column> 
+        								  <p:column><p:graphicImage width="12" name="images/medal.png"/></p:column>
+        								  <p:column><p:graphicImage width="12" name="images/medal.png"/></p:column> 
+        								  <p:column><p:graphicImage width="12" name="images/medal.png"/></p:column>
+        								  <p:column><p:graphicImage width="12" name="images/medal.png"/></p:column>
+        								  <p:column><p:graphicImage width="12" name="images/medal.png"/></p:column> 
+        								  <p:column rowspan="3"><p:commandButton id="btnProfile" value="Ver el perfil" action="#{usersView.search}" update="@form" /></p:column>
+        								  <p:column rowspan="3"><p:commandButton id="btnInvite" value="Invitar a mi Staff" actionListener="#{autorizationView.autorizeTrainer}" update="@form" ><f:attribute name="selectedTrainer" value="#{trainer}" /></p:commandButton></p:column>	  
+        							</p:row>
+        							<p:row>
+        								  <p:column><h:outputText value="Especialista en Funcionales" style="display:inline-block"/></p:column>
+        								  <p:column colspan="5"><h:outputText value="0 comentarios" style="display:inline-block"/></p:column>  
+        							</p:row>
+        							
+        							
+        						</p:panelGrid>
+        						
+        						 
+        						
+    							</p:dataList>
+							
+								
+							</p:panel>
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnExit"
+									                 value="Cerrar"
+									                 action="#{usersView.action_closeSearch}"
+									                 update=":dialogSearch" />
+								</div>
+							</p:panel>
+						</h:form>
+						</p:dialog>
+						
 		  			</section>
 				</div>
 				<!-- /.content-wrapper -->

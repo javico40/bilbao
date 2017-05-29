@@ -11,7 +11,7 @@
         <many-to-one name="autorizationtype" class="com.liderbs.modelo.Autorizationtype" fetch="select">
             <column name="Autorizationtype_idAutorizationtype" not-null="true" />
         </many-to-one>
-        <many-to-one name="place" class="com.liderbs.modelo.Place" fetch="select">
+        <many-to-one name="place" class="com.liderbs.modelo.Place" lazy="false" fetch="select">
             <column name="Place_idPlace" not-null="true" />
         </many-to-one>
         <property name="autorizationDate" type="java.util.Date">

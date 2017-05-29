@@ -30,6 +30,7 @@ public class AutorizationDTO implements Serializable {
     private Integer trainerAge;
     private String trainerCategory;
     private String place;
+    private String autorizationStatusDescription;
     
     public AutorizationDTO(){
     	
@@ -37,7 +38,7 @@ public class AutorizationDTO implements Serializable {
 
     public AutorizationDTO(Integer idAutorization, Integer usersIdusers, Integer autorizationStatus,
 			Integer autorizationCreator, Date autorizationDate, String trainerName, Integer trainerAge,
-			String trainerCategory, String place) {
+			String trainerCategory, String place, String autorizationStatusDescription) {
 		super();
 		this.idAutorization = idAutorization;
 		this.usersIdusers = usersIdusers;
@@ -48,6 +49,7 @@ public class AutorizationDTO implements Serializable {
 		this.trainerAge = trainerAge;
 		this.trainerCategory = trainerCategory;
 		this.place = place;
+		this.autorizationStatusDescription = autorizationStatusDescription;
 	}
 
 	public Integer getAutorizationCreator() {
@@ -137,6 +139,14 @@ public class AutorizationDTO implements Serializable {
 
 	public void setPlace(String place) {
 		this.place = place;
+	}
+
+	public String getAutorizationStatusDescription() {
+		return autorizationStatusDescription;
+	}
+
+	public void setAutorizationStatusDescription(String autorizationStatusDescription) {
+		this.autorizationStatusDescription = autorizationStatusDescription;
 	}
     
     

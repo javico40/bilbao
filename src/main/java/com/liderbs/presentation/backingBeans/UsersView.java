@@ -10,6 +10,7 @@ import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
 
+import org.hibernate.Hibernate;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
@@ -19,6 +20,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -72,6 +75,7 @@ public class UsersView implements Serializable {
     private UsersDTO selectedUsers;
     private Users entity;
     private boolean showDialog;
+    private boolean showSearchDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
     
@@ -119,13 +123,69 @@ public class UsersView implements Serializable {
     private Date txtPeriodoFin;
     private InputTextarea txtFuncionCargo;
     
+    //Staff search
+    
+    private SelectOneMenu selectCategory;
+    private List<SelectItem> listCategory;
+    private List<UsersDTO> listTrainers;
+    
+    
 
     public UsersView() {
         super();
     }
     
-    public void addStaff(){
+    public void search(){
+    
+    try{
     	
+    	int idCategoria = 0;
+    	
+    	if(this.listTrainers == null){
+    		this.listTrainers = new ArrayList<UsersDTO>();
+    	}
+    	
+    	this.listTrainers.clear();
+    	
+    	if(FacesUtils.checkInteger(selectCategory) != null){
+    		idCategoria = FacesUtils.checkInteger(selectCategory);
+    	}
+    	
+    	List<Category> list = new ArrayList<Category>();
+    	
+    	list = businessDelegatorView.findByCriteriaInCategory(new Object[]{"idcategory",false, idCategoria, "="},
+																									null,
+																									null);
+    	
+    	
+    	for(Category cat: list){
+    		
+    		Hibernate.initialize(cat.getUserses());
+    		Set<Users> userses = cat.getUserses();
+    		
+    		for (Iterator<Users> it = userses.iterator(); it.hasNext(); ) {			
+    			Users user = it.next();	
+    			this.listTrainers.add(new UsersDTO(user.getIdusers(), user.getName()));
+    		}
+    		
+    		
+    	}
+    	
+    		
+    		
+    	
+    	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    }
+    
+    public void addStaff(){
+    	setShowSearchDialog(true);
+    }
+    
+    public void action_closeSearch(){
+    	setShowSearchDialog(false);
     }
     
     public void savePersonalData(){
@@ -1139,6 +1199,64 @@ public class UsersView implements Serializable {
 
 	public void setLockDeptoExp(boolean lockDeptoExp) {
 		this.lockDeptoExp = lockDeptoExp;
+	}
+
+	public boolean isShowSearchDialog() {
+		return showSearchDialog;
+	}
+
+	public void setShowSearchDialog(boolean showSearchDialog) {
+		this.showSearchDialog = showSearchDialog;
+	}
+
+	public SelectOneMenu getSelectCategory() {
+		return selectCategory;
+	}
+
+	public void setSelectCategory(SelectOneMenu selectCategory) {
+		this.selectCategory = selectCategory;
+	}
+
+	public List<SelectItem> getListCategory() {
+		
+		if(this.listCategory == null){
+			
+		try{
+			
+			List<Category> list = businessDelegatorView.findByCriteriaInCategory(new Object[]{"level.idlevel",false, 1, "="},
+																				 null,
+																				 null);
+			
+			if(list.size() > 0){
+				
+				this.listCategory = new ArrayList<SelectItem>();
+				
+				for(Category cat:list){
+					this.listCategory.add(new SelectItem(cat.getIdcategory(), cat.getDescription()));
+				}
+				
+			}
+			
+		}catch(Exception e){
+			log.info(e.toString());
+		}
+			
+		}
+		
+		return listCategory;
+	}
+
+	public void setListCategory(List<SelectItem> listCategory) {
+		this.listCategory = listCategory;
+	}
+
+	public List<UsersDTO> getListTrainers() {
+		
+		return listTrainers;
+	}
+
+	public void setListTrainers(List<UsersDTO> listTrainers) {
+		this.listTrainers = listTrainers;
 	}
 	
 	

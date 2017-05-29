@@ -51,7 +51,7 @@
             <column name="owner_name" length="100" />
         </property>
        
-        <set name="autorizations" table="autorization" inverse="true" lazy="true" fetch="select">
+        <set name="autorizations" table="autorization" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="Place_idPlace" not-null="true" />
             </key>

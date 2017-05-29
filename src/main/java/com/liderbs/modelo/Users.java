@@ -28,7 +28,10 @@ public class Users  implements java.io.Serializable {
      private Date lastlogin;
      private Integer status;
      private Float saldo;
+     private Integer istrainer;
+     private String foto;
      private Set<Account> accounts = new HashSet<Account>(0);
+     private Set<Category> categories = new HashSet<Category>(0);
 
     public Users() {
     }
@@ -142,8 +145,31 @@ public class Users  implements java.io.Serializable {
 		this.email = email;
 	}
 
+	public Integer getIstrainer() {
+		return istrainer;
+	}
 
+	public void setIstrainer(Integer istrainer) {
+		this.istrainer = istrainer;
+	}
+	
+	 public Set<Category> getCategories() {
+	        return this.categories;
+	 }
+	    
+	 public void setCategories(Set<Category> categories) {
+	    this.categories = categories;
+	 }
 
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	 
+	 
 
 }
 

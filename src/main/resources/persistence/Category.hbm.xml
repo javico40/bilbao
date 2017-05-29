@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-may-2017 16:24:06 by Hibernate Tools 4.0.0 -->
+<!-- Generated 17-may-2017 14:50:38 by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
     <class name="com.liderbs.modelo.Category" table="category" catalog="liderbs_virfit">
         <id name="idcategory" type="java.lang.Integer">
@@ -14,11 +14,13 @@
         <property name="description" type="java.lang.String">
             <column name="description" length="100" />
         </property>
-        <set name="usuariosCategoriases" table="usuarios_categorias" inverse="true" lazy="true" fetch="select">
+        <set name="userses" table="users_has_category" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="category_idcategory" not-null="true" />
             </key>
-            <one-to-many class="com.liderbs.modelo.UsuariosCategorias" />
+            <many-to-many entity-name="com.liderbs.modelo.Users">
+                <column name="users_idusers" not-null="true" />
+            </many-to-many>
         </set>
     </class>
 </hibernate-mapping>

@@ -47,13 +47,6 @@ public class CategoryLogic implements ICategoryLogic {
     private ICategoryDAO categoryDAO;
 
     /**
-    * DAO injected by Spring that manages UsuariosCategorias entities
-    *
-    */
-    @Autowired
-    private IUsuariosCategoriasDAO usuariosCategoriasDAO;
-
-    /**
     * Logic injected by Spring that manages Level entities
     *
     */
@@ -125,17 +118,7 @@ public class CategoryLogic implements ICategoryLogic {
             throw new ZMessManager().new EmptyFieldException("idcategory");
         }
 
-        List<UsuariosCategorias> usuariosCategoriases = null;
-
         try {
-            usuariosCategoriases = usuariosCategoriasDAO.findByProperty("category.idcategory",
-                    entity.getIdcategory());
-
-            if (Utilities.validationsList(usuariosCategoriases) == true) {
-                throw new ZMessManager().new DeletingException(
-                    "usuariosCategoriases");
-            }
-
             categoryDAO.delete(entity);
 
             log.debug("delete Category successful");

@@ -41,12 +41,28 @@
         <property name="saldo" type="java.lang.Float">
             <column name="saldo" precision="12" scale="0" />
         </property>
+        <property name="istrainer" type="java.lang.Integer">
+            <column name="istrainer" />
+        </property>
+        <property name="foto" type="java.lang.String">
+            <column name="foto" length="45" />
+        </property>
+        
         <set name="accounts" table="users_has_account" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="users_idusers" not-null="true" />
             </key>
             <many-to-many entity-name="com.liderbs.modelo.Account">
                 <column name="Account_idAccount" not-null="true" />
+            </many-to-many>
+        </set>
+        
+        <set name="categories" table="users_has_category" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="users_idusers" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Category">
+                <column name="category_idcategory" not-null="true" />
             </many-to-many>
         </set>
     </class>

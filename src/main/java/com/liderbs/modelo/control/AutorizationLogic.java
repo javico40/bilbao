@@ -83,6 +83,7 @@ public class AutorizationLogic implements IAutorizationLogic {
         log.debug("saving Autorization instance");
 
         try {
+        	
             if (entity.getAutorizationtype() == null) {
                 throw new ZMessManager().new ForeignException(
                     "autorizationtype");
@@ -104,10 +105,6 @@ public class AutorizationLogic implements IAutorizationLogic {
             if (entity.getPlace().getIdPlace() == null) {
                 throw new ZMessManager().new EmptyFieldException(
                     "idPlace_Place");
-            }
-
-            if (getAutorization(entity.getIdAutorization()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
             autorizationDAO.save(entity);
