@@ -616,88 +616,91 @@ public class MenusView implements Serializable {
     				//Consulto la opcion
     				Options opt = it.next();
     				
-    				//Consulto el menu al que pertenece
-    				Set<Menu> menuList = opt.getMenus();
-    				
-    				found = 0;
-    				
-    				//Recorro la lista de menis para detectar si ese menu ya existe
-    				for(Menu men: menusobject){
+    				if(!opt.getOptionsName().equalsIgnoreCase("Home")){
     					
-    					 for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
-    						 Menu menu = im.next();
-    						 
-    						 if(men.getCaption().equalsIgnoreCase(menu.getCaption())){
-    							 found = 1; 
-    						 }
-    					 }
-    				}
-    				
-    				// Si el menu no ha sido agregado, lo agrego
-    				if(found == 0){
-    		    		 
-    						//Limpio la lista de opciones
-    		    		 	opcList.clear();
-    		    		 	
-    		    		 	//Recorro el menu encontrado y le añado la opcion, luego lo agrego al listado de menus
-    		    		     for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
-    		    		    	 Menu men = im.next();
-    		    		    	 opcList.add(opt);
-    		    		    	 men.setOptionses(new LinkedHashSet<Options>(opcList));
-    		    		    	 menusobject.add(men);
-    		    		     }
-    		    		     
-    					}else{
-    						
-    					//Si el menu ya esta en listado de opcions
-    						for (Menu mens : menusobject) {
-    							
-    							valid = 0;
-    							
-    							//Saco las opciones que tiene ese menu
-    							Set<Options> options = mens.getOptionses();
-    							opcList.clear();
-    							
-    							//Busco si la opcion pertenece a ese menu
-    							
-    							Set<Menu> menuListValidate = opt.getMenus();
-    							
-    							for (Iterator<Menu> im = menuListValidate.iterator(); im.hasNext(); ) {
-    	    						 
-    								Menu menu = im.next();
-    	    						 
-    	    						 if(mens.getCaption().equalsIgnoreCase(menu.getCaption())){
-    	    							 valid = 1; 
-    	    						 }
-    	    					 }
-    							
-    							if(valid == 1){
-    								
-    								//Busco si la opcion actual ya fue agregada al menu, sino la agrego a un listado
-        							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
+    					//Consulto el menu al que pertenece
+        				Set<Menu> menuList = opt.getMenus();
+        				
+        				found = 0;
+        				
+        				//Recorro la lista de menis para detectar si ese menu ya existe
+        				for(Menu men: menusobject){
+        					
+        					 for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
+        						 Menu menu = im.next();
+        						 
+        						 if(men.getCaption().equalsIgnoreCase(menu.getCaption())){
+        							 found = 1; 
+        						 }
+        					 }//end for
+        				}//end for
+        				
+        				// Si el menu no ha sido agregado, lo agrego
+        				if(found == 0){
+        		    		 
+        						//Limpio la lista de opciones
+        		    		 	opcList.clear();
+        		    		 	
+        		    		 	//Recorro el menu encontrado y le añado la opcion, luego lo agrego al listado de menus
+        		    		     for (Iterator<Menu> im = menuList.iterator(); im.hasNext(); ) {
+        		    		    	 Menu men = im.next();
+        		    		    	 opcList.add(opt);
+        		    		    	 men.setOptionses(new LinkedHashSet<Options>(opcList));
+        		    		    	 menusobject.add(men);
+        		    		     }
+        		    		     
+        					}else{
+        						
+        					//Si el menu ya esta en listado de opcions
+        						for (Menu mens : menusobject) {
+        							
+        							valid = 0;
+        							
+        							//Saco las opciones que tiene ese menu
+        							Set<Options> options = mens.getOptionses();
+        							opcList.clear();
+        							
+        							//Busco si la opcion pertenece a ese menu
+        							
+        							Set<Menu> menuListValidate = opt.getMenus();
+        							
+        							for (Iterator<Menu> im = menuListValidate.iterator(); im.hasNext(); ) {
+        	    						 
+        								Menu menu = im.next();
+        	    						 
+        	    						 if(mens.getCaption().equalsIgnoreCase(menu.getCaption())){
+        	    							 valid = 1; 
+        	    						 }
+        	    					 }
+        							
+        							if(valid == 1){
         								
-        								Options opc = new Options();
-        								opc = opit.next();
+        								//Busco si la opcion actual ya fue agregada al menu, sino la agrego a un listado
+            							for(Iterator<Options> opit = mens.getOptionses().iterator(); opit.hasNext();){
+            								
+            								Options opc = new Options();
+            								opc = opit.next();
+            								
+            								if(!opt.getOptionsName().equals(opc.getOptionsName())){
+            									opcList.add(opt);
+            									//options.add(opt);	
+                							}//end if
+            							}//end for
+            							
+            							//Se recorre ese listado y se agrega las opciones al menu
+            							for(Options opc: opcList){
+            								options.add(opc);
+            							}
+            							
+            							mens.setOptionses(options);
+            							
         								
-        								if(!opt.getOptionsName().equals(opc.getOptionsName())){
-        									opcList.add(opt);
-        									//options.add(opt);	
-            							}//end if
-        							}//end for
+        							}// end validator
         							
-        							//Se recorre ese listado y se agrega las opciones al menu
-        							for(Options opc: opcList){
-        								options.add(opc);
-        							}
-        							
-        							mens.setOptionses(options);
-        							
-    								
-    							}// end validator
-    							
-    						}//end for
-    					}
-    			}
+        						}//end for
+        					}//end if-else
+    				}//end validador home
+    			}//end for iterator
     		  } catch (Exception e) {	
     			log.info("Error al generar opciones"+e.toString());
     		  }//end try

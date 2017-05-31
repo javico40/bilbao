@@ -17,6 +17,7 @@ import java.util.Date;
 *
 */
 public class AutorizationDTO implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(AutorizationDTO.class);
     private Integer autorizationCreator;
@@ -31,6 +32,7 @@ public class AutorizationDTO implements Serializable {
     private String trainerCategory;
     private String place;
     private String autorizationStatusDescription;
+    private boolean authVisible;
     
     public AutorizationDTO(){
     	
@@ -38,7 +40,7 @@ public class AutorizationDTO implements Serializable {
 
     public AutorizationDTO(Integer idAutorization, Integer usersIdusers, Integer autorizationStatus,
 			Integer autorizationCreator, Date autorizationDate, String trainerName, Integer trainerAge,
-			String trainerCategory, String place, String autorizationStatusDescription) {
+			String trainerCategory, String place, String autorizationStatusDescription, boolean authVisible) {
 		super();
 		this.idAutorization = idAutorization;
 		this.usersIdusers = usersIdusers;
@@ -50,6 +52,7 @@ public class AutorizationDTO implements Serializable {
 		this.trainerCategory = trainerCategory;
 		this.place = place;
 		this.autorizationStatusDescription = autorizationStatusDescription;
+		this.authVisible = authVisible;
 	}
 
 	public Integer getAutorizationCreator() {
@@ -147,6 +150,14 @@ public class AutorizationDTO implements Serializable {
 
 	public void setAutorizationStatusDescription(String autorizationStatusDescription) {
 		this.autorizationStatusDescription = autorizationStatusDescription;
+	}
+
+	public boolean isAuthVisible() {
+		return authVisible;
+	}
+
+	public void setAuthVisible(boolean authVisible) {
+		this.authVisible = authVisible;
 	}
     
     

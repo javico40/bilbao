@@ -100,6 +100,51 @@
 							</p:panel>
 							
 						</p:tab>
+						<p:tab id="tabPostuled" title="Postulaciones recibidas">
+							
+							<p:panel id="panelPostuled" header="Entrenadores que se han postulado para pertener al Staff de #{autorizationView.userPlaceName}">
+								<p:growl id="menss"/>
+								<p:dataTable value="#{autorizationView.dataPostuledTrainers}"
+								 			 var="users"
+											 paginator="true"
+											 rows="5">
+											 			 
+								<p:column filterBy="#{users.trainerName}" sortBy="#{users.trainerName}" >
+										 <f:facet name="header">
+										<h:outputText value="Entrenador"/>
+										</f:facet>
+										 <h:outputText value="#{users.trainerName}"/>
+										</p:column>   
+								
+								<p:column sortBy="#{users.autorizationDate}" >
+										 <f:facet name="header">
+										<h:outputText value="Fecha de postulacion"/>
+										</f:facet>
+										 <h:outputText value="#{users.autorizationDate}"/>
+										</p:column>
+										
+								<p:column sortBy="#{users.autorizationStatusDescription}" >
+										 <f:facet name="header">
+										<h:outputText value="Estado de invitacion"/>
+										</f:facet>
+										 <h:outputText value="#{users.autorizationStatusDescription}"/>
+										</p:column>
+										
+								<p:column headerText="Opciones">
+									<p:commandButton id="btnAccept"
+													 icon="ui-icon-pencil"
+													 value="Aceptar en Staff"
+													 actionListener="#{autorizationView.action_accept_postuled}"
+													 update="@form"
+													 rendered="#{users.authVisible}">
+										<f:attribute name="selectedAuth" value="#{users}" />
+									</p:commandButton>
+								</p:column>   
+										
+								</p:dataTable>
+							</p:panel>
+							
+						</p:tab>
 					
 					</p:tabView>
 					

@@ -5,6 +5,7 @@ import com.liderbs.exceptions.*;
 import com.liderbs.modelo.*;
 import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.MenuDTO;
+import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.presentation.businessDelegate.*;
 
@@ -75,13 +76,17 @@ public class AutorizationView implements Serializable {
     // Cenpro
     private List<AutorizationDTO> dataAutorizedTrainers;
     private List<AutorizationDTO> dataInvitedTrainers;
+    private List<AutorizationDTO> dataPostuledTrainers;
     //Trainer
     private List<AutorizationDTO> dataCenproInvitation;
     private List<AutorizationDTO> dataCenproRequest;
-    
     private Integer idAccount = 0;
     private UsersDTO selectedUsers;
     private String userPlaceName;
+    private AutorizationDTO selectedAuth;
+    private List<PlaceDTO> dataPlaces;
+    private PlaceDTO selectedPlace;
+    private boolean showCenproDialog = false;
 
     public AutorizationView() {
         super();
@@ -105,8 +110,136 @@ public class AutorizationView implements Serializable {
  	    }//end for 
     }
     
-    public void action_accept_invitation(){
+    public void postulateStaff(){
+    	this.showCenproDialog = true;
+    }
+    
+    public void action_closeDialogStaff(){
+    	this.showCenproDialog = false;
+    }
+    
+    public void action_accept_invitation(ActionEvent evt){
+    	try{
+    		
+    		selectedAuth = (AutorizationDTO) (evt.getComponent().getAttributes().get("selectedAuth"));
     	
+    		if(selectedAuth == null){
+    			FacesUtils.addErrorMessage("Autorizacion invalida");
+    		}else{
+    		
+    			int idAuth = selectedAuth.getIdAutorization();
+    			Autorization auth = businessDelegatorView.getAutorization(idAuth);
+    			auth.setAutorizationStatus(1);
+    			businessDelegatorView.updateAutorization(auth);
+    			this.dataCenproInvitation = null;
+    			FacesUtils.addInfoMessage("Invitacion aceptada satisfactoriamente");
+    		}
+    	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    }
+    
+    public void action_accept_postuled(ActionEvent evt){
+    	try{
+    		
+    		selectedAuth = (AutorizationDTO) (evt.getComponent().getAttributes().get("selectedAuth"));
+    	
+    		if(selectedAuth == null){
+    			FacesUtils.addErrorMessage("Autorizacion invalida");
+    		}else{
+    		
+    			int idAuth = selectedAuth.getIdAutorization();
+    			Autorization auth = businessDelegatorView.getAutorization(idAuth);
+    			auth.setAutorizationStatus(1);
+    			businessDelegatorView.updateAutorization(auth);
+    			this.dataPostuledTrainers = null;
+    			this.dataAutorizedTrainers = null;
+    			FacesUtils.addInfoMessage("Postulacion aceptada satisfactoriamente, puede ver el nuevo entrenador en Mi Staff");
+    		}
+    	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    }
+    
+    public void action_postulate(ActionEvent evt){
+    	
+    	try{
+    		
+    		selectedPlace = (PlaceDTO) (evt.getComponent().getAttributes().get("selectedCenpro"));
+    		
+    		if(selectedPlace == null){
+    			FacesUtils.addErrorMessage("Centro deportivo seleccionado invalido");
+    		}else{
+    			
+    			Users userLogged = getUsuarioapp();
+    			int idUser = userLogged.getIdusers();
+    			int idPlace = selectedPlace.getIdPlace();
+    			
+    			List<Autorization> list = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "=","usersIdusers",false, idUser, "="},
+    																						 null,
+    																						 null);
+    			
+    			if(list.size() == 0){
+    			
+    				Place place = businessDelegatorView.getPlace(idPlace);
+    				Autorizationtype authtype = businessDelegatorView.getAutorizationtype(2);
+    				
+    				if(place == null){
+    					FacesUtils.addErrorMessage("Centro deportivo invalido");
+    				}else{
+    					
+    					Date today = new Date();
+        				Autorization auth = new Autorization();
+        				auth.setAutorizationDate(today);
+        				auth.setAutorizationStatus(2);
+        				auth.setPlace(place);
+        				auth.setUsersIdusers(idUser);
+        				auth.setAutorizationCreator(idUser);
+        				auth.setAutorizationtype(authtype);
+        				businessDelegatorView.saveAutorization(auth);
+        				FacesUtils.addInfoMessage("Postulacion realizada satisfactoriamente");	
+        				this.dataCenproRequest = null;
+        				
+    				}
+
+    			}else{
+    				
+    				int alreadyPostuled = 0;
+    				int statusPostuled = 0;
+    				
+    				for(Autorization auth:list){
+    					if(auth.getUsersIdusers() == idUser){
+    						alreadyPostuled = 1;
+    						statusPostuled = auth.getAutorizationStatus();
+    					}
+    				}
+    				
+    				if(alreadyPostuled == 1){
+    					if(statusPostuled == 2){
+    						FacesUtils.addErrorMessage("Ya ha postulado a "+selectedPlace.getPlaceName()+" y su solicitud se encuentra en espera de aceptacion por el centro deportivo");
+    					}else if(statusPostuled == 1){
+    						FacesUtils.addErrorMessage("Ya ha postulado a "+selectedPlace.getPlaceName()+" y su solicitud fue aceptada, ya hace parte del staff");
+    					}else{
+    						FacesUtils.addErrorMessage("Ya ha postulado a "+selectedPlace.getPlaceName()+" y su solicitud fue rechazada");
+    					}
+    				}else{
+    					if(statusPostuled == 2){
+    						FacesUtils.addErrorMessage("El centro deportivo "+selectedPlace.getPlaceName()+" ya le ha enviado una invitacion y se encuentra en espera");
+    					}else if(statusPostuled == 2){
+    						FacesUtils.addErrorMessage("El centro deportivo "+selectedPlace.getPlaceName()+" ya le ha enviado una invitacion y su solicitud fue aceptada, ya hace parte del staff");
+    					}else{
+    						FacesUtils.addErrorMessage("El centro deportivo "+selectedPlace.getPlaceName()+" ya le ha enviado una invitacion y ha sido rechazada");
+    					}
+    				}
+    				
+    			}//end if-else
+    		}//end if-else
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
     
     public String getUserPlaceName() {
@@ -731,9 +864,10 @@ public class AutorizationView implements Serializable {
     					
     					int idPlace = place.getIdPlace();
     					
-    					List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "="},
+    					List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "=","autorizationtype.idAutorizationtype",false, 1, "="},
     																								 null,
     																								 null);
+    					boolean authVisible = false;
     					
     					for(Autorization auth: listAuth){
     						
@@ -743,10 +877,13 @@ public class AutorizationView implements Serializable {
     						
     						if(auth.getAutorizationStatus() == 1){
     							authStatus = "Aceptada";
+    							authVisible = false;
     						}else if(auth.getAutorizationStatus() == 2){
     							authStatus = "En espera de respuesta";
+    							authVisible = true;
     						}else{
     							authStatus = "No aceptada";
+    							authVisible = false;
     						}
     						
     						if(trainer != null){
@@ -759,7 +896,8 @@ public class AutorizationView implements Serializable {
     																			   25,
     																			   "Funcionales",
     																			   place.getPlaceName(),
-    																			   authStatus));
+    																			   authStatus,
+    																			   authVisible));
     						}//end if
     					}// end for
     					
@@ -807,6 +945,8 @@ public class AutorizationView implements Serializable {
 																								 null,
 																								 null);
 					
+					boolean authVisible = false;
+					
 					for(Autorization auth: listAuth){
 						
 						Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
@@ -815,10 +955,13 @@ public class AutorizationView implements Serializable {
 						
 						if(auth.getAutorizationStatus() == 1){
 							authStatus = "Aceptada";
+							authVisible = false;
 						}else if(auth.getAutorizationStatus() == 2){
 							authStatus = "En espera de respuesta";
+							authVisible = true;
 						}else{
 							authStatus = "No aceptada";
+							authVisible = false;
 						}
 						
 						if(trainer != null){
@@ -831,7 +974,8 @@ public class AutorizationView implements Serializable {
 																			   25,
 																			   "Funcionales",
 																			   place.getPlaceName(),
-																			   authStatus));
+																			   authStatus,
+																			   authVisible));
 						}//end if
 					}// end for
 				}
@@ -871,9 +1015,11 @@ public class AutorizationView implements Serializable {
 			    
 		    	int idUser = userLogged.getIdusers();
 				
-				List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"usersIdusers",false, idUser, "="},
+				List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"usersIdusers",false, idUser, "=","autorizationCreator",false, idUser, "!="},
 						 null,
 						 null);
+				
+				boolean authVisible = false;
 				
 				for(Autorization auth: listAuth){
 					
@@ -883,11 +1029,15 @@ public class AutorizationView implements Serializable {
 					
 					if(auth.getAutorizationStatus() == 1){
 						authStatus = "Aceptada";
+						authVisible = false;
 					}else if(auth.getAutorizationStatus() == 2){
 						authStatus = "En espera de respuesta";
+						authVisible = true;
 					}else{
 						authStatus = "No aceptada";
+						authVisible = false;
 					}
+					
 					
 					Hibernate.initialize(auth.getPlace().getPlaceName());
 					
@@ -902,7 +1052,8 @@ public class AutorizationView implements Serializable {
 																		   25,
 																		   "Funcionales",
 																		   auth.getPlace().getPlaceName(),
-																		   authStatus));
+																		   authStatus,
+																		   authVisible));
 					}//end if
 				}// end for
 				
@@ -938,6 +1089,8 @@ public class AutorizationView implements Serializable {
 						 null,
 						 null);
 				
+				boolean authVisible = false;
+				
 				for(Autorization auth: listAuth){
 					
 					Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
@@ -946,10 +1099,13 @@ public class AutorizationView implements Serializable {
 					
 					if(auth.getAutorizationStatus() == 1){
 						authStatus = "Aceptada";
+						authVisible = false;
 					}else if(auth.getAutorizationStatus() == 2){
 						authStatus = "En espera de respuesta";
+						authVisible = true;
 					}else{
 						authStatus = "No aceptada";
+						authVisible = false;
 					}
 					
 					Hibernate.initialize(auth.getPlace().getPlaceName());
@@ -966,7 +1122,8 @@ public class AutorizationView implements Serializable {
 																		   25,
 																		   "Funcionales",
 																		   auth.getPlace().getPlaceName(),
-																		   authStatus));
+																		   authStatus,
+																		   authVisible));
 					}//end if
 				}// end for
 				
@@ -982,6 +1139,106 @@ public class AutorizationView implements Serializable {
 
 	public void setDataCenproRequest(List<AutorizationDTO> dataCenproRequest) {
 		this.dataCenproRequest = dataCenproRequest;
+	}
+
+	public List<PlaceDTO> getDataPlaces() {
+	try{
+		if(dataPlaces == null){
+			dataPlaces = new ArrayList<PlaceDTO>();
+			dataPlaces = businessDelegatorView.getDataPlace();	
+		}
+		
+	}catch(Exception e){
+		log.info(e.toString());
+	}
+		
+		return dataPlaces;
+	}
+
+	public void setDataPlaces(List<PlaceDTO> dataPlaces) {
+		this.dataPlaces = dataPlaces;
+	}
+
+	public boolean isShowCenproDialog() {
+		return showCenproDialog;
+	}
+
+	public void setShowCenproDialog(boolean showCenproDialog) {
+		this.showCenproDialog = showCenproDialog;
+	}
+
+	public List<AutorizationDTO> getDataPostuledTrainers() {
+		
+    	try{	
+    		
+    		if(this.dataPostuledTrainers == null){
+    			
+    				List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+    																				null,
+    																				null);
+    			 
+    			//Si tiene centro deportivos
+    			
+    			if(placeList.size() > 0){
+    				
+    				this.dataPostuledTrainers = new ArrayList<AutorizationDTO>();
+    				
+    				
+    				for(Place place: placeList){
+    					
+    					int idPlace = place.getIdPlace();
+    					
+    					List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "=","autorizationtype.idAutorizationtype",false, 2, "="},
+    																								 null,
+    																								 null);
+    					boolean authVisible = false;
+    					
+    					for(Autorization auth: listAuth){
+    						
+    						Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
+    						
+    						String authStatus = "";
+    						
+    						if(auth.getAutorizationStatus() == 1){
+    							authStatus = "Aceptada";
+    							authVisible = false;
+    						}else if(auth.getAutorizationStatus() == 2){
+    							authStatus = "En espera de respuesta";
+    							authVisible = true;
+    						}else{
+    							authStatus = "No aceptada";
+    							authVisible = false;
+    						}
+    						
+    						if(trainer != null){
+    							this.dataPostuledTrainers.add(new AutorizationDTO(auth.getIdAutorization(),
+    																			   auth.getUsersIdusers(),
+    																			   auth.getAutorizationStatus(),
+    																			   auth.getAutorizationCreator(),
+    																			   auth.getAutorizationDate(),
+    																			   trainer.getName(),
+    																			   25,
+    																			   "Funcionales",
+    																			   place.getPlaceName(),
+    																			   authStatus,
+    																			   authVisible));
+    						}//end if
+    					}// end for
+    					
+    				}// end for place
+    				
+    		}
+    	}// end is null
+    			
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+		
+		return dataPostuledTrainers;
+	}
+
+	public void setDataPostuledTrainers(List<AutorizationDTO> dataPostuledTrainers) {
+		this.dataPostuledTrainers = dataPostuledTrainers;
 	}
 
 	

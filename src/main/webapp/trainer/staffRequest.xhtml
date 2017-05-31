@@ -30,12 +30,13 @@
 					<section class="content">
 					<h:form id="form">
 					
-						<p:tabView>
+						<p:tabView id="tabViewAuth">
 						<p:tab id="tabTrainer" title="Invitaciones">
 							
 							<p:panel id="panelDataTableUsers" header="Invitaciones recibidas de centros deportivos">
 							<p:growl id="men"/>				
-							<p:dataTable value="#{autorizationView.dataCenproInvitation}"
+							<p:dataTable id="tblAuth" 
+										value="#{autorizationView.dataCenproInvitation}"
 										 var="users"
 										 paginator="true"
 										 rows="5">
@@ -65,8 +66,10 @@
 									<p:commandButton id="btnEdit"
 													 icon="ui-icon-pencil"
 													 value="Aceptar invitacion"
-													 actionListener="#{autorizationView.action_accept_invitation}">
-										<f:attribute name="selectedUsers" value="#{users}" />
+													 actionListener="#{autorizationView.action_accept_invitation}"
+													 update="@form"
+													 rendered="#{users.authVisible}">
+										<f:attribute name="selectedAuth" value="#{users}" />
 									</p:commandButton>
 								</p:column>
 										   
@@ -109,7 +112,7 @@
 								<div align="center">
 									<p:commandButton id="btnNew"
 													 value="Postularme para trabajar"
-													 action="#{usersView.addStaff}"
+													 action="#{autorizationView.postulateStaff}"
 													 update=":dialogRequest" />
 								</div>
 							</p:panel>	
@@ -121,13 +124,43 @@
 						          appendTo="@(body)"
 						          draggable="true"
 						          closable="false"
-						          visible="#{usersView.showSearchDialog}"
+						          visible="#{autorizationView.showCenproDialog}"
 						          resizable="false"
 						          modal="true"
 						          position="top"
 						          style="margin:50px;"
 						          width="750">
 						<h:form id="formDialog">
+							<p:panel>
+								<p:dataTable id="cenproList"
+											 value="#{autorizationView.dataPlaces}"
+								 			 var="place"
+											 paginator="true"
+											 rows="5">
+									<p:column filterBy="#{place.placeName}"
+											  sortBy="#{place.placeName}" >
+										 <f:facet name="header">
+											<h:outputText value="Centro deportivo"/>
+										 </f:facet>
+										 <h:outputText value="#{place.placeName}"/>
+									</p:column>	 
+									
+									<p:column headerText="Postularse">
+									<p:commandButton id="btnPostulate"
+													 icon="ui-icon-check"
+													 actionListener="#{autorizationView.action_postulate}"
+													 update=":form:tabViewAuth">
+											<f:attribute name="selectedCenpro" value="#{place}" />
+									</p:commandButton>
+								</p:column>
+										
+								</p:dataTable>
+							</p:panel>
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnExit" value="Cerrar" action="#{autorizationView.action_closeDialogStaff}" update=":dialogRequest" />
+								</div>
+							</p:panel>	
 						</h:form>
 				</p:dialog>
 					

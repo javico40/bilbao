@@ -9,9 +9,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>.::Powered by Zathuracode  2015::.</title>
+<title>.:: Govirfit, el mundo fitness a tu alcance::.</title>
 </head>
 <body>
-	<jsp:forward page="login.xhtml"/>
+	<jsp:forward page="home.xhtml"/>
 </body>
 </html>
