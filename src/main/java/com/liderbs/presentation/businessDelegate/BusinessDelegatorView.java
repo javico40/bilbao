@@ -6,6 +6,7 @@ import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
 import com.liderbs.modelo.Courses;
+import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
 import com.liderbs.modelo.EstadoId;
 import com.liderbs.modelo.Experience;
@@ -17,6 +18,7 @@ import com.liderbs.modelo.Options;
 import com.liderbs.modelo.Pais;
 import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Profile;
+import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.UsuariosCategorias;
@@ -28,6 +30,7 @@ import com.liderbs.modelo.control.IAutorizationLogic;
 import com.liderbs.modelo.control.IAutorizationtypeLogic;
 import com.liderbs.modelo.control.ICategoryLogic;
 import com.liderbs.modelo.control.ICoursesLogic;
+import com.liderbs.modelo.control.IDayLogic;
 import com.liderbs.modelo.control.IEstadoLogic;
 import com.liderbs.modelo.control.IExperienceLogic;
 import com.liderbs.modelo.control.IIdentificationLogic;
@@ -38,6 +41,7 @@ import com.liderbs.modelo.control.IOptionsLogic;
 import com.liderbs.modelo.control.IPaisLogic;
 import com.liderbs.modelo.control.IPlaceLogic;
 import com.liderbs.modelo.control.IProfileLogic;
+import com.liderbs.modelo.control.IScheduleLogic;
 import com.liderbs.modelo.control.ITrainerLogic;
 import com.liderbs.modelo.control.IUsersLogic;
 import com.liderbs.modelo.control.IUsuariosCategoriasLogic;
@@ -52,6 +56,7 @@ import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
+import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
 import com.liderbs.modelo.dto.ExperienceDTO;
 import com.liderbs.modelo.dto.IdentificationDTO;
@@ -62,6 +67,7 @@ import com.liderbs.modelo.dto.OptionsDTO;
 import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
+import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
@@ -170,6 +176,9 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     @Autowired
     private ILevelLogic levelLogic;
     @Autowired
+    private IDayLogic dayLogic;
+    @Autowired
+    private IScheduleLogic scheduleLogic;
 
 
     public List<Account> getAccount() throws Exception {
@@ -1198,5 +1207,104 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<UsuariosCategoriasDTO> getDataUsuariosCategorias()
         throws Exception {
         return usuariosCategoriasLogic.getDataUsuariosCategorias();
+    }
+    
+    public List<Day> getDay() throws Exception {
+        return dayLogic.getDay();
+    }
+
+    public void saveDay(Day entity) throws Exception {
+        dayLogic.saveDay(entity);
+    }
+
+    public void deleteDay(Day entity) throws Exception {
+        dayLogic.deleteDay(entity);
+    }
+
+    public void updateDay(Day entity) throws Exception {
+        dayLogic.updateDay(entity);
+    }
+
+    public Day getDay(Integer idday) throws Exception {
+        Day day = null;
+
+        try {
+            day = dayLogic.getDay(idday);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return day;
+    }
+
+    public List<Day> findByCriteriaInDay(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return dayLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Day> findPageDay(String sortColumnName, boolean sortAscending,
+        int startRow, int maxResults) throws Exception {
+        return dayLogic.findPageDay(sortColumnName, sortAscending, startRow,
+            maxResults);
+    }
+
+    public Long findTotalNumberDay() throws Exception {
+        return dayLogic.findTotalNumberDay();
+    }
+
+    public List<DayDTO> getDataDay() throws Exception {
+        return dayLogic.getDataDay();
+    }
+
+    public List<Schedule> getSchedule() throws Exception {
+        return scheduleLogic.getSchedule();
+    }
+
+    public void saveSchedule(Schedule entity) throws Exception {
+        scheduleLogic.saveSchedule(entity);
+    }
+
+    public void deleteSchedule(Schedule entity) throws Exception {
+        scheduleLogic.deleteSchedule(entity);
+    }
+
+    public void updateSchedule(Schedule entity) throws Exception {
+        scheduleLogic.updateSchedule(entity);
+    }
+
+    public Schedule getSchedule(Integer idschedule) throws Exception {
+        Schedule schedule = null;
+
+        try {
+            schedule = scheduleLogic.getSchedule(idschedule);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return schedule;
+    }
+
+    public List<Schedule> findByCriteriaInSchedule(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return scheduleLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Schedule> findPageSchedule(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return scheduleLogic.findPageSchedule(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberSchedule() throws Exception {
+        return scheduleLogic.findTotalNumberSchedule();
+    }
+
+    public List<ScheduleDTO> getDataSchedule() throws Exception {
+        return scheduleLogic.getDataSchedule();
     }
 }

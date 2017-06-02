@@ -32,6 +32,7 @@ public class Users  implements java.io.Serializable {
      private String foto;
      private Set<Account> accounts = new HashSet<Account>(0);
      private Set<Category> categories = new HashSet<Category>(0);
+     private Set<Schedule> schedules = new HashSet<Schedule>(0);
 
     public Users() {
     }
@@ -169,7 +170,14 @@ public class Users  implements java.io.Serializable {
 		this.foto = foto;
 	}
 	 
-	 
+	public Set<Schedule> getSchedules() {
+        return this.schedules;
+    }
+    
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
 
 }
 

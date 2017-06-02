@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 02-jun-2017 18:37:36 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Schedule" table="schedule" catalog="liderbs_virfit">
+        <id name="idschedule" type="java.lang.Integer">
+            <column name="idschedule" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="day" class="com.liderbs.modelo.Day" fetch="select">
+            <column name="day_idday" not-null="true" />
+        </many-to-one>
+        <many-to-one name="users" class="com.liderbs.modelo.Users" fetch="select">
+            <column name="users_idusers" not-null="true" />
+        </many-to-one>
+        <property name="starttime" type="java.util.Date">
+            <column name="starttime" length="19" />
+        </property>
+        <property name="endtime" type="java.util.Date">
+            <column name="endtime" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

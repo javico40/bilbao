@@ -6,6 +6,7 @@ import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
 import com.liderbs.modelo.Courses;
+import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
 import com.liderbs.modelo.EstadoId;
 import com.liderbs.modelo.Experience;
@@ -17,6 +18,7 @@ import com.liderbs.modelo.Options;
 import com.liderbs.modelo.Pais;
 import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Profile;
+import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.UsuariosCategorias;
@@ -37,6 +39,7 @@ import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
+import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
 import com.liderbs.modelo.dto.ExperienceDTO;
 import com.liderbs.modelo.dto.IdentificationDTO;
@@ -47,6 +50,7 @@ import com.liderbs.modelo.dto.OptionsDTO;
 import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
+import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
@@ -537,5 +541,49 @@ public interface IBusinessDelegatorView {
 
     public List<UsuariosCategoriasDTO> getDataUsuariosCategorias()
         throws Exception;
+    
+    public List<Day> getDay() throws Exception;
+
+    public void saveDay(Day entity) throws Exception;
+
+    public void deleteDay(Day entity) throws Exception;
+
+    public void updateDay(Day entity) throws Exception;
+
+    public Day getDay(Integer idday) throws Exception;
+
+    public List<Day> findByCriteriaInDay(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Day> findPageDay(String sortColumnName, boolean sortAscending,
+        int startRow, int maxResults) throws Exception;
+
+    public Long findTotalNumberDay() throws Exception;
+
+    public List<DayDTO> getDataDay() throws Exception;
+
+    public List<Schedule> getSchedule() throws Exception;
+
+    public void saveSchedule(Schedule entity) throws Exception;
+
+    public void deleteSchedule(Schedule entity) throws Exception;
+
+    public void updateSchedule(Schedule entity) throws Exception;
+
+    public Schedule getSchedule(Integer idschedule) throws Exception;
+
+    public List<Schedule> findByCriteriaInSchedule(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Schedule> findPageSchedule(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberSchedule() throws Exception;
+
+    public List<ScheduleDTO> getDataSchedule() throws Exception;
+
 
 }

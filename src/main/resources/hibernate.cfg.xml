@@ -26,6 +26,8 @@
         <mapping resource="persistence/Category.hbm.xml" />
         <mapping resource="persistence/Level.hbm.xml" />
         <mapping resource="persistence/UsuariosCategorias.hbm.xml" />
+        <mapping resource="persistence/Day.hbm.xml" />
+        <mapping resource="persistence/Schedule.hbm.xml" />
         
     </session-factory>
 </hibernate-configuration>
