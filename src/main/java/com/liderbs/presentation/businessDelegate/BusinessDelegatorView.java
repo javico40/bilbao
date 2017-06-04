@@ -17,6 +17,8 @@ import com.liderbs.modelo.Menu;
 import com.liderbs.modelo.Options;
 import com.liderbs.modelo.Pais;
 import com.liderbs.modelo.Place;
+import com.liderbs.modelo.Placeservices;
+import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Trainer;
@@ -40,6 +42,8 @@ import com.liderbs.modelo.control.IMenuLogic;
 import com.liderbs.modelo.control.IOptionsLogic;
 import com.liderbs.modelo.control.IPaisLogic;
 import com.liderbs.modelo.control.IPlaceLogic;
+import com.liderbs.modelo.control.IPlaceservicesLogic;
+import com.liderbs.modelo.control.IPlacetypeLogic;
 import com.liderbs.modelo.control.IProfileLogic;
 import com.liderbs.modelo.control.IScheduleLogic;
 import com.liderbs.modelo.control.ITrainerLogic;
@@ -66,6 +70,8 @@ import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
 import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
+import com.liderbs.modelo.dto.PlaceservicesDTO;
+import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
@@ -179,6 +185,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private IDayLogic dayLogic;
     @Autowired
     private IScheduleLogic scheduleLogic;
+    @Autowired
+    private IPlaceservicesLogic placeservicesLogic;
+    @Autowired
+    private IPlacetypeLogic placetypeLogic;
 
 
     public List<Account> getAccount() throws Exception {
@@ -1306,5 +1316,111 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<ScheduleDTO> getDataSchedule() throws Exception {
         return scheduleLogic.getDataSchedule();
+    }
+    
+    public List<Placeservices> getPlaceservices() throws Exception {
+        return placeservicesLogic.getPlaceservices();
+    }
+
+    public void savePlaceservices(Placeservices entity)
+        throws Exception {
+        placeservicesLogic.savePlaceservices(entity);
+    }
+
+    public void deletePlaceservices(Placeservices entity)
+        throws Exception {
+        placeservicesLogic.deletePlaceservices(entity);
+    }
+
+    public void updatePlaceservices(Placeservices entity)
+        throws Exception {
+        placeservicesLogic.updatePlaceservices(entity);
+    }
+
+    public Placeservices getPlaceservices(Integer idplaceservices)
+        throws Exception {
+        Placeservices placeservices = null;
+
+        try {
+            placeservices = placeservicesLogic.getPlaceservices(idplaceservices);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return placeservices;
+    }
+
+    public List<Placeservices> findByCriteriaInPlaceservices(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception {
+        return placeservicesLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Placeservices> findPagePlaceservices(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return placeservicesLogic.findPagePlaceservices(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberPlaceservices() throws Exception {
+        return placeservicesLogic.findTotalNumberPlaceservices();
+    }
+
+    public List<PlaceservicesDTO> getDataPlaceservices()
+        throws Exception {
+        return placeservicesLogic.getDataPlaceservices();
+    }
+
+    public List<Placetype> getPlacetype() throws Exception {
+        return placetypeLogic.getPlacetype();
+    }
+
+    public void savePlacetype(Placetype entity) throws Exception {
+        placetypeLogic.savePlacetype(entity);
+    }
+
+    public void deletePlacetype(Placetype entity) throws Exception {
+        placetypeLogic.deletePlacetype(entity);
+    }
+
+    public void updatePlacetype(Placetype entity) throws Exception {
+        placetypeLogic.updatePlacetype(entity);
+    }
+
+    public Placetype getPlacetype(Integer idplacetype)
+        throws Exception {
+        Placetype placetype = null;
+
+        try {
+            placetype = placetypeLogic.getPlacetype(idplacetype);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return placetype;
+    }
+
+    public List<Placetype> findByCriteriaInPlacetype(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return placetypeLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Placetype> findPagePlacetype(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return placetypeLogic.findPagePlacetype(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberPlacetype() throws Exception {
+        return placetypeLogic.findTotalNumberPlacetype();
+    }
+
+    public List<PlacetypeDTO> getDataPlacetype() throws Exception {
+        return placetypeLogic.getDataPlacetype();
     }
 }

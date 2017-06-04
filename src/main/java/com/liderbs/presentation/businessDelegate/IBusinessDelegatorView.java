@@ -17,6 +17,8 @@ import com.liderbs.modelo.Menu;
 import com.liderbs.modelo.Options;
 import com.liderbs.modelo.Pais;
 import com.liderbs.modelo.Place;
+import com.liderbs.modelo.Placeservices;
+import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Trainer;
@@ -49,6 +51,8 @@ import com.liderbs.modelo.dto.MenuDTO;
 import com.liderbs.modelo.dto.OptionsDTO;
 import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.PlaceDTO;
+import com.liderbs.modelo.dto.PlaceservicesDTO;
+import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
@@ -584,6 +588,56 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberSchedule() throws Exception;
 
     public List<ScheduleDTO> getDataSchedule() throws Exception;
+    
+    public List<Placeservices> getPlaceservices() throws Exception;
+
+    public void savePlaceservices(Placeservices entity)
+        throws Exception;
+
+    public void deletePlaceservices(Placeservices entity)
+        throws Exception;
+
+    public void updatePlaceservices(Placeservices entity)
+        throws Exception;
+
+    public Placeservices getPlaceservices(Integer idplaceservices)
+        throws Exception;
+
+    public List<Placeservices> findByCriteriaInPlaceservices(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<Placeservices> findPagePlaceservices(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberPlaceservices() throws Exception;
+
+    public List<PlaceservicesDTO> getDataPlaceservices()
+        throws Exception;
+
+    public List<Placetype> getPlacetype() throws Exception;
+
+    public void savePlacetype(Placetype entity) throws Exception;
+
+    public void deletePlacetype(Placetype entity) throws Exception;
+
+    public void updatePlacetype(Placetype entity) throws Exception;
+
+    public Placetype getPlacetype(Integer idplacetype)
+        throws Exception;
+
+    public List<Placetype> findByCriteriaInPlacetype(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Placetype> findPagePlacetype(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberPlacetype() throws Exception;
+
+    public List<PlacetypeDTO> getDataPlacetype() throws Exception;
 
 
 }

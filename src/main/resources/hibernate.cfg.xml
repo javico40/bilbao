@@ -28,6 +28,8 @@
         <mapping resource="persistence/UsuariosCategorias.hbm.xml" />
         <mapping resource="persistence/Day.hbm.xml" />
         <mapping resource="persistence/Schedule.hbm.xml" />
+        <mapping resource="persistence/Placeservices.hbm.xml" />
+        <mapping resource="persistence/Placetype.hbm.xml" />
         
     </session-factory>
 </hibernate-configuration>

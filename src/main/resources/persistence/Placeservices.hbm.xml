@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-jun-2017 16:19:54 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Placeservices" table="placeservices" catalog="liderbs_virfit">
+        <id name="idplaceservices" type="java.lang.Integer">
+            <column name="idplaceservices" />
+            <generator class="identity" />
+        </id>
+        <property name="names" type="java.lang.String">
+            <column name="names" length="100" />
+        </property>
+        <set name="places" table="place_has_placeservices" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="placeservices_idplaceservices" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Place">
+                <column name="place_idPlace" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

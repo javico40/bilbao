@@ -32,6 +32,8 @@ public class Place  implements java.io.Serializable {
      private Integer province;
      private String city;
      private String owner_name;
+     private Set<Placetype> placetypes = new HashSet<Placetype>(0);
+     private Set<Placeservices> placeserviceses = new HashSet<Placeservices>(0);
      
      private Set<Autorization> autorizations = new HashSet<Autorization>(0);
 
@@ -169,7 +171,20 @@ public class Place  implements java.io.Serializable {
 		this.owner_name = owner_name;
 	}
 
-
+	public Set<Placetype> getPlacetypes() {
+        return this.placetypes;
+    }
+    
+    public void setPlacetypes(Set<Placetype> placetypes) {
+        this.placetypes = placetypes;
+    }
+    public Set<Placeservices> getPlaceserviceses() {
+        return this.placeserviceses;
+    }
+    
+    public void setPlaceserviceses(Set<Placeservices> placeserviceses) {
+        this.placeserviceses = placeserviceses;
+    }
 
 
 }
