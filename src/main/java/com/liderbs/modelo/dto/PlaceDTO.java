@@ -34,8 +34,24 @@ public class PlaceDTO implements Serializable {
     private Integer province;
     private String city;
     private String owner_name;
+    
+    
 
-    public Integer getIdPlace() {
+    public PlaceDTO() {
+		super();
+	}
+    
+	public PlaceDTO(Integer idPlace, String placeName, String placeAddress, String placePhone) {
+		super();
+		this.idPlace = idPlace;
+		this.placeName = placeName;
+		this.placeAddress = placeAddress;
+		this.placePhone = placePhone;
+	}
+
+
+
+	public Integer getIdPlace() {
         return idPlace;
     }
 

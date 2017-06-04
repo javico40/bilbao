@@ -18,6 +18,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 
@@ -28,10 +29,12 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -68,6 +71,7 @@ public class PlaceView implements Serializable {
     private CommandButton btnDelete;
     private CommandButton btnClear;
     private List<PlaceDTO> data;
+    private List<PlaceDTO> dataCenpro;
     private PlaceDTO selectedPlace;
     private Place entity;
     private SelectOneMenu selectPais;
@@ -79,6 +83,9 @@ public class PlaceView implements Serializable {
     private InputText txtAssocAct;
     private InputText txtAssocActOwner;
     private Integer assocAct;
+    private Users usuarioapp;
+    private Integer idAccount = 0;
+    
     
     
     private boolean showDialog;
@@ -88,6 +95,32 @@ public class PlaceView implements Serializable {
     public PlaceView() {
         super();
     }
+    
+    @PostConstruct
+    public void init(){
+    	
+    	Users user = getUsuarioapp();
+		Set<Account> list = user.getAccounts();
+		
+		 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+ 		 	Account act = it.next();
+ 	        
+ 		 	//Si tiene cuenta activa
+ 		 	if(act.getAccountStatus() == 1){
+ 		 		if(act.getAccountDefault() == 1){
+ 		 			idAccount = act.getIdAccount();
+ 		 		}
+ 		 	}
+ 	    }//end for 
+    }
+    
+    public Users getUsuarioapp() {
+		if(usuarioapp==null) {				
+			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+		}
+		return usuarioapp;
+	}
     
     public void buscarAssocAct(){
     	
@@ -370,6 +403,21 @@ public class PlaceView implements Serializable {
 
         return "";
     }
+    
+    public String action_edit_cenpro(ActionEvent evt) {
+        
+    	selectedPlace = (PlaceDTO) (evt.getComponent().getAttributes()
+                                       .get("selectedPlace"));	
+    	txtPlaceName.setValue(selectedPlace.getPlaceName());
+        txtPlaceName.setDisabled(false);
+    	txtPlaceAddress.setValue(selectedPlace.getPlaceAddress());
+        txtPlaceAddress.setDisabled(false);
+        txtPlacePhone.setValue(selectedPlace.getPlacePhone());
+        txtPlacePhone.setDisabled(false);
+        setShowDialog(true);
+
+        return "";
+    }
 
     public String action_save() {
         try {
@@ -387,15 +435,61 @@ public class PlaceView implements Serializable {
         return "";
     }
     
+    public String action_save_cenpro() {
+        try {
+            if ((selectedPlace == null) && (entity == null)) {
+                action_create_cenpro();
+            } else {
+                action_modify_cenpro();
+            }
+
+            data = null;
+        } catch (Exception e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
+    }
+    
     public void validarDepto(){
     	
+    }
+    
+    public String action_create_cenpro() {
+        try {
+        	
+            entity = new Place();
+            Date today = new Date();
+            
+            entity.setAccountID(idAccount);
+            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
+            entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
+            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+            entity.setCountry(FacesUtils.checkInteger(selectPais));
+            //entity.setProvince(FacesUtils.checkInteger(selectDepto));
+            entity.setProvince(1722);
+            entity.setCity(FacesUtils.checkString(txtCiudad));
+            entity.setPlaceIsVzone(0);
+            entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
+            entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
+            entity.setPlaceCreated(today);
+            entity.setPlaceStatus(1);
+            businessDelegatorView.savePlace(entity);
+            
+            FacesUtils.addInfoMessage("Centro deportivo registrado satisfactoriamente");
+            action_clear();
+        } catch (Exception e) {
+            entity = null;
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
     }
 
     public String action_create() {
         try {
         	
             entity = new Place();
-
             Date today = new Date();
             
             entity.setAccountID(assocAct);
@@ -441,6 +535,29 @@ public class PlaceView implements Serializable {
             entity.setPlaceStatus(FacesUtils.checkInteger(txtPlaceStatus));
             businessDelegatorView.updatePlace(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+        } catch (Exception e) {
+            data = null;
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
+    }
+    
+    public String action_modify_cenpro() {
+        try {
+        	
+            if (entity == null) {
+                Integer idPlace = new Integer(selectedPlace.getIdPlace());
+                entity = businessDelegatorView.getPlace(idPlace);
+            }
+
+            entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
+            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+            entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
+            entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
+            businessDelegatorView.updatePlace(entity);
+            FacesUtils.addInfoMessage("Centro deportivo modificado satisfactoriamente");
+        
         } catch (Exception e) {
             data = null;
             FacesUtils.addErrorMessage(e.getMessage());
@@ -775,6 +892,43 @@ public class PlaceView implements Serializable {
 
 	public void setTxtAssocActOwner(InputText txtAssocActOwner) {
 		this.txtAssocActOwner = txtAssocActOwner;
+	}
+
+	public List<PlaceDTO> getDataCenpro() {
+		try {
+			
+            if (dataCenpro == null) {
+            	
+            	if(idAccount == 0){
+            		FacesUtils.addErrorMessage("Error al leer la cuenta, contacte con el administrador en Ayuda");
+            	}else{
+            		
+            		dataCenpro = new ArrayList<PlaceDTO>();
+                	
+                	List<Place> list = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+                			                                                       null,
+                			                                                       null);
+                	
+                	for(Place place: list){
+                		
+                		dataCenpro.add(new PlaceDTO(place.getIdPlace(),
+                				                    place.getPlaceName(),
+                				                    place.getPlaceAddress(),
+                				                    place.getPlacePhone()));
+                	}
+                	
+            	}//end if-else
+
+            }//end if
+            
+        } catch (Exception e) {
+            log.info(e.toString());
+        }
+		return dataCenpro;
+	}
+
+	public void setDataCenpro(List<PlaceDTO> dataCenpro) {
+		this.dataCenpro = dataCenpro;
 	}
     
     
