@@ -10,6 +10,7 @@ import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
 
+import org.hibernate.Hibernate;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
@@ -29,8 +30,11 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -85,6 +89,10 @@ public class PlaceView implements Serializable {
     private Integer assocAct;
     private Users usuarioapp;
     private Integer idAccount = 0;
+    private Integer[] selectTiposCentro;
+    private Map<String,Integer> tiposCentro;
+    private Integer[] selectServicios;
+    private Map<String,Integer> tiposServicio;
     
     
     
@@ -407,13 +415,44 @@ public class PlaceView implements Serializable {
     public String action_edit_cenpro(ActionEvent evt) {
         
     	selectedPlace = (PlaceDTO) (evt.getComponent().getAttributes()
-                                       .get("selectedPlace"));	
+                                       .get("selectedPlace"));
+    	
+    	txtPlaceNit.setValue(selectedPlace.getFiscalID());
     	txtPlaceName.setValue(selectedPlace.getPlaceName());
         txtPlaceName.setDisabled(false);
     	txtPlaceAddress.setValue(selectedPlace.getPlaceAddress());
         txtPlaceAddress.setDisabled(false);
         txtPlacePhone.setValue(selectedPlace.getPlacePhone());
         txtPlacePhone.setDisabled(false);
+        
+        Hibernate.initialize(selectedPlace.getPlacetypes());
+        Set<Placetype> placeType = selectedPlace.getPlacetypes();
+        
+        selectTiposCentro = new Integer[placeType.size()];
+        
+        int i = 0;
+        
+        for (Iterator<Placetype> it = placeType.iterator(); it.hasNext(); ) {
+   		 
+		 	Placetype opt = it.next();
+		 	selectTiposCentro[i] = opt.getIdplacetype();
+		 	i++;
+        }
+        
+        Hibernate.initialize(selectedPlace.getPlaceserviceses());
+        Set<Placeservices> placeServices = selectedPlace.getPlaceserviceses();
+        
+        selectServicios = new Integer[placeServices.size()];
+        
+        i = 0;
+        
+        for (Iterator<Placeservices> it = placeServices.iterator(); it.hasNext(); ) {
+   		 
+		 	Placeservices opt = it.next();
+		 	selectServicios[i] = opt.getIdplaceservices();
+		 	i++;
+        }
+        
         setShowDialog(true);
 
         return "";
@@ -468,12 +507,40 @@ public class PlaceView implements Serializable {
             entity.setCountry(FacesUtils.checkInteger(selectPais));
             //entity.setProvince(FacesUtils.checkInteger(selectDepto));
             entity.setProvince(1722);
-            entity.setCity(FacesUtils.checkString(txtCiudad));
+            entity.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());
             entity.setPlaceIsVzone(0);
             entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
             entity.setPlaceCreated(today);
             entity.setPlaceStatus(1);
+            
+            
+            if(selectTiposCentro!=null && selectTiposCentro.length>0){
+            	
+            	Set<Placetype> placeType = new HashSet();
+            	
+            	for (int i = 0; i < selectTiposCentro.length; i++) {
+	            	 
+            		Placetype opc = businessDelegatorView.getPlacetype(selectTiposCentro[i]);
+            		placeType.add(opc);
+	            }
+            	 entity.setPlacetypes(placeType);
+            }
+            
+            if(selectServicios != null && selectServicios.length>0){
+            	
+            	Set<Placeservices> opciones = new HashSet();
+            	
+            	for (int i = 0; i < selectServicios.length; i++) {
+	            	 
+            		Placeservices opc = businessDelegatorView.getPlaceservices(selectServicios[i]);
+            		opciones.add(opc);
+	            }
+            	 entity.setPlaceserviceses(opciones);
+            }
+            
+            
+            
             businessDelegatorView.savePlace(entity);
             
             FacesUtils.addInfoMessage("Centro deportivo registrado satisfactoriamente");
@@ -520,6 +587,7 @@ public class PlaceView implements Serializable {
 
     public String action_modify() {
         try {
+        	
             if (entity == null) {
                 Integer idPlace = new Integer(selectedPlace.getIdPlace());
                 entity = businessDelegatorView.getPlace(idPlace);
@@ -534,7 +602,9 @@ public class PlaceView implements Serializable {
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
             entity.setPlaceStatus(FacesUtils.checkInteger(txtPlaceStatus));
             businessDelegatorView.updatePlace(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+            
+            FacesUtils.addInfoMessage("Centro deportivo actualizado satisfactoriamente");
+            
         } catch (Exception e) {
             data = null;
             FacesUtils.addErrorMessage(e.getMessage());
@@ -551,11 +621,36 @@ public class PlaceView implements Serializable {
                 entity = businessDelegatorView.getPlace(idPlace);
             }
 
+            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
             entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
             entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
             entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
             businessDelegatorView.updatePlace(entity);
+            
+            Set<Placetype> placeType = entity.getPlacetypes();   
+            placeType.clear();
+            
+            for (int i = 0; i < selectTiposCentro.length; i++) {  	 
+            	Placetype opc = businessDelegatorView.getPlacetype(selectTiposCentro[i]);
+            	placeType.add(opc);
+            }
+            
+            entity.setPlacetypes(placeType);
+            
+            
+            Set<Placeservices> placeServices = entity.getPlaceserviceses();   
+            placeServices.clear();
+            
+            for (int i = 0; i < selectServicios.length; i++) {  	 
+            	Placeservices opc = businessDelegatorView.getPlaceservices(selectServicios[i]);
+            	placeServices.add(opc);
+            }
+            
+            entity.setPlaceserviceses(placeServices);
+            
+            businessDelegatorView.updatePlace(entity);
+            
             FacesUtils.addInfoMessage("Centro deportivo modificado satisfactoriamente");
         
         } catch (Exception e) {
@@ -912,9 +1007,12 @@ public class PlaceView implements Serializable {
                 	for(Place place: list){
                 		
                 		dataCenpro.add(new PlaceDTO(place.getIdPlace(),
+                				                    place.getFiscalID(),
                 				                    place.getPlaceName(),
                 				                    place.getPlaceAddress(),
-                				                    place.getPlacePhone()));
+                				                    place.getPlacePhone(),
+                				                    place.getPlacetypes(),
+                				                    place.getPlaceserviceses()));
                 	}
                 	
             	}//end if-else
@@ -930,6 +1028,72 @@ public class PlaceView implements Serializable {
 	public void setDataCenpro(List<PlaceDTO> dataCenpro) {
 		this.dataCenpro = dataCenpro;
 	}
+
+	public Integer[] getSelectTiposCentro() {
+		return selectTiposCentro;
+	}
+
+	public void setSelectTiposCentro(Integer[] selectTiposCentro) {
+		this.selectTiposCentro = selectTiposCentro;
+	}
+
+	public Map<String, Integer> getTiposCentro() {
+		
+		if(tiposCentro==null){
+    		try {
+    			
+				List<Placetype> placeTypeList = businessDelegatorView.getPlacetype();
+				
+				tiposCentro = new LinkedHashMap<String, Integer>();
+				
+				for (Placetype placetypetmp : placeTypeList) {
+					tiposCentro.put(placetypetmp.getName(), placetypetmp.getIdplacetype());
+				}
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+    	}
+		
+		return tiposCentro;
+	}
+
+	public void setTiposCentro(Map<String, Integer> tiposCentro) {
+		this.tiposCentro = tiposCentro;
+	}
+
+	public Integer[] getSelectServicios() {	
+		return selectServicios;
+	}
+
+	public void setSelectServicios(Integer[] selectServicios) {
+		this.selectServicios = selectServicios;
+	}
+
+	public Map<String, Integer> getTiposServicio() {
+		
+		if(tiposServicio==null){
+    		try {
+				List<Placeservices> servicesList = businessDelegatorView.getPlaceservices();
+				
+				tiposServicio = new LinkedHashMap<String, Integer>();
+				
+				for (Placeservices servicestmp : servicesList) {
+					tiposServicio.put(servicestmp.getNames(), servicestmp.getIdplaceservices());
+				}
+				
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+    	}
+		
+		return tiposServicio;
+	}
+
+	public void setTiposServicio(Map<String, Integer> tiposServicio) {
+		this.tiposServicio = tiposServicio;
+	}
+	
+	
     
     
 }

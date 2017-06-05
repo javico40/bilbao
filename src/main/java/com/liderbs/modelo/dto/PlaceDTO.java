@@ -3,11 +3,17 @@ package com.liderbs.modelo.dto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.liderbs.modelo.Options;
+import com.liderbs.modelo.Placeservices;
+import com.liderbs.modelo.Placetype;
+
 import java.io.Serializable;
 
 import java.sql.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -34,6 +40,8 @@ public class PlaceDTO implements Serializable {
     private Integer province;
     private String city;
     private String owner_name;
+    private Set<Placetype> placetypes = new HashSet<Placetype>(0);
+    private Set<Placeservices> placeserviceses = new HashSet<Placeservices>(0);
     
     
 
@@ -41,12 +49,16 @@ public class PlaceDTO implements Serializable {
 		super();
 	}
     
-	public PlaceDTO(Integer idPlace, String placeName, String placeAddress, String placePhone) {
+	public PlaceDTO(Integer idPlace, String fiscalID,  String placeName, String placeAddress, String placePhone, Set<Placetype> placetypes, Set<Placeservices> placeserviceses) {
 		super();
 		this.idPlace = idPlace;
 		this.placeName = placeName;
 		this.placeAddress = placeAddress;
 		this.placePhone = placePhone;
+		this.placetypes = placetypes;
+		this.placeserviceses = placeserviceses;
+		this.fiscalID = fiscalID;
+		
 	}
 
 
@@ -170,8 +182,21 @@ public class PlaceDTO implements Serializable {
 	public void setOwner_name(String owner_name) {
 		this.owner_name = owner_name;
 	}
-	
-	
-    
-    
+
+	public Set<Placetype> getPlacetypes() {
+		return placetypes;
+	}
+
+	public void setPlacetypes(Set<Placetype> placetypes) {
+		this.placetypes = placetypes;
+	}
+
+	public Set<Placeservices> getPlaceserviceses() {
+		return placeserviceses;
+	}
+
+	public void setPlaceserviceses(Set<Placeservices> placeserviceses) {
+		this.placeserviceses = placeserviceses;
+	}
+  
 }

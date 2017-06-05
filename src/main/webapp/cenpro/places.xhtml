@@ -22,7 +22,7 @@
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-							<li class="active">Mis Lugares</li>
+							<li class="active">Mis Centros Deportivos</li>
 						</ol>
 					</section>
 
@@ -30,7 +30,7 @@
 					<section class="content">
 					<h:form id="form">							  		
 						
-						<p:panel id="panelDataTablePlace" header="Centros deportivos que pertenecen a ">
+						<p:panel id="panelDataTablePlace" header="Centros deportivos que pertenecen a mi red">
 							<p:growl id="men"/>				
 							<p:dataTable value="#{placeView.dataCenpro}" var="place"
 								paginator="true" rows="5">
@@ -149,6 +149,21 @@
 									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
+								    
+								    <h:outputText id="msgPlaceTypes" value=" Tipo de Centro deportivo"/>
+									<p:selectCheckboxMenu id="opc1" value="#{placeView.selectTiposCentro}" label="Tipos"
+								                              filter="true" filterMatchMode="startsWith" styleClass="form-control">
+								            <f:selectItems value="#{placeView.tiposCentro}" />
+								     </p:selectCheckboxMenu>
+								     
+								     <h:outputText value="&#160;" />
+								     <h:outputText value="&#160;" />
+								     
+								     <h:outputText id="msgPlaceServices" value=" Servicios prestados"/>
+									<p:selectCheckboxMenu id="opc2" value="#{placeView.selectServicios}" label="Servicios"
+								                              filter="true" filterMatchMode="startsWith" styleClass="form-control">
+								            <f:selectItems value="#{placeView.tiposServicio}" />
+								     </p:selectCheckboxMenu>
 																			
 								</h:panelGrid>
 							</p:panel>						   
