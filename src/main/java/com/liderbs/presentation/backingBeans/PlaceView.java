@@ -106,7 +106,9 @@ public class PlaceView implements Serializable {
     
     @PostConstruct
     public void init(){
+    try{
     	
+    
     	Users user = getUsuarioapp();
 		Set<Account> list = user.getAccounts();
 		
@@ -120,6 +122,85 @@ public class PlaceView implements Serializable {
  		 		}
  		 	}
  	    }//end for 
+		 
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+		 
+    }
+    
+    public void populateCenproData(){
+    	
+    	try{
+    		
+    		 Account account = businessDelegatorView.getAccount(idAccount);
+    		 
+    			//Get profile of the user and call configuration if is a centro deportivo
+    			 
+    			 if(account.getProfile().getProfileName().contains("CENTROS DEPORTIVOS")){
+    				
+    				   //Obtener la informacion de su centro deportivo
+    				 
+    				 List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+    																					 null,
+    																					 null);
+    				 
+    				 int idPlace = 0;
+    				 
+    				 for(Place place: placeList){
+    					 idPlace = place.getIdPlace();
+    				 }
+    				 
+    				 if(idPlace > 0){
+    					 
+    					 Place place = businessDelegatorView.getPlace(idPlace);
+    					
+    					 txtPlaceNit.setValue((place.getFiscalID() != null) ? place.getFiscalID() : null );
+    					 txtPlaceName.setValue((place.getPlaceName() != null) ? place.getPlaceName() : null );
+    				     txtPlaceName.setDisabled(false);
+    				     txtPlaceAddress.setValue((place.getPlaceAddress() != null) ? place.getPlaceAddress() : null );
+    				     txtPlaceAddress.setDisabled(false);
+    				     txtPlacePhone.setValue((place.getPlacePhone() != null) ? place.getPlacePhone() : null);
+    				     txtPlacePhone.setDisabled(false);
+    				     txtPlacePhoneAlt.setValue((place.getPlacePhoneAlt() != null) ? place.getPlacePhoneAlt() : null);
+    				     txtPlacePhoneAlt.setDisabled(false);
+    				     
+    				     Hibernate.initialize(place.getPlacetypes());
+    				        Set<Placetype> placeType = place.getPlacetypes();
+    				        
+    				        selectTiposCentro = new Integer[placeType.size()];
+    				        
+    				        int i = 0;
+    				        
+    				        for (Iterator<Placetype> it = placeType.iterator(); it.hasNext(); ) {
+    				   		 
+    						 	Placetype opt = it.next();
+    						 	selectTiposCentro[i] = opt.getIdplacetype();
+    						 	i++;
+    				        }
+    				        
+    				        Hibernate.initialize(place.getPlaceserviceses());
+    				        Set<Placeservices> placeServices = place.getPlaceserviceses();
+    				        
+    				        selectServicios = new Integer[placeServices.size()];
+    				        
+    				        i = 0;
+    				        
+    				        for (Iterator<Placeservices> it = placeServices.iterator(); it.hasNext(); ) {
+    				   		 
+    						 	Placeservices opt = it.next();
+    						 	selectServicios[i] = opt.getIdplaceservices();
+    						 	i++;
+    				        }
+    					 
+    				 }//have Id Place
+    			 }//isCentroDeportivo
+    		
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+    	
     }
     
     public Users getUsuarioapp() {
@@ -1014,6 +1095,8 @@ public class PlaceView implements Serializable {
                 				                    place.getPlacetypes(),
                 				                    place.getPlaceserviceses()));
                 	}
+                	
+                	populateCenproData();
                 	
             	}//end if-else
 

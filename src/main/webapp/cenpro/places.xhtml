@@ -22,88 +22,48 @@
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-							<li class="active">Mis Centros Deportivos</li>
+							<li class="active">Mi Centros Deportivo</li>
 						</ol>
 					</section>
 
 					<!-- Main content -->
 					<section class="content">
-					<h:form id="form">							  		
-						
-						<p:panel id="panelDataTablePlace" header="Centros deportivos que pertenecen a mi red">
-							<p:growl id="men"/>				
-							<p:dataTable value="#{placeView.dataCenpro}" var="place"
-								paginator="true" rows="5">
-										
-										<p:column filterBy="#{place.placeName}" sortBy="#{place.placeName}" >
-										 <f:facet name="header">
-										<h:outputText value="Nombre / Razon social"/>
-										</f:facet>
-										 <h:outputText value="#{place.placeName}"/>
-										</p:column>
-										
-										<p:column sortBy="#{place.placeAddress}" >
-										 <f:facet name="header">
-										<h:outputText value="Direccion"/>
-										</f:facet>
-										 <h:outputText value="#{place.placeAddress}"/>
-										</p:column>  
-										
-										<p:column sortBy="#{place.placePhone}" >
-										 <f:facet name="header">
-										<h:outputText value="Telefono"/>
-										</f:facet>
-										 <h:outputText value="#{place.placePhone}"/>
-										</p:column>
-			                    		
-			                    			                    
-								<p:column headerText="Opciones">
-									<p:commandButton id="btnEdit"
-									                 icon="ui-icon-pencil"
-										             update=":dialogPlace"
-										             actionListener="#{placeView.action_edit_cenpro}">
-										             <f:attribute name="selectedPlace" value="#{place}" />
-									</p:commandButton>
-								</p:column>									                    
-							</p:dataTable>	
-						</p:panel>
-						<p:panel id="panelBoton">
-							<div align="center">
-								<p:commandButton id="btnNew" value="Nuevo"
-									action="#{placeView.action_new()}" update=":dialogPlace" />
-							</div>
-						</p:panel>						
-		   			</h:form>
-					<p:dialog id="dialogPlace" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{placeView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
-							<p:messages id="msg" />
-							<p:panel id="panelPlace" header="Centro deportivo">							
-							    <h:panelGrid columns="2" id="panelGrid" >
+					<h:form id="form">	
+						<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{placeView.dataCenpro}" var="places"></p:dataTable>
+						<p:panel id="panelPlace" header="Datos de tu Centro Deportivo">	
+							<p:tabView>
+								<p:tab title="Datos de tu Centro Deportivo">
+								
+														    <h:panelGrid columns="4" id="panelGrid" >
 							    
 							    	<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
 									
 							    	<h:outputText id="msgPlaceNit" value=" Identificador Fiscal"/>
 									<p:inputText id="txtPlaceNit" binding="#{placeView.txtPlaceNit}"/>
 									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
 									<h:outputText id="msgPlaceName" value=" Nombre / Razon Social"/>
 									<p:inputText id="txtPlaceName" binding="#{placeView.txtPlaceName}"/>
 									
-															    
 									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />									
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
 									 																		
 									<h:outputText id="msgPlaceAddress" value=" Direccion"/>
 									<p:inputText id="txtPlaceAddress" binding="#{placeView.txtPlaceAddress}"/>
 									
+									<h:outputText id="msgPlacePhone" value=" Telefono"/>
+									<p:inputText id="txtPlacePhone"  binding="#{placeView.txtPlacePhone}"/>
+									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
-								    
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
 								    <h:outputText id="textPais" value=" Pais" />
 								    <p:selectOneMenu id="selectPais" binding="#{placeView.selectPais}" style="width:125px">
             									<f:selectItem itemLabel="Seleccionar" itemValue="" />
@@ -112,9 +72,6 @@
 														listener="#{placeView.buscarDepto}" process="@this"
 															update="selectDepto" />
         									</p:selectOneMenu>
-								    
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
 								    
 									<h:outputText id="textDepto" value=" Departamento" />
 									<p:selectOneMenu id="selectDepto" disabled="#{placeView.lockDepto}" binding="#{placeView.selectDepto}"
@@ -129,54 +86,95 @@
 									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
-								    
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
 								    <h:outputText id="textCiudad" value=" Ciudad" />
 								    <p:inputText id="txtCiudad" binding="#{placeView.txtCiudad}" />
 								    
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									
-									<h:outputText id="msgPlacePhone" value=" Telefono"/>
-									<p:inputText id="txtPlacePhone"  binding="#{placeView.txtPlacePhone}"/>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									<h:outputText id="msgPlacePhoneAlt" value=" Telefono alternativo"/>
+								    <h:outputText id="msgPlacePhoneAlt" value=" Telefono alternativo"/>
 									<p:inputText id="txtPlacePhoneAlt" binding="#{placeView.txtPlacePhoneAlt}"/>
 									
+									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
-								    
-								    <h:outputText id="msgPlaceTypes" value=" Tipo de Centro deportivo"/>
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									
+									<h:outputText id="msgPlaceTypes" value=" Tipo de Centro deportivo"/>
 									<p:selectCheckboxMenu id="opc1" value="#{placeView.selectTiposCentro}" label="Tipos"
 								                              filter="true" filterMatchMode="startsWith" styleClass="form-control">
 								            <f:selectItems value="#{placeView.tiposCentro}" />
 								     </p:selectCheckboxMenu>
-								     
-								     <h:outputText value="&#160;" />
-								     <h:outputText value="&#160;" />
 								     
 								     <h:outputText id="msgPlaceServices" value=" Servicios prestados"/>
 									<p:selectCheckboxMenu id="opc2" value="#{placeView.selectServicios}" label="Servicios"
 								                              filter="true" filterMatchMode="startsWith" styleClass="form-control">
 								            <f:selectItems value="#{placeView.tiposServicio}" />
 								     </p:selectCheckboxMenu>
+								     
+								    <h3>Horario</h3>
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								    
+								     
+								    <h:outputText value="&#160;" />
+								    <h:outputText id="msgEntry" value=" Entrada"/>
+									<h:outputText value="&#160;" />
+								    <h:outputText id="msgOut" value=" Salida"/>
+								    
+								    <h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								    							    
+								    <h:outputText id="msgWeekly" value=" Lunes a Viernes"/>
+								    <p:calendar id="weekIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <h:outputText value="&#160;" />
+								    <p:calendar id="weekOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    
+								    <h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								    
+								    <h:outputText id="msgSaturday" value=" Sabados"/>
+								    <p:calendar id="msgSaturdayIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <h:outputText value="&#160;" />
+								    <p:calendar id="msgSaturdayOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    
+								    <h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								    
+								    <h:outputText id="msgSunday" value=" Domingos y Festivos"/>
+								    <p:calendar id="msgSundayIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <h:outputText value="&#160;" />
+								    <p:calendar id="msgSundayOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								   
 																			
 								</h:panelGrid>
+									
+								</p:tab>
+								<p:tab title="Constructor de Horario Govirfit Zone">
+								</p:tab>
+								<p:tab title="Constructor de Clases Govirfit Day">
+								</p:tab>
+							</p:tabView>
+						
+							    			  						
+		
 							</p:panel>						   
-							<p:panel id="panelBotones">
+						    <p:panel id="panelBotones">
 								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_save_cenpro}" update=":dialogPlace :form:panelDataTablePlace" />
-									<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update=":dialogPlace" />
-									<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update=":dialogPlace" />
+									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_save_cenpro}" update="@form" />
+									<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update="@form" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update="@form" />
 								</div>
 							</p:panel>					
-						</h:form>
-					</p:dialog>
-			
+		   			</h:form>			
 		  			</section>
 				</div>
 				<!-- /.content-wrapper -->
