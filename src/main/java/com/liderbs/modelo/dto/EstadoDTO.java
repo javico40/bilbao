@@ -21,7 +21,6 @@ public class EstadoDTO implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(EstadoDTO.class);
     private String estadonombre;
     private Integer idestado;
-    private Integer paisId;
     private Integer idpais_Pais;
 
     public String getEstadonombre() {
@@ -38,14 +37,6 @@ public class EstadoDTO implements Serializable {
 
     public void setIdestado(Integer idestado) {
         this.idestado = idestado;
-    }
-
-    public Integer getPaisId() {
-        return paisId;
-    }
-
-    public void setPaisId(Integer paisId) {
-        this.paisId = paisId;
     }
 
     public Integer getIdpais_Pais() {

@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 26-abr-2017 15:46:42 by Hibernate Tools 4.0.0
+// Generated 08-jun-2017 9:28:28 by Hibernate Tools 4.0.0
 
 
 
@@ -9,7 +9,7 @@ package com.liderbs.modelo;
 public class Estado  implements java.io.Serializable {
 
 
-     private EstadoId id;
+     private Integer idestado;
      private Pais pais;
      private String estadonombre;
 
@@ -17,22 +17,20 @@ public class Estado  implements java.io.Serializable {
     }
 
 	
-    public Estado(EstadoId id, Pais pais) {
-        this.id = id;
+    public Estado(Pais pais) {
         this.pais = pais;
     }
-    public Estado(EstadoId id, Pais pais, String estadonombre) {
-       this.id = id;
+    public Estado(Pais pais, String estadonombre) {
        this.pais = pais;
        this.estadonombre = estadonombre;
     }
    
-    public EstadoId getId() {
-        return this.id;
+    public Integer getIdestado() {
+        return this.idestado;
     }
     
-    public void setId(EstadoId id) {
-        this.id = id;
+    public void setIdestado(Integer idestado) {
+        this.idestado = idestado;
     }
     public Pais getPais() {
         return this.pais;

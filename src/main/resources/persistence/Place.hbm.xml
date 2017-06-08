@@ -49,6 +49,39 @@
         </property>
         <property name="owner_name" type="java.lang.String">
             <column name="owner_name" length="100" />
+        </property> 
+        <property name="facebook" type="java.lang.String">
+            <column name="facebook" length="100" />
+        </property>
+        <property name="instagram" type="java.lang.String">
+            <column name="instagram" length="100" />
+        </property>
+        <property name="website" type="java.lang.String">
+            <column name="website" length="100" />
+        </property>
+       <property name="inWeekly" type="java.util.Date">
+            <column name="inWeekly" length="19" />
+        </property>
+        <property name="outWeekly" type="java.util.Date">
+            <column name="outWeekly" length="19" />
+        </property>
+        <property name="inSaturday" type="java.util.Date">
+            <column name="inSaturday" length="19" />
+        </property>
+        <property name="outSaturday" type="java.util.Date">
+            <column name="outSaturday" length="19" />
+        </property>
+        <property name="inSunday" type="java.util.Date">
+            <column name="inSunday" length="19" />
+        </property>
+        <property name="outSunday" type="java.util.Date">
+            <column name="outSunday" length="19" />
+        </property>  
+        <property name="dailyCost" type="java.lang.Double">
+            <column name="dailyCost" />
+        </property>
+        <property name="monthlyCost" type="java.lang.Double">
+            <column name="monthlyCost" />
         </property>
        
         <set name="autorizations" table="autorization" inverse="true" lazy="false" fetch="select">

@@ -80,26 +80,6 @@ public class EstadoLogic implements IEstadoLogic {
                 throw new ZMessManager().new ForeignException("pais");
             }
 
-            if (entity.getId().getIdestado() == null) {
-                throw new ZMessManager().new EmptyFieldException("idestado");
-            }
-
-            if ((entity.getId().getIdestado() != null) &&
-                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
-                        entity.getId().getIdestado(), 0, 0) == false)) {
-                throw new ZMessManager().new NotValidFormatException("idestado");
-            }
-
-            if (entity.getId().getPaisId() == null) {
-                throw new ZMessManager().new EmptyFieldException("paisId");
-            }
-
-            if ((entity.getId().getPaisId() != null) &&
-                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
-                        entity.getId().getPaisId(), 0, 0) == false)) {
-                throw new ZMessManager().new NotValidFormatException("paisId");
-            }
-
             if ((entity.getEstadonombre() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getEstadonombre(), 255) == false)) {
@@ -111,7 +91,7 @@ public class EstadoLogic implements IEstadoLogic {
                 throw new ZMessManager().new EmptyFieldException("idpais_Pais");
             }
 
-            if (getEstado(entity.getId()) != null) {
+            if (getEstado(entity.getIdestado()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
@@ -133,12 +113,8 @@ public class EstadoLogic implements IEstadoLogic {
             throw new ZMessManager().new NullEntityExcepcion("Estado");
         }
 
-        if (entity.getId().getIdestado() == null) {
+        if (entity.getIdestado() == null) {
             throw new ZMessManager().new EmptyFieldException("idestado");
-        }
-
-        if (entity.getId().getPaisId() == null) {
-            throw new ZMessManager().new EmptyFieldException("paisId");
         }
 
         try {
@@ -163,26 +139,6 @@ public class EstadoLogic implements IEstadoLogic {
 
             if (entity.getPais() == null) {
                 throw new ZMessManager().new ForeignException("pais");
-            }
-
-            if (entity.getId().getIdestado() == null) {
-                throw new ZMessManager().new EmptyFieldException("idestado");
-            }
-
-            if ((entity.getId().getIdestado() != null) &&
-                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
-                        entity.getId().getIdestado(), 0, 0) == false)) {
-                throw new ZMessManager().new NotValidFormatException("idestado");
-            }
-
-            if (entity.getId().getPaisId() == null) {
-                throw new ZMessManager().new EmptyFieldException("paisId");
-            }
-
-            if ((entity.getId().getPaisId() != null) &&
-                    (Utilities.checkNumberAndCheckWithPrecisionAndScale("" +
-                        entity.getId().getPaisId(), 0, 0) == false)) {
-                throw new ZMessManager().new NotValidFormatException("paisId");
             }
 
             if ((entity.getEstadonombre() != null) &&
@@ -216,8 +172,7 @@ public class EstadoLogic implements IEstadoLogic {
             for (Estado estadoTmp : estado) {
                 EstadoDTO estadoDTO2 = new EstadoDTO();
 
-                estadoDTO2.setIdestado(estadoTmp.getId().getIdestado());
-                estadoDTO2.setPaisId(estadoTmp.getId().getPaisId());
+                estadoDTO2.setIdestado(estadoTmp.getIdestado());
                 estadoDTO2.setEstadonombre((estadoTmp.getEstadonombre() != null)
                     ? estadoTmp.getEstadonombre() : null);
                 estadoDTO2.setIdpais_Pais((estadoTmp.getPais().getIdpais() != null)
@@ -232,13 +187,13 @@ public class EstadoLogic implements IEstadoLogic {
     }
 
     @Transactional(readOnly = true)
-    public Estado getEstado(EstadoId id) throws Exception {
+    public Estado getEstado(Integer idestado) throws Exception {
         log.debug("getting Estado instance");
 
         Estado entity = null;
 
         try {
-            entity = estadoDAO.findById(id);
+            entity = estadoDAO.findById(idestado);
         } catch (Exception e) {
             log.error("get Estado failed", e);
             throw new ZMessManager().new FindingException("Estado");

@@ -3,7 +3,6 @@ package com.liderbs.dataaccess.dao;
 import com.liderbs.dataaccess.api.HibernateDaoImpl;
 
 import com.liderbs.modelo.Estado;
-import com.liderbs.modelo.EstadoId;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -43,7 +42,7 @@ import javax.annotation.Resource;
  */
 @Scope("singleton")
 @Repository("EstadoDAO")
-public class EstadoDAO extends HibernateDaoImpl<Estado, EstadoId>
+public class EstadoDAO extends HibernateDaoImpl<Estado, Integer>
     implements IEstadoDAO {
     private static final Logger log = LoggerFactory.getLogger(EstadoDAO.class);
     @Resource

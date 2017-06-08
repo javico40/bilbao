@@ -132,6 +132,7 @@ public class PlaceLogic implements IPlaceLogic {
         log.debug("updating Place instance");
 
         try {
+        	
             if (entity == null) {
                 throw new ZMessManager().new NullEntityExcepcion("Place");
             }

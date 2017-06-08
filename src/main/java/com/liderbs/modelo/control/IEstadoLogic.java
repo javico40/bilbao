@@ -1,7 +1,6 @@
 package com.liderbs.modelo.control;
 
 import com.liderbs.modelo.Estado;
-import com.liderbs.modelo.EstadoId;
 import com.liderbs.modelo.dto.EstadoDTO;
 
 import java.math.BigDecimal;
@@ -41,7 +40,7 @@ public interface IEstadoLogic {
          * Load an existing Estado entity
          *
          */
-    public Estado getEstado(EstadoId id) throws Exception;
+    public Estado getEstado(Integer idestado) throws Exception;
 
     public List<Estado> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)

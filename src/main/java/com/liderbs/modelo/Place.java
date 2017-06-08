@@ -32,6 +32,17 @@ public class Place  implements java.io.Serializable {
      private Integer province;
      private String city;
      private String owner_name;
+     private String facebook;
+     private String instagram;
+     private String website;
+     private Date inWeekly;
+     private Date outWeekly;
+     private Date inSaturday;
+     private Date outSaturday;
+     private Date inSunday;
+     private Date outSunday;
+     private Double dailyCost;
+     private Double monthlyCost;
      private Set<Placetype> placetypes = new HashSet<Placetype>(0);
      private Set<Placeservices> placeserviceses = new HashSet<Placeservices>(0);
      
@@ -186,7 +197,104 @@ public class Place  implements java.io.Serializable {
         this.placeserviceses = placeserviceses;
     }
 
+	public String getFacebook() {
+		return facebook;
+	}
 
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+
+	public String getInstagram() {
+		return instagram;
+	}
+
+	public void setInstagram(String instagram) {
+		this.instagram = instagram;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public Date getInWeekly() {
+		return inWeekly;
+	}
+
+	public void setInWeekly(Date inWeekly) {
+		this.inWeekly = inWeekly;
+	}
+
+	public Date getOutWeekly() {
+		return outWeekly;
+	}
+
+	public void setOutWeekly(Date outWeekly) {
+		this.outWeekly = outWeekly;
+	}
+
+	public Date getInSatuday() {
+		return inSaturday;
+	}
+
+	public void setInSatuday(Date inSatuday) {
+		this.inSaturday = inSatuday;
+	}
+
+	public Date getOutSaturday() {
+		return outSaturday;
+	}
+
+	public void setOutSaturday(Date outSaturday) {
+		this.outSaturday = outSaturday;
+	}
+
+	public Date getInSunday() {
+		return inSunday;
+	}
+
+	public void setInSunday(Date inSunday) {
+		this.inSunday = inSunday;
+	}
+
+	public Date getOutSunday() {
+		return outSunday;
+	}
+
+	public void setOutSunday(Date outSunday) {
+		this.outSunday = outSunday;
+	}
+
+	public Double getDailyCost() {
+		return dailyCost;
+	}
+
+	public void setDailyCost(Double dailyCost) {
+		this.dailyCost = dailyCost;
+	}
+
+	public Double getMonthlyCost() {
+		return monthlyCost;
+	}
+
+	public void setMonthlyCost(Double monthlyCost) {
+		this.monthlyCost = monthlyCost;
+	}
+
+	public Date getInSaturday() {
+		return inSaturday;
+	}
+
+	public void setInSaturday(Date inSaturday) {
+		this.inSaturday = inSaturday;
+	}
+	
+	
+    
 }
 
 

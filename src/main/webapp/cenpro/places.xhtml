@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -42,7 +43,7 @@
 								    <h:outputText value="&#160;" />
 									
 									
-							    	<h:outputText id="msgPlaceNit" value=" Identificador Fiscal"/>
+							    	<h:outputText id="msgPlaceNit" value=" NIT"/>
 									<p:inputText id="txtPlaceNit" binding="#{placeView.txtPlaceNit}"/>
 									
 									<h:outputText id="msgPlaceName" value=" Nombre / Razon Social"/>
@@ -74,11 +75,11 @@
         									</p:selectOneMenu>
 								    
 									<h:outputText id="textDepto" value=" Departamento" />
-									<p:selectOneMenu id="selectDepto" disabled="#{placeView.lockDepto}" binding="#{placeView.selectDepto}"
+									<p:selectOneMenu id="selectDepto" disabled="#{placeView.lockDepto}" value="#{placeView.selectDepto}"
 									                 style="width:125px">
             										 <f:selectItem itemLabel="Seleccionar" itemValue="" />
-            										<f:selectItems value="#{placeView.listDeptos}" >
-            										</f:selectItems>
+            										 <f:selectItems value="#{placeView.listDeptos}" >
+            										 </f:selectItems>
             						<p:ajax event="change"
 											listener="#{placeView.validarDepto}" process="@this"
 											update="selectDepto" />
@@ -113,6 +114,7 @@
 								            <f:selectItems value="#{placeView.tiposServicio}" />
 								     </p:selectCheckboxMenu>
 								     
+
 								    <h3>Horario</h3>
 								    <h:outputText value="&#160;" />
 									<h:outputText value="&#160;" />
@@ -130,9 +132,9 @@
 								    <h:outputText value="&#160;" />
 								    							    
 								    <h:outputText id="msgWeekly" value=" Lunes a Viernes"/>
-								    <p:calendar id="weekIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="weekIn" value="#{placeView.horaEntradaLunesViernes}" pattern="HH:mm" timeOnly="true"  />
 								    <h:outputText value="&#160;" />
-								    <p:calendar id="weekOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="weekOut" value="#{placeView.horaSalidaLunesViernes}" pattern="HH:mm" timeOnly="true"  />
 								    
 								    <h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
@@ -140,9 +142,9 @@
 								    <h:outputText value="&#160;" />
 								    
 								    <h:outputText id="msgSaturday" value=" Sabados"/>
-								    <p:calendar id="msgSaturdayIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="msgSaturdayIn" value="#{placeView.horaEntradaSabado}" pattern="HH:mm" timeOnly="true"  />
 								    <h:outputText value="&#160;" />
-								    <p:calendar id="msgSaturdayOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="msgSaturdayOut" value="#{placeView.horaSalidaSabado}" pattern="HH:mm" timeOnly="true"  />
 								    
 								    <h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
@@ -150,9 +152,31 @@
 								    <h:outputText value="&#160;" />
 								    
 								    <h:outputText id="msgSunday" value=" Domingos y Festivos"/>
-								    <p:calendar id="msgSundayIn" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="msgSundayIn" value="#{placeView.horaEntradaDomingo}" pattern="HH:mm" timeOnly="true"  />
 								    <h:outputText value="&#160;" />
-								    <p:calendar id="msgSundayOut" value="#{calendarView.date11}" pattern="HH:mm" timeOnly="true"  />
+								    <p:calendar id="msgSundayOut" value="#{placeView.horaSalidaDomingo}" pattern="HH:mm" timeOnly="true"  />
+								    
+								     <h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								   
+								    <h3>Tarifas</h3>
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								    
+								    <h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+								    <h:outputText value="&#160;" />
+								     
+								    <h:outputText id="msgDailyTrain" value=" Entrenamiento diario"/>
+								    <p:inputText id="txtDailyTrain" binding="#{placeView.dailyTrainCost}" />
+									<h:outputText id="msgMonthTrain" value=" Mensualidad"/>
+								    <p:inputText id="txtMonthTrain" binding="#{placeView.montlyTrainCost}" />
+								   
+								    
 								   
 																			
 								</h:panelGrid>
@@ -169,7 +193,7 @@
 							</p:panel>						   
 						    <p:panel id="panelBotones">
 								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_save_cenpro}" update="@form" />
+									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_modify_cenpro}" update="@form" />
 									<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update="@form" />
 									<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update="@form" />
 								</div>

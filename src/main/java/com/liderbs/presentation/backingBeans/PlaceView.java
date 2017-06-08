@@ -81,7 +81,7 @@ public class PlaceView implements Serializable {
     private SelectOneMenu selectPais;
     private List<SelectItem> listPaises;
     private boolean lockDepto = true;
-    private SelectOneMenu selectDepto;
+    private Integer selectDepto;
     private List<SelectItem> listDeptos;
     private InputText txtCiudad;
     private InputText txtAssocAct;
@@ -94,7 +94,17 @@ public class PlaceView implements Serializable {
     private Integer[] selectServicios;
     private Map<String,Integer> tiposServicio;
     
+    private Date horaEntradaLunesViernes;
+    private Date horaSalidaLunesViernes;
+    private Date horaEntradaSabado;
+    private Date horaSalidaSabado;
+    private Date horaEntradaDomingo;
+    private Date horaSalidaDomingo;
     
+    private InputText dailyTrainCost;
+    private InputText montlyTrainCost;
+    
+    private Place currentCenpro;
     
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -154,7 +164,8 @@ public class PlaceView implements Serializable {
     				 if(idPlace > 0){
     					 
     					 Place place = businessDelegatorView.getPlace(idPlace);
-    					
+    					 
+    					 currentCenpro = place;
     					 txtPlaceNit.setValue((place.getFiscalID() != null) ? place.getFiscalID() : null );
     					 txtPlaceName.setValue((place.getPlaceName() != null) ? place.getPlaceName() : null );
     				     txtPlaceName.setDisabled(false);
@@ -695,48 +706,64 @@ public class PlaceView implements Serializable {
     }
     
     public String action_modify_cenpro() {
+    	
         try {
         	
-            if (entity == null) {
-                Integer idPlace = new Integer(selectedPlace.getIdPlace());
-                entity = businessDelegatorView.getPlace(idPlace);
-            }
+        	if(currentCenpro == null){
+        		FacesUtils.addErrorMessage("No se pudo identificar el centro deportivo asociado a la cuenta, contacto con el administrador por la opcion Ayuda");
+        	}else{
+        		
+                int depto = FacesUtils.checkInteger(selectDepto);
+        		
+        		entity = currentCenpro;
+                entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
+                entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
+                entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+                entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
+                entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
+                entity.setCountry(FacesUtils.checkInteger(selectPais));
+                entity.setProvince(FacesUtils.checkInteger(selectDepto));
+                entity.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());     
+                entity.setInWeekly(horaEntradaLunesViernes);    
+                entity.setOutWeekly(horaSalidaLunesViernes);
+                entity.setInSatuday(horaEntradaSabado);
+                entity.setOutSaturday(horaSalidaSabado);
+                entity.setInSunday(horaEntradaDomingo);
+                entity.setOutSunday(horaSalidaDomingo);
+                entity.setDailyCost(FacesUtils.checkDouble(dailyTrainCost));
+                entity.setMonthlyCost(FacesUtils.checkDouble(montlyTrainCost));
+                
+                businessDelegatorView.updatePlace(entity);
+                
+                Set<Placetype> placeType = entity.getPlacetypes();   
+                placeType.clear();
+                
+                for (int i = 0; i < selectTiposCentro.length; i++) {  	 
+                	Placetype opc = businessDelegatorView.getPlacetype(selectTiposCentro[i]);
+                	placeType.add(opc);
+                }
+                
+                entity.setPlacetypes(placeType);
+                
+                
+                Set<Placeservices> placeServices = entity.getPlaceserviceses();   
+                placeServices.clear();
+                
+                for (int i = 0; i < selectServicios.length; i++) {  	 
+                	Placeservices opc = businessDelegatorView.getPlaceservices(selectServicios[i]);
+                	placeServices.add(opc);
+                }
+                
+                entity.setPlaceserviceses(placeServices);
+                
+                businessDelegatorView.updatePlace(entity);
+                
+                FacesUtils.addInfoMessage("Centro deportivo modificado satisfactoriamente");
+        	}//end if-else
 
-            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
-            entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
-            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
-            entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
-            entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
-            businessDelegatorView.updatePlace(entity);
-            
-            Set<Placetype> placeType = entity.getPlacetypes();   
-            placeType.clear();
-            
-            for (int i = 0; i < selectTiposCentro.length; i++) {  	 
-            	Placetype opc = businessDelegatorView.getPlacetype(selectTiposCentro[i]);
-            	placeType.add(opc);
-            }
-            
-            entity.setPlacetypes(placeType);
-            
-            
-            Set<Placeservices> placeServices = entity.getPlaceserviceses();   
-            placeServices.clear();
-            
-            for (int i = 0; i < selectServicios.length; i++) {  	 
-            	Placeservices opc = businessDelegatorView.getPlaceservices(selectServicios[i]);
-            	placeServices.add(opc);
-            }
-            
-            entity.setPlaceserviceses(placeServices);
-            
-            businessDelegatorView.updatePlace(entity);
-            
-            FacesUtils.addInfoMessage("Centro deportivo modificado satisfactoriamente");
-        
         } catch (Exception e) {
             data = null;
-            FacesUtils.addErrorMessage(e.getMessage());
+            log.info(e.toString());
         }
 
         return "";
@@ -1030,11 +1057,11 @@ public class PlaceView implements Serializable {
 		this.lockDepto = lockDepto;
 	}
 
-	public SelectOneMenu getSelectDepto() {
+	public Integer getSelectDepto() {
 		return selectDepto;
 	}
 
-	public void setSelectDepto(SelectOneMenu selectDepto) {
+	public void setSelectDepto(Integer selectDepto) {
 		this.selectDepto = selectDepto;
 	}
 
@@ -1175,8 +1202,69 @@ public class PlaceView implements Serializable {
 	public void setTiposServicio(Map<String, Integer> tiposServicio) {
 		this.tiposServicio = tiposServicio;
 	}
-	
-	
-    
-    
+
+	public Date getHoraEntradaLunesViernes() {
+		return horaEntradaLunesViernes;
+	}
+
+	public void setHoraEntradaLunesViernes(Date horaEntradaLunesViernes) {
+		this.horaEntradaLunesViernes = horaEntradaLunesViernes;
+	}
+
+	public Date getHoraSalidaLunesViernes() {
+		return horaSalidaLunesViernes;
+	}
+
+	public void setHoraSalidaLunesViernes(Date horaSalidaLunesViernes) {
+		this.horaSalidaLunesViernes = horaSalidaLunesViernes;
+	}
+
+	public Date getHoraEntradaSabado() {
+		return horaEntradaSabado;
+	}
+
+	public void setHoraEntradaSabado(Date horaEntradaSabado) {
+		this.horaEntradaSabado = horaEntradaSabado;
+	}
+
+	public Date getHoraSalidaSabado() {
+		return horaSalidaSabado;
+	}
+
+	public void setHoraSalidaSabado(Date horaSalidaSabado) {
+		this.horaSalidaSabado = horaSalidaSabado;
+	}
+
+	public Date getHoraEntradaDomingo() {
+		return horaEntradaDomingo;
+	}
+
+	public void setHoraEntradaDomingo(Date horaEntradaDomingo) {
+		this.horaEntradaDomingo = horaEntradaDomingo;
+	}
+
+	public Date getHoraSalidaDomingo() {
+		return horaSalidaDomingo;
+	}
+
+	public void setHoraSalidaDomingo(Date horaSalidaDomingo) {
+		this.horaSalidaDomingo = horaSalidaDomingo;
+	}
+
+	public InputText getDailyTrainCost() {
+		return dailyTrainCost;
+	}
+
+	public void setDailyTrainCost(InputText dailyTrainCost) {
+		this.dailyTrainCost = dailyTrainCost;
+	}
+
+	public InputText getMontlyTrainCost() {
+		return montlyTrainCost;
+	}
+
+	public void setMontlyTrainCost(InputText montlyTrainCost) {
+		this.montlyTrainCost = montlyTrainCost;
+	}
+
 }
