@@ -314,7 +314,7 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberCourses() throws Exception;
 
     public List<CoursesDTO> getDataCourses() throws Exception;
-
+    
     public List<Estado> getEstado() throws Exception;
 
     public void saveEstado(Estado entity) throws Exception;
@@ -323,7 +323,7 @@ public interface IBusinessDelegatorView {
 
     public void updateEstado(Estado entity) throws Exception;
 
-    public Estado getEstado(EstadoId id) throws Exception;
+    public Estado getEstado(Integer idestado) throws Exception;
 
     public List<Estado> findByCriteriaInEstado(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)

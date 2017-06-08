@@ -232,7 +232,7 @@ public class UsersView implements Serializable {
     		if(list.size() > 0){
     			
     			for(Estado estado:list){
-    				this.listDeptosExp.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    				this.listDeptosExp.add(new SelectItem(estado.getIdestado(), estado.getEstadonombre()));
     			}
     			
     			setLockDeptoExp(false);
@@ -262,7 +262,7 @@ public class UsersView implements Serializable {
     		if(list.size() > 0){
     			
     			for(Estado estado:list){
-    				this.listDeptos.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    				this.listDeptos.add(new SelectItem(estado.getIdestado(), estado.getEstadonombre()));
     			}
     			
     			setLockDepto(false);

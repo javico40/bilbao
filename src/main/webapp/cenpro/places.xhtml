@@ -35,7 +35,8 @@
 							<p:tabView>
 								<p:tab title="Datos de tu Centro Deportivo">
 								
-														    <h:panelGrid columns="4" id="panelGrid" >
+								   <p:panel id="panelPrincipal">
+									<h:panelGrid columns="4" id="panelGrid" >
 							    
 							    	<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
@@ -172,15 +173,39 @@
 								    <h:outputText value="&#160;" />
 								     
 								    <h:outputText id="msgDailyTrain" value=" Entrenamiento diario"/>
-								    <p:inputText id="txtDailyTrain" binding="#{placeView.dailyTrainCost}" />
-									<h:outputText id="msgMonthTrain" value=" Mensualidad"/>
-								    <p:inputText id="txtMonthTrain" binding="#{placeView.montlyTrainCost}" />
+								    <pe:inputNumber  id="txtDailyTrain"
+													 binding="#{placeView.dailyTrainCost}"
+													 symbol=" COP" 
+													 symbolPosition="s" 
+                               						 decimalSeparator="."
+                               					     thousandSeparator=","
+												     onkeypress="if (event.keyCode == 13) { onchange(); return false; }else if(event.which == 46){ return true; }else if(event.which &lt; 48 || event.which &gt; 57){if(event.which != 8){return false;}}" />
 								   
-								    
-								   
-																			
+								    <h:outputText id="msgMonthTrain" value=" Mensualidad"/>
+								    <pe:inputNumber  id="txtMonthTrain"
+													 binding="#{placeView.montlyTrainCost}"
+													 symbol=" COP" 
+													 symbolPosition="s" 
+                               						 decimalSeparator="."
+                               					     thousandSeparator=","
+												     onkeypress="if (event.keyCode == 13) { onchange(); return false; }else if(event.which == 46){ return true; }else if(event.which &lt; 48 || event.which &gt; 57){if(event.which != 8){return false;}}" />
+								   										
 								</h:panelGrid>
-									
+								
+								</p:panel>
+								
+								<h:outputText value="&#160;" />
+								<h:outputText value="&#160;" />
+							    <h:outputText value="&#160;" />
+								<h:outputText value="&#160;" />
+								
+									<p:panel id="panelBotones">
+										<div align="center">					
+											<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_modify_cenpro}" update="@form" />
+											<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update="@form" />
+											<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update="@form" />
+										</div>
+									</p:panel>		
 								</p:tab>
 								<p:tab title="Constructor de Horario Govirfit Zone">
 								</p:tab>
@@ -191,13 +216,7 @@
 							    			  						
 		
 							</p:panel>						   
-						    <p:panel id="panelBotones">
-								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_modify_cenpro}" update="@form" />
-									<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update="@form" />
-									<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update="@form" />
-								</div>
-							</p:panel>					
+						    			
 		   			</h:form>			
 		  			</section>
 				</div>

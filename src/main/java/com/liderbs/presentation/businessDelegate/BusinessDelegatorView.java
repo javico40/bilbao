@@ -722,11 +722,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         estadoLogic.updateEstado(entity);
     }
 
-    public Estado getEstado(EstadoId id) throws Exception {
+    public Estado getEstado(Integer idestado) throws Exception {
         Estado estado = null;
 
         try {
-            estado = estadoLogic.getEstado(id);
+            estado = estadoLogic.getEstado(idestado);
         } catch (Exception e) {
             throw e;
         }
@@ -755,6 +755,7 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<EstadoDTO> getDataEstado() throws Exception {
         return estadoLogic.getDataEstado();
     }
+    
 
     public List<Experience> getExperience() throws Exception {
         return experienceLogic.getExperience();

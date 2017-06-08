@@ -175,9 +175,49 @@ public class PlaceView implements Serializable {
     				     txtPlacePhone.setDisabled(false);
     				     txtPlacePhoneAlt.setValue((place.getPlacePhoneAlt() != null) ? place.getPlacePhoneAlt() : null);
     				     txtPlacePhoneAlt.setDisabled(false);
+    				     selectPais.setValue((place.getCountry() != null) ? place.getCountry() : null);
+    				     selectPais.setDisabled(false);
+    				     
+    				     if(place.getProvince() != null){
+    				    	 selectDepto = place.getProvince();
+    				    	 setLockDepto(false);
+    				     }
+    				     
+    				     txtCiudad.setValue((place.getCity() != null) ? place.getCity() : null);
+    				     txtCiudad.setDisabled(false);
+    				     
+    				     if(place.getInWeekly() != null){
+    				    	 horaEntradaLunesViernes = place.getInWeekly();
+    				     }
+    				     
+    				     if(place.getInSaturday() != null){
+    				    	 horaEntradaSabado = place.getInSaturday();
+    				     }
+    				     
+    				     if(place.getInSunday() != null){
+    				    	 horaEntradaDomingo = place.getInSunday();
+    				     }
+    				     
+    				     if(place.getOutWeekly() != null){
+    				    	 horaSalidaLunesViernes = place.getOutWeekly();
+    				     }
+    				     
+    				     if(place.getOutSaturday() != null){
+    				    	 horaSalidaSabado = place.getOutSaturday();
+    				     }
+    				     
+    				     if(place.getOutSunday() != null){
+    				    	 horaSalidaDomingo = place.getOutSunday();
+    				     }
+    				     
+    				     dailyTrainCost.setValue((place.getDailyCost() != null) ? place.getDailyCost() : null);
+    				     dailyTrainCost.setDisabled(false);
+    				     
+    				     montlyTrainCost.setValue((place.getMonthlyCost() != null) ? place.getMonthlyCost() : null);
+    				     montlyTrainCost.setDisabled(false);
     				     
     				     Hibernate.initialize(place.getPlacetypes());
-    				        Set<Placetype> placeType = place.getPlacetypes();
+    				     Set<Placetype> placeType = place.getPlacetypes();
     				        
     				        selectTiposCentro = new Integer[placeType.size()];
     				        
@@ -259,6 +299,7 @@ public class PlaceView implements Serializable {
     }
     
     public void buscarDepto(){
+    	
     	if(FacesUtils.checkLong(selectPais) != null){
     		
     	this.listDeptos = new ArrayList<SelectItem>();	
@@ -275,7 +316,7 @@ public class PlaceView implements Serializable {
     		if(list.size() > 0){
     			
     			for(Estado estado:list){
-    				this.listDeptos.add(new SelectItem(estado.getId(), estado.getEstadonombre()));
+    				this.listDeptos.add(new SelectItem(estado.getIdestado(), estado.getEstadonombre()));
     			}
     			
     			setLockDepto(false);
@@ -713,16 +754,14 @@ public class PlaceView implements Serializable {
         		FacesUtils.addErrorMessage("No se pudo identificar el centro deportivo asociado a la cuenta, contacto con el administrador por la opcion Ayuda");
         	}else{
         		
-                int depto = FacesUtils.checkInteger(selectDepto);
-        		
-        		entity = currentCenpro;
+                entity = currentCenpro;
                 entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
                 entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
                 entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
                 entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
                 entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
                 entity.setCountry(FacesUtils.checkInteger(selectPais));
-                entity.setProvince(FacesUtils.checkInteger(selectDepto));
+                entity.setProvince(selectDepto);
                 entity.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());     
                 entity.setInWeekly(horaEntradaLunesViernes);    
                 entity.setOutWeekly(horaSalidaLunesViernes);
