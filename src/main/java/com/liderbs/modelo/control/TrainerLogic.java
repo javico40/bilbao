@@ -115,12 +115,6 @@ public class TrainerLogic implements ITrainerLogic {
                 throw new ZMessManager().new NotValidFormatException("address");
             }
 
-            if ((entity.getCitizenship() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getCitizenship(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "citizenship");
-            }
 
             if ((entity.getCity() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getCity(), 100) == false)) {
@@ -213,6 +207,8 @@ public class TrainerLogic implements ITrainerLogic {
         log.debug("updating Trainer instance");
 
         try {
+        	
+        	/*
             if (entity == null) {
                 throw new ZMessManager().new NullEntityExcepcion("Trainer");
             }
@@ -242,12 +238,6 @@ public class TrainerLogic implements ITrainerLogic {
                 throw new ZMessManager().new NotValidFormatException("address");
             }
 
-            if ((entity.getCitizenship() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getCitizenship(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "citizenship");
-            }
 
             if ((entity.getCity() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getCity(), 100) == false)) {
@@ -263,40 +253,8 @@ public class TrainerLogic implements ITrainerLogic {
             if ((entity.getName() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getName(), 100) == false)) {
                 throw new ZMessManager().new NotValidFormatException("name");
-            }
+            }*/
 
-            if ((entity.getResumefile() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getResumefile(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "resumefile");
-            }
-
-            if ((entity.getTrainerAcknowledgement() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getTrainerAcknowledgement(), 600) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "trainerAcknowledgement");
-            }
-
-            if (entity.getUsersIdusers() == null) {
-                throw new ZMessManager().new EmptyFieldException("usersIdusers");
-            }
-
-            if (entity.getAcademiclevel().getIdacademiclevel() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idacademiclevel_Academiclevel");
-            }
-
-            if (entity.getIdentification().getIdidentification() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "ididentification_Identification");
-            }
-
-            if (entity.getVprofile().getIdvprofile() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idvprofile_Vprofile");
-            }
 
             trainerDAO.update(entity);
 
@@ -324,8 +282,8 @@ public class TrainerLogic implements ITrainerLogic {
                 trainerDTO2.setAddress((trainerTmp.getAddress() != null)
                     ? trainerTmp.getAddress() : null);
                 trainerDTO2.setBorndate(trainerTmp.getBorndate());
-                trainerDTO2.setCitizenship((trainerTmp.getCitizenship() != null)
-                    ? trainerTmp.getCitizenship() : null);
+                trainerDTO2.setLugar_nacimiento((trainerTmp.getLugar_nacimiento() != null)
+                    ? trainerTmp.getLugar_nacimiento() : null);
                 trainerDTO2.setCity((trainerTmp.getCity() != null)
                     ? trainerTmp.getCity() : null);
                 trainerDTO2.setCountry((trainerTmp.getCountry() != null)

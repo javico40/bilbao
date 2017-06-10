@@ -173,23 +173,10 @@
 								    <h:outputText value="&#160;" />
 								     
 								    <h:outputText id="msgDailyTrain" value=" Entrenamiento diario"/>
-								    <pe:inputNumber  id="txtDailyTrain"
-													 binding="#{placeView.dailyTrainCost}"
-													 symbol=" COP" 
-													 symbolPosition="s" 
-                               						 decimalSeparator="."
-                               					     thousandSeparator=","
-												     onkeypress="if (event.keyCode == 13) { onchange(); return false; }else if(event.which == 46){ return true; }else if(event.which &lt; 48 || event.which &gt; 57){if(event.which != 8){return false;}}" />
-								   
-								    <h:outputText id="msgMonthTrain" value=" Mensualidad"/>
-								    <pe:inputNumber  id="txtMonthTrain"
-													 binding="#{placeView.montlyTrainCost}"
-													 symbol=" COP" 
-													 symbolPosition="s" 
-                               						 decimalSeparator="."
-                               					     thousandSeparator=","
-												     onkeypress="if (event.keyCode == 13) { onchange(); return false; }else if(event.which == 46){ return true; }else if(event.which &lt; 48 || event.which &gt; 57){if(event.which != 8){return false;}}" />
-								   										
+								    <p:inputText id="txtDailyTrain" binding="#{placeView.dailyTrainCost}" />
+									<h:outputText id="msgMonthTrain" value=" Mensualidad"/>
+								    <p:inputText id="txtMonthTrain" binding="#{placeView.montlyTrainCost}" />
+								   									
 								</h:panelGrid>
 								
 								</p:panel>

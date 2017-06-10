@@ -13,6 +13,7 @@ import com.liderbs.utilities.*;
 import org.hibernate.Hibernate;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.extensions.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
@@ -135,8 +136,7 @@ public class PlaceView implements Serializable {
 		 
     	}catch(Exception e){
     		log.info(e.toString());
-    	}
-		 
+    	}	 
     }
     
     public void populateCenproData(){

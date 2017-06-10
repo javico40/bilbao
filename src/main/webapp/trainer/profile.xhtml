@@ -18,7 +18,7 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Govirfit <small>Lider Business Group</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -42,7 +42,6 @@
 								
 								<h3>Porcentaje del perfil Virfit completado</h3>
     							<p:progressBar value="50" labelTemplate="{value}%" displayOnly="true"/>
-							
 								<p:panel id="panelPersonalData" header="Datos Personales">
 									<p:panelGrid>
 										<p:row>
@@ -132,37 +131,56 @@
 								</p:panel>
 							</p:tab>
 							<p:tab title="Datos personales">
+							<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{usersView.dataTrainer}" var="users"></p:dataTable>
 								<p:panel header="Ingrese sus datos personales">
+									<p:messages id="msg" />
 									<p:panelGrid>
 										<p:row>
-											<p:column><h:outputText id="textNames" value=" NOMBRES" /></p:column>
+											<p:column><h:outputText id="textNames" value=" Nombres" /></p:column>
 											<p:column><p:inputText id="txtNames" binding="#{usersView.namesProfile}" /></p:column>
-											<p:column><h:outputText id="textLastNames" value=" APELLIDOS" /></p:column>
+											<p:column><h:outputText id="textLastNames" value=" Apellidos" /></p:column>
 											<p:column><p:inputText id="txtLastname" binding="#{usersView.txtLastname}" /></p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="textTipoIdentificacion" value=" TIPO DE IDENTIFICACION" /></p:column>
+											<p:column><h:outputText id="textTipoIdentificacion" value=" Tipo de identificacion" /></p:column>
 											<p:column>
 											<p:selectOneMenu id="selectIdentificacion" binding="#{usersView.selectIdentificacion}" style="width:125px">
             								<f:selectItem itemLabel="Seleccionar" itemValue="" />
-            									<f:selectItem itemLabel="CEDULA DE CIUDADANIA" itemValue="1" />
-            									<f:selectItem itemLabel="CEDULA DE EXTRANJERIA" itemValue="2" />
-            									<f:selectItem itemLabel="TARJETA DE IDENTIDAD" itemValue="3" />
-            									<f:selectItem itemLabel="PASAPORTE" itemValue="4" />
+            									<f:selectItem itemLabel="Cedula de ciudadania" itemValue="1" />
+            									<f:selectItem itemLabel="Cedula de extranjeria" itemValue="2" />
+            									<f:selectItem itemLabel="Tarjeta de identidad" itemValue="3" />
+            									<f:selectItem itemLabel="Pasaporte" itemValue="4" />
         									</p:selectOneMenu>					
         									</p:column>
-											<p:column><h:outputText id="textNumeroIdentificacion" value=" NUMERO IDENTIFICACION" /></p:column>
+											<p:column><h:outputText id="textNumeroIdentificacion" value=" Numero de identificacion" /></p:column>
 											<p:column><p:inputText id="txtNumeroIdentificacion" binding="#{usersView.txtNumeroIdentificacion}" /></p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="textNacionalidad" value=" NACIONALIDAD" /></p:column>
-											<p:column><p:inputText id="txtNacionalidad" binding="#{usersView.txtNacionalidad}" /></p:column>
-											<p:column><h:outputText id="textFechaNacimiento" value=" FECHA DE NACIMIENTO" /></p:column>
+											<p:column><h:outputText id="textNacionalidad" value=" Lugar de nacimiento" /></p:column>
+											<p:column><p:inputText id="txtLugarNacimiento" binding="#{usersView.txtLugarNacimiento}" /></p:column>
+											<p:column><h:outputText id="textFechaNacimiento" value=" Fecha de nacimiento" /></p:column>
 											<p:column><p:calendar id="txtFechaNacimiento" navigator="true" value="#{usersView.txtFechaNacimiento}" /></p:column>
 										</p:row>
-										
 										<p:row>
-											<p:column><h:outputText id="textPais" value=" PAIS" /></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText value=" Lugar de residencia" /></strong></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+										</p:row>
+										<p:row>
+											<p:column></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textPais" value=" Pais" /></p:column>
 											<p:column>
 											<p:selectOneMenu id="selectPais" binding="#{usersView.selectPais}" style="width:125px">
             									<f:selectItem itemLabel="Seleccionar" itemValue="" />
@@ -172,7 +190,7 @@
 															update="selectDepto" />
         									</p:selectOneMenu>
 											</p:column>
-											<p:column><h:outputText id="textDepto" value=" DEPARTAMENTO" /></p:column>
+											<p:column><h:outputText id="textDepto" value=" Departamento" /></p:column>
 											<p:column>
 													<p:selectOneMenu id="selectDepto" disabled="#{usersView.lockDepto}" binding="#{usersView.selectDepto}" style="width:125px">
             											<f:selectItem itemLabel="Seleccionar" itemValue="" />
@@ -181,10 +199,16 @@
 											</p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="textCiudad" value=" CIUDAD" /></p:column>
+											<p:column><h:outputText id="textCiudad" value=" Ciudad" /></p:column>
 											<p:column><p:inputText id="txtCiudad" binding="#{usersView.txtCiudad}" /></p:column>
-											<p:column><h:outputText id="textDireccion" value=" DIRECCION DE RESIDENCIA" /></p:column>
+											<p:column><h:outputText id="textDireccion" value=" Direccion de residencia" /></p:column>
 											<p:column><p:inputText id="txtDireccion" size="20" binding="#{usersView.txtDireccion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textFoto" value=" Foto" /></p:column>
+											<p:column><p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/></p:column>
+											<p:column></p:column>
+											<p:column></p:column>
 										</p:row>
 										<p:row>
 											<p:column colspan="4"></p:column>
@@ -195,7 +219,8 @@
 											<div align="center">
 											<p:commandButton id="btnGuardarPersonalData"
 											                                        value="Guardar"
-											                                        action="#{usersView.savePersonalData}" />
+											                                        action="#{usersView.savePersonalData}"
+											                                        update="@form" />
 											</div>                                        
 											</p:column>
 										</p:row>
@@ -271,25 +296,6 @@
 													<p:commandButton id="btnGuardarCertifications"
 											                                        value="Agregar"
 											                                        action="#{usersView.saveCertificacion}" />
-												</div>
-											</p:column>
-										</p:row>
-									</p:panelGrid>
-								</p:panel>
-							</p:tab>
-							<p:tab title="Perfil profesional">
-								<p:panel header="Explique brevemente su perfil profesional">
-									<p:panelGrid>
-										<p:row>
-											<p:column><h:outputText id="textPerfilPro" value=" Explique su perfil" /></p:column>
-											<p:column><p:inputTextarea id="txtProfesionalProfile" binding="#{usersView.txtProfesionalProfile}" cols="40" rows="3" /></p:column>
-										</p:row>
-										<p:row>
-											<p:column colspan="2">
-												<div align="center">
-													<p:commandButton id="btnGuardarProfesionalProfile"
-											                         value="Guardar"
-											                         action="#{usersView.saveProfProfile}" />
 												</div>
 											</p:column>
 										</p:row>

@@ -22,7 +22,7 @@ public class TrainerDTO implements Serializable {
     private String academicArea;
     private String address;
     private Date borndate;
-    private String citizenship;
+    private String lugar_nacimiento;
     private String city;
     private Integer country;
     private Integer idtrainer;
@@ -60,15 +60,16 @@ public class TrainerDTO implements Serializable {
         this.borndate = borndate;
     }
 
-    public String getCitizenship() {
-        return citizenship;
-    }
+   
+    public String getLugar_nacimiento() {
+		return lugar_nacimiento;
+	}
 
-    public void setCitizenship(String citizenship) {
-        this.citizenship = citizenship;
-    }
+	public void setLugar_nacimiento(String lugar_nacimiento) {
+		this.lugar_nacimiento = lugar_nacimiento;
+	}
 
-    public String getCity() {
+	public String getCity() {
         return city;
     }
 

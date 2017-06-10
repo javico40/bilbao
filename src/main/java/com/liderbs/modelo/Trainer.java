@@ -18,7 +18,7 @@ public class Trainer  implements java.io.Serializable {
      private Identification identification;
      private String name;
      private String lastname;
-     private String citizenship;
+     private String lugar_nacimiento;
      private Date borndate;
      private Integer country;
      private Integer region;
@@ -41,13 +41,13 @@ public class Trainer  implements java.io.Serializable {
         this.identification = identification;
         this.usersIdusers = usersIdusers;
     }
-    public Trainer(Vprofile vprofile, Academiclevel academiclevel, Identification identification, String name, String lastname, String citizenship, Date borndate, Integer country, Integer region, String city, String address, String trainerAcknowledgement, String academicArea, String resumefile, Integer usersIdusers, Set<Experience> experiences, Set<Courses> courseses) {
+    public Trainer(Vprofile vprofile, Academiclevel academiclevel, Identification identification, String name, String lastname, String lugar_nacimiento, Date borndate, Integer country, Integer region, String city, String address, String trainerAcknowledgement, String academicArea, String resumefile, Integer usersIdusers, Set<Experience> experiences, Set<Courses> courseses) {
        this.vprofile = vprofile;
        this.academiclevel = academiclevel;
        this.identification = identification;
        this.name = name;
        this.lastname = lastname;
-       this.citizenship = citizenship;
+       this.lugar_nacimiento = lugar_nacimiento;
        this.borndate = borndate;
        this.country = country;
        this.region = region;
@@ -103,18 +103,17 @@ public class Trainer  implements java.io.Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    public String getCitizenship() {
-        return this.citizenship;
-    }
-    
-    public void setCitizenship(String citizenship) {
-        this.citizenship = citizenship;
-    }
-    public Date getBorndate() {
-        return this.borndate;
-    }
-    
-    public void setBorndate(Date borndate) {
+      
+    public String getLugar_nacimiento() {
+		return lugar_nacimiento;
+	}
+
+	public void setLugar_nacimiento(String lugar_nacimiento) {
+		this.lugar_nacimiento = lugar_nacimiento;
+	}
+
+
+	public void setBorndate(Date borndate) {
         this.borndate = borndate;
     }
     public Integer getCountry() {
@@ -187,6 +186,11 @@ public class Trainer  implements java.io.Serializable {
     public void setCourseses(Set<Courses> courseses) {
         this.courseses = courseses;
     }
+
+
+	public Date getBorndate() {
+		return borndate;
+	}
 
 
 

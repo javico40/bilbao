@@ -20,6 +20,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -72,8 +74,11 @@ public class UsersView implements Serializable {
     private CommandButton btnDelete;
     private CommandButton btnClear;
     private List<UsersDTO> data;
+    private List<UsersDTO> dataTrainer;
     private UsersDTO selectedUsers;
     private Users entity;
+    private Users usuarioapp;
+    private Integer idAccount = 0;
     private boolean showDialog;
     private boolean showSearchDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -87,7 +92,7 @@ public class UsersView implements Serializable {
     private InputText txtLastname;
     private SelectOneMenu selectIdentificacion;
     private InputText txtNumeroIdentificacion;
-    private InputText txtNacionalidad;
+    private InputText txtLugarNacimiento;
     private Date txtFechaNacimiento;
     private SelectOneMenu selectPais;
     private List<SelectItem> listPaises;
@@ -135,6 +140,39 @@ public class UsersView implements Serializable {
         super();
     }
     
+    @PostConstruct
+    public void init(){
+    try{
+    	
+    
+    	Users user = getUsuarioapp();
+		Set<Account> list = user.getAccounts();
+		
+		 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+ 		 	Account act = it.next();
+ 	        
+ 		 	//Si tiene cuenta activa
+ 		 	if(act.getAccountStatus() == 1){
+ 		 		if(act.getAccountDefault() == 1){
+ 		 			idAccount = act.getIdAccount();
+ 		 		}
+ 		 	}
+ 	    }//end for 
+		 
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}	 
+    }
+    
+    public Users getUsuarioapp() {
+		if(usuarioapp==null) {				
+			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+		}
+		return usuarioapp;
+	}
+    
+    
     public void search(){
     
     try{
@@ -170,11 +208,7 @@ public class UsersView implements Serializable {
     		
     		
     	}
-    	
-    		
-    		
-    	
-    	
+
     	}catch(Exception e){
     		log.info(e.toString());
     	}
@@ -188,7 +222,99 @@ public class UsersView implements Serializable {
     	setShowSearchDialog(false);
     }
     
+    public void populateData(){
+    	
+    	 try{	
+    		 
+    		 if(usuarioapp == null){
+     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+     	 	}else{
+     	 		
+     	 		int idUser = usuarioapp.getIdusers();
+     	 		
+     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+     	 																		   null,
+     	 																		   null);
+     	 		
+     	 		int idTrainer = 0;
+     	 		
+     	 		for(Trainer trainer: list){
+     	 			idTrainer = trainer.getIdtrainer();
+     	 		}
+     	 		
+     	 		if(idTrainer == 0){
+     	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+     	 		}else{
+     	 			
+     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+     	 			Identification identi = businessDelegatorView.getIdentification(trainer.getIdentification().getIdidentification());
+     	 			
+     	 			txtName.setValue(trainer.getName());
+     	 			txtLastname.setValue(trainer.getLastname());
+     	 			selectIdentificacion.setValue(identi.getIdidentification());
+     	 			txtLugarNacimiento.setValue(trainer.getLugar_nacimiento());
+     	 			txtFechaNacimiento = trainer.getBorndate();
+     	 			selectPais.setValue(trainer.getCountry());
+     	 			selectDepto.setValue(trainer.getRegion());
+     	 			txtCiudad.setValue(trainer.getCity());
+     	 			txtDireccion.setValue(trainer.getAddress());
+     	 			
+     	 		}//end if-else
+     	 	}//end if-else
+    		 
+    	 }catch(Exception e){
+     		log.info(e.toString());
+     	 }
+    	
+    }
+    
     public void savePersonalData(){
+    try{	
+    	 	if(usuarioapp == null){
+    	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+    	 	}else{
+    	 		
+    	 		int idUser = usuarioapp.getIdusers();
+    	 		
+    	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+    	 																		   null,
+    	 																		   null);
+    	 		
+    	 		int idTrainer = 0;
+    	 		
+    	 		for(Trainer trainer: list){
+    	 			idTrainer = trainer.getIdtrainer();
+    	 		}
+    	 		
+    	 		if(idTrainer == 0){
+    	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+    	 		}else{
+    	 			
+    	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+    	 			Identification identi = businessDelegatorView.getIdentification(FacesUtils.checkInteger(selectIdentificacion));
+    	 			
+    	 			trainer.setName(FacesUtils.checkString(txtName));
+    	 			trainer.setLastname(FacesUtils.checkString(txtLastname));
+    	 			trainer.setIdentification(identi);
+    	 			trainer.setLugar_nacimiento(FacesUtils.checkString(txtLugarNacimiento));
+    	 			trainer.setBorndate(txtFechaNacimiento);
+    	 			trainer.setCountry(FacesUtils.checkInteger(selectPais));
+    	 			trainer.setRegion(FacesUtils.checkInteger(selectDepto));
+    	 			trainer.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());
+    	 			trainer.setAddress(FacesUtils.checkString(txtDireccion));
+    	 			
+    	 			businessDelegatorView.updateTrainer(trainer);
+    	 			FacesUtils.addInfoMessage("El entrenador ha sido actualizado satisfactoriamente");
+    	 			
+    	 		}//end if-else
+    	 		
+    	 		
+    	 		
+    	 	}
+    	 	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     	 	
     }
     
@@ -944,12 +1070,13 @@ public class UsersView implements Serializable {
 		this.txtNumeroIdentificacion = txtNumeroIdentificacion;
 	}
 
-	public InputText getTxtNacionalidad() {
-		return txtNacionalidad;
+	
+	public InputText getTxtLugarNacimiento() {
+		return txtLugarNacimiento;
 	}
 
-	public void setTxtNacionalidad(InputText txtNacionalidad) {
-		this.txtNacionalidad = txtNacionalidad;
+	public void setTxtLugarNacimiento(InputText txtLugarNacimiento) {
+		this.txtLugarNacimiento = txtLugarNacimiento;
 	}
 
 	public Date getTxtFechaNacimiento() {
@@ -1257,6 +1384,15 @@ public class UsersView implements Serializable {
 
 	public void setListTrainers(List<UsersDTO> listTrainers) {
 		this.listTrainers = listTrainers;
+	}
+
+	public List<UsersDTO> getDataTrainer() {
+		populateData();
+		return dataTrainer;
+	}
+
+	public void setDataTrainer(List<UsersDTO> dataTrainer) {
+		this.dataTrainer = dataTrainer;
 	}
 	
 	
