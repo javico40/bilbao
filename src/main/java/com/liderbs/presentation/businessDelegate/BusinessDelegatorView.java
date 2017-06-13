@@ -21,6 +21,7 @@ import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
+import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.UsuariosCategorias;
@@ -46,6 +47,7 @@ import com.liderbs.modelo.control.IPlaceservicesLogic;
 import com.liderbs.modelo.control.IPlacetypeLogic;
 import com.liderbs.modelo.control.IProfileLogic;
 import com.liderbs.modelo.control.IScheduleLogic;
+import com.liderbs.modelo.control.ITimetableLogic;
 import com.liderbs.modelo.control.ITrainerLogic;
 import com.liderbs.modelo.control.IUsersLogic;
 import com.liderbs.modelo.control.IUsuariosCategoriasLogic;
@@ -74,6 +76,7 @@ import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
+import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
@@ -189,6 +192,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private IPlaceservicesLogic placeservicesLogic;
     @Autowired
     private IPlacetypeLogic placetypeLogic;
+    @Autowired
+    private ITimetableLogic timetableLogic;
 
 
     public List<Account> getAccount() throws Exception {
@@ -1423,5 +1428,56 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<PlacetypeDTO> getDataPlacetype() throws Exception {
         return placetypeLogic.getDataPlacetype();
+    }
+    
+    public List<Timetable> getTimetable() throws Exception {
+        return timetableLogic.getTimetable();
+    }
+
+    public void saveTimetable(Timetable entity) throws Exception {
+        timetableLogic.saveTimetable(entity);
+    }
+
+    public void deleteTimetable(Timetable entity) throws Exception {
+        timetableLogic.deleteTimetable(entity);
+    }
+
+    public void updateTimetable(Timetable entity) throws Exception {
+        timetableLogic.updateTimetable(entity);
+    }
+
+    public Timetable getTimetable(Integer idtimetable)
+        throws Exception {
+        Timetable timetable = null;
+
+        try {
+            timetable = timetableLogic.getTimetable(idtimetable);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return timetable;
+    }
+
+    public List<Timetable> findByCriteriaInTimetable(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return timetableLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Timetable> findPageTimetable(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return timetableLogic.findPageTimetable(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberTimetable() throws Exception {
+        return timetableLogic.findTotalNumberTimetable();
+    }
+
+    public List<TimetableDTO> getDataTimetable() throws Exception {
+        return timetableLogic.getDataTimetable();
     }
 }

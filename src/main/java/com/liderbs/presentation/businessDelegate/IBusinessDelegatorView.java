@@ -21,6 +21,7 @@ import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
+import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.UsuariosCategorias;
@@ -55,6 +56,7 @@ import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
+import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
 import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
@@ -638,6 +640,29 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberPlacetype() throws Exception;
 
     public List<PlacetypeDTO> getDataPlacetype() throws Exception;
+    
+    public List<Timetable> getTimetable() throws Exception;
+
+    public void saveTimetable(Timetable entity) throws Exception;
+
+    public void deleteTimetable(Timetable entity) throws Exception;
+
+    public void updateTimetable(Timetable entity) throws Exception;
+
+    public Timetable getTimetable(Integer idtimetable)
+        throws Exception;
+
+    public List<Timetable> findByCriteriaInTimetable(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Timetable> findPageTimetable(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberTimetable() throws Exception;
+
+    public List<TimetableDTO> getDataTimetable() throws Exception;
 
 
 }

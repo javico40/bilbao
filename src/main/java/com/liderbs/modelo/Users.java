@@ -33,6 +33,7 @@ public class Users  implements java.io.Serializable {
      private Set<Account> accounts = new HashSet<Account>(0);
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Schedule> schedules = new HashSet<Schedule>(0);
+     private Set<Timetable> timetables = new HashSet<Timetable>(0);
 
     public Users() {
     }

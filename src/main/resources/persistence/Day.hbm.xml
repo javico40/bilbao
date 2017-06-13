@@ -17,5 +17,11 @@
             </key>
             <one-to-many class="com.liderbs.modelo.Schedule" />
         </set>
+        <set name="timetables" table="timetable" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="day_idday" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.Timetable" />
+        </set>
     </class>
 </hibernate-mapping>

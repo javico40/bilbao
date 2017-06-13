@@ -17,6 +17,7 @@ import java.util.Date;
 *
 */
 public class ScheduleDTO implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(ScheduleDTO.class);
     private Date classDate;
@@ -29,8 +30,14 @@ public class ScheduleDTO implements Serializable {
     private Integer idPlace_Place;
     private Integer idtrainer_Trainer;
     private Integer idusers_Users;
+    
+    public ScheduleDTO() {
+		super();
+	}
+    
+    
 
-    public Date getClassDate() {
+	public Date getClassDate() {
         return classDate;
     }
 
