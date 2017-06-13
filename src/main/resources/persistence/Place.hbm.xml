@@ -106,5 +106,11 @@
                 <column name="placeservices_idplaceservices" not-null="true" />
             </many-to-many>
         </set>
+        <set name="schedules" table="schedule" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="place_idPlace" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.Schedule" />
+        </set>
     </class>
 </hibernate-mapping>

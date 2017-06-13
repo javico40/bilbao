@@ -30,6 +30,7 @@ public class Trainer  implements java.io.Serializable {
      private Integer usersIdusers;
      private Set<Experience> experiences = new HashSet<Experience>(0);
      private Set<Courses> courseses = new HashSet<Courses>(0);
+     private Set<Schedule> schedules = new HashSet<Schedule>(0);
 
     public Trainer() {
     }
@@ -192,7 +193,13 @@ public class Trainer  implements java.io.Serializable {
 		return borndate;
 	}
 
-
+	public Set<Schedule> getSchedules() {
+        return this.schedules;
+    }
+    
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 
 
 }

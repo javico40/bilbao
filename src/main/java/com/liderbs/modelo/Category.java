@@ -15,6 +15,7 @@ public class Category  implements java.io.Serializable {
      private Level level;
      private String description;
      private Set<Users> userses = new HashSet<Users>(0);
+     private Set<Schedule> schedules = new HashSet<Schedule>(0);
 
     public Category() {
     }
@@ -56,6 +57,14 @@ public class Category  implements java.io.Serializable {
     
     public void setUserses(Set<Users> userses) {
         this.userses = userses;
+    }
+    
+    public Set<Schedule> getSchedules() {
+        return this.schedules;
+    }
+    
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
     }
 
 

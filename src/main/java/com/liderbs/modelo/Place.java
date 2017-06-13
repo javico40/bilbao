@@ -45,6 +45,7 @@ public class Place  implements java.io.Serializable {
      private Double monthlyCost;
      private Set<Placetype> placetypes = new HashSet<Placetype>(0);
      private Set<Placeservices> placeserviceses = new HashSet<Placeservices>(0);
+     private Set<Schedule> schedules = new HashSet<Schedule>(0);
      
      private Set<Autorization> autorizations = new HashSet<Autorization>(0);
 
@@ -293,6 +294,13 @@ public class Place  implements java.io.Serializable {
 		this.inSaturday = inSaturday;
 	}
 	
+	public Set<Schedule> getSchedules() {
+        return this.schedules;
+    }
+    
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 	
     
 }

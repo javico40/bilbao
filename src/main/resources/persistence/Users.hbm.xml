@@ -66,11 +66,12 @@
             </many-to-many>
         </set>
         
-        <set name="schedules" table="schedule" inverse="true" lazy="false" fetch="select">
+         <set name="schedules" table="schedule" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="users_idusers" not-null="true" />
             </key>
             <one-to-many class="com.liderbs.modelo.Schedule" />
         </set>
+        
     </class>
 </hibernate-mapping>

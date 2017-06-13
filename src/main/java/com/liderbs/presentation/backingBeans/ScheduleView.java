@@ -49,9 +49,14 @@ import javax.faces.event.ActionEvent;
 public class ScheduleView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(ScheduleView.class);
+    private InputText txtMaxUsers;
+    private InputText txtIdcategory_Category;
     private InputText txtIdday_Day;
+    private InputText txtIdPlace_Place;
+    private InputText txtIdtrainer_Trainer;
     private InputText txtIdusers_Users;
     private InputText txtIdschedule;
+    private Calendar txtClassDate;
     private Calendar txtEndtime;
     private Calendar txtStarttime;
     private CommandButton btnSave;
@@ -73,11 +78,35 @@ public class ScheduleView implements Serializable {
         try {
             ScheduleDTO scheduleDTO = (ScheduleDTO) e.getObject();
 
+            if (txtMaxUsers == null) {
+                txtMaxUsers = new InputText();
+            }
+
+            txtMaxUsers.setValue(scheduleDTO.getMaxUsers());
+
+            if (txtIdcategory_Category == null) {
+                txtIdcategory_Category = new InputText();
+            }
+
+            txtIdcategory_Category.setValue(scheduleDTO.getIdcategory_Category());
+
             if (txtIdday_Day == null) {
                 txtIdday_Day = new InputText();
             }
 
             txtIdday_Day.setValue(scheduleDTO.getIdday_Day());
+
+            if (txtIdPlace_Place == null) {
+                txtIdPlace_Place = new InputText();
+            }
+
+            txtIdPlace_Place.setValue(scheduleDTO.getIdPlace_Place());
+
+            if (txtIdtrainer_Trainer == null) {
+                txtIdtrainer_Trainer = new InputText();
+            }
+
+            txtIdtrainer_Trainer.setValue(scheduleDTO.getIdtrainer_Trainer());
 
             if (txtIdusers_Users == null) {
                 txtIdusers_Users = new InputText();
@@ -90,6 +119,12 @@ public class ScheduleView implements Serializable {
             }
 
             txtIdschedule.setValue(scheduleDTO.getIdschedule());
+
+            if (txtClassDate == null) {
+                txtClassDate = new Calendar();
+            }
+
+            txtClassDate.setValue(scheduleDTO.getClassDate());
 
             if (txtEndtime == null) {
                 txtEndtime = new Calendar();
@@ -123,14 +158,39 @@ public class ScheduleView implements Serializable {
         entity = null;
         selectedSchedule = null;
 
+        if (txtMaxUsers != null) {
+            txtMaxUsers.setValue(null);
+            txtMaxUsers.setDisabled(true);
+        }
+
+        if (txtIdcategory_Category != null) {
+            txtIdcategory_Category.setValue(null);
+            txtIdcategory_Category.setDisabled(true);
+        }
+
         if (txtIdday_Day != null) {
             txtIdday_Day.setValue(null);
             txtIdday_Day.setDisabled(true);
         }
 
+        if (txtIdPlace_Place != null) {
+            txtIdPlace_Place.setValue(null);
+            txtIdPlace_Place.setDisabled(true);
+        }
+
+        if (txtIdtrainer_Trainer != null) {
+            txtIdtrainer_Trainer.setValue(null);
+            txtIdtrainer_Trainer.setDisabled(true);
+        }
+
         if (txtIdusers_Users != null) {
             txtIdusers_Users.setValue(null);
             txtIdusers_Users.setDisabled(true);
+        }
+
+        if (txtClassDate != null) {
+            txtClassDate.setValue(null);
+            txtClassDate.setDisabled(true);
         }
 
         if (txtEndtime != null) {
@@ -159,6 +219,14 @@ public class ScheduleView implements Serializable {
         return "";
     }
 
+    public void listener_txtClassDate() {
+        Date inputDate = (Date) txtClassDate.getValue();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        FacesContext.getCurrentInstance()
+                    .addMessage("",
+            new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
+    }
+
     public void listener_txtEndtime() {
         Date inputDate = (Date) txtEndtime.getValue();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -185,19 +253,34 @@ public class ScheduleView implements Serializable {
         }
 
         if (entity == null) {
+            txtMaxUsers.setDisabled(false);
+            txtIdcategory_Category.setDisabled(false);
             txtIdday_Day.setDisabled(false);
+            txtIdPlace_Place.setDisabled(false);
+            txtIdtrainer_Trainer.setDisabled(false);
             txtIdusers_Users.setDisabled(false);
+            txtClassDate.setDisabled(false);
             txtEndtime.setDisabled(false);
             txtStarttime.setDisabled(false);
             txtIdschedule.setDisabled(false);
             btnSave.setDisabled(false);
         } else {
+            txtClassDate.setValue(entity.getClassDate());
+            txtClassDate.setDisabled(false);
             txtEndtime.setValue(entity.getEndtime());
             txtEndtime.setDisabled(false);
+            txtMaxUsers.setValue(entity.getMaxUsers());
+            txtMaxUsers.setDisabled(false);
             txtStarttime.setValue(entity.getStarttime());
             txtStarttime.setDisabled(false);
+            txtIdcategory_Category.setValue(entity.getCategory().getIdcategory());
+            txtIdcategory_Category.setDisabled(false);
             txtIdday_Day.setValue(entity.getDay().getIdday());
             txtIdday_Day.setDisabled(false);
+            txtIdPlace_Place.setValue(entity.getPlace().getIdPlace());
+            txtIdPlace_Place.setDisabled(false);
+            txtIdtrainer_Trainer.setValue(entity.getTrainer().getIdtrainer());
+            txtIdtrainer_Trainer.setDisabled(false);
             txtIdusers_Users.setValue(entity.getUsers().getIdusers());
             txtIdusers_Users.setDisabled(false);
             txtIdschedule.setValue(entity.getIdschedule());
@@ -213,12 +296,22 @@ public class ScheduleView implements Serializable {
     public String action_edit(ActionEvent evt) {
         selectedSchedule = (ScheduleDTO) (evt.getComponent().getAttributes()
                                              .get("selectedSchedule"));
+        txtClassDate.setValue(selectedSchedule.getClassDate());
+        txtClassDate.setDisabled(false);
         txtEndtime.setValue(selectedSchedule.getEndtime());
         txtEndtime.setDisabled(false);
+        txtMaxUsers.setValue(selectedSchedule.getMaxUsers());
+        txtMaxUsers.setDisabled(false);
         txtStarttime.setValue(selectedSchedule.getStarttime());
         txtStarttime.setDisabled(false);
+        txtIdcategory_Category.setValue(selectedSchedule.getIdcategory_Category());
+        txtIdcategory_Category.setDisabled(false);
         txtIdday_Day.setValue(selectedSchedule.getIdday_Day());
         txtIdday_Day.setDisabled(false);
+        txtIdPlace_Place.setValue(selectedSchedule.getIdPlace_Place());
+        txtIdPlace_Place.setDisabled(false);
+        txtIdtrainer_Trainer.setValue(selectedSchedule.getIdtrainer_Trainer());
+        txtIdtrainer_Trainer.setDisabled(false);
         txtIdusers_Users.setValue(selectedSchedule.getIdusers_Users());
         txtIdusers_Users.setDisabled(false);
         txtIdschedule.setValue(selectedSchedule.getIdschedule());
@@ -251,12 +344,23 @@ public class ScheduleView implements Serializable {
 
             Integer idschedule = FacesUtils.checkInteger(txtIdschedule);
 
+            entity.setClassDate(FacesUtils.checkDate(txtClassDate));
             entity.setEndtime(FacesUtils.checkDate(txtEndtime));
             entity.setIdschedule(idschedule);
+            entity.setMaxUsers(FacesUtils.checkInteger(txtMaxUsers));
             entity.setStarttime(FacesUtils.checkDate(txtStarttime));
+            entity.setCategory((FacesUtils.checkInteger(txtIdcategory_Category) != null)
+                ? businessDelegatorView.getCategory(FacesUtils.checkInteger(
+                        txtIdcategory_Category)) : null);
             entity.setDay((FacesUtils.checkInteger(txtIdday_Day) != null)
                 ? businessDelegatorView.getDay(FacesUtils.checkInteger(
                         txtIdday_Day)) : null);
+            entity.setPlace((FacesUtils.checkInteger(txtIdPlace_Place) != null)
+                ? businessDelegatorView.getPlace(FacesUtils.checkInteger(
+                        txtIdPlace_Place)) : null);
+            entity.setTrainer((FacesUtils.checkInteger(txtIdtrainer_Trainer) != null)
+                ? businessDelegatorView.getTrainer(FacesUtils.checkInteger(
+                        txtIdtrainer_Trainer)) : null);
             entity.setUsers((FacesUtils.checkInteger(txtIdusers_Users) != null)
                 ? businessDelegatorView.getUsers(FacesUtils.checkInteger(
                         txtIdusers_Users)) : null);
@@ -278,11 +382,22 @@ public class ScheduleView implements Serializable {
                 entity = businessDelegatorView.getSchedule(idschedule);
             }
 
+            entity.setClassDate(FacesUtils.checkDate(txtClassDate));
             entity.setEndtime(FacesUtils.checkDate(txtEndtime));
+            entity.setMaxUsers(FacesUtils.checkInteger(txtMaxUsers));
             entity.setStarttime(FacesUtils.checkDate(txtStarttime));
+            entity.setCategory((FacesUtils.checkInteger(txtIdcategory_Category) != null)
+                ? businessDelegatorView.getCategory(FacesUtils.checkInteger(
+                        txtIdcategory_Category)) : null);
             entity.setDay((FacesUtils.checkInteger(txtIdday_Day) != null)
                 ? businessDelegatorView.getDay(FacesUtils.checkInteger(
                         txtIdday_Day)) : null);
+            entity.setPlace((FacesUtils.checkInteger(txtIdPlace_Place) != null)
+                ? businessDelegatorView.getPlace(FacesUtils.checkInteger(
+                        txtIdPlace_Place)) : null);
+            entity.setTrainer((FacesUtils.checkInteger(txtIdtrainer_Trainer) != null)
+                ? businessDelegatorView.getTrainer(FacesUtils.checkInteger(
+                        txtIdtrainer_Trainer)) : null);
             entity.setUsers((FacesUtils.checkInteger(txtIdusers_Users) != null)
                 ? businessDelegatorView.getUsers(FacesUtils.checkInteger(
                         txtIdusers_Users)) : null);
@@ -359,11 +474,15 @@ public class ScheduleView implements Serializable {
         return "";
     }
 
-    public String action_modifyWitDTO(Date endtime, Integer idschedule,
-        Date starttime, Integer idday_Day, Integer idusers_Users)
+    public String action_modifyWitDTO(Date classDate, Date endtime,
+        Integer idschedule, Integer maxUsers, Date starttime,
+        Integer idcategory_Category, Integer idday_Day, Integer idPlace_Place,
+        Integer idtrainer_Trainer, Integer idusers_Users)
         throws Exception {
         try {
+            entity.setClassDate(FacesUtils.checkDate(classDate));
             entity.setEndtime(FacesUtils.checkDate(endtime));
+            entity.setMaxUsers(FacesUtils.checkInteger(maxUsers));
             entity.setStarttime(FacesUtils.checkDate(starttime));
             businessDelegatorView.updateSchedule(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
@@ -376,6 +495,22 @@ public class ScheduleView implements Serializable {
         return "";
     }
 
+    public InputText getTxtMaxUsers() {
+        return txtMaxUsers;
+    }
+
+    public void setTxtMaxUsers(InputText txtMaxUsers) {
+        this.txtMaxUsers = txtMaxUsers;
+    }
+
+    public InputText getTxtIdcategory_Category() {
+        return txtIdcategory_Category;
+    }
+
+    public void setTxtIdcategory_Category(InputText txtIdcategory_Category) {
+        this.txtIdcategory_Category = txtIdcategory_Category;
+    }
+
     public InputText getTxtIdday_Day() {
         return txtIdday_Day;
     }
@@ -384,12 +519,36 @@ public class ScheduleView implements Serializable {
         this.txtIdday_Day = txtIdday_Day;
     }
 
+    public InputText getTxtIdPlace_Place() {
+        return txtIdPlace_Place;
+    }
+
+    public void setTxtIdPlace_Place(InputText txtIdPlace_Place) {
+        this.txtIdPlace_Place = txtIdPlace_Place;
+    }
+
+    public InputText getTxtIdtrainer_Trainer() {
+        return txtIdtrainer_Trainer;
+    }
+
+    public void setTxtIdtrainer_Trainer(InputText txtIdtrainer_Trainer) {
+        this.txtIdtrainer_Trainer = txtIdtrainer_Trainer;
+    }
+
     public InputText getTxtIdusers_Users() {
         return txtIdusers_Users;
     }
 
     public void setTxtIdusers_Users(InputText txtIdusers_Users) {
         this.txtIdusers_Users = txtIdusers_Users;
+    }
+
+    public Calendar getTxtClassDate() {
+        return txtClassDate;
+    }
+
+    public void setTxtClassDate(Calendar txtClassDate) {
+        this.txtClassDate = txtClassDate;
     }
 
     public Calendar getTxtEndtime() {

@@ -47,18 +47,39 @@ public class ScheduleLogic implements IScheduleLogic {
     private IScheduleDAO scheduleDAO;
 
     /**
+    * Logic injected by Spring that manages Category entities
+    *
+    */
+    @Autowired
+    ICategoryLogic logicCategory1;
+
+    /**
     * Logic injected by Spring that manages Day entities
     *
     */
     @Autowired
-    IDayLogic logicDay1;
+    IDayLogic logicDay2;
+
+    /**
+    * Logic injected by Spring that manages Place entities
+    *
+    */
+    @Autowired
+    IPlaceLogic logicPlace3;
+
+    /**
+    * Logic injected by Spring that manages Trainer entities
+    *
+    */
+    @Autowired
+    ITrainerLogic logicTrainer4;
 
     /**
     * Logic injected by Spring that manages Users entities
     *
     */
     @Autowired
-    IUsersLogic logicUsers2;
+    IUsersLogic logicUsers5;
 
     @Transactional(readOnly = true)
     public List<Schedule> getSchedule() throws Exception {
@@ -83,16 +104,43 @@ public class ScheduleLogic implements IScheduleLogic {
         log.debug("saving Schedule instance");
 
         try {
+            if (entity.getCategory() == null) {
+                throw new ZMessManager().new ForeignException("category");
+            }
+
             if (entity.getDay() == null) {
                 throw new ZMessManager().new ForeignException("day");
+            }
+
+            if (entity.getPlace() == null) {
+                throw new ZMessManager().new ForeignException("place");
+            }
+
+            if (entity.getTrainer() == null) {
+                throw new ZMessManager().new ForeignException("trainer");
             }
 
             if (entity.getUsers() == null) {
                 throw new ZMessManager().new ForeignException("users");
             }
 
+            if (entity.getCategory().getIdcategory() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idcategory_Category");
+            }
+
             if (entity.getDay().getIdday() == null) {
                 throw new ZMessManager().new EmptyFieldException("idday_Day");
+            }
+
+            if (entity.getPlace().getIdPlace() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idPlace_Place");
+            }
+
+            if (entity.getTrainer().getIdtrainer() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idtrainer_Trainer");
             }
 
             if (entity.getUsers().getIdusers() == null) {
@@ -146,16 +194,43 @@ public class ScheduleLogic implements IScheduleLogic {
                 throw new ZMessManager().new NullEntityExcepcion("Schedule");
             }
 
+            if (entity.getCategory() == null) {
+                throw new ZMessManager().new ForeignException("category");
+            }
+
             if (entity.getDay() == null) {
                 throw new ZMessManager().new ForeignException("day");
+            }
+
+            if (entity.getPlace() == null) {
+                throw new ZMessManager().new ForeignException("place");
+            }
+
+            if (entity.getTrainer() == null) {
+                throw new ZMessManager().new ForeignException("trainer");
             }
 
             if (entity.getUsers() == null) {
                 throw new ZMessManager().new ForeignException("users");
             }
 
+            if (entity.getCategory().getIdcategory() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idcategory_Category");
+            }
+
             if (entity.getDay().getIdday() == null) {
                 throw new ZMessManager().new EmptyFieldException("idday_Day");
+            }
+
+            if (entity.getPlace().getIdPlace() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idPlace_Place");
+            }
+
+            if (entity.getTrainer().getIdtrainer() == null) {
+                throw new ZMessManager().new EmptyFieldException(
+                    "idtrainer_Trainer");
             }
 
             if (entity.getUsers().getIdusers() == null) {
@@ -184,10 +259,22 @@ public class ScheduleLogic implements IScheduleLogic {
                 ScheduleDTO scheduleDTO2 = new ScheduleDTO();
 
                 scheduleDTO2.setIdschedule(scheduleTmp.getIdschedule());
+                scheduleDTO2.setClassDate(scheduleTmp.getClassDate());
                 scheduleDTO2.setEndtime(scheduleTmp.getEndtime());
+                scheduleDTO2.setMaxUsers((scheduleTmp.getMaxUsers() != null)
+                    ? scheduleTmp.getMaxUsers() : null);
                 scheduleDTO2.setStarttime(scheduleTmp.getStarttime());
+                scheduleDTO2.setIdcategory_Category((scheduleTmp.getCategory()
+                                                                .getIdcategory() != null)
+                    ? scheduleTmp.getCategory().getIdcategory() : null);
                 scheduleDTO2.setIdday_Day((scheduleTmp.getDay().getIdday() != null)
                     ? scheduleTmp.getDay().getIdday() : null);
+                scheduleDTO2.setIdPlace_Place((scheduleTmp.getPlace()
+                                                          .getIdPlace() != null)
+                    ? scheduleTmp.getPlace().getIdPlace() : null);
+                scheduleDTO2.setIdtrainer_Trainer((scheduleTmp.getTrainer()
+                                                              .getIdtrainer() != null)
+                    ? scheduleTmp.getTrainer().getIdtrainer() : null);
                 scheduleDTO2.setIdusers_Users((scheduleTmp.getUsers()
                                                           .getIdusers() != null)
                     ? scheduleTmp.getUsers().getIdusers() : null);
