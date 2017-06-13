@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-jun-2017 17:32:48 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Timetable" table="timetable" catalog="liderbs_virfit">
+        <id name="idtimetable" type="java.lang.Integer">
+            <column name="idtimetable" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="day" class="com.liderbs.modelo.Day" fetch="select">
+            <column name="day_idday" not-null="true" />
+        </many-to-one>
+        <many-to-one name="users" class="com.liderbs.modelo.Users" fetch="select">
+            <column name="users_idusers" not-null="true" />
+        </many-to-one>
+        <property name="dateCreated" type="java.util.Date">
+            <column name="date_created" length="10" />
+        </property>
+        <property name="timeStart" type="java.util.Date">
+            <column name="time_start" length="19" />
+        </property>
+        <property name="timeEnd" type="java.util.Date">
+            <column name="time_end" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>
