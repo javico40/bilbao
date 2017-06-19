@@ -17,6 +17,7 @@ import java.util.Date;
 *
 */
 public class TimetableDTO implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(TimetableDTO.class);
     private Date dateCreated;
@@ -25,8 +26,26 @@ public class TimetableDTO implements Serializable {
     private Date timeStart;
     private Integer idday_Day;
     private Integer idusers_Users;
+    
+    //Days
+    
+    private Integer timetableLunesId;
+    private String timetableLunesStatus;
+    private String timetableMartesStatus;
+    private String timetableMiercolesStatus;
+    private String timetableJuevesStatus;
+    private String timetableViernesStatus;
+    private String timetableSabadoStatus;
+    private String timetableDomingoStatus;
+    
+    public TimetableDTO() {
+		super();
+	}
+    
+    
+    
 
-    public Date getDateCreated() {
+	public Date getDateCreated() {
         return dateCreated;
     }
 
@@ -73,4 +92,90 @@ public class TimetableDTO implements Serializable {
     public void setIdusers_Users(Integer idusers_Users) {
         this.idusers_Users = idusers_Users;
     }
+
+
+
+	public String getTimetableLunesStatus() {
+		return timetableLunesStatus;
+	}
+
+
+
+	public void setTimetableLunesStatus(String timetableLunesStatus) {
+		this.timetableLunesStatus = timetableLunesStatus;
+	}
+
+
+
+	public String getTimetableMartesStatus() {
+		return timetableMartesStatus;
+	}
+
+
+
+	public void setTimetableMartesStatus(String timetableMartesStatus) {
+		this.timetableMartesStatus = timetableMartesStatus;
+	}
+
+
+
+	public String getTimetableMiercolesStatus() {
+		return timetableMiercolesStatus;
+	}
+
+
+
+	public void setTimetableMiercolesStatus(String timetableMiercolesStatus) {
+		this.timetableMiercolesStatus = timetableMiercolesStatus;
+	}
+
+
+
+	public String getTimetableJuevesStatus() {
+		return timetableJuevesStatus;
+	}
+
+
+
+	public void setTimetableJuevesStatus(String timetableJuevesStatus) {
+		this.timetableJuevesStatus = timetableJuevesStatus;
+	}
+
+
+
+	public String getTimetableViernesStatus() {
+		return timetableViernesStatus;
+	}
+
+
+
+	public void setTimetableViernesStatus(String timetableViernesStatus) {
+		this.timetableViernesStatus = timetableViernesStatus;
+	}
+
+
+
+	public String getTimetableSabadoStatus() {
+		return timetableSabadoStatus;
+	}
+
+
+
+	public void setTimetableSabadoStatus(String timetableSabadoStatus) {
+		this.timetableSabadoStatus = timetableSabadoStatus;
+	}
+
+
+
+	public String getTimetableDomingoStatus() {
+		return timetableDomingoStatus;
+	}
+
+
+
+	public void setTimetableDomingoStatus(String timetableDomingoStatus) {
+		this.timetableDomingoStatus = timetableDomingoStatus;
+	}
+    
+    
 }

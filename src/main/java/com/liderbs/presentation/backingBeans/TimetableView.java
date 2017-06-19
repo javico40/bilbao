@@ -9,12 +9,14 @@ import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
 
-import org.primefaces.component.calendar.*;
+//import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 
 import org.primefaces.event.RowEditEvent;
-
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,11 +28,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -47,14 +51,15 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class TimetableView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(TimetableView.class);
     private InputText txtIdday_Day;
     private InputText txtIdusers_Users;
     private InputText txtIdtimetable;
-    private Calendar txtDateCreated;
-    private Calendar txtTimeEnd;
-    private Calendar txtTimeStart;
+    private org.primefaces.component.calendar.Calendar txtDateCreated;
+    private org.primefaces.component.calendar.Calendar txtTimeEnd;
+    private org.primefaces.component.calendar.Calendar txtTimeStart;
     private CommandButton btnSave;
     private CommandButton btnModify;
     private CommandButton btnDelete;
@@ -65,9 +70,100 @@ public class TimetableView implements Serializable {
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    
+    private ScheduleModel eventModel;
 
     public TimetableView() {
         super();
+    }
+    
+    @PostConstruct
+    public void init() {
+    	
+    	eventModel = new DefaultScheduleModel();
+    	
+        //eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
+        //eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
+        //eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
+        //eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+        
+    }
+    
+    private Calendar today() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+ 
+        return calendar;
+    }
+     
+    private Date previousDay8Pm() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
+        t.set(Calendar.HOUR, 8);
+         
+        return t.getTime();
+    }
+     
+    private Date previousDay11Pm() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
+        t.set(Calendar.HOUR, 11);
+         
+        return t.getTime();
+    }
+     
+    private Date today1Pm() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.HOUR, 1);
+         
+        return t.getTime();
+    }
+     
+    private Date theDayAfter3Pm() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);     
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.HOUR, 3);
+         
+        return t.getTime();
+    }
+ 
+    private Date today6Pm() {
+        Calendar t = (Calendar) today().clone(); 
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.HOUR, 6);
+         
+        return t.getTime();
+    }
+     
+    private Date nextDay9Am() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.AM);
+        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
+        t.set(Calendar.HOUR, 9);
+         
+        return t.getTime();
+    }
+     
+    private Date nextDay11Am() {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.AM);
+        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
+        t.set(Calendar.HOUR, 11);
+         
+        return t.getTime();
+    }
+     
+    private Date fourDaysLater3pm() {
+        Calendar t = (Calendar) today().clone(); 
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
+        t.set(Calendar.HOUR, 3);
+         
+        return t.getTime();
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -93,19 +189,19 @@ public class TimetableView implements Serializable {
             txtIdtimetable.setValue(timetableDTO.getIdtimetable());
 
             if (txtDateCreated == null) {
-                txtDateCreated = new Calendar();
+                txtDateCreated = new org.primefaces.component.calendar.Calendar();
             }
 
             txtDateCreated.setValue(timetableDTO.getDateCreated());
 
             if (txtTimeEnd == null) {
-                txtTimeEnd = new Calendar();
+                txtTimeEnd = new org.primefaces.component.calendar.Calendar();
             }
 
             txtTimeEnd.setValue(timetableDTO.getTimeEnd());
 
             if (txtTimeStart == null) {
-                txtTimeStart = new Calendar();
+                txtTimeStart = new org.primefaces.component.calendar.Calendar();
             }
 
             txtTimeStart.setValue(timetableDTO.getTimeStart());
@@ -422,27 +518,27 @@ public class TimetableView implements Serializable {
         this.txtIdusers_Users = txtIdusers_Users;
     }
 
-    public Calendar getTxtDateCreated() {
+    public org.primefaces.component.calendar.Calendar getTxtDateCreated() {
         return txtDateCreated;
     }
 
-    public void setTxtDateCreated(Calendar txtDateCreated) {
+    public void setTxtDateCreated(org.primefaces.component.calendar.Calendar txtDateCreated) {
         this.txtDateCreated = txtDateCreated;
     }
 
-    public Calendar getTxtTimeEnd() {
+    public org.primefaces.component.calendar.Calendar getTxtTimeEnd() {
         return txtTimeEnd;
     }
 
-    public void setTxtTimeEnd(Calendar txtTimeEnd) {
+    public void setTxtTimeEnd(org.primefaces.component.calendar.Calendar txtTimeEnd) {
         this.txtTimeEnd = txtTimeEnd;
     }
 
-    public Calendar getTxtTimeStart() {
+    public org.primefaces.component.calendar.Calendar getTxtTimeStart() {
         return txtTimeStart;
     }
 
-    public void setTxtTimeStart(Calendar txtTimeStart) {
+    public void setTxtTimeStart(org.primefaces.component.calendar.Calendar txtTimeStart) {
         this.txtTimeStart = txtTimeStart;
     }
 
@@ -530,4 +626,14 @@ public class TimetableView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public ScheduleModel getEventModel() {
+		return eventModel;
+	}
+
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
+	}
+    
+    
 }

@@ -179,6 +179,14 @@ public class Users  implements java.io.Serializable {
         this.schedules = schedules;
     }
     
+    public Set<Timetable> getTimetables() {
+        return this.timetables;
+    }
+    
+    public void setTimetables(Set<Timetable> timetables) {
+        this.timetables = timetables;
+    }
+
 
 }
 
