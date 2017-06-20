@@ -72,6 +72,14 @@ public class TimetableView implements Serializable {
     private IBusinessDelegatorView businessDelegatorView;
     
     private ScheduleModel eventModel;
+    private boolean showEventDialog;
+    private Integer timeStatus;
+    private boolean restrictZone; 
+    private Integer zoneRestriction;
+    private Integer placeID;
+    private Date horaInicio;
+    private Date horaFin;
+    
 
     public TimetableView() {
         super();
@@ -87,6 +95,10 @@ public class TimetableView implements Serializable {
         //eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
         //eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
         
+    }
+    
+    public void agregarTiempo(){
+    	this.showEventDialog = true;
     }
     
     private Calendar today() {
@@ -634,6 +646,64 @@ public class TimetableView implements Serializable {
 	public void setEventModel(ScheduleModel eventModel) {
 		this.eventModel = eventModel;
 	}
+
+	public boolean isShowEventDialog() {
+		return showEventDialog;
+	}
+
+	public void setShowEventDialog(boolean showEventDialog) {
+		this.showEventDialog = showEventDialog;
+	}
+
+	public Integer getTimeStatus() {
+		return timeStatus;
+	}
+
+	public void setTimeStatus(Integer timeStatus) {
+		this.timeStatus = timeStatus;
+	}
+
+	public boolean isRestrictZone() {
+		return restrictZone;
+	}
+
+	public void setRestrictZone(boolean restrictZone) {
+		this.restrictZone = restrictZone;
+	}
+
+	public Integer getZoneRestriction() {
+		return zoneRestriction;
+	}
+
+	public void setZoneRestriction(Integer zoneRestriction) {
+		this.zoneRestriction = zoneRestriction;
+	}
+
+	public Integer getPlaceID() {
+		return placeID;
+	}
+
+	public void setPlaceID(Integer placeID) {
+		this.placeID = placeID;
+	}
+
+	public Date getHoraInicio() {
+		return horaInicio;
+	}
+
+	public void setHoraInicio(Date horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
+	public Date getHoraFin() {
+		return horaFin;
+	}
+
+	public void setHoraFin(Date horaFin) {
+		this.horaFin = horaFin;
+	}
+	
+	
     
     
 }
