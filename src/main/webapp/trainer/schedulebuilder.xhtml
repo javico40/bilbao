@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Virfit <small>Lider Business Group</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Constructor de Horario</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					<h:form id="form">
+					
+						<p:panel id="timetablePanel" header="Constructor de Horario">
+						
+						
+						<p:commandButton id="btnShowEvent"
+						                 value="Agregar tiempo"
+						                 actionListener="#{timetableView.agregarTiempo}"
+						                 update=":dialogCreateEvent" />
+						
+							<p:schedule id="timetableConstructor"
+							            value="#{timetableView.eventModel}"
+							            widgetVar="constructor"
+							            timeZone="GMT-5"
+							            locale="es"
+							            rightHeaderTemplate="month,agendaWeek"
+							            minTime="05:00"
+							            >
+ 							
+ 							</p:schedule>
+						
+						</p:panel>
+						
+					</h:form>
+					<p:dialog id="dialogCreateEvent"
+					          appendTo="@(body)"
+					          draggable="true"
+							  closable="true"
+							  visible="#{timetableView.showEventDialog}"
+							  resizable="false"
+							  modal="true"
+							  width="400"
+							  position="top"
+							  style="margin:100px;">
+							<h:form id="formDialog">
+							<p:messages id="msg" />
+								
+								<p:panel header="Agregar tiempo">
+									<p:panelGrid>
+										<p:row>
+											<p:column><h:outputText id="msgEstado" value=" Estado"/></p:column>
+											<p:column>
+												<p:selectOneMenu id="status" value="#{timetableView.timeStatus}" style="width:125px">
+													  <f:selectItem itemLabel="Disponible" itemValue="1" />
+            										  <f:selectItem itemLabel="Reservado" itemValue="2" />
+            										  <f:selectItem itemLabel="En Centro deportivo" itemValue="3" />
+            									</p:selectOneMenu>
+            								</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgRestrictZone" value=" Restringir a un Sector"/></p:column>
+											<p:column><p:selectBooleanCheckbox value="#{timetableView.restrictZone}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgZone" value=" Sector"/></p:column>
+											<p:column>
+													  <p:selectOneMenu id="sector" value="#{timetableView.zoneRestriction}" style="width:125px">
+													  	<f:selectItem itemLabel="Norte" itemValue="1" />
+            										  	<f:selectItem itemLabel="Sur" itemValue="2" />
+            										  	<f:selectItem itemLabel="Oriente" itemValue="3" />
+            										  	<f:selectItem itemLabel="Oeste" itemValue="4" />
+            										  </p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgCenpro" value=" Centro Deportivo"/></p:column>
+											<p:column>
+												<p:selectOneMenu id="cenpro" value="#{timetableView.placeID}" style="width:125px">
+													  <f:selectItem itemLabel="Birfit" itemValue="1" />
+            									</p:selectOneMenu>
+            								</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgHoraIni" value=" Hora Inicio"/></p:column>
+											<p:column><p:calendar id="horaInicio" label="Seleccione" value="#{timetableView.horaInicio}" pattern="HH:mm" timeOnly="true"  /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgHoraFin" value=" Hora Inicio"/></p:column>
+											<p:column><p:calendar id="horaFin" value="#{timetableView.horaFin}" pattern="HH:mm" timeOnly="true"  /></p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+							
+							</h:form>
+						</p:dialog>
+						
+		  			</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
