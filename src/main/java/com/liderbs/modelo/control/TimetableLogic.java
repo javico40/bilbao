@@ -83,26 +83,6 @@ public class TimetableLogic implements ITimetableLogic {
         log.debug("saving Timetable instance");
 
         try {
-            if (entity.getDay() == null) {
-                throw new ZMessManager().new ForeignException("day");
-            }
-
-            if (entity.getUsers() == null) {
-                throw new ZMessManager().new ForeignException("users");
-            }
-
-            if (entity.getDay().getIdday() == null) {
-                throw new ZMessManager().new EmptyFieldException("idday_Day");
-            }
-
-            if (entity.getUsers().getIdusers() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idusers_Users");
-            }
-
-            if (getTimetable(entity.getIdtimetable()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             timetableDAO.save(entity);
 

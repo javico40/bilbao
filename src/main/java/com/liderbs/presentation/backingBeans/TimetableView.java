@@ -19,6 +19,7 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 
@@ -41,6 +42,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -67,7 +69,8 @@ public class TimetableView implements Serializable {
     private List<TimetableDTO> data;
     private TimetableDTO selectedTimetable;
     private Timetable entity;
-    private boolean showDialog;
+    private boolean showDialog;    
+    private Users usuarioapp;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
     
@@ -77,8 +80,11 @@ public class TimetableView implements Serializable {
     private boolean restrictZone; 
     private Integer zoneRestriction;
     private Integer placeID;
+    private List<SelectItem> listPlaces;
     private Date horaInicio;
     private Date horaFin;
+    private Integer day;
+    private String isInCenpro = "false";
     
 
     public TimetableView() {
@@ -87,15 +93,107 @@ public class TimetableView implements Serializable {
     
     @PostConstruct
     public void init() {
+    try{
     	
+    	Users user = getUsuarioapp();
     	eventModel = new DefaultScheduleModel();
+    	
+    	//Search for user events of the week
+    	
+    	List<Timetable> list = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"users.idusers",false, user.getIdusers(), "="},
+    			                                                               null,
+    			                                                               null);
+    	Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+        Calendar actual = Calendar.getInstance();
+        
+        Date dateStart = new Date();
+        Date dateEnd = new Date();
+        
+        
+    	for(Timetable time: list){
+    		
+    		dateStart = time.getTimeStart();
+            dateEnd =  time.getTimeEnd();
+ 
+            
+            start.set(start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DATE), 0, 0, 0);
+        	start.setFirstDayOfWeek(Calendar.MONDAY);
+           
+        	end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DATE), 0, 0, 0);
+            end.setFirstDayOfWeek(Calendar.MONDAY);
+           
+            start.setTime(dateStart);
+            end.setTime(dateEnd);
+    		
+            start.set(Calendar.YEAR,actual.get(Calendar.YEAR));
+            start.set(Calendar.MONTH,actual.get(Calendar.MONTH)+1);
+            start.set(Calendar.DAY_OF_WEEK,actual.get(Calendar.DAY_OF_WEEK));
+            
+            end.set(Calendar.YEAR,actual.get(Calendar.YEAR));
+            end.set(Calendar.MONTH,actual.get(Calendar.MONTH)+1);
+            end.set(Calendar.DAY_OF_WEEK,actual.get(Calendar.DAY_OF_WEEK));
+            
+            
+            Day day = time.getDay();
+    		
+    		switch (day.getIdday()) {
+            case 1:  start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                     end.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                     break;
+            default: start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            break;
+            }
+    		
+    		dateStart = start.getTime();
+    		dateEnd = end.getTime();
+    		
+    		System.out.println(dateStart);
+    		System.out.println(dateEnd);
+    		
+    		eventModel.addEvent(new DefaultScheduleEvent("Disponible", dateStart, dateEnd));
+            
+    	}
     	
         //eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
         //eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
         //eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
         //eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
-        
+    	}catch(Exception e){
+    	
+    	}  
     }
+    
+    public void action_save_event(){
+    try{	
+    	//validations
+    	Date today = new Date();
+    	Day selDay = businessDelegatorView.getDay(day);
+    	
+    	Timetable time = new Timetable();
+    	time.setDateCreated(today);
+    	time.setDay(selDay);
+    	time.setUsers(usuarioapp);
+    	time.setTimeStart(horaInicio);
+    	time.setTimeEnd(horaFin);
+    	time.setSector(zoneRestriction);
+    	time.setPlace(placeID);
+    	businessDelegatorView.saveTimetable(time);
+    	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
+    	
+    }catch(Exception e){
+    	log.info(e.toString());
+    }
+    	
+    }
+    
+    public Users getUsuarioapp() {
+		if(usuarioapp==null) {				
+			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+		}
+		return usuarioapp;
+	}
     
     public void agregarTiempo(){
     	this.showEventDialog = true;
@@ -702,8 +800,47 @@ public class TimetableView implements Serializable {
 	public void setHoraFin(Date horaFin) {
 		this.horaFin = horaFin;
 	}
-	
-	
-    
+
+	public String isInCenpro() {
+		return isInCenpro;
+	}
+
+	public void setInCenpro(String isInCenpro) {
+		this.isInCenpro = isInCenpro;
+	}
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+
+	public List<SelectItem> getListPlaces() {
+	try{	
+		if(listPlaces == null){
+			
+			listPlaces = new ArrayList<SelectItem>();
+			
+			List<Place> list = businessDelegatorView.findByCriteriaInPlace(new Object[]{"city",true, "Cali", "like"},
+					                                                       null,
+					                                                       null);
+			
+			for(Place place:list){
+				listPlaces.add(new SelectItem(placeID, place.getPlaceName()));
+			}
+			
+		}
+	}catch(Exception e){
+		log.info(e.toString());
+	}
+		return listPlaces;
+	}
+
+	public void setListPlaces(List<SelectItem> listPlaces) {
+		this.listPlaces = listPlaces;
+	}
+
     
 }

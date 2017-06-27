@@ -23,5 +23,11 @@
         <property name="timeEnd" type="java.util.Date">
             <column name="time_end" length="19" />
         </property>
+        <property name="sector" type="java.lang.Integer">
+            <column name="sector" />
+        </property>
+        <property name="place" type="java.lang.Integer">
+            <column name="place" />
+        </property>
     </class>
 </hibernate-mapping>

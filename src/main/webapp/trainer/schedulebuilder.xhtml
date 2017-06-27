@@ -18,7 +18,7 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Govirfit <small>Lider Business Group</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -29,6 +29,7 @@
 					<!-- Main content -->
 					<section class="content">
 					<h:form id="form">
+						<p:growl id="growl" showDetail="false" sticky="false" />  
 					
 						<p:panel id="timetablePanel" header="Constructor de Horario">
 						
@@ -43,6 +44,7 @@
 							            widgetVar="constructor"
 							            timeZone="GMT-5"
 							            locale="es"
+							            view="agendaWeek"
 							            rightHeaderTemplate="month,agendaWeek"
 							            minTime="05:00"
 							            >
@@ -68,48 +70,65 @@
 								<p:panel header="Agregar tiempo">
 									<p:panelGrid>
 										<p:row>
-											<p:column><h:outputText id="msgEstado" value=" Estado"/></p:column>
+											<p:column><h:outputText id="msgDia" value=" El dia"/></p:column>
+											<p:column>
+												<p:selectOneMenu id="day" value="#{timetableView.day}" style="width:125px">
+													  <f:selectItem itemLabel="Lunes" itemValue="1" />
+            										  <f:selectItem itemLabel="Martes" itemValue="2" />
+            										  <f:selectItem itemLabel="Miercoles" itemValue="3" />
+            										  <f:selectItem itemLabel="Jueves" itemValue="4" />
+            										  <f:selectItem itemLabel="Viernes" itemValue="5" />
+            										  <f:selectItem itemLabel="Sabado" itemValue="6" />
+            										  <f:selectItem itemLabel="Domingo" itemValue="7" />
+            									</p:selectOneMenu>
+            								</p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="msgEstado" value=" Estoy"/></p:column>
 											<p:column>
 												<p:selectOneMenu id="status" value="#{timetableView.timeStatus}" style="width:125px">
 													  <f:selectItem itemLabel="Disponible" itemValue="1" />
-            										  <f:selectItem itemLabel="Reservado" itemValue="2" />
             										  <f:selectItem itemLabel="En Centro deportivo" itemValue="3" />
             									</p:selectOneMenu>
             								</p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="msgRestrictZone" value=" Restringir a un Sector"/></p:column>
-											<p:column><p:selectBooleanCheckbox value="#{timetableView.restrictZone}" /></p:column>
-										</p:row>
-										<p:row>
-											<p:column><h:outputText id="msgZone" value=" Sector"/></p:column>
+											<p:column><h:outputText id="msgZone" value=" En"/></p:column>
 											<p:column>
 													  <p:selectOneMenu id="sector" value="#{timetableView.zoneRestriction}" style="width:125px">
-													  	<f:selectItem itemLabel="Norte" itemValue="1" />
-            										  	<f:selectItem itemLabel="Sur" itemValue="2" />
-            										  	<f:selectItem itemLabel="Oriente" itemValue="3" />
-            										  	<f:selectItem itemLabel="Oeste" itemValue="4" />
+													  	<f:selectItem itemLabel="Toda la ciudad" itemValue="1" />
+													  	<f:selectItem itemLabel="Norte" itemValue="2" />
+            										  	<f:selectItem itemLabel="Sur" itemValue="3" />
+            										  	<f:selectItem itemLabel="Oriente" itemValue="4" />
+            										  	<f:selectItem itemLabel="Oeste" itemValue="5" />
             										  </p:selectOneMenu>
 											</p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="msgCenpro" value=" Centro Deportivo"/></p:column>
+											<p:column><h:outputText id="msgCenpro" value=" Llamado"/></p:column>
 											<p:column>
 												<p:selectOneMenu id="cenpro" value="#{timetableView.placeID}" style="width:125px">
-													  <f:selectItem itemLabel="Birfit" itemValue="1" />
+													  <f:selectItems value="#{timetableView.listPlaces}" />
             									</p:selectOneMenu>
             								</p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="msgHoraIni" value=" Hora Inicio"/></p:column>
-											<p:column><p:calendar id="horaInicio" label="Seleccione" value="#{timetableView.horaInicio}" pattern="HH:mm" timeOnly="true"  /></p:column>
+											<p:column><h:outputText id="msgHoraIni" value=" Desde las"/></p:column>
+											<p:column><p:calendar id="horaInicio" locale="es" label="Seleccione" value="#{timetableView.horaInicio}" pattern="HH:mm" timeOnly="true"  /></p:column>
 										</p:row>
 										<p:row>
-											<p:column><h:outputText id="msgHoraFin" value=" Hora Inicio"/></p:column>
-											<p:column><p:calendar id="horaFin" value="#{timetableView.horaFin}" pattern="HH:mm" timeOnly="true"  /></p:column>
+											<p:column><h:outputText id="msgHoraFin" value=" Hasta las"/></p:column>
+											<p:column><p:calendar id="horaFin" locale="es" value="#{timetableView.horaFin}" pattern="HH:mm" timeOnly="true"  /></p:column>
 										</p:row>
 									</p:panelGrid>
 								</p:panel>
+								<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{usersView.btnSave}" value="Guardar" action="#{timetableView.action_save_event()}" update=":dialogCreateEvent :form:timetablePanel" />
+									<p:commandButton id="btnClear" value="Limpiar" action="#{usersView.action_clear()}" update=":dialogCreateEvent" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{usersView.action_closeDialog()}" update=":dialogCreateEvent" />
+								</div>
+							</p:panel>
 							
 							</h:form>
 						</p:dialog>

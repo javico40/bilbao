@@ -26,6 +26,8 @@ public class TimetableDTO implements Serializable {
     private Date timeStart;
     private Integer idday_Day;
     private Integer idusers_Users;
+    private Integer sector;
+    private Integer place;
     
     //Days
     
@@ -175,6 +177,34 @@ public class TimetableDTO implements Serializable {
 
 	public void setTimetableDomingoStatus(String timetableDomingoStatus) {
 		this.timetableDomingoStatus = timetableDomingoStatus;
+	}
+
+
+
+
+	public Integer getSector() {
+		return sector;
+	}
+
+
+
+
+	public void setSector(Integer sector) {
+		this.sector = sector;
+	}
+
+
+
+
+	public Integer getPlace() {
+		return place;
+	}
+
+
+
+
+	public void setPlace(Integer place) {
+		this.place = place;
 	}
     
     
