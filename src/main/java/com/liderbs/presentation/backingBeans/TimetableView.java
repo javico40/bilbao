@@ -14,8 +14,10 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +88,8 @@ public class TimetableView implements Serializable {
     private Integer day;
     private String isInCenpro = "false";
     
+    private ScheduleEvent event = new DefaultScheduleEvent();
+    
 
     public TimetableView() {
         super();
@@ -93,93 +97,214 @@ public class TimetableView implements Serializable {
     
     @PostConstruct
     public void init() {
-    try{
-    	
-    	Users user = getUsuarioapp();
-    	eventModel = new DefaultScheduleModel();
-    	
-    	//Search for user events of the week
-    	
-    	List<Timetable> list = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"users.idusers",false, user.getIdusers(), "="},
-    			                                                               null,
-    			                                                               null);
-    	Calendar start = Calendar.getInstance();
-        Calendar end = Calendar.getInstance();
-        Calendar actual = Calendar.getInstance();
-        
-        Date dateStart = new Date();
-        Date dateEnd = new Date();
-        
-        
-    	for(Timetable time: list){
-    		
-    		dateStart = time.getTimeStart();
-            dateEnd =  time.getTimeEnd();
- 
-            
-            start.set(start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DATE), 0, 0, 0);
-        	start.setFirstDayOfWeek(Calendar.MONDAY);
-           
-        	end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DATE), 0, 0, 0);
-            end.setFirstDayOfWeek(Calendar.MONDAY);
-           
-            start.setTime(dateStart);
-            end.setTime(dateEnd);
-    		
-            start.set(Calendar.YEAR,actual.get(Calendar.YEAR));
-            start.set(Calendar.MONTH,actual.get(Calendar.MONTH)+1);
-            start.set(Calendar.DAY_OF_WEEK,actual.get(Calendar.DAY_OF_WEEK));
-            
-            end.set(Calendar.YEAR,actual.get(Calendar.YEAR));
-            end.set(Calendar.MONTH,actual.get(Calendar.MONTH)+1);
-            end.set(Calendar.DAY_OF_WEEK,actual.get(Calendar.DAY_OF_WEEK));
-            
-            
-            Day day = time.getDay();
-    		
-    		switch (day.getIdday()) {
-            case 1:  start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                     end.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                     break;
-            default: start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            break;
-            }
-    		
-    		dateStart = start.getTime();
-    		dateEnd = end.getTime();
-    		
-    		System.out.println(dateStart);
-    		System.out.println(dateEnd);
-    		
-    		eventModel.addEvent(new DefaultScheduleEvent("Disponible", dateStart, dateEnd));
-            
-    	}
-    	
-        //eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        //eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        //eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-        //eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
-    	}catch(Exception e){
-    	
-    	}  
+    	populateSchedule();
+    }
+    
+    public void populateSchedule(){
+    	 try{
+    	    	
+    	    	Users user = getUsuarioapp();
+    	    	eventModel = new DefaultScheduleModel();
+    	    	
+    	    	//Search for user events of the week
+    	    	
+    	    	List<Timetable> list = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"users.idusers",false, user.getIdusers(), "="},
+    	    			                                                               null,
+    	    			                                                               null);
+    	    	Calendar start = Calendar.getInstance();
+    	        Calendar end = Calendar.getInstance();
+    	        Calendar actual = Calendar.getInstance();
+    	        
+    	        Date dateStart = new Date();
+    	        Date dateEnd = new Date();
+    	        
+    	        
+    	    	for(Timetable time: list){
+    	    		
+    	    		//Obtener hora y minutos
+    	    		
+    	    		dateStart = time.getTimeStart();
+    	            dateEnd =  time.getTimeEnd();
+    	       
+    	            actual.setTime(dateStart);  
+    	            int hoursStart = actual.get(Calendar.HOUR_OF_DAY);
+    	            int minutesStart = actual.get(Calendar.MINUTE);
+    	            
+    	            actual.setTime(dateEnd);  
+    	            int hoursEnd = actual.get(Calendar.HOUR_OF_DAY);
+    	            int minutesEnd = actual.get(Calendar.MINUTE);
+    	            
+    	            //Asignar el tiempo de hoy 
+    	            
+    	            start.set(start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DATE), hoursStart, minutesStart, 0);
+    	        	start.setFirstDayOfWeek(Calendar.MONDAY);
+    	           
+    	        	end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DATE), hoursEnd, minutesEnd, 0);
+    	            end.setFirstDayOfWeek(Calendar.MONDAY);
+    	             
+    	            Day day = time.getDay();
+    	    		
+    	    		switch (day.getIdday()) {
+    	            case 1:  start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+    	                     end.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+    	                     break;
+    	            case 2:  start.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                    		 end.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                    break;
+    	            case 3:  start.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                    		 end.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                    break;
+    	            case 4:  start.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                    		end.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                    break;
+    	            case 5:  start.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                    		 end.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                    break;
+    	            case 6:  start.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                    		 end.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                    break;
+    	            case 7:  start.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                    		 end.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                    break;
+    	            }
+    	    		
+    	    		dateStart = start.getTime();
+    	    		dateEnd = end.getTime();
+    	    		
+    	    		eventModel.addEvent(new DefaultScheduleEvent("Disponible", dateStart, dateEnd, time.getIdtimetable()));
+    	            
+    	    	}
+    	    	
+    	       	}catch(Exception e){
+    	       		log.info(e.toString());
+    	    	}
+    }
+    
+    public void onEventSelect(SelectEvent selectEvent) {
+    	event = (ScheduleEvent) selectEvent.getObject();
+    }
+    
+    
+    
+    public void action_delete_event(){
+       try{
+    	String eventId = event.getData().toString();
+        int idEvent = Integer.parseInt(eventId);
+        Timetable time = businessDelegatorView.getTimetable(idEvent);
+    	businessDelegatorView.deleteTimetable(time);
+        eventModel.deleteEvent(event);
+       }catch(Exception e){
+    	   log.info(e.toString());
+       } 
     }
     
     public void action_save_event(){
     try{	
-    	//validations
-    	Date today = new Date();
-    	Day selDay = businessDelegatorView.getDay(day);
     	
-    	Timetable time = new Timetable();
-    	time.setDateCreated(today);
-    	time.setDay(selDay);
-    	time.setUsers(usuarioapp);
-    	time.setTimeStart(horaInicio);
-    	time.setTimeEnd(horaFin);
-    	time.setSector(zoneRestriction);
-    	time.setPlace(placeID);
-    	businessDelegatorView.saveTimetable(time);
-    	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
+    	if(day == 0){
+    		FacesUtils.addErrorMessage("Por favor seleccione un dia de la semana");
+    	}else if(horaInicio == null){
+    		FacesUtils.addErrorMessage("Por favor seleccione una hora de inicio");
+    	}else if(horaFin == null){
+    		FacesUtils.addErrorMessage("Por favor seleccione una hora de fin");
+    	}else if(zoneRestriction == 0){
+    		FacesUtils.addErrorMessage("Por favor seleccione una zona");
+    	}else{
+    		
+    		int isInvalid = 0;
+    		Calendar actual = Calendar.getInstance();
+    		int hoursDoneStart = 0;
+    		int minutesDoneStart = 0;
+    		int hoursDoneEnd = 0;
+    		int minutesDoneEnd = 0;
+    		int hoursNewStart = 0;
+    		int minutesNewStart = 0;
+    		int hoursNewEnd = 0;
+    		int minutesNewEnd = 0;
+    		Date dateStart = new Date();
+	        Date dateEnd = new Date();
+	        String invalidAnswer = "";
+    			
+    		//Verificar restricciones en tiempo
+    		
+    		List<Timetable> listTime = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"day.idday",false, day, "="},
+    																				   null,
+    																				   null);
+    		
+    		if(listTime.size() > 0){
+    			
+    			for(Timetable time: listTime){
+    				
+    				//Get current time events
+    				dateStart = time.getTimeStart();
+    	            dateEnd =  time.getTimeEnd();
+    	            
+    	            actual.setTime(dateStart);  
+    	            
+    	            hoursDoneStart = actual.get(Calendar.HOUR_OF_DAY);
+     	            minutesDoneStart = actual.get(Calendar.MINUTE);
+     	            
+     	            actual.setTime(dateEnd);
+     	            
+     	            hoursDoneEnd = actual.get(Calendar.HOUR_OF_DAY);
+    	            minutesDoneEnd = actual.get(Calendar.MINUTE);
+    			
+     	            //Get new event data
+    	            
+    	            actual.setTime(horaInicio);  
+    	            
+    	            hoursNewStart = actual.get(Calendar.HOUR_OF_DAY);
+     	            minutesNewStart = actual.get(Calendar.MINUTE);
+     	            
+     	            actual.setTime(horaFin);
+    	            
+    	            hoursNewEnd = actual.get(Calendar.HOUR_OF_DAY);
+    	            minutesNewEnd = actual.get(Calendar.MINUTE);
+    	            
+    	            //Validate the rules
+    	            
+    	            //Hora de inicio del evento entre horas de otro evento
+    	            if((hoursNewStart > hoursDoneStart) && (hoursNewStart < hoursDoneEnd)){
+    	            	isInvalid = 1;
+    	            	invalidAnswer = "Ya existe otro evento en la hora que intenta ingresar";
+    	            	break;
+    	            //Hora de fin del evento entre horas de otro evento
+    	            }else if((hoursNewEnd > hoursDoneStart) && (hoursNewEnd < hoursDoneEnd)){
+    	            	isInvalid = 1;
+    	            	invalidAnswer = "Ya existe otro evento en la hora que intenta ingresar";
+    	            	break;
+    	            }
+
+    			}
+
+    		}else{
+    			isInvalid = 0;
+    		}
+    		
+    		
+    		if(isInvalid == 0){
+    			
+    			Date today = new Date();
+            	Day selDay = businessDelegatorView.getDay(day);
+            	
+            	Timetable time = new Timetable();
+            	time.setDateCreated(today);
+            	time.setDay(selDay);
+            	time.setUsers(usuarioapp);
+            	time.setTimeStart(horaInicio);
+            	time.setTimeEnd(horaFin);
+            	time.setSector(zoneRestriction);
+            	time.setPlace(placeID);
+            	businessDelegatorView.saveTimetable(time);
+            	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
+            	eventModel.clear();
+            	populateSchedule();
+            	setShowEventDialog(false);
+    		}else{
+    			FacesUtils.addErrorMessage(invalidAnswer);
+    		}
+	
+    	}//end validations
     	
     }catch(Exception e){
     	log.info(e.toString());
@@ -840,6 +965,14 @@ public class TimetableView implements Serializable {
 
 	public void setListPlaces(List<SelectItem> listPlaces) {
 		this.listPlaces = listPlaces;
+	}
+
+	public ScheduleEvent getEvent() {
+		return event;
+	}
+
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
 	}
 
     

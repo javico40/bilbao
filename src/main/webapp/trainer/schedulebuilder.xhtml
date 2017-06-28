@@ -45,13 +45,32 @@
 							            timeZone="GMT-5"
 							            locale="es"
 							            view="agendaWeek"
-							            rightHeaderTemplate="month,agendaWeek"
+							            rightHeaderTemplate="agendaWeek"
 							            minTime="05:00"
+							            draggable="false"
+							            resizable="false"
 							            >
- 							
+ 								<p:ajax event="eventSelect" listener="#{timetableView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
  							</p:schedule>
+ 							
+ 							
 						
 						</p:panel>
+						
+						 <p:dialog widgetVar="eventDialog" header="Detalle del evento" showEffect="clip" hideEffect="clip">
+       						<h:panelGrid id="eventDetails" columns="2">
+           					<p:outputLabel for="title" value="Titles:" />
+            				<p:inputText id="title" value="#{timetableView.event.title}" disabled="true" />
+ 
+            				<p:outputLabel for="from" value="From:" />
+           					<p:calendar id="from" value="#{timetableView.event.startDate}" timeOnly="true" locale="es" timeZone="GMT+5" pattern="HH:mm" />
+ 
+            				<p:outputLabel for="to" value="To:" />
+            				<p:calendar id="to" value="#{timetableView.event.endDate}" timeOnly="true" locale="es" timeZone="GMT+5" pattern="HH:mm" />
+ 
+            				<p:commandButton id="deleteButton" value="Borrar" actionListener="#{timetableView.action_delete_event}" oncomplete="PF('constructor').update();PF('eventDialog').hide();" />
+        </h:panelGrid>
+    </p:dialog>   
 						
 					</h:form>
 					<p:dialog id="dialogCreateEvent"
@@ -124,7 +143,7 @@
 								</p:panel>
 								<p:panel id="panelBotones">
 								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{usersView.btnSave}" value="Guardar" action="#{timetableView.action_save_event()}" update=":dialogCreateEvent :form:timetablePanel" />
+									<p:commandButton id="btnSave" binding="#{usersView.btnSave}" value="Guardar" action="#{timetableView.action_save_event()}" update=":dialogCreateEvent :form:timetablePanel :form:growl" />
 									<p:commandButton id="btnClear" value="Limpiar" action="#{usersView.action_clear()}" update=":dialogCreateEvent" />
 									<p:commandButton id="btnExit" value="Cerrar" action="#{usersView.action_closeDialog()}" update=":dialogCreateEvent" />
 								</div>
