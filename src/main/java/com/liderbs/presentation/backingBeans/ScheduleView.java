@@ -3,20 +3,28 @@ package com.liderbs.presentation.backingBeans;
 import com.liderbs.exceptions.*;
 
 import com.liderbs.modelo.*;
+import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
 
 import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.selectonebutton.SelectOneButton;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
-
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 
@@ -26,17 +34,21 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -47,6 +59,7 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class ScheduleView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(ScheduleView.class);
     private InputText txtMaxUsers;
@@ -67,11 +80,190 @@ public class ScheduleView implements Serializable {
     private ScheduleDTO selectedSchedule;
     private Schedule entity;
     private boolean showDialog;
+    
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    
+    //Clases
+    
+    private Users usuarioapp;
+    private ScheduleModel eventModel;
+    private boolean showEventDialog;
+    private Date horaInicio;
+    private Date horaFin;
+    private Integer maxUsers;
+    private Integer minUsers;
+    private Integer day;
+    private Integer categoryID;
+    private List<SelectItem> listCategory;
+    private Integer trainer;
+    private List<SelectItem> listTrainer;
+    private SelectOneMenu selPlace;
+    private List<SelectItem> listPlace; 
+    private ScheduleEvent event = new DefaultScheduleEvent();
+    private Integer idAccount = 0;
+    
+    @PostConstruct
+    public void init() {
+    	
+    	Users user = getUsuarioapp();
+		Set<Account> list = user.getAccounts();
+		
+		 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+ 		 	Account act = it.next();
+ 	        
+ 		 	//Si tiene cuenta activa
+ 		 	if(act.getAccountStatus() == 1){
+ 		 		if(act.getAccountDefault() == 1){
+ 		 			idAccount = act.getIdAccount();
+ 		 		}
+ 		 	}
+ 	    }//end for 
+    	
+    	populateSchedule();
+    }
 
     public ScheduleView() {
         super();
+    }
+    
+    public void populateSchedule(){
+    	try{
+    		
+    		Users user = getUsuarioapp();
+	    	eventModel = new DefaultScheduleModel();
+    		
+    	}catch(Exception e){
+       		log.info(e.toString());
+    	}
+    }
+    
+    public void agregarClase(){
+    	
+    	if(day == null){
+    		FacesUtils.addErrorMessage("Seleccione un dia de la Semana");
+    	}else if(categoryID == null){
+    		FacesUtils.addErrorMessage("Seleccione una Categoria");
+    	}else if(trainer == null){
+    		FacesUtils.addErrorMessage("Seleccione un Profesor");
+    	}else if (horaInicio == null){
+    		FacesUtils.addErrorMessage("Seleccione una hora de inicio");
+    	}else if (horaFin == null){
+    		FacesUtils.addErrorMessage("Seleccione una hora de fin");
+    	}else{
+    		
+    		  try{		    		
+    		    		int isInvalid = 0;
+    		    		Calendar actual = Calendar.getInstance();
+    		    		int hoursDoneStart = 0;
+    		    		int minutesDoneStart = 0;
+    		    		int hoursDoneEnd = 0;
+    		    		int minutesDoneEnd = 0;
+    		    		int hoursNewStart = 0;
+    		    		int minutesNewStart = 0;
+    		    		int hoursNewEnd = 0;
+    		    		int minutesNewEnd = 0;
+    		    		Date dateStart = new Date();
+    			        Date dateEnd = new Date();
+    			        String invalidAnswer = "";
+    		    			
+    		    		//Verificar restricciones en tiempo
+    		    		
+    		    		List<Timetable> listTime = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"day.idday",false, day, "="},
+    		    																				   null,
+    		    																				   null);
+    		    		
+    		    		if(listTime.size() > 0){
+    		    			
+    		    			for(Timetable time: listTime){
+    		    				
+    		    				//Get current time events
+    		    				dateStart = time.getTimeStart();
+    		    	            dateEnd =  time.getTimeEnd();
+    		    	            
+    		    	            actual.setTime(dateStart);  
+    		    	            
+    		    	            hoursDoneStart = actual.get(Calendar.HOUR_OF_DAY);
+    		     	            minutesDoneStart = actual.get(Calendar.MINUTE);
+    		     	            
+    		     	            actual.setTime(dateEnd);
+    		     	            
+    		     	            hoursDoneEnd = actual.get(Calendar.HOUR_OF_DAY);
+    		    	            minutesDoneEnd = actual.get(Calendar.MINUTE);
+    		    			
+    		     	            //Get new event data
+    		    	            
+    		    	            actual.setTime(horaInicio);  
+    		    	            
+    		    	            hoursNewStart = actual.get(Calendar.HOUR_OF_DAY);
+    		     	            minutesNewStart = actual.get(Calendar.MINUTE);
+    		     	            
+    		     	            actual.setTime(horaFin);
+    		    	            
+    		    	            hoursNewEnd = actual.get(Calendar.HOUR_OF_DAY);
+    		    	            minutesNewEnd = actual.get(Calendar.MINUTE);
+    		    	            
+    		    	            //Validate the rules
+    		    	            
+    		    	            //Hora de inicio del evento entre horas de otro evento
+    		    	            if((hoursNewStart > hoursDoneStart) && (hoursNewStart < hoursDoneEnd)){
+    		    	            	isInvalid = 1;
+    		    	            	invalidAnswer = "Ya existe otro evento en la hora que intenta ingresar";
+    		    	            	break;
+    		    	            //Hora de fin del evento entre horas de otro evento
+    		    	            }else if((hoursNewEnd > hoursDoneStart) && (hoursNewEnd < hoursDoneEnd)){
+    		    	            	isInvalid = 1;
+    		    	            	invalidAnswer = "Ya existe otro evento en la hora que intenta ingresar";
+    		    	            	break;
+    		    	            }
+
+    		    			}
+
+    		    		}else{
+    		    			isInvalid = 0;
+    		    		}
+    		    		
+    		    		
+    		    		if(isInvalid == 0){
+    		    			
+    		    			Date today = new Date();
+    		            	Day selDay = businessDelegatorView.getDay(day);
+    		            	
+    		            	Timetable time = new Timetable();
+    		            	time.setDateCreated(today);
+    		            	time.setDay(selDay);
+    		            	time.setUsers(usuarioapp);
+    		            	time.setTimeStart(horaInicio);
+    		            	time.setTimeEnd(horaFin);
+    		            	time.setSector(zoneRestriction);
+    		            	time.setPlace(placeID);
+    		            	businessDelegatorView.saveTimetable(time);
+    		            	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
+    		            	eventModel.clear();
+    		            	populateSchedule();
+    		            	setShowEventDialog(false);
+    		    		}else{
+    		    			FacesUtils.addErrorMessage(invalidAnswer);
+    		    		}
+    			
+    		    	
+    		    }catch(Exception e){
+    		    	log.info(e.toString());
+    		    }
+    	}//end if-else
+    }
+    
+    public Users getUsuarioapp() {
+		if(usuarioapp==null) {				
+			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+		}
+		return usuarioapp;
+	}
+    
+    
+    public void onEventSelect(SelectEvent selectEvent) {
+    	event = (ScheduleEvent) selectEvent.getObject();
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -651,4 +843,197 @@ public class ScheduleView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public ScheduleModel getEventModel() {
+		return eventModel;
+	}
+
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
+	}
+
+	public boolean isShowEventDialog() {
+		return showEventDialog;
+	}
+
+	public void setShowEventDialog(boolean showEventDialog) {
+		this.showEventDialog = showEventDialog;
+	}
+
+	public Date getHoraInicio() {
+		return horaInicio;
+	}
+
+	public void setHoraInicio(Date horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
+	public Date getHoraFin() {
+		return horaFin;
+	}
+
+	public void setHoraFin(Date horaFin) {
+		this.horaFin = horaFin;
+	}
+
+	public Integer getMaxUsers() {
+		return maxUsers;
+	}
+
+	public void setMaxUsers(Integer maxUsers) {
+		this.maxUsers = maxUsers;
+	}
+
+	public Integer getMinUsers() {
+		return minUsers;
+	}
+
+	public void setMinUsers(Integer minUsers) {
+		this.minUsers = minUsers;
+	}
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+
+
+	public List<SelectItem> getListCategory() {
+		
+		if(listCategory == null){
+			
+		try{
+			
+			listCategory = new ArrayList<SelectItem>();
+			
+			List<Category> list = businessDelegatorView.getCategory();
+			
+			for(Category cat:list){
+				listCategory.add(new SelectItem(cat.getIdcategory(), cat.getDescription()));
+			}
+			
+		}catch(Exception e){
+			log.info(e.toString());
+		}
+	
+		}
+		
+		return listCategory;
+	}
+
+	public void setListCategory(List<SelectItem> listCategory) {
+		this.listCategory = listCategory;
+	}
+
+	public SelectOneMenu getSelPlace() {
+		return selPlace;
+	}
+
+	public void setSelPlace(SelectOneMenu selPlace) {
+		this.selPlace = selPlace;
+	}
+
+	public List<SelectItem> getListPlace() {
+		return listPlace;
+	}
+
+	public void setListPlace(List<SelectItem> listPlace) {
+		this.listPlace = listPlace;
+	}
+
+	public ScheduleEvent getEvent() {
+		return event;
+	}
+
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
+	}
+
+	public Integer getCategoryID() {
+		return categoryID;
+	}
+
+	public void setCategoryID(Integer categoryID) {
+		this.categoryID = categoryID;
+	}
+
+	public Integer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Integer trainer) {
+		this.trainer = trainer;
+	}
+
+	public List<SelectItem> getListTrainer() {
+		
+		if(listTrainer == null){
+		
+		try{
+			
+			listTrainer = new ArrayList<SelectItem>();
+			
+			//Busco los lugares asociados a la cuenta del usuario
+			 
+			List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+																				null,
+																				null);
+			
+			if(placeList.size() > 0){
+				
+				List<AutorizationDTO> dataAutorizedTrainers = new ArrayList<AutorizationDTO>();
+				
+		for(Place place: placeList){
+					
+					int idPlace = place.getIdPlace();
+					
+					List<Autorization> listAuth = businessDelegatorView.findByCriteriaInAutorization(new Object[]{"place.idPlace",false, idPlace, "=","autorizationStatus",false, 1L, "="},
+																								 null,
+																								 null);
+					
+					boolean authVisible = false;
+					
+					for(Autorization auth: listAuth){
+						
+						Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
+						
+						String authStatus = "";
+						
+						if(auth.getAutorizationStatus() == 1){
+							authStatus = "Aceptada";
+							authVisible = false;
+						}else if(auth.getAutorizationStatus() == 2){
+							authStatus = "En espera de respuesta";
+							authVisible = true;
+						}else{
+							authStatus = "No aceptada";
+							authVisible = false;
+						}
+						
+						if(trainer != null){		
+							listTrainer.add(new SelectItem(trainer.getIdusers(), trainer.getName()));
+						}//end if
+					}// end for
+				}
+				
+			}//end if
+			
+		}catch(Exception e){
+			log.info(e.toString());
+		}	
+			
+			
+		}
+		
+		return listTrainer;
+	}
+
+	public void setListTrainer(List<SelectItem> listTrainer) {
+		this.listTrainer = listTrainer;
+	}
+    
+    
 }

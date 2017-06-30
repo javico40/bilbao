@@ -72,6 +72,7 @@
             </key>
             <one-to-many class="com.liderbs.modelo.Schedule" />
         </set>
+        
         <set name="timetables" table="timetable" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="users_idusers" not-null="true" />

@@ -18,20 +18,158 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Govirfit <small>Lider Business Group</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-							<li class="active">Invitaciones a Staff</li>
+							<li class="active">Constructor de Clases</li>
 						</ol>
 					</section>
 
 					<!-- Main content -->
 					<section class="content">
-					<h:form id="form">
-						
-					</h:form>
-		  			</section>
+						<h:form id="form">
+
+							<p:growl id="growl" showDetail="false" sticky="false" />
+
+							<p:panel id="timetablePanel" header="Constructor de Clases">
+
+
+								<p:commandButton id="btnShowEvent" value="Agregar Clase"
+									actionListener="#{timetableView.agregarTiempo}"
+									update=":dialogCreateEvent" />
+
+								<p:schedule id="timetableConstructor"
+									value="#{scheduleView.eventModel}" widgetVar="constructor"
+									timeZone="GMT-5" locale="es" view="agendaWeek"
+									rightHeaderTemplate="agendaWeek" minTime="05:00"
+									draggable="false" resizable="false">
+									<p:ajax event="eventSelect"
+										listener="#{scheduleView.onEventSelect}"
+										update="eventDetails" oncomplete="PF('eventDialog').show();" />
+								</p:schedule>
+
+
+
+							</p:panel>
+
+							<p:dialog widgetVar="eventDialog" header="Detalle del evento"
+								showEffect="clip" hideEffect="clip">
+								<h:panelGrid id="eventDetails" columns="2">
+									<p:outputLabel for="title" value="Titles:" />
+									<p:inputText id="title" value="#{timetableView.event.title}"
+										disabled="true" />
+
+									<p:outputLabel for="from" value="From:" />
+									<p:calendar id="from" value="#{timetableView.event.startDate}"
+										timeOnly="true" locale="es" timeZone="GMT+5" pattern="HH:mm" />
+
+									<p:outputLabel for="to" value="To:" />
+									<p:calendar id="to" value="#{timetableView.event.endDate}"
+										timeOnly="true" locale="es" timeZone="GMT+5" pattern="HH:mm" />
+
+									<p:commandButton id="deleteButton" value="Borrar"
+										actionListener="#{timetableView.action_delete_event}"
+										oncomplete="PF('constructor').update();PF('eventDialog').hide();" />
+								</h:panelGrid>
+							</p:dialog>
+
+						</h:form>
+
+						<p:dialog id="dialogCreateEvent" 
+						          appendTo="@(body)"
+							      draggable="true"
+							      closable="true"
+							      visible="#{timetableView.showEventDialog}"
+							      resizable="false"
+							      modal="true"
+							      width="400"
+							      position="top"
+							      style="margin:100px;">
+							<h:form id="formDialog">
+								<p:messages id="msg" />
+
+								<p:panel header="Agregar tiempo">
+									<p:panelGrid>
+										<p:row>
+											<p:column>
+												<h:outputText id="msgDia" value=" El dia" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="day" value="#{scheduleView.day}"
+													style="width:125px">
+													<f:selectItem itemLabel="Lunes" itemValue="1" />
+													<f:selectItem itemLabel="Martes" itemValue="2" />
+													<f:selectItem itemLabel="Miercoles" itemValue="3" />
+													<f:selectItem itemLabel="Jueves" itemValue="4" />
+													<f:selectItem itemLabel="Viernes" itemValue="5" />
+													<f:selectItem itemLabel="Sabado" itemValue="6" />
+													<f:selectItem itemLabel="Domingo" itemValue="7" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText id="msgCat" value=" Categoria" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="cat" value="#{scheduleView.categoryID}"
+													style="width:125px">
+													<f:selectItems value="#{scheduleView.listCategory}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText id="msgProf" value=" Profesor" />
+											</p:column>
+											<p:column>
+												<p:selectOneMenu id="prof" value="#{scheduleView.trainer}"
+													style="width:125px">
+													<f:selectItems value="#{scheduleView.listTrainer}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText id="msgHoraIni" value=" Desde las" />
+											</p:column>
+											<p:column>
+												<p:calendar id="horaInicio" locale="es" label="Seleccione"
+													value="#{scheduleView.horaInicio}" pattern="HH:mm"
+													timeOnly="true" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<h:outputText id="msgHoraFin" value=" Hasta las" />
+											</p:column>
+											<p:column>
+												<p:calendar id="horaFin" locale="es"
+													value="#{scheduleView.horaFin}" pattern="HH:mm"
+													timeOnly="true" />
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:panel>
+								<p:panel id="panelBotones">
+									<div align="center">
+										<p:commandButton id="btnSave" binding="#{scheduleView.btnSave}"
+											value="Guardar" action="#{scheduleView.agregarClase()}"
+											update=":dialogCreateEvent :form:timetablePanel :form:growl" />
+										<p:commandButton id="btnClear" value="Limpiar"
+											action="#{scheduleView.action_clear()}"
+											update=":dialogCreateEvent" />
+										<p:commandButton id="btnExit" value="Cerrar"
+											action="#{scheduleView.action_closeDialog()}"
+											update=":dialogCreateEvent" />
+									</div>
+								</p:panel>
+
+							</h:form>
+						</p:dialog>
+
+					</section>
 				</div>
 				<!-- /.content-wrapper -->
 			</f:view>

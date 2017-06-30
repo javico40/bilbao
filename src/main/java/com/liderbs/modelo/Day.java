@@ -15,7 +15,7 @@ public class Day  implements java.io.Serializable {
      private String name;
      private Set<Schedule> schedules = new HashSet<Schedule>(0);
      private Set<Timetable> timetables = new HashSet<Timetable>(0);
-
+    
     public Day() {
     }
 

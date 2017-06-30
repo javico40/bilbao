@@ -1,5 +1,5 @@
 package com.liderbs.modelo;
-// Generated 13-jun-2017 16:31:12 by Hibernate Tools 4.0.0
+// Generated 30-jun-2017 16:21:01 by Hibernate Tools 4.0.0
 
 
 import java.util.Date;
