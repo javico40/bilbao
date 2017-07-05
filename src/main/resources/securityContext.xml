@@ -14,7 +14,8 @@
 	<http security="none" pattern="/accessdenied.xhtml" />
 	<http security="none" pattern="/register.xhtml" />
 	<http security="none" pattern="/registercenpro.xhtml" />
-	<http security="none" pattern="/sucess.xhtml" />	
+	<http security="none" pattern="/sucess.xhtml" />
+	<http security="none" pattern="/video.xhtml" />	
 	
 	 <http auto-config="true" access-decision-manager-ref="accessDecisionManager" use-expressions="true">
         <custom-filter after="FORM_LOGIN_FILTER" ref="filterSecurityInterceptor" />
