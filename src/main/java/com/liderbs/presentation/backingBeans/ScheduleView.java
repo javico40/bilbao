@@ -234,9 +234,9 @@ public class ScheduleView implements Serializable {
     		            	time.setDay(selDay);
     		            	time.setUsers(usuarioapp);
     		            	time.setTimeStart(horaInicio);
-    		            	time.setTimeEnd(horaFin);
-    		            	time.setSector(zoneRestriction);
-    		            	time.setPlace(placeID);
+    		            	//time.setTimeEnd(horaFin);
+    		            	//time.setSector(zoneRestriction);
+    		            	//time.setPlace(placeID);
     		            	businessDelegatorView.saveTimetable(time);
     		            	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
     		            	eventModel.clear();
@@ -311,7 +311,7 @@ public class ScheduleView implements Serializable {
             }
 
             txtIdschedule.setValue(scheduleDTO.getIdschedule());
-
+/*
             if (txtClassDate == null) {
                 txtClassDate = new Calendar();
             }
@@ -329,7 +329,7 @@ public class ScheduleView implements Serializable {
             }
 
             txtStarttime.setValue(scheduleDTO.getStarttime());
-
+            */
             Integer idschedule = FacesUtils.checkInteger(txtIdschedule);
             entity = businessDelegatorView.getSchedule(idschedule);
 
@@ -379,7 +379,7 @@ public class ScheduleView implements Serializable {
             txtIdusers_Users.setValue(null);
             txtIdusers_Users.setDisabled(true);
         }
-
+/*
         if (txtClassDate != null) {
             txtClassDate.setValue(null);
             txtClassDate.setDisabled(true);
@@ -393,7 +393,7 @@ public class ScheduleView implements Serializable {
         if (txtStarttime != null) {
             txtStarttime.setValue(null);
             txtStarttime.setDisabled(true);
-        }
+        }*/
 
         if (txtIdschedule != null) {
             txtIdschedule.setValue(null);
@@ -412,27 +412,32 @@ public class ScheduleView implements Serializable {
     }
 
     public void listener_txtClassDate() {
+    	/*
         Date inputDate = (Date) txtClassDate.getValue();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         FacesContext.getCurrentInstance()
                     .addMessage("",
             new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
+        */
     }
 
     public void listener_txtEndtime() {
+    	/*
         Date inputDate = (Date) txtEndtime.getValue();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         FacesContext.getCurrentInstance()
                     .addMessage("",
             new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
+        */
     }
 
     public void listener_txtStarttime() {
-        Date inputDate = (Date) txtStarttime.getValue();
+       /* Date inputDate = (Date) txtStarttime.getValue();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         FacesContext.getCurrentInstance()
                     .addMessage("",
             new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
+        */
     }
 
     public void listener_txtId() {
@@ -451,12 +456,14 @@ public class ScheduleView implements Serializable {
             txtIdPlace_Place.setDisabled(false);
             txtIdtrainer_Trainer.setDisabled(false);
             txtIdusers_Users.setDisabled(false);
+            /*
             txtClassDate.setDisabled(false);
             txtEndtime.setDisabled(false);
-            txtStarttime.setDisabled(false);
+            txtStarttime.setDisabled(false);*/
             txtIdschedule.setDisabled(false);
             btnSave.setDisabled(false);
         } else {
+        	/*
             txtClassDate.setValue(entity.getClassDate());
             txtClassDate.setDisabled(false);
             txtEndtime.setValue(entity.getEndtime());
@@ -465,7 +472,7 @@ public class ScheduleView implements Serializable {
             txtMaxUsers.setDisabled(false);
             txtStarttime.setValue(entity.getStarttime());
             txtStarttime.setDisabled(false);
-            txtIdcategory_Category.setValue(entity.getCategory().getIdcategory());
+            txtIdcategory_Category.setValue(entity.getCategory().getIdcategory());*/
             txtIdcategory_Category.setDisabled(false);
             txtIdday_Day.setValue(entity.getDay().getIdday());
             txtIdday_Day.setDisabled(false);
@@ -488,6 +495,7 @@ public class ScheduleView implements Serializable {
     public String action_edit(ActionEvent evt) {
         selectedSchedule = (ScheduleDTO) (evt.getComponent().getAttributes()
                                              .get("selectedSchedule"));
+        /*
         txtClassDate.setValue(selectedSchedule.getClassDate());
         txtClassDate.setDisabled(false);
         txtEndtime.setValue(selectedSchedule.getEndtime());
@@ -495,7 +503,7 @@ public class ScheduleView implements Serializable {
         txtMaxUsers.setValue(selectedSchedule.getMaxUsers());
         txtMaxUsers.setDisabled(false);
         txtStarttime.setValue(selectedSchedule.getStarttime());
-        txtStarttime.setDisabled(false);
+        txtStarttime.setDisabled(false);*/
         txtIdcategory_Category.setValue(selectedSchedule.getIdcategory_Category());
         txtIdcategory_Category.setDisabled(false);
         txtIdday_Day.setValue(selectedSchedule.getIdday_Day());
