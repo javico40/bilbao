@@ -104,6 +104,7 @@ public class ScheduleLogic implements IScheduleLogic {
         log.debug("saving Schedule instance");
 
         try {
+        	
             if (entity.getCategory() == null) {
                 throw new ZMessManager().new ForeignException("category");
             }
@@ -133,24 +134,6 @@ public class ScheduleLogic implements IScheduleLogic {
                 throw new ZMessManager().new EmptyFieldException("idday_Day");
             }
 
-            if (entity.getPlace().getIdPlace() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idPlace_Place");
-            }
-
-            if (entity.getTrainer().getIdtrainer() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idtrainer_Trainer");
-            }
-
-            if (entity.getUsers().getIdusers() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idusers_Users");
-            }
-
-            if (getSchedule(entity.getIdschedule()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             scheduleDAO.save(entity);
 

@@ -11,6 +11,7 @@ import com.liderbs.presentation.businessDelegate.*;
 import com.liderbs.utilities.*;
 import com.mysql.fabric.xmlrpc.base.Array;
 
+import org.hibernate.Hibernate;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
@@ -25,6 +26,7 @@ import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 
@@ -102,10 +104,20 @@ public class ScheduleView implements Serializable {
     private List<SelectItem> listPlace; 
     private ScheduleEvent event = new DefaultScheduleEvent();
     private Integer idAccount = 0;
+    private Integer idPlace = 0;
+    
+    //View in class
+    private String classCategory;
+    private String classTeacher;
+    private String classStartHour;
+    private String classEndHour;
+    
     
     @PostConstruct
     public void init() {
     	
+    try{  	
+    
     	Users user = getUsuarioapp();
 		Set<Account> list = user.getAccounts();
 		
@@ -119,8 +131,26 @@ public class ScheduleView implements Serializable {
  		 		}
  		 	}
  	    }//end for 
+		 
+		//Identificar la empresa del cliente
+			
+		List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+																			null,
+																			null);
+	    
+		idPlace = 0;
+
+		if(placeList.size() > 0){
+			for(Place place: placeList){				
+				idPlace = place.getIdPlace();
+			}//end for
+		}
     	
     	populateSchedule();
+    	
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
 
     public ScheduleView() {
@@ -132,6 +162,79 @@ public class ScheduleView implements Serializable {
     		
     		Users user = getUsuarioapp();
 	    	eventModel = new DefaultScheduleModel();
+	    	
+	    	//Search for user events of the week
+	    	
+	    	List<Schedule> list = businessDelegatorView.findByCriteriaInSchedule(new Object[]{"users.idusers",false, user.getIdusers(), "="},
+	    			                                                               null,
+	    			                                                               null);
+	    	
+	    	Calendar start = Calendar.getInstance();
+	        Calendar end = Calendar.getInstance();
+	        Calendar actual = Calendar.getInstance();
+	        
+	        Date dateStart = new Date();
+	        Date dateEnd = new Date();
+	        
+	        
+	    	for(Schedule time: list){
+	    		
+	    		//Obtener hora y minutos
+	    		
+	    		dateStart = time.getStarttime();
+	            dateEnd =  time.getEndtime();
+	       
+	            actual.setTime(dateStart);  
+	            int hoursStart = actual.get(Calendar.HOUR_OF_DAY);
+	            int minutesStart = actual.get(Calendar.MINUTE);
+	            
+	            actual.setTime(dateEnd);  
+	            int hoursEnd = actual.get(Calendar.HOUR_OF_DAY);
+	            int minutesEnd = actual.get(Calendar.MINUTE);
+	            
+	            //Asignar el tiempo de hoy 
+	            
+	            start.set(start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DATE), hoursStart, minutesStart, 0);
+	        	start.setFirstDayOfWeek(Calendar.MONDAY);
+	           
+	        	end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DATE), hoursEnd, minutesEnd, 0);
+	            end.setFirstDayOfWeek(Calendar.MONDAY);
+	             
+	            Day day = time.getDay();
+	    		
+	    		switch (day.getIdday()) {
+	            case 1:  start.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+	                     end.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+	                     break;
+	            case 2:  start.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                		 end.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                break;
+	            case 3:  start.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                		 end.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                break;
+	            case 4:  start.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                		end.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                break;
+	            case 5:  start.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                		 end.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                break;
+	            case 6:  start.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                		 end.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                break;
+	            case 7:  start.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                		 end.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                break;
+	            }
+	    		
+	    		dateStart = start.getTime();
+	    		dateEnd = end.getTime();
+	    		
+	    		int idCategoria = time.getCategory().getIdcategory();
+	    		Category cat = businessDelegatorView.getCategory(idCategoria);
+	    		
+	    		eventModel.addEvent(new DefaultScheduleEvent(cat.getDescription(), dateStart, dateEnd, time.getIdschedule()));
+	            
+	    	}
     		
     	}catch(Exception e){
        		log.info(e.toString());
@@ -169,17 +272,17 @@ public class ScheduleView implements Serializable {
     		    			
     		    		//Verificar restricciones en tiempo
     		    		
-    		    		List<Timetable> listTime = businessDelegatorView.findByCriteriaInTimetable(new Object[]{"day.idday",false, day, "="},
+    		    		List<Schedule> listTime = businessDelegatorView.findByCriteriaInSchedule(new Object[]{"day.idday",false, day, "="},
     		    																				   null,
     		    																				   null);
     		    		
     		    		if(listTime.size() > 0){
     		    			
-    		    			for(Timetable time: listTime){
+    		    			for(Schedule time: listTime){
     		    				
     		    				//Get current time events
-    		    				dateStart = time.getTimeStart();
-    		    	            dateEnd =  time.getTimeEnd();
+    		    				dateStart = time.getStarttime();
+    		    	            dateEnd =  time.getEndtime();
     		    	            
     		    	            actual.setTime(dateStart);  
     		    	            
@@ -223,30 +326,49 @@ public class ScheduleView implements Serializable {
     		    			isInvalid = 0;
     		    		}
     		    		
-    		    		
     		    		if(isInvalid == 0){
-    		    			
+    		    	
     		    			Date today = new Date();
     		            	Day selDay = businessDelegatorView.getDay(day);
+    		            	Category cat = businessDelegatorView.getCategory(categoryID);
     		            	
-    		            	Timetable time = new Timetable();
-    		            	time.setDateCreated(today);
+    		            	List<Trainer> listTrainer = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, trainer, "="},
+									   null,
+									   null);
+    		            	
+    		            	int idTrainer = 0;
+    		            	
+    		            	if(listTrainer.size() > 0){
+    		            		
+    		            		for(Trainer trn:listTrainer){
+    		            			idTrainer = trn.getIdtrainer();
+    		            		}
+    		            	}
+    		            	
+    		            	
+    		            	
+    		            	Trainer prof = businessDelegatorView.getTrainer(idTrainer);
+    		            	Place place = businessDelegatorView.getPlace(idPlace);    	
+    		            	Schedule time = new Schedule();
+    		            	time.setClassDate(today);
     		            	time.setDay(selDay);
     		            	time.setUsers(usuarioapp);
-    		            	time.setTimeStart(horaInicio);
-    		            	//time.setTimeEnd(horaFin);
-    		            	//time.setSector(zoneRestriction);
-    		            	//time.setPlace(placeID);
-    		            	businessDelegatorView.saveTimetable(time);
-    		            	FacesUtils.addInfoMessage("Tiempo agregado satisfactoriamente");
+    		            	time.setStarttime(horaInicio);
+    		            	time.setEndtime(horaFin);
+    		            	time.setCategory(cat);
+    		            	time.setTrainer(prof);
+    		            	time.setPlace(place);
+    		            	time.setMaxUsers(5);
+    		            	businessDelegatorView.saveSchedule(time);
+    		            	FacesUtils.addInfoMessage("Clase creada satisfactoriamente");
     		            	eventModel.clear();
     		            	populateSchedule();
     		            	setShowEventDialog(false);
+    		            	
     		    		}else{
     		    			FacesUtils.addErrorMessage(invalidAnswer);
     		    		}
-    			
-    		    	
+    				    	
     		    }catch(Exception e){
     		    	log.info(e.toString());
     		    }
@@ -263,7 +385,23 @@ public class ScheduleView implements Serializable {
     
     
     public void onEventSelect(SelectEvent selectEvent) {
+    try{
     	event = (ScheduleEvent) selectEvent.getObject();
+    	
+    	String idClassStr = event.getData().toString();
+    	int idCLass = Integer.parseInt(idClassStr);
+    	Schedule classDef = businessDelegatorView.getSchedule(idCLass);
+    	
+    	classCategory = classDef.getCategory().getDescription();
+    	classTeacher = classDef.getTrainer().getName();
+    	classDef.getStarttime();
+    	classDef.getEndtime();
+    	
+    	
+    }catch(Exception e){
+    	log.info(e.toString());
+    }
+    	
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -1042,6 +1180,38 @@ public class ScheduleView implements Serializable {
 	public void setListTrainer(List<SelectItem> listTrainer) {
 		this.listTrainer = listTrainer;
 	}
-    
+
+	public String getClassCategory() {
+		return classCategory;
+	}
+
+	public void setClassCategory(String classCategory) {
+		this.classCategory = classCategory;
+	}
+
+	public String getClassTeacher() {
+		return classTeacher;
+	}
+
+	public void setClassTeacher(String classTeacher) {
+		this.classTeacher = classTeacher;
+	}
+
+	public String getClassStartHour() {
+		return classStartHour;
+	}
+
+	public void setClassStartHour(String classStartHour) {
+		this.classStartHour = classStartHour;
+	}
+
+	public String getClassEndHour() {
+		return classEndHour;
+	}
+
+	public void setClassEndHour(String classEndHour) {
+		this.classEndHour = classEndHour;
+	}
+	
     
 }

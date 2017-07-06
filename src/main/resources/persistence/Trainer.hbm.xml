@@ -53,7 +53,7 @@
         <property name="usersIdusers" type="java.lang.Integer">
             <column name="users_idusers" not-null="true" />
         </property>
-        <set name="experiences" table="trainer_has_experience" inverse="false" lazy="true" fetch="select">
+        <set name="experiences" table="trainer_has_experience" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="trainer_idtrainer" not-null="true" />
             </key>
@@ -69,7 +69,7 @@
                 <column name="courses_idcourses" not-null="true" />
             </many-to-many>
         </set>
-        <set name="schedules" table="schedule" inverse="true" lazy="true" fetch="select">
+        <set name="schedules" table="schedule" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="trainer_idtrainer" not-null="true" />
             </key>

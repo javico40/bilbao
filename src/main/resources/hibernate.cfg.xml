@@ -6,6 +6,7 @@
     <session-factory>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>   
         <property name="show_sql">false</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping resource="persistence/Account.hbm.xml" />
         <mapping resource="persistence/Menu.hbm.xml" />
         <mapping resource="persistence/Options.hbm.xml" />
