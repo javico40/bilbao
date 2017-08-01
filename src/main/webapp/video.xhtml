@@ -39,6 +39,10 @@
      <h:outputScript library="plugins/fastclick" name="fastclick.min.js"  />
      <h:outputScript library="plugins/slimScroll" name="jquery.slimscroll.min.js"  />   
      <h:outputScript library="dist/js" name="app.js" /> 
+     
+     <link rel="stylesheet" href="//releases.flowplayer.org/7.0.4/skin/skin.css"/>
+     <script src="//releases.flowplayer.org/7.0.4/flowplayer.min.js"></script>
+     
      </h:head>
 	<h:body styleClass="skin-black-light sidebar-mini fixed sidebar-collapse">
 	   <f:view locale="es_ES">
@@ -148,8 +152,11 @@
 
         <!-- Main content -->
         <section class="content">
-			
-			<p:media value="https://www.youtube.com/v/G1hg7RIz8Ik&amp;t=12s" width="800" height="600" player="flash" />
+        <div data-ratio="0.4167" class="flowplayer">
+        	<video data-title="Govirfit entrena donde quieras">
+        		<source type="video/mp4" src="http://34.208.29.50/promo.mp4"/>
+        	</video>
+        </div>
 			
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
