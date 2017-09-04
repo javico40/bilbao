@@ -17,6 +17,7 @@ public class Users  implements java.io.Serializable {
 
 	 @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
      private Integer idusers;
+	 private Cities cities;
      private String username;
      private String password;
      private String name;
@@ -38,7 +39,7 @@ public class Users  implements java.io.Serializable {
     public Users() {
     }
 
-    public Users(String username, String password, String name, String email, String userid, String fixedphone, String cellphone, Date created, Date lastlogin, Integer status, Float saldo, Set<Account> accounts) {
+    public Users(String username, String password, String name, String email, String userid, String fixedphone, String cellphone, Date created, Date lastlogin, Integer status, Float saldo, Set<Account> accounts, Cities cities) {
        this.username = username;
        this.password = password;
        this.name = name;
@@ -51,6 +52,7 @@ public class Users  implements java.io.Serializable {
        this.status = status;
        this.saldo = saldo;
        this.accounts = accounts;
+       this.cities = cities;
     }
    
     public Integer getIdusers() {
@@ -185,6 +187,14 @@ public class Users  implements java.io.Serializable {
     
     public void setTimetables(Set<Timetable> timetables) {
         this.timetables = timetables;
+    }
+    
+    public Cities getCities() {
+        return this.cities;
+    }
+    
+    public void setCities(Cities cities) {
+        this.cities = cities;
     }
 
 

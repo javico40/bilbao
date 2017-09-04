@@ -32,6 +32,7 @@
         <mapping resource="persistence/Placeservices.hbm.xml" />
         <mapping resource="persistence/Placetype.hbm.xml" />
         <mapping resource="persistence/Timetable.hbm.xml" />
+        <mapping resource="persistence/Cities.hbm.xml" />
         
     </session-factory>
 </hibernate-configuration>

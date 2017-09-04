@@ -5,6 +5,7 @@ import com.liderbs.modelo.Account;
 import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
+import com.liderbs.modelo.Cities;
 import com.liderbs.modelo.Courses;
 import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
@@ -32,6 +33,7 @@ import com.liderbs.modelo.control.IAccountLogic;
 import com.liderbs.modelo.control.IAutorizationLogic;
 import com.liderbs.modelo.control.IAutorizationtypeLogic;
 import com.liderbs.modelo.control.ICategoryLogic;
+import com.liderbs.modelo.control.ICitiesLogic;
 import com.liderbs.modelo.control.ICoursesLogic;
 import com.liderbs.modelo.control.IDayLogic;
 import com.liderbs.modelo.control.IEstadoLogic;
@@ -61,6 +63,7 @@ import com.liderbs.modelo.dto.AccountDTO;
 import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
+import com.liderbs.modelo.dto.CitiesDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
 import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
@@ -194,6 +197,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private IPlacetypeLogic placetypeLogic;
     @Autowired
     private ITimetableLogic timetableLogic;
+    @Autowired
+    private ICitiesLogic citiesLogic;
 
 
     public List<Account> getAccount() throws Exception {
@@ -1479,5 +1484,55 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<TimetableDTO> getDataTimetable() throws Exception {
         return timetableLogic.getDataTimetable();
+    }
+    
+    public List<Cities> getCities() throws Exception {
+        return citiesLogic.getCities();
+    }
+
+    public void saveCities(Cities entity) throws Exception {
+        citiesLogic.saveCities(entity);
+    }
+
+    public void deleteCities(Cities entity) throws Exception {
+        citiesLogic.deleteCities(entity);
+    }
+
+    public void updateCities(Cities entity) throws Exception {
+        citiesLogic.updateCities(entity);
+    }
+
+    public Cities getCities(Integer idcities) throws Exception {
+        Cities cities = null;
+
+        try {
+            cities = citiesLogic.getCities(idcities);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return cities;
+    }
+
+    public List<Cities> findByCriteriaInCities(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return citiesLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Cities> findPageCities(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return citiesLogic.findPageCities(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberCities() throws Exception {
+        return citiesLogic.findTotalNumberCities();
+    }
+
+    public List<CitiesDTO> getDataCities() throws Exception {
+        return citiesLogic.getDataCities();
     }
 }

@@ -8,6 +8,9 @@
             <column name="idusers" />
             <generator class="identity" />
         </id>
+        <many-to-one name="cities" class="com.liderbs.modelo.Cities" fetch="select">
+            <column name="cities_idcities" not-null="true" />
+        </many-to-one>
         <property name="username" type="java.lang.String">
             <column name="username" length="45" />
         </property>

@@ -12,6 +12,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>.:: Govirfit, el mundo fitness a tu alcance::.</title>
 </head>
 <body>
-	<jsp:forward page="home.xhtml"/>
+	<jsp:forward page="login.xhtml"/>
 </body>
 </html>

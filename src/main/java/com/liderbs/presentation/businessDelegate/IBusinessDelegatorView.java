@@ -5,6 +5,7 @@ import com.liderbs.modelo.Account;
 import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
+import com.liderbs.modelo.Cities;
 import com.liderbs.modelo.Courses;
 import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
@@ -41,6 +42,7 @@ import com.liderbs.modelo.dto.AccountDTO;
 import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
+import com.liderbs.modelo.dto.CitiesDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
 import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
@@ -663,6 +665,28 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberTimetable() throws Exception;
 
     public List<TimetableDTO> getDataTimetable() throws Exception;
+    
+    public List<Cities> getCities() throws Exception;
+
+    public void saveCities(Cities entity) throws Exception;
+
+    public void deleteCities(Cities entity) throws Exception;
+
+    public void updateCities(Cities entity) throws Exception;
+
+    public Cities getCities(Integer idcities) throws Exception;
+
+    public List<Cities> findByCriteriaInCities(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Cities> findPageCities(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberCities() throws Exception;
+
+    public List<CitiesDTO> getDataCities() throws Exception;
 
 
 }
