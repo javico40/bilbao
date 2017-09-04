@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-sep-2017 15:26:21 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Cities" table="cities" catalog="liderbs_virfit">
+        <id name="idcities" type="java.lang.Integer">
+            <column name="idcities" />
+            <generator class="identity" />
+        </id>
+        <property name="citiesName" type="java.lang.String">
+            <column name="cities_name" length="100" />
+        </property>
+        <set name="userses" table="users" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cities_idcities" not-null="true" />
+            </key>
+            <one-to-many class="com.liderbs.modelo.Users" />
+        </set>
+    </class>
+</hibernate-mapping>
