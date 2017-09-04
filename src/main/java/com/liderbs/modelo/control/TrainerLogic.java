@@ -90,86 +90,7 @@ public class TrainerLogic implements ITrainerLogic {
         log.debug("saving Trainer instance");
 
         try {
-            if (entity.getAcademiclevel() == null) {
-                throw new ZMessManager().new ForeignException("academiclevel");
-            }
-
-            if (entity.getIdentification() == null) {
-                throw new ZMessManager().new ForeignException("identification");
-            }
-
-            if (entity.getVprofile() == null) {
-                throw new ZMessManager().new ForeignException("vprofile");
-            }
-
-            if ((entity.getAcademicArea() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getAcademicArea(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "academicArea");
-            }
-
-            if ((entity.getAddress() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getAddress(), 200) == false)) {
-                throw new ZMessManager().new NotValidFormatException("address");
-            }
-
-
-            if ((entity.getCity() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getCity(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException("city");
-            }
-
-            if ((entity.getLastname() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getLastname(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException("lastname");
-            }
-
-            if ((entity.getName() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getName(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException("name");
-            }
-
-            if ((entity.getResumefile() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getResumefile(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "resumefile");
-            }
-
-            if ((entity.getTrainerAcknowledgement() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getTrainerAcknowledgement(), 600) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "trainerAcknowledgement");
-            }
-
-            if (entity.getUsersIdusers() == null) {
-                throw new ZMessManager().new EmptyFieldException("usersIdusers");
-            }
-
-            if (entity.getAcademiclevel().getIdacademiclevel() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idacademiclevel_Academiclevel");
-            }
-
-            if (entity.getIdentification().getIdidentification() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "ididentification_Identification");
-            }
-
-            if (entity.getVprofile().getIdvprofile() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "idvprofile_Vprofile");
-            }
-
-            if (getTrainer(entity.getIdtrainer()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
-            trainerDAO.save(entity);
+             trainerDAO.save(entity);
 
             log.debug("save Trainer successful");
         } catch (Exception e) {
@@ -306,9 +227,7 @@ public class TrainerLogic implements ITrainerLogic {
                 trainerDTO2.setIdidentification_Identification((trainerTmp.getIdentification()
                                                                           .getIdidentification() != null)
                     ? trainerTmp.getIdentification().getIdidentification() : null);
-                trainerDTO2.setIdvprofile_Vprofile((trainerTmp.getVprofile()
-                                                              .getIdvprofile() != null)
-                    ? trainerTmp.getVprofile().getIdvprofile() : null);
+
                 trainerDTO.add(trainerDTO2);
             }
 

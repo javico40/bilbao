@@ -17,12 +17,17 @@ import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
-
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -101,6 +106,7 @@ public class UsersView implements Serializable {
     private List<SelectItem> listDeptos;
     private InputText txtCiudad;
     private InputText txtDireccion;
+    private UploadedFile trainerPic;
     
     //Profesional data
     private SelectOneMenu selectTipoEntrenador;
@@ -303,14 +309,48 @@ public class UsersView implements Serializable {
     	 			trainer.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());
     	 			trainer.setAddress(FacesUtils.checkString(txtDireccion));
     	 			
+    	 			if(trainerPic != null) {
+    	 				
+    	 				InputStream filecontent = null;
+    	 				String picName = "";
+    	 				OutputStream out = null;
+    	 			
+    	 				try {
+    	 				
+    	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+    	 	            
+    	 				picName = trainerPic.getFileName();
+    	 				filecontent = trainerPic.getInputstream();
+    	 				
+    	 				out = new FileOutputStream(new File(path + picName));
+    	 				
+    	 				int read = 0;
+    	 		        final byte[] bytes = new byte[1024];
+    	 				
+    	 				while ((read = filecontent.read(bytes)) != -1) {
+    	 		            out.write(bytes, 0, read);
+    	 		        }
+    	 				
+    	 		        log.info("New file " + picName + " created at " + path);
+    	 		        
+    	 				 } catch (FileNotFoundException fne) {
+    	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+    	 					log.info(fne.toString());
+    	 			    } finally {
+    	 			        if (out != null) {
+    	 			            out.close();
+    	 			        }
+    	 			        if (filecontent != null) {
+    	 			            filecontent.close();
+    	 			        }
+    	 			    }//end try catch  		
+    	 	        }//end picture upload
+    	 			
     	 			businessDelegatorView.updateTrainer(trainer);
     	 			FacesUtils.addInfoMessage("El entrenador ha sido actualizado satisfactoriamente");
     	 			
     	 		}//end if-else
-    	 		
-    	 		
-    	 		
-    	 	}
+    	 	}//end user app detect
     	 	
     	}catch(Exception e){
     		log.info(e.toString());
@@ -1393,6 +1433,14 @@ public class UsersView implements Serializable {
 
 	public void setDataTrainer(List<UsersDTO> dataTrainer) {
 		this.dataTrainer = dataTrainer;
+	}
+
+	public UploadedFile getTrainerPic() {
+		return trainerPic;
+	}
+
+	public void setTrainerPic(UploadedFile trainerPic) {
+		this.trainerPic = trainerPic;
 	}
 	
 	

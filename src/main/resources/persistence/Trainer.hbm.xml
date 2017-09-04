@@ -8,10 +8,7 @@
             <column name="idtrainer" />
             <generator class="identity" />
         </id>
-        <many-to-one name="vprofile" class="com.liderbs.modelo.Vprofile" fetch="select">
-            <column name="vprofile_idvprofile" not-null="true" />
-        </many-to-one>
-        <many-to-one name="academiclevel" class="com.liderbs.modelo.Academiclevel" fetch="select">
+         <many-to-one name="academiclevel" class="com.liderbs.modelo.Academiclevel" fetch="select">
             <column name="academiclevel_idacademiclevel" not-null="true" />
         </many-to-one>
         <many-to-one name="identification" class="com.liderbs.modelo.Identification" fetch="select">

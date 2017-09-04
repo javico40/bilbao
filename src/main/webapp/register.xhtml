@@ -6,11 +6,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" >
 	<h:head>
      <f:facet name="first">
-		<title>Bilbao</title>
+		<title>Govirfit | Entrena donde quieras</title>
 		<meta name="content-type" content="text/html; charset=UTF-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	 </f:facet>
-		<link REL="SHORTCUT ICON" href="resources/images/iconjci.png"/>
+		<link REL="SHORTCUT ICON" href="resources/images/iconjci11.png"/>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
 		    <!-- Bootstrap 3.3.2 -->
 		    <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -172,11 +172,12 @@
  
            <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>Govirfit</b></a>
+        <a href="../../index2.html"><b>Bienvenido a Govirfit</b></a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Registro de Entrenadores</p>
         <h:form>
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
         <!--<form id="loginForm" name="loginForm" method="post" class="form-signin">-->
          <div class="form-group has-feedback">
           <h:outputText rendered="${param.authfailed eq 'true'}" value="#{msg['authfailed']}" styleClass="alert alert-danger alert-dismissable" />
@@ -184,20 +185,18 @@
 		  <h:outputText rendered="${param.exceededAllowed eq 'true'}" value="#{msg['exceededAllowed']}" styleClass="alert alert-danger alert-dismissable" />
 		  </div>	
           <div class="form-group has-feedback">
-          	<p:inputText id="names" binding="#{registerView.names}" class="form-control" placeholder="Nombres y Apellidos" />
-            <!--<input id="nameField" name="j_details" type="text" class="form-control" placeholder="Nombres y Apellidos"/>-->
+            <p:inputText id="username" binding="#{registerView.userlogin}" class="form-control" placeholder="Usuario" />
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <!--<input id="usernameField" name="j_username" type="text" class="form-control" placeholder="Correo / Email"/>-->
-            <p:inputText id="usernames" binding="#{registerView.username}" class="form-control" placeholder="Correo / Email" />
+            <p:inputText id="usermail" binding="#{registerView.correo}" class="form-control" placeholder="Correo / Email" />
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <p:inputText id="password" binding="#{registerView.password}" class="form-control" placeholder="Contraseña" />
-            <!--<input id="passwordField" name="j_password"  type="password" class="form-control" placeholder="Contraseña"/>-->
+            <p:password id="password" binding="#{registerView.password}" class="form-control" placeholder="Contraseña" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
+   
           <div class="row">
             <div class="col-xs-8">                                   
             </div><!-- /.col -->
@@ -225,7 +224,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 1.0
         </div>
-        <strong>Copyright <a href="http://www.test.com">Bilbao</a> , <a href="http://almsaeedstudio.com">AdminLTE v2.1.1</a> </strong>.
+        <strong>Copyright 2017 <a href="http://www.govirfit.com">Govirfit</a> , <a href="http://almsaeedstudio.com">AdminLTE v2.1.1</a> </strong>.
       </footer>
     </div><!-- ./wrapper -->
 
