@@ -1442,8 +1442,5 @@ public class UsersView implements Serializable {
 	public void setTrainerPic(UploadedFile trainerPic) {
 		this.trainerPic = trainerPic;
 	}
-	
-	
-    
-    
+	 
 }
