@@ -22,6 +22,7 @@ import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
+import com.liderbs.modelo.Skill;
 import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
@@ -58,6 +59,7 @@ import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
+import com.liderbs.modelo.dto.SkillDTO;
 import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
@@ -687,6 +689,28 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberCities() throws Exception;
 
     public List<CitiesDTO> getDataCities() throws Exception;
+    
+    public List<Skill> getSkill() throws Exception;
+
+    public void saveSkill(Skill entity) throws Exception;
+
+    public void deleteSkill(Skill entity) throws Exception;
+
+    public void updateSkill(Skill entity) throws Exception;
+
+    public Skill getSkill(Integer idskill) throws Exception;
+
+    public List<Skill> findByCriteriaInSkill(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Skill> findPageSkill(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberSkill() throws Exception;
+
+    public List<SkillDTO> getDataSkill() throws Exception;
 
 
 }

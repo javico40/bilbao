@@ -89,15 +89,18 @@ public class UsersView implements Serializable {
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
     
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    
+    
     //Perfil virfit
     private InputText namesProfile;
     
     //Personal data
-    private InputText txtName;
-    private InputText txtLastname;
+    private String txtName;
+    private String txtLastname;
     private SelectOneMenu selectIdentificacion;
-    private InputText txtNumeroIdentificacion;
-    private InputText txtLugarNacimiento;
+    private String txtNumeroIdentificacion;
+    private String txtLugarNacimiento;
     private Date txtFechaNacimiento;
     private SelectOneMenu selectPais;
     private List<SelectItem> listPaises;
@@ -140,6 +143,23 @@ public class UsersView implements Serializable {
     private List<SelectItem> listCategory;
     private List<UsersDTO> listTrainers;
     
+    //Config
+    private Date minDate;
+    
+    //Profile first page
+    private String firstNameDesc;
+    private String lastNameDesc;
+    private String identiDesc;
+    private String identiNumberDesc;
+    private String bornPlaceDesc;
+    private String bornDateDesc;
+    private String trainerPicDesc;  
+    private String countryResDesc;
+    private String stateResDesc;
+    private String cityResDesc;
+    private String addressResDesc;
+    
+    
     
 
     public UsersView() {
@@ -164,6 +184,9 @@ public class UsersView implements Serializable {
  		 		}
  		 	}
  	    }//end for 
+		 
+		minDate = format.parse("01/01/1950");
+		
 		 
     	}catch(Exception e){
     		log.info(e.toString());
@@ -255,15 +278,34 @@ public class UsersView implements Serializable {
      	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
      	 			Identification identi = businessDelegatorView.getIdentification(trainer.getIdentification().getIdidentification());
      	 			
-     	 			txtName.setValue(trainer.getName());
-     	 			txtLastname.setValue(trainer.getLastname());
+     	 			txtName = trainer.getName();
+     	 			txtLastname = trainer.getLastname();
      	 			selectIdentificacion.setValue(identi.getIdidentification());
-     	 			txtLugarNacimiento.setValue(trainer.getLugar_nacimiento());
+     	 			txtNumeroIdentificacion = trainer.getTrainer_id_number();
+     	 			txtLugarNacimiento = trainer.getLugar_nacimiento();
      	 			txtFechaNacimiento = trainer.getBorndate();
      	 			selectPais.setValue(trainer.getCountry());
+     	 			buscarDepto();
      	 			selectDepto.setValue(trainer.getRegion());
      	 			txtCiudad.setValue(trainer.getCity());
      	 			txtDireccion.setValue(trainer.getAddress());
+     	 			
+     	 			//Fill profile data
+     	 			Pais country = businessDelegatorView.getPais(trainer.getCountry());
+     	 			Estado state = businessDelegatorView.getEstado(trainer.getRegion());
+     	 			
+     	 			firstNameDesc = trainer.getName().toUpperCase();
+     	 			lastNameDesc = trainer.getLastname().toUpperCase();
+     	 			identiDesc = identi.getName().toUpperCase();
+     	 			identiNumberDesc = trainer.getTrainer_id_number();
+     	 			bornPlaceDesc = trainer.getLugar_nacimiento().toUpperCase();
+     	 			Date fechaNac = trainer.getBorndate();
+     	 			bornDateDesc = format.format(fechaNac);
+     	 			trainerPicDesc = trainer.getTrainer_picture();
+     	 			countryResDesc = country.getPaisnombre().toUpperCase();
+     	 		    stateResDesc = state.getEstadonombre().toUpperCase();
+     	 		    cityResDesc = trainer.getCity().toUpperCase();
+     	 		    addressResDesc = trainer.getAddress().toUpperCase();
      	 			
      	 		}//end if-else
      	 	}//end if-else
@@ -299,10 +341,11 @@ public class UsersView implements Serializable {
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
     	 			Identification identi = businessDelegatorView.getIdentification(FacesUtils.checkInteger(selectIdentificacion));
     	 			
-    	 			trainer.setName(FacesUtils.checkString(txtName));
-    	 			trainer.setLastname(FacesUtils.checkString(txtLastname));
+    	 			trainer.setName(txtName);
+    	 			trainer.setLastname(txtLastname);
     	 			trainer.setIdentification(identi);
-    	 			trainer.setLugar_nacimiento(FacesUtils.checkString(txtLugarNacimiento));
+    	 			trainer.setTrainer_id_number(txtNumeroIdentificacion);
+    	 			trainer.setLugar_nacimiento(txtLugarNacimiento);
     	 			trainer.setBorndate(txtFechaNacimiento);
     	 			trainer.setCountry(FacesUtils.checkInteger(selectPais));
     	 			trainer.setRegion(FacesUtils.checkInteger(selectDepto));
@@ -319,7 +362,9 @@ public class UsersView implements Serializable {
     	 				
     	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
     	 	            
-    	 				picName = trainerPic.getFileName();
+    	 				//picName = trainerPic.getFileName();
+    	 				String type = trainerPic.getContentType();
+    	 				picName = ""+trainer.getIdtrainer()+".jpg";
     	 				filecontent = trainerPic.getInputstream();
     	 				
     	 				out = new FileOutputStream(new File(path + picName));
@@ -331,7 +376,8 @@ public class UsersView implements Serializable {
     	 		            out.write(bytes, 0, read);
     	 		        }
     	 				
-    	 		        log.info("New file " + picName + " created at " + path);
+    	 		        //log.info("New file " + picName + " created at " + path);
+    	 				trainer.setTrainer_picture(path+picName);
     	 		        
     	 				 } catch (FileNotFoundException fne) {
     	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
@@ -457,17 +503,6 @@ public class UsersView implements Serializable {
 
             txtFixedphone.setValue(usersDTO.getFixedphone());
 
-            if (txtLastname == null) {
-                txtLastname = new InputText();
-            }
-
-            txtLastname.setValue(usersDTO.getEmail());
-
-            if (txtName == null) {
-                txtName = new InputText();
-            }
-
-            txtName.setValue(usersDTO.getName());
 
             if (txtPassword == null) {
                 txtPassword = new InputText();
@@ -548,15 +583,6 @@ public class UsersView implements Serializable {
             txtFixedphone.setDisabled(false);
         }
 
-        if (txtLastname != null) {
-            txtLastname.setValue(null);
-            txtLastname.setDisabled(false);
-        }
-
-        if (txtName != null) {
-            txtName.setValue(null);
-            txtName.setDisabled(false);
-        }
 
         if (txtPassword != null) {
             txtPassword.setValue(null);
@@ -637,8 +663,6 @@ public class UsersView implements Serializable {
         if (entity == null) {
             txtCellphone.setDisabled(false);
             txtFixedphone.setDisabled(false);
-            txtLastname.setDisabled(false);
-            txtName.setDisabled(false);
             txtPassword.setDisabled(false);
             txtSaldo.setDisabled(false);
             txtStatus.setDisabled(false);
@@ -657,10 +681,6 @@ public class UsersView implements Serializable {
             txtFixedphone.setDisabled(false);
             txtLastlogin.setValue(entity.getLastlogin());
             txtLastlogin.setDisabled(false);
-            txtLastname.setValue(entity.getEmail());
-            txtLastname.setDisabled(false);
-            txtName.setValue(entity.getName());
-            txtName.setDisabled(false);
             txtPassword.setValue(entity.getPassword());
             txtPassword.setDisabled(false);
             txtSaldo.setValue(entity.getSaldo());
@@ -695,18 +715,7 @@ public class UsersView implements Serializable {
         	txtFixedphone.setValue(selectedUsers.getFixedphone());
             txtFixedphone.setDisabled(false);
         }
-        
-        if (txtLastname != null) {
-        	if(selectedUsers.getEmail() != null){
-        		txtLastname.setValue(selectedUsers.getEmail().toUpperCase());
-                txtLastname.setDisabled(false);
-        	}
-        }
-        
-        if (txtName != null) {
-        	txtName.setValue(selectedUsers.getName());
-            txtName.setDisabled(false);
-        }
+
         
         if (txtPassword != null) {
         	txtPassword.setValue(selectedUsers.getPassword());
@@ -929,21 +938,6 @@ public class UsersView implements Serializable {
         this.txtFixedphone = txtFixedphone;
     }
 
-    public InputText getTxtLastname() {
-        return txtLastname;
-    }
-
-    public void setTxtLastname(InputText txtLastname) {
-        this.txtLastname = txtLastname;
-    }
-
-    public InputText getTxtName() {
-        return txtName;
-    }
-
-    public void setTxtName(InputText txtName) {
-        this.txtName = txtName;
-    }
 
     public InputText getTxtPassword() {
         return txtPassword;
@@ -1102,22 +1096,6 @@ public class UsersView implements Serializable {
 		this.selectIdentificacion = selectIdentificacion;
 	}
 
-	public InputText getTxtNumeroIdentificacion() {
-		return txtNumeroIdentificacion;
-	}
-
-	public void setTxtNumeroIdentificacion(InputText txtNumeroIdentificacion) {
-		this.txtNumeroIdentificacion = txtNumeroIdentificacion;
-	}
-
-	
-	public InputText getTxtLugarNacimiento() {
-		return txtLugarNacimiento;
-	}
-
-	public void setTxtLugarNacimiento(InputText txtLugarNacimiento) {
-		this.txtLugarNacimiento = txtLugarNacimiento;
-	}
 
 	public Date getTxtFechaNacimiento() {
 		return txtFechaNacimiento;
@@ -1442,5 +1420,135 @@ public class UsersView implements Serializable {
 	public void setTrainerPic(UploadedFile trainerPic) {
 		this.trainerPic = trainerPic;
 	}
+
+	public String getTxtName() {
+		return txtName;
+	}
+
+	public void setTxtName(String txtName) {
+		this.txtName = txtName;
+	}
+
+	public String getTxtLastname() {
+		return txtLastname;
+	}
+
+	public void setTxtLastname(String txtLastname) {
+		this.txtLastname = txtLastname;
+	}
+
+	public String getTxtNumeroIdentificacion() {
+		return txtNumeroIdentificacion;
+	}
+
+	public void setTxtNumeroIdentificacion(String txtNumeroIdentificacion) {
+		this.txtNumeroIdentificacion = txtNumeroIdentificacion;
+	}
+
+	public String getTxtLugarNacimiento() {
+		return txtLugarNacimiento;
+	}
+
+	public void setTxtLugarNacimiento(String txtLugarNacimiento) {
+		this.txtLugarNacimiento = txtLugarNacimiento;
+	}
+
+	public String getFirstNameDesc() {
+		return firstNameDesc;
+	}
+
+	public void setFirstNameDesc(String firstNameDesc) {
+		this.firstNameDesc = firstNameDesc;
+	}
+
+	public String getLastNameDesc() {
+		return lastNameDesc;
+	}
+
+	public void setLastNameDesc(String lastNameDesc) {
+		this.lastNameDesc = lastNameDesc;
+	}
+
+	public String getIdentiDesc() {
+		return identiDesc;
+	}
+
+	public void setIdentiDesc(String identiDesc) {
+		this.identiDesc = identiDesc;
+	}
+
+	public String getIdentiNumberDesc() {
+		return identiNumberDesc;
+	}
+
+	public void setIdentiNumberDesc(String identiNumberDesc) {
+		this.identiNumberDesc = identiNumberDesc;
+	}
+
+	public String getBornPlaceDesc() {
+		return bornPlaceDesc;
+	}
+
+	public void setBornPlaceDesc(String bornPlaceDesc) {
+		this.bornPlaceDesc = bornPlaceDesc;
+	}
+
+	public String getBornDateDesc() {
+		return bornDateDesc;
+	}
+
+	public void setBornDateDesc(String bornDateDesc) {
+		this.bornDateDesc = bornDateDesc;
+	}
+
+	public String getTrainerPicDesc() {
+		return trainerPicDesc;
+	}
+
+	public void setTrainerPicDesc(String trainerPicDesc) {
+		this.trainerPicDesc = trainerPicDesc;
+	}
+
+	public String getCountryResDesc() {
+		return countryResDesc;
+	}
+
+	public void setCountryResDesc(String countryResDesc) {
+		this.countryResDesc = countryResDesc;
+	}
+
+	public String getStateResDesc() {
+		return stateResDesc;
+	}
+
+	public void setStateResDesc(String stateResDesc) {
+		this.stateResDesc = stateResDesc;
+	}
+
+	public String getCityResDesc() {
+		return cityResDesc;
+	}
+
+	public void setCityResDesc(String cityResDesc) {
+		this.cityResDesc = cityResDesc;
+	}
+
+	public String getAddressResDesc() {
+		return addressResDesc;
+	}
+
+	public void setAddressResDesc(String addressResDesc) {
+		this.addressResDesc = addressResDesc;
+	}
+
+	public Date getMinDate() {
+		return minDate;
+	}
+
+	public void setMinDate(Date minDate) {
+		this.minDate = minDate;
+	}
+	
+	
 	 
 }

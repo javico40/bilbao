@@ -23,6 +23,9 @@
         <property name="lugar_nacimiento" type="java.lang.String">
             <column name="lugar_nacimiento" length="100" />
         </property>
+        <property name="trainer_id_number" type="java.lang.String">
+            <column name="trainer_id_number" length="100" />
+        </property>
         <property name="borndate" type="java.util.Date">
             <column name="borndate" length="10" />
         </property>
@@ -50,6 +53,9 @@
         <property name="usersIdusers" type="java.lang.Integer">
             <column name="users_idusers" not-null="true" />
         </property>
+        <property name="trainer_picture" type="java.lang.String">
+            <column name="trainer_picture" length="1000" />
+        </property>
         <set name="experiences" table="trainer_has_experience" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="trainer_idtrainer" not-null="true" />
@@ -71,6 +77,14 @@
                 <column name="trainer_idtrainer" not-null="true" />
             </key>
             <one-to-many class="com.liderbs.modelo.Schedule" />
+        </set>
+        <set name="skills" table="trainer_has_skill" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="trainer_idtrainer" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.liderbs.modelo.Skill">
+                <column name="skill_idskill" not-null="true" />
+            </many-to-many>
         </set>
     </class>
 </hibernate-mapping>

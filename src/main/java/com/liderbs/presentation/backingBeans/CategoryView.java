@@ -37,6 +37,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -59,6 +60,9 @@ public class CategoryView implements Serializable {
     private List<CategoryDTO> data;
     private CategoryDTO selectedCategory;
     private Category entity;
+    
+    private List<SelectItem> listCategory;
+    
     private boolean showDialog;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
@@ -418,4 +422,14 @@ public class CategoryView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public List<SelectItem> getListCategory() {
+		return listCategory;
+	}
+
+	public void setListCategory(List<SelectItem> listCategory) {
+		this.listCategory = listCategory;
+	}
+    
+    
 }

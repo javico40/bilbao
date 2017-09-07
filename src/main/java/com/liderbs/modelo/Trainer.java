@@ -21,6 +21,7 @@ public class Trainer  implements java.io.Serializable {
      private Identification identification;
      private String name;
      private String lastname;
+     private String trainer_id_number;
      private String lugar_nacimiento;
      private Date borndate;
      private Integer country;
@@ -31,6 +32,7 @@ public class Trainer  implements java.io.Serializable {
      private String academicArea;
      private String resumefile;
      private Integer usersIdusers;
+     private String trainer_picture;
      private Set<Experience> experiences = new HashSet<Experience>(0);
      private Set<Courses> courseses = new HashSet<Courses>(0);
      private Set<Schedule> schedules = new HashSet<Schedule>(0);
@@ -195,6 +197,26 @@ public class Trainer  implements java.io.Serializable {
     public void setSchedules(Set<Schedule> schedules) {
         this.schedules = schedules;
     }
+
+
+	public String getTrainer_id_number() {
+		return trainer_id_number;
+	}
+
+
+	public void setTrainer_id_number(String trainer_id_number) {
+		this.trainer_id_number = trainer_id_number;
+	}
+
+
+	public String getTrainer_picture() {
+		return trainer_picture;
+	}
+
+
+	public void setTrainer_picture(String trainer_picture) {
+		this.trainer_picture = trainer_picture;
+	}
 
 
 }

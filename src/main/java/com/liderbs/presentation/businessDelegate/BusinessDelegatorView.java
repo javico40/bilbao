@@ -22,6 +22,7 @@ import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Schedule;
+import com.liderbs.modelo.Skill;
 import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
@@ -49,6 +50,7 @@ import com.liderbs.modelo.control.IPlaceservicesLogic;
 import com.liderbs.modelo.control.IPlacetypeLogic;
 import com.liderbs.modelo.control.IProfileLogic;
 import com.liderbs.modelo.control.IScheduleLogic;
+import com.liderbs.modelo.control.ISkillLogic;
 import com.liderbs.modelo.control.ITimetableLogic;
 import com.liderbs.modelo.control.ITrainerLogic;
 import com.liderbs.modelo.control.IUsersLogic;
@@ -79,6 +81,7 @@ import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
+import com.liderbs.modelo.dto.SkillDTO;
 import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
@@ -199,6 +202,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private ITimetableLogic timetableLogic;
     @Autowired
     private ICitiesLogic citiesLogic;
+    @Autowired
+    private ISkillLogic skillLogic;
 
 
     public List<Account> getAccount() throws Exception {
@@ -1534,5 +1539,55 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<CitiesDTO> getDataCities() throws Exception {
         return citiesLogic.getDataCities();
+    }
+    
+    public List<Skill> getSkill() throws Exception {
+        return skillLogic.getSkill();
+    }
+
+    public void saveSkill(Skill entity) throws Exception {
+        skillLogic.saveSkill(entity);
+    }
+
+    public void deleteSkill(Skill entity) throws Exception {
+        skillLogic.deleteSkill(entity);
+    }
+
+    public void updateSkill(Skill entity) throws Exception {
+        skillLogic.updateSkill(entity);
+    }
+
+    public Skill getSkill(Integer idskill) throws Exception {
+        Skill skill = null;
+
+        try {
+            skill = skillLogic.getSkill(idskill);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return skill;
+    }
+
+    public List<Skill> findByCriteriaInSkill(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return skillLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Skill> findPageSkill(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return skillLogic.findPageSkill(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberSkill() throws Exception {
+        return skillLogic.findTotalNumberSkill();
+    }
+
+    public List<SkillDTO> getDataSkill() throws Exception {
+        return skillLogic.getDataSkill();
     }
 }
