@@ -84,7 +84,7 @@ public class RegisterView implements Serializable {
 				// Buscar el si el nombre de usuario ya se encuentra registrado
 
 				List<Users> list = businessDelegatorView
-						.findByCriteriaInUsers(new Object[] { "username", true, usern, "=" }, null, null);
+						.findByCriteriaInUsers(new Object[] { "username", true, usern.toUpperCase(), "=" }, null, null);
 
 				if (list.size() > 0) {
 					FacesUtils.addErrorMessage("El nombre de usuario ya se encuentra registrado");
@@ -140,7 +140,7 @@ public class RegisterView implements Serializable {
 							cuenta.setAccountCreated(today);
 							cuenta.setAccountDefault(1);
 							cuenta.setAccountStatus(1);
-							cuenta.setAccountName(usern);
+							cuenta.setAccountName(usern.toUpperCase());
 							cuenta.setAccountUserCreated("selfregister");
 							cuenta.setProfile(perfil);
 							cuenta.setUserses(new LinkedHashSet<Users>(listUser));

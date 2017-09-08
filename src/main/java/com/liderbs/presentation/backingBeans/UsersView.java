@@ -3,9 +3,10 @@ package com.liderbs.presentation.backingBeans;
 import com.liderbs.exceptions.*;
 
 import com.liderbs.modelo.*;
+import com.liderbs.modelo.dto.CategoryDTO;
 import com.liderbs.modelo.dto.PaisDTO;
 import com.liderbs.modelo.dto.UsersDTO;
-
+import com.liderbs.modelo.dto.UsuariosCategoriasDTO;
 import com.liderbs.presentation.businessDelegate.*;
 
 import com.liderbs.utilities.*;
@@ -15,6 +16,7 @@ import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
@@ -38,8 +40,11 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -80,7 +85,9 @@ public class UsersView implements Serializable {
     private CommandButton btnClear;
     private List<UsersDTO> data;
     private List<UsersDTO> dataTrainer;
+    private List<UsuariosCategoriasDTO> dataCategory;
     private UsersDTO selectedUsers;
+    private CategoryDTO selectedCat;
     private Users entity;
     private Users usuarioapp;
     private Integer idAccount = 0;
@@ -112,7 +119,7 @@ public class UsersView implements Serializable {
     private UploadedFile trainerPic;
     
     //Profesional data
-    private SelectOneMenu selectTipoEntrenador;
+    private Integer[] selectTipoEntrenador;
     private InputTextarea txtDescripcionPerfil;
     
    //Academic data
@@ -140,7 +147,7 @@ public class UsersView implements Serializable {
     //Staff search
     
     private SelectOneMenu selectCategory;
-    private List<SelectItem> listCategory;
+    private Map<String,Integer> listCategory;
     private List<UsersDTO> listTrainers;
     
     //Config
@@ -261,6 +268,8 @@ public class UsersView implements Serializable {
      	 		
      	 		int idUser = usuarioapp.getIdusers();
      	 		
+     	 		Users usuario = businessDelegatorView.getUsers(idUser);
+     	 		
      	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
      	 																		   null,
      	 																		   null);
@@ -290,23 +299,46 @@ public class UsersView implements Serializable {
      	 			txtCiudad.setValue(trainer.getCity());
      	 			txtDireccion.setValue(trainer.getAddress());
      	 			
+     	 			if(trainer.getCountry() != null){
+     	 				
      	 			//Fill profile data
-     	 			Pais country = businessDelegatorView.getPais(trainer.getCountry());
-     	 			Estado state = businessDelegatorView.getEstado(trainer.getRegion());
+         	 			Pais country = businessDelegatorView.getPais(trainer.getCountry());
+         	 			Estado state = businessDelegatorView.getEstado(trainer.getRegion());
+         	 			countryResDesc = country.getPaisnombre().toUpperCase();
+         	 		    stateResDesc = state.getEstadonombre().toUpperCase();
+     	 			}
      	 			
-     	 			firstNameDesc = trainer.getName().toUpperCase();
-     	 			lastNameDesc = trainer.getLastname().toUpperCase();
-     	 			identiDesc = identi.getName().toUpperCase();
-     	 			identiNumberDesc = trainer.getTrainer_id_number();
-     	 			bornPlaceDesc = trainer.getLugar_nacimiento().toUpperCase();
-     	 			Date fechaNac = trainer.getBorndate();
-     	 			bornDateDesc = format.format(fechaNac);
-     	 			trainerPicDesc = trainer.getTrainer_picture();
-     	 			countryResDesc = country.getPaisnombre().toUpperCase();
-     	 		    stateResDesc = state.getEstadonombre().toUpperCase();
-     	 		    cityResDesc = trainer.getCity().toUpperCase();
-     	 		    addressResDesc = trainer.getAddress().toUpperCase();
+     	 		 	firstNameDesc = ((trainer.getName() != null) ? trainer.getName().toUpperCase() : null);
+     	 			lastNameDesc = ((trainer.getLastname() != null) ? trainer.getLastname().toUpperCase():null);
+     	 			identiDesc = ((identi.getName() != null) ? identi.getName().toUpperCase():null);
+     	 			identiNumberDesc = ((trainer.getTrainer_id_number() != null) ? trainer.getTrainer_id_number():null);
+     	 			bornPlaceDesc = (( trainer.getLugar_nacimiento() != null) ? trainer.getLugar_nacimiento().toUpperCase():null);
+     	 			Date fechaNac = ((trainer.getBorndate() != null) ? trainer.getBorndate():null);
      	 			
+     	 			if(fechaNac != null){
+     	 				bornDateDesc = ((format.format(fechaNac) != null) ? format.format(fechaNac):null);
+     	 			}
+     	 			
+     	 			trainerPicDesc = ((trainer.getTrainer_picture() != null) ? trainer.getTrainer_picture():null);
+     	 			cityResDesc = ((trainer.getCity() != null) ? trainer.getCity().toUpperCase():null);
+     	 		    addressResDesc = ((trainer.getAddress() != null) ? trainer.getAddress().toUpperCase():null);
+     	 			
+     	 		    //Fill groupal class
+     	 		    
+     	 		    Hibernate.initialize(usuario.getCategories());
+     	 	        Set<Category> categories = usuario.getCategories();
+     	 	        
+     	 	        selectTipoEntrenador = new Integer[categories.size()];
+     	 	        
+     	 	        int i = 0;
+     	 	        
+     	 	        for (Iterator<Category> it = categories.iterator(); it.hasNext(); ) {
+     	 	   		 
+     	 			 	Category opt = it.next();
+     	 			 	selectTipoEntrenador[i] = opt.getIdcategory();
+     	 			 	i++;
+     	 	        }
+     	 		    
      	 		}//end if-else
      	 	}//end if-else
     		 
@@ -405,7 +437,35 @@ public class UsersView implements Serializable {
     }
     
     public void saveDatosProf(){
+    try{	
+    	if(usuarioapp == null){
+	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+	 	}else{
 	 	
+			int idUser = usuarioapp.getIdusers();
+			
+			Users usuario = businessDelegatorView.getUsers(idUser);
+	    	
+	        if(selectTipoEntrenador != null && selectTipoEntrenador.length>0){
+	        	
+	        	Set<Category> categories = new HashSet();
+	        	
+	        	for (int i = 0; i < selectTipoEntrenador.length; i++) {
+	            	 
+	        		Category opc = businessDelegatorView.getCategory(selectTipoEntrenador[i]);
+	        		categories.add(opc);
+	            }
+	        	
+	        	usuario.setCategories(categories);
+	        	businessDelegatorView.saveUsers(usuario);
+	        	FacesUtils.addInfoMessage("Modalidades asignadas satisfactoriamente");
+	        	
+	        }//end if
+	 		
+	 	}//end if-else
+    }catch(Exception e){
+    	log.info(e.toString());
+    }
     }
     
     public void saveAcademic(){
@@ -1130,11 +1190,11 @@ public class UsersView implements Serializable {
 		this.txtDireccion = txtDireccion;
 	}
 
-	public SelectOneMenu getSelectTipoEntrenador() {
+	public Integer[] getSelectTipoEntrenador() {
 		return selectTipoEntrenador;
 	}
 
-	public void setSelectTipoEntrenador(SelectOneMenu selectTipoEntrenador) {
+	public void setSelectTipoEntrenador(Integer[] selectTipoEntrenador) {
 		this.selectTipoEntrenador = selectTipoEntrenador;
 	}
 
@@ -1362,7 +1422,7 @@ public class UsersView implements Serializable {
 		this.selectCategory = selectCategory;
 	}
 
-	public List<SelectItem> getListCategory() {
+	public Map<String,Integer> getListCategory() {
 		
 		if(this.listCategory == null){
 			
@@ -1374,10 +1434,11 @@ public class UsersView implements Serializable {
 			
 			if(list.size() > 0){
 				
-				this.listCategory = new ArrayList<SelectItem>();
+				this.listCategory  = new LinkedHashMap<String, Integer>();
 				
 				for(Category cat:list){
-					this.listCategory.add(new SelectItem(cat.getIdcategory(), cat.getDescription()));
+					listCategory.put(cat.getDescription(), cat.getIdcategory());
+					//this.listCategory.add(new SelectItem(cat.getIdcategory(), cat.getDescription()));
 				}
 				
 			}
@@ -1391,7 +1452,7 @@ public class UsersView implements Serializable {
 		return listCategory;
 	}
 
-	public void setListCategory(List<SelectItem> listCategory) {
+	public void setListCategory(Map<String,Integer> listCategory) {
 		this.listCategory = listCategory;
 	}
 
@@ -1548,6 +1609,69 @@ public class UsersView implements Serializable {
 	public void setMinDate(Date minDate) {
 		this.minDate = minDate;
 	}
+
+	public List<UsuariosCategoriasDTO> getDataCategory() {
+		
+		if(dataCategory == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	dataCategory = new ArrayList<UsuariosCategoriasDTO>();
+		     	 		
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		Users usuario = businessDelegatorView.getUsers(idUser);
+		     	 		
+		     	 		Hibernate.initialize(usuario.getCategories());
+		     	 		Set<Category> categories = usuario.getCategories();
+		     	 		
+		     	 		 for (Iterator<Category> it = categories.iterator(); it.hasNext(); ) {
+		            		 
+		     	 			Category act = it.next();
+		     	 			
+		     	 			dataCategory.add(new UsuariosCategoriasDTO(act.getIdcategory(), act.getDescription()));
+		            	        
+		            	 }//end for
+		     	 		
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+			
+			
+			
+		}
+		
+		return dataCategory;
+	}
+
+	public void setDataCategory(List<UsuariosCategoriasDTO> dataCategory) {
+		this.dataCategory = dataCategory;
+	}
+	
+    public String action_delete_cat(ActionEvent evt) {
+        try {
+        	
+            selectedCat = (CategoryDTO) (evt.getComponent().getAttributes()
+                                           .get("selectedCats"));
+
+            Integer idcat = new Integer(selectedCat.getIdcategory());
+            
+            UsuariosCategorias usucat = businessDelegatorView.getUsuariosCategorias(idcat);
+            
+            businessDelegatorView.deleteUsuariosCategorias(usucat);
+            
+            FacesUtils.addInfoMessage("Categoria eliminada satisfactoriamente");
+            dataCategory = null;
+            
+        } catch (Exception e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
+    }
 	
 	
 	 

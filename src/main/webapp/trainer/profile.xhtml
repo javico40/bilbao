@@ -45,7 +45,7 @@
 								<p:panel id="panelPersonalData" header="Datos Personales">
 									<p:panelGrid>
 										<p:row>
-											<p:column rowspan="6"><p:graphicImage name="#{usersView.bornPlaceDesc}" alt="entrenador" title="entrenador"/></p:column>
+											<p:column rowspan="6">FOTO</p:column>
 											<p:column><strong><h:outputText id="textNamesDesc" value=" NOMBRES" /></strong></p:column>
 											<p:column><h:outputText id="textNamesVal" value="#{usersView.firstNameDesc}" /></p:column>
 											<p:column><strong><h:outputText id="textLastNamesDesc" value=" APELLIDOS" /></strong></p:column>
@@ -236,26 +236,28 @@
 										<p:row>
 											<p:column><h:outputText id="textTipoEntrenador" value=" MODALIDAD" /></p:column>
 											<p:column>
-												<p:selectOneMenu id="selectTipoEntrenador" binding="#{usersView.selectTipoEntrenador}" style="width:125px">
-            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+												<p:selectCheckboxMenu id="selectTipoEntrenador"
+																	  label="Seleccione las modalidades"
+												                      value="#{usersView.selectTipoEntrenador}"
+												                      filter="true"
+												                      filterMatchMode="startsWith"
+												                      styleClass="form-control" style="width:400px">
             										<f:selectItems value="#{usersView.listCategory}" />
-        										</p:selectOneMenu>		
+        										</p:selectCheckboxMenu>		
 											</p:column>
 										</p:row>
 										<p:row>
 											<p:column colspan="2">
 											<div align="center">
 											<p:commandButton id="btnGuardarDatosProfesionales"
-											                 value="Agregar"
-											                 action="#{usersView.saveDatosProf}" />
+											                 value="Guardar"
+											                 action="#{usersView.saveDatosProf}"
+											                 />
 											</div>                                        
 											</p:column>
 										</p:row>
 									</p:panelGrid>
 								</p:panel>
-								
-								
-								
 								
 							</p:tab>
 							<p:tab title="Formacion Academica">

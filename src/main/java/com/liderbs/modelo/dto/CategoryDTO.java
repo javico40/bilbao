@@ -22,8 +22,21 @@ public class CategoryDTO implements Serializable {
     private String description;
     private Integer idcategory;
     private Integer idlevel_Level;
+    
+    
 
-    public String getDescription() {
+    public CategoryDTO() {
+		super();
+	}
+    
+
+	public CategoryDTO(String description, Integer idcategory) {
+		super();
+		this.description = description;
+		this.idcategory = idcategory;
+	}
+
+	public String getDescription() {
         return description;
     }
 

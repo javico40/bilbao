@@ -22,8 +22,25 @@ public class UsuariosCategoriasDTO implements Serializable {
     private Integer idusuariosCategorias;
     private Integer usuario;
     private Integer idcategory_Category;
+    private String descripcionCategoria;
+    
+    
 
-    public Integer getIdusuariosCategorias() {
+    public UsuariosCategoriasDTO() {
+		super();
+	}
+    
+    
+
+	public UsuariosCategoriasDTO(Integer idusuariosCategorias, String descripcionCategoria) {
+		super();
+		this.idusuariosCategorias = idusuariosCategorias;
+		this.descripcionCategoria = descripcionCategoria;
+	}
+
+
+
+	public Integer getIdusuariosCategorias() {
         return idusuariosCategorias;
     }
 
@@ -46,4 +63,14 @@ public class UsuariosCategoriasDTO implements Serializable {
     public void setIdcategory_Category(Integer idcategory_Category) {
         this.idcategory_Category = idcategory_Category;
     }
+
+	public String getDescripcionCategoria() {
+		return descripcionCategoria;
+	}
+
+	public void setDescripcionCategoria(String descripcionCategoria) {
+		this.descripcionCategoria = descripcionCategoria;
+	}
+    
+    
 }
