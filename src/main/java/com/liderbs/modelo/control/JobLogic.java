@@ -81,10 +81,7 @@ public class JobLogic implements IJobLogic {
                 throw new ZMessManager().new NotValidFormatException("name");
             }
 
-            if (getJob(entity.getIdjob()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
+            
             jobDAO.save(entity);
 
             log.debug("save Job successful");

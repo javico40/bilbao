@@ -83,15 +83,6 @@ public class CoursesLogic implements ICoursesLogic {
                     "description");
             }
 
-            if ((entity.getName() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getName(), 100) == false)) {
-                throw new ZMessManager().new NotValidFormatException("name");
-            }
-
-            if (getCourses(entity.getIdcourses()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
             coursesDAO.save(entity);
 
             log.debug("save Courses successful");

@@ -101,9 +101,6 @@ public class ExperienceLogic implements IExperienceLogic {
                 throw new ZMessManager().new EmptyFieldException("idjob_Job");
             }
 
-            if (getExperience(entity.getIdexperience()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             experienceDAO.save(entity);
 

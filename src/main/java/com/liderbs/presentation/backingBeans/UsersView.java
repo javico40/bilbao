@@ -105,17 +105,17 @@ public class UsersView implements Serializable {
     //Personal data
     private String txtName;
     private String txtLastname;
-    private SelectOneMenu selectIdentificacion;
+    private Integer selectIdentificacion;
     private String txtNumeroIdentificacion;
     private String txtLugarNacimiento;
     private Date txtFechaNacimiento;
-    private SelectOneMenu selectPais;
+    private Integer selectPais;
     private List<SelectItem> listPaises;
     private boolean lockDepto = true;
-    private SelectOneMenu selectDepto;
+    private Integer selectDepto;
     private List<SelectItem> listDeptos;
-    private InputText txtCiudad;
-    private InputText txtDireccion;
+    private String txtCiudad;
+    private String txtDireccion;
     private UploadedFile trainerPic;
     
     //Profesional data
@@ -126,6 +126,8 @@ public class UsersView implements Serializable {
     private SelectOneMenu selectNivelEstudio;
     private InputText txtAreaEstudio;
     private InputText txtCertificacion;
+    private Date txtFechaCertificacion;
+    private InputText txtEnteCertificador;
     private InputTextarea txtCertificacionDesc;
     
     //Profesional profile
@@ -165,6 +167,9 @@ public class UsersView implements Serializable {
     private String stateResDesc;
     private String cityResDesc;
     private String addressResDesc;
+    
+    //Rating
+    private Integer rating = 3;
     
     
     
@@ -289,23 +294,24 @@ public class UsersView implements Serializable {
      	 			
      	 			txtName = trainer.getName();
      	 			txtLastname = trainer.getLastname();
-     	 			selectIdentificacion.setValue(identi.getIdidentification());
+     	 			selectIdentificacion = identi.getIdidentification();
      	 			txtNumeroIdentificacion = trainer.getTrainer_id_number();
      	 			txtLugarNacimiento = trainer.getLugar_nacimiento();
      	 			txtFechaNacimiento = trainer.getBorndate();
-     	 			selectPais.setValue(trainer.getCountry());
+     	 			selectPais = trainer.getCountry();
      	 			buscarDepto();
-     	 			selectDepto.setValue(trainer.getRegion());
-     	 			txtCiudad.setValue(trainer.getCity());
-     	 			txtDireccion.setValue(trainer.getAddress());
+     	 			selectDepto = trainer.getRegion();
+     	 			txtCiudad = trainer.getCity();
+     	 			txtDireccion = trainer.getAddress();
      	 			
      	 			if(trainer.getCountry() != null){
-     	 				
-     	 			//Fill profile data
-         	 			Pais country = businessDelegatorView.getPais(trainer.getCountry());
-         	 			Estado state = businessDelegatorView.getEstado(trainer.getRegion());
-         	 			countryResDesc = country.getPaisnombre().toUpperCase();
-         	 		    stateResDesc = state.getEstadonombre().toUpperCase();
+     	 				Pais country = businessDelegatorView.getPais(trainer.getCountry());
+     	 				countryResDesc = country.getPaisnombre().toUpperCase();
+     	 			}
+     	 			
+     	 			if(trainer.getRegion() != null){
+     	 				Estado state = businessDelegatorView.getEstado(trainer.getRegion());
+         	 			stateResDesc = state.getEstadonombre().toUpperCase();
      	 			}
      	 			
      	 		 	firstNameDesc = ((trainer.getName() != null) ? trainer.getName().toUpperCase() : null);
@@ -338,6 +344,14 @@ public class UsersView implements Serializable {
      	 			 	selectTipoEntrenador[i] = opt.getIdcategory();
      	 			 	i++;
      	 	        }
+     	 	        
+     	 	        //Fill academic level
+     	 	        
+     	 	        Academiclevel academic = trainer.getAcademiclevel();
+     	 	        String academicArea = trainer.getAcademicArea();
+     	 	        
+     	 	        selectNivelEstudio.setValue(academic.getIdacademiclevel());
+     	 	        txtAreaEstudio.setValue(academicArea);
      	 		    
      	 		}//end if-else
      	 	}//end if-else
@@ -371,7 +385,7 @@ public class UsersView implements Serializable {
     	 		}else{
     	 			
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
-    	 			Identification identi = businessDelegatorView.getIdentification(FacesUtils.checkInteger(selectIdentificacion));
+    	 			Identification identi = businessDelegatorView.getIdentification(selectIdentificacion);
     	 			
     	 			trainer.setName(txtName);
     	 			trainer.setLastname(txtLastname);
@@ -379,10 +393,10 @@ public class UsersView implements Serializable {
     	 			trainer.setTrainer_id_number(txtNumeroIdentificacion);
     	 			trainer.setLugar_nacimiento(txtLugarNacimiento);
     	 			trainer.setBorndate(txtFechaNacimiento);
-    	 			trainer.setCountry(FacesUtils.checkInteger(selectPais));
-    	 			trainer.setRegion(FacesUtils.checkInteger(selectDepto));
-    	 			trainer.setCity(FacesUtils.checkString(txtCiudad).toUpperCase());
-    	 			trainer.setAddress(FacesUtils.checkString(txtDireccion));
+    	 			trainer.setCountry(selectPais);
+    	 			trainer.setRegion(selectDepto);
+    	 			trainer.setCity(txtCiudad.toUpperCase());
+    	 			trainer.setAddress(txtDireccion.toUpperCase());
     	 			
     	 			if(trainerPic != null) {
     	 				
@@ -395,7 +409,6 @@ public class UsersView implements Serializable {
     	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
     	 	            
     	 				//picName = trainerPic.getFileName();
-    	 				String type = trainerPic.getContentType();
     	 				picName = ""+trainer.getIdtrainer()+".jpg";
     	 				filecontent = trainerPic.getInputstream();
     	 				
@@ -457,7 +470,7 @@ public class UsersView implements Serializable {
 	            }
 	        	
 	        	usuario.setCategories(categories);
-	        	businessDelegatorView.saveUsers(usuario);
+	        	businessDelegatorView.updateUsers(usuario);
 	        	FacesUtils.addInfoMessage("Modalidades asignadas satisfactoriamente");
 	        	
 	        }//end if
@@ -469,19 +482,197 @@ public class UsersView implements Serializable {
     }
     
     public void saveAcademic(){
-	 	
+    	
+    	try{
+    		
+	 		if(FacesUtils.checkInteger(selectNivelEstudio) == null){
+	 			FacesUtils.addErrorMessage("Por favor seleccione un nivel de estudio");
+	 		}else if(FacesUtils.checkString(txtAreaEstudio) == null){
+	 			FacesUtils.addErrorMessage("Por escriba un area de estudio");
+	 		}else{
+	 			
+	 			if(usuarioapp == null){
+	 		 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+	 		 	}else{
+	 		 		
+	 		 		int academicId = FacesUtils.checkInteger(selectNivelEstudio);
+		 			String areaStudio = FacesUtils.checkString(txtAreaEstudio);
+		 			Academiclevel academic = businessDelegatorView.getAcademiclevel(academicId);
+		 		
+	 		 		int idUser = usuarioapp.getIdusers();
+	 		 		
+	 		 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+							   null,
+							   null);
+
+	 		 		int idTrainer = 0;
+
+	 		 		for(Trainer trainer: list){
+	 		 			idTrainer = trainer.getIdtrainer();
+	 		 		}
+
+	 		 		if(idTrainer == 0){
+	 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+	 		 		}else{
+	 		 			
+	 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+	    	 			
+	 		 			trainer.setAcademiclevel(academic);
+	 		 			trainer.setAcademicArea(areaStudio);
+	 		 			
+	 		 			businessDelegatorView.updateTrainer(trainer);
+	 		 			FacesUtils.addInfoMessage("Nivel de estudios guardado satisfactoriamente");
+	
+	 		 		}//end if-else
+	 		 		
+	 		 	}//end if
+	 		}//end validations
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
     
     public void saveCertificacion(){
-	 	
+    	try{
+    		
+	 		if(FacesUtils.checkString(txtCertificacion) == null){
+	 			FacesUtils.addErrorMessage("Por favor escriba el nombre de la certificacion");
+	 		}else if(txtFechaCertificacion == null){
+	 			FacesUtils.addErrorMessage("Seleccione la fecha de la certificacion");
+	 		}else if(FacesUtils.checkString(txtEnteCertificador) == null){
+	 			FacesUtils.addErrorMessage("Escriba el instituto o empresa que lo certifico");
+	 		}else if(FacesUtils.checkString(txtCertificacionDesc) == null){
+	 			FacesUtils.addErrorMessage("Por favor ingrese una descripcion de la certificacion");
+	 		}else{
+	 			
+	 			if(usuarioapp == null){
+	 		 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+	 		 	}else{
+	 		 		
+	 		 		String certificacion = FacesUtils.checkString(txtCertificacion);
+		 			String descripcionCertificacion = FacesUtils.checkString(txtCertificacionDesc);
+		 			Date fechaCertificacion = txtFechaCertificacion;
+		 			String certificador = FacesUtils.checkString(txtEnteCertificador);
+		 			
+		 			int idUser = usuarioapp.getIdusers();
+	 		 		
+	 		 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+							   null,
+							   null);
+
+	 		 		int idTrainer = 0;
+
+	 		 		for(Trainer trainer: list){
+	 		 			idTrainer = trainer.getIdtrainer();
+	 		 		}
+
+	 		 		if(idTrainer == 0){
+	 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+	 		 		}else{
+	 		 			
+	 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+	 		 			
+	 		 			Courses course = new Courses();
+	 		 			course.setName(certificacion);
+	 		 			course.setDatecertified(fechaCertificacion);
+	 		 			course.setCertificator(certificador);
+	 		 			course.setDescription(descripcionCertificacion);
+	 		 			
+	 		 			businessDelegatorView.saveCourses(course);
+	 		 			
+	 		 			Set<Courses> courses = new HashSet();
+	 		 			courses.add(course);
+	 		        	
+	 		 			trainer.setCourseses(courses);
+	 		 			
+	 		 			businessDelegatorView.updateTrainer(trainer);
+	 		 			FacesUtils.addInfoMessage("Certificacion guardada satisfactoriamente");
+	
+	 		 		}//end if-else
+	 		 		
+	 		 	}//end if
+	 		}//end validations
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
     
-    public void saveProfProfile(){
-	 	
-    }
     
     public void saveProfExp(){
-	 	
+    	try{
+    		
+	 		if(FacesUtils.checkString(txtEmpresa) == null){
+	 			FacesUtils.addErrorMessage("Por favor ingrese el nombre de la empresa o institucion");
+	 		}else if(FacesUtils.checkString(txtCiudadExp) == null){
+	 			FacesUtils.addErrorMessage("Escriba la ciudad en la cual ejercio el cargo");
+	 		}else if(FacesUtils.checkString(txtCargo) == null){
+	 			FacesUtils.addErrorMessage("Por favor ingrese el cargo");
+	 		}else if(txtPeriodoInicio == null){
+	 			FacesUtils.addErrorMessage("Ingrese un periodo de inicio");
+	 		}else if(txtPeriodoFin == null){
+	 			FacesUtils.addErrorMessage("Ingrese un periodo de fin");
+	 		}else if(FacesUtils.checkString(txtFuncionCargo) == null){
+	 			FacesUtils.addErrorMessage("Por favor ingrese una descripcion del cargo");	
+	 		}else{
+	 			
+	 			if(usuarioapp == null){
+	 		 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+	 		 	}else{
+	 		 		
+	 		 		String empresa = FacesUtils.checkString(txtEmpresa);
+		 			String ciudad = FacesUtils.checkString(txtCiudadExp);
+		 			String cargo = FacesUtils.checkString(txtCargo);
+		 			Date periodoInicio = txtPeriodoInicio;
+		 			Date periodoFin = txtPeriodoFin;
+		 			String descripcion = FacesUtils.checkString(txtFuncionCargo);
+		 			
+		 			int idUser = usuarioapp.getIdusers();
+	 		 		
+	 		 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+							   null,
+							   null);
+
+	 		 		int idTrainer = 0;
+
+	 		 		for(Trainer trainer: list){
+	 		 			idTrainer = trainer.getIdtrainer();
+	 		 		}
+
+	 		 		if(idTrainer == 0){
+	 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+	 		 		}else{
+	 		 			
+	 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+	 		 			
+	 		 			Job trabajo = new Job();
+	 		 			trabajo.setName(cargo);
+	 		 			businessDelegatorView.saveJob(trabajo);
+	 		 			
+	 		 			Experience experience = new Experience();
+	 		 			experience.setCompany(empresa.toUpperCase());
+	 		 			experience.setCity(ciudad.toUpperCase());
+	 		 			experience.setStartdate(periodoInicio);
+	 		 			experience.setEnddate(periodoFin);
+	 		 			experience.setJob(trabajo);
+	 		 			experience.setFunction(descripcion.toUpperCase());
+	 		 			
+	 		 			businessDelegatorView.saveExperience(experience);
+	 		 			
+	 		 			Set<Experience> experiences = new HashSet();
+	 		 			experiences.add(experience);
+	 		        	
+	 		 			trainer.setExperiences(experiences);
+	 		 			
+	 		 			businessDelegatorView.updateTrainer(trainer);
+	 		 			FacesUtils.addInfoMessage("Experiencia laboral guardada satisfactoriamente");
+	
+	 		 		}//end if-else
+	 		 		
+	 		 	}//end if
+	 		}//end validations
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
     
     
@@ -518,12 +709,12 @@ public class UsersView implements Serializable {
     }
     
     public void buscarDepto(){
-    	if(FacesUtils.checkLong(selectPais) != null){
+    	if(selectPais != null){
     		
     	this.listDeptos = new ArrayList<SelectItem>();	
     	
     	try{
-    		long idPais = FacesUtils.checkLong(selectPais);
+    		int idPais = selectPais;
     		
     		this.listDeptos.clear();
     		
@@ -1148,11 +1339,11 @@ public class UsersView implements Serializable {
 		this.namesProfile = namesProfile;
 	}
 
-	public SelectOneMenu getSelectIdentificacion() {
+	public Integer getSelectIdentificacion() {
 		return selectIdentificacion;
 	}
 
-	public void setSelectIdentificacion(SelectOneMenu selectIdentificacion) {
+	public void setSelectIdentificacion(Integer selectIdentificacion) {
 		this.selectIdentificacion = selectIdentificacion;
 	}
 
@@ -1165,28 +1356,28 @@ public class UsersView implements Serializable {
 		this.txtFechaNacimiento = txtFechaNacimiento;
 	}
 
-	public SelectOneMenu getSelectPais() {
+	public Integer getSelectPais() {
 		return selectPais;
 	}
 
-	public void setSelectPais(SelectOneMenu selectPais) {
+	public void setSelectPais(Integer selectPais) {
 		this.selectPais = selectPais;
 	}
 
-	public SelectOneMenu getSelectDepto() {
+	public Integer getSelectDepto() {
 		return selectDepto;
 	}
 
-	public void setSelectDepto(SelectOneMenu selectDepto) {
+	public void setSelectDepto(Integer selectDepto) {
 		this.selectDepto = selectDepto;
 	}
 
 
-	public InputText getTxtDireccion() {
+	public String getTxtDireccion() {
 		return txtDireccion;
 	}
 
-	public void setTxtDireccion(InputText txtDireccion) {
+	public void setTxtDireccion(String txtDireccion) {
 		this.txtDireccion = txtDireccion;
 	}
 
@@ -1346,11 +1537,11 @@ public class UsersView implements Serializable {
 		this.listDeptos = listDeptos;
 	}
 
-	public InputText getTxtCiudad() {
+	public String getTxtCiudad() {
 		return txtCiudad;
 	}
 
-	public void setTxtCiudad(InputText txtCiudad) {
+	public void setTxtCiudad(String txtCiudad) {
 		this.txtCiudad = txtCiudad;
 	}
 
@@ -1672,7 +1863,29 @@ public class UsersView implements Serializable {
 
         return "";
     }
-	
-	
-	 
+
+	public Date getTxtFechaCertificacion() {
+		return txtFechaCertificacion;
+	}
+
+	public void setTxtFechaCertificacion(Date txtFechaCertificacion) {
+		this.txtFechaCertificacion = txtFechaCertificacion;
+	}
+
+	public InputText getTxtEnteCertificador() {
+		return txtEnteCertificador;
+	}
+
+	public void setTxtEnteCertificador(InputText txtEnteCertificador) {
+		this.txtEnteCertificador = txtEnteCertificador;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
 }

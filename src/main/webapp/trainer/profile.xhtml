@@ -29,6 +29,7 @@
 					<!-- Main content -->
 					<section class="content">
 					<h:form id="form" enctype="multipart/form-data">
+					<p:growl id="growl" showDetail="false" sticky="true" />
 						<p:steps activeIndex="0" styleClass="custom" readonly="false">
     							<p:menuitem value="Completar el perfil" url="#"/>
     							<p:menuitem value="Perfil por verificar" url="#"/>
@@ -39,8 +40,8 @@
 						<br/>
 						<p:tabView>
 							<p:tab title="Mi Perfil Virfit">
-								<h3>Porcentaje del perfil Virfit completado</h3>
-    							<p:progressBar value="50" labelTemplate="{value}%" displayOnly="true"/>
+								<h3>Calidad del perfil</h3>
+    							<p:rating value="#{usersView.rating}" readonly="true" />
     							<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{usersView.dataTrainer}" var="users"></p:dataTable>
 								<p:panel id="panelPersonalData" header="Datos Personales">
 									<p:panelGrid>
@@ -132,7 +133,6 @@
 							</p:tab>
 							<p:tab title="Datos personales">
 								<p:panel header="Ingrese sus datos personales">
-									<p:messages id="msg" />
 									<p:panelGrid>
 										<p:row>
 											<p:column><h:outputText id="textNames" value=" Nombres" /></p:column>
@@ -143,7 +143,7 @@
 										<p:row>
 											<p:column><h:outputText id="textTipoIdentificacion" value=" Tipo de identificacion" /></p:column>
 											<p:column>
-											<p:selectOneMenu id="selectIdentificacion" binding="#{usersView.selectIdentificacion}" style="width:125px">
+											<p:selectOneMenu id="selectIdentificacion" value="#{usersView.selectIdentificacion}" style="width:125px">
             								<f:selectItem itemLabel="Seleccionar" itemValue="" />
             									<f:selectItem itemLabel="Cedula de ciudadania" itemValue="1" />
             									<f:selectItem itemLabel="Cedula de extranjeria" itemValue="2" />
@@ -181,7 +181,7 @@
 										<p:row>
 											<p:column><h:outputText id="textPais" value=" Pais" /></p:column>
 											<p:column>
-											<p:selectOneMenu id="selectPais" binding="#{usersView.selectPais}" style="width:125px">
+											<p:selectOneMenu id="selectPais" value="#{usersView.selectPais}" style="width:125px">
             									<f:selectItem itemLabel="Seleccionar" itemValue="" />
             									<f:selectItems value="#{usersView.listPaises}" />
             									<p:ajax event="change"
@@ -191,7 +191,7 @@
 											</p:column>
 											<p:column><h:outputText id="textDepto" value=" Departamento" /></p:column>
 											<p:column>
-													<p:selectOneMenu id="selectDepto" disabled="#{usersView.lockDepto}" binding="#{usersView.selectDepto}" style="width:125px">
+													<p:selectOneMenu id="selectDepto" disabled="#{usersView.lockDepto}" value="#{usersView.selectDepto}" style="width:125px">
             											<f:selectItem itemLabel="Seleccionar" itemValue="" />
             											<f:selectItems value="#{usersView.listDeptos}" />
         											</p:selectOneMenu>
@@ -199,9 +199,9 @@
 										</p:row>
 										<p:row>
 											<p:column><h:outputText id="textCiudad" value=" Ciudad" /></p:column>
-											<p:column><p:inputText id="txtCiudad" binding="#{usersView.txtCiudad}" /></p:column>
+											<p:column><p:inputText id="txtCiudad" value="#{usersView.txtCiudad}" /></p:column>
 											<p:column><h:outputText id="textDireccion" value=" Direccion de residencia" /></p:column>
-											<p:column><p:inputText id="txtDireccion" size="20" binding="#{usersView.txtDireccion}" /></p:column>
+											<p:column><p:inputText id="txtDireccion" size="20" value="#{usersView.txtDireccion}" /></p:column>
 										</p:row>
 										<p:row>
 											<p:column><h:outputText id="textFoto" value=" Foto" /></p:column>
@@ -250,8 +250,10 @@
 											<p:column colspan="2">
 											<div align="center">
 											<p:commandButton id="btnGuardarDatosProfesionales"
+															 ajax="false"
 											                 value="Guardar"
 											                 action="#{usersView.saveDatosProf}"
+											                 update="@form"
 											                 />
 											</div>                                        
 											</p:column>
@@ -264,7 +266,7 @@
 								<p:panel header="Ingrese su formacion academica">
 									<p:panelGrid>
 										<p:row>
-											<p:column><h:outputText id="textNivelEstudio" value=" NIVEL DE ESTUDIOS" /></p:column>
+											<p:column><h:outputText id="textNivelEstudio" value=" MAXIMO NIVEL DE ESTUDIOS" /></p:column>
 											<p:column>
 												 <p:selectOneMenu id="selectNivelEstudio" binding="#{usersView.selectNivelEstudio}" style="width:125px">
             										<f:selectItem itemLabel="Seleccionar" itemValue="" />
@@ -273,6 +275,9 @@
             										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA TECNICA" itemValue="3" />
             										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA TECNOLOGICA" itemValue="4" />
             										<f:selectItem itemLabel="UNIVERSIDAD/CARRERA PROFESIONAL" itemValue="5" />
+            										<f:selectItem itemLabel="PROFESIONAL ESPECIALIZADO" itemValue="6" />
+            										<f:selectItem itemLabel="PROFESIONAL CON MAESTRIA" itemValue="7" />
+            										<f:selectItem itemLabel="PROFESIONAL CON DOCTORADO" itemValue="8" />
         										</p:selectOneMenu>	
 											</p:column>
 										</p:row>
@@ -280,9 +285,33 @@
 											<p:column><h:outputText id="textAreaEstudio" value=" AREA DE ESTUDIO" /></p:column>
 											<p:column><p:inputText id="txtAreaEstudio" binding="#{usersView.txtAreaEstudio}" /></p:column>
 										</p:row>
-												<p:row>
+										<p:row>
+											<p:column colspan="2">
+												<div align="center">
+													<p:commandButton id="btnGuardarEstudioLevel"
+											                                        value="Guardar"
+											                                        ajax="false"
+											                                        action="#{usersView.saveAcademic}"
+											                                        update="@form" />
+												</div>
+											</p:column>
+										</p:row>
+										<p:row>
+											<br/>
+										</p:row>
+										<p:row>
+										</p:row>
+										<p:row>
 											<p:column><h:outputText id="textCertificaciones" value=" CERTIFICACION O CURSOS DE ENTRENAMIENTO" /></p:column>
 											<p:column><p:inputText id="txtCertificacion" binding="#{usersView.txtCertificacion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textCertificacionDate" value=" FECHA DE CERTIFICACION" /></p:column>
+											<p:column><p:calendar id="txtFechaCertificacion" pattern="dd/MM/yyyy" mindate="#{usersView.minDate}" navigator="true" value="#{usersView.txtFechaCertificacion}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><h:outputText id="textEnte" value=" ENTE CERTIFICADOR" /></p:column>
+											<p:column><p:inputText id="txtCertificador" binding="#{usersView.txtEnteCertificador}" /></p:column>
 										</p:row>
 										<p:row>
 											<p:column><h:outputText id="textDesCerti" value=" EN QUE CONSISTE" /></p:column>
@@ -292,8 +321,10 @@
 											<p:column colspan="2">
 												<div align="center">
 													<p:commandButton id="btnGuardarCertifications"
-											                                        value="Agregar"
-											                                        action="#{usersView.saveCertificacion}" />
+											                         value="Agregar"
+											                         ajax="false"
+											                         action="#{usersView.saveCertificacion}"
+											                         update="@form" />
 												</div>
 											</p:column>
 										</p:row>
@@ -306,27 +337,6 @@
 										<p:row>
 											<p:column><h:outputText id="textCentroDeportivo" value=" EMPRESA O CENTRO DEPORTIVO" /></p:column>
 											<p:column><p:inputText id="txtEmpresa" binding="#{usersView.txtEmpresa}" /></p:column>
-										</p:row>
-										<p:row>
-											<p:column><h:outputText id="textPaisExp" value=" PAIS" /></p:column>
-											<p:column>
-												<p:selectOneMenu id="selectPaisExp" binding="#{usersView.selectPaisExp}" style="width:125px">
-            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
-            										<f:selectItems value="#{usersView.listPaisesExp}" />
-            										<p:ajax event="change"
-															listener="#{usersView.buscarDeptoExp}" process="@this"
-															update="selectDepto" />
-        									</p:selectOneMenu>
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column><h:outputText id="textDepartamentoExp" value=" DEPARTAMENTO" /></p:column>
-											<p:column>
-													<p:selectOneMenu id="selectDeptoExp" disabled="#{usersView.lockDeptoExp}" binding="#{usersView.selectDeptoExp}" style="width:125px">
-            											<f:selectItem itemLabel="Seleccionar" itemValue="" />
-            											<f:selectItems value="#{usersView.listDeptosExp}" />
-        											</p:selectOneMenu>
-											</p:column>
 										</p:row>
 										<p:row>
 											<p:column><h:outputText id="textCiudadExp" value=" CIUDAD" /></p:column>
@@ -352,8 +362,10 @@
 											<p:column colspan="2">
 												<div align="center">
 													<p:commandButton id="btnGuardarProfExp"
-											                         value="Guardar"
-											                         action="#{usersView.saveProfExp}" />
+											                         value="Agregar"
+											                         ajax="false"
+											                         action="#{usersView.saveProfExp}"
+											                         update="@form" />
 												</div>
 											</p:column>
 										</p:row>
