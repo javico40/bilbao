@@ -101,6 +101,13 @@ public class UsersView implements Serializable {
     
     //Perfil virfit
     private InputText namesProfile;
+    private List<Category> listCategoriesTrainer;
+    private List<Courses> listCoursesTrainer;
+    private List<Experience> listExperienceTrainer;
+    private List<Courses> dataCoursesTrainer;
+    private List<Experience> dataExperienceTrainer;
+    private Courses selectedCertification;
+    private Experience selectedExperience;
     
     //Personal data
     private String txtName;
@@ -168,8 +175,11 @@ public class UsersView implements Serializable {
     private String cityResDesc;
     private String addressResDesc;
     
+    private String nivelAcademicoDesc;
+    private String areaEstudioDesc;
+    
     //Rating
-    private Integer rating = 3;
+    private Integer rating = 0;
     
     
     
@@ -265,6 +275,8 @@ public class UsersView implements Serializable {
     
     public void populateData(){
     	
+    	rating = 0;
+    	
     	 try{	
     		 
     		 if(usuarioapp == null){
@@ -321,6 +333,11 @@ public class UsersView implements Serializable {
      	 			bornPlaceDesc = (( trainer.getLugar_nacimiento() != null) ? trainer.getLugar_nacimiento().toUpperCase():null);
      	 			Date fechaNac = ((trainer.getBorndate() != null) ? trainer.getBorndate():null);
      	 			
+     	 			
+     	 			if(firstNameDesc != null && identiNumberDesc != null && bornPlaceDesc != null){
+     	 				rating++;
+     	 			}
+     	 			
      	 			if(fechaNac != null){
      	 				bornDateDesc = ((format.format(fechaNac) != null) ? format.format(fechaNac):null);
      	 			}
@@ -329,12 +346,22 @@ public class UsersView implements Serializable {
      	 			cityResDesc = ((trainer.getCity() != null) ? trainer.getCity().toUpperCase():null);
      	 		    addressResDesc = ((trainer.getAddress() != null) ? trainer.getAddress().toUpperCase():null);
      	 			
+     	 		    
+     	 		    if(trainerPicDesc != null){
+     	 		    	rating++;
+   	 				}
+     	 		    
      	 		    //Fill groupal class
      	 		    
      	 		    Hibernate.initialize(usuario.getCategories());
      	 	        Set<Category> categories = usuario.getCategories();
      	 	        
      	 	        selectTipoEntrenador = new Integer[categories.size()];
+     	 	        
+     	 	        
+     	 	        if(categories.size() > 0){
+   	 					rating++;
+   	 				}
      	 	        
      	 	        int i = 0;
      	 	        
@@ -349,10 +376,21 @@ public class UsersView implements Serializable {
      	 	        
      	 	        Academiclevel academic = trainer.getAcademiclevel();
      	 	        String academicArea = trainer.getAcademicArea();
+     	 	       
+     	 	        if(academic != null){
+     	 	        	selectNivelEstudio.setValue(academic.getIdacademiclevel());
+         	 	        nivelAcademicoDesc = academic.getName().toUpperCase();
+     	 	        }
      	 	        
-     	 	        selectNivelEstudio.setValue(academic.getIdacademiclevel());
-     	 	        txtAreaEstudio.setValue(academicArea);
-     	 		    
+     	 	        if(academicArea != null){
+     	 	        	txtAreaEstudio.setValue(academicArea);
+     	 	        	areaEstudioDesc = trainer.getAcademicArea().toUpperCase();
+     	 	        }
+     	 	        
+     	 	      if(academic != null){
+ 	 					rating++;
+ 	 				}
+     	 	       
      	 		}//end if-else
      	 	}//end if-else
     		 
@@ -581,11 +619,20 @@ public class UsersView implements Serializable {
 	 		 			businessDelegatorView.saveCourses(course);
 	 		 			
 	 		 			Set<Courses> courses = new HashSet();
+	 		 			Hibernate.initialize(trainer.getCourseses());
+		     	 		courses = trainer.getCourseses();
 	 		 			courses.add(course);
 	 		        	
 	 		 			trainer.setCourseses(courses);
 	 		 			
 	 		 			businessDelegatorView.updateTrainer(trainer);
+	 		 			
+	 		 			txtCertificacion.setValue(null);
+	 		 			txtFechaCertificacion = null;
+	 		 			txtEnteCertificador.setValue(null);
+	 		 			txtCertificacionDesc.setValue(null);
+	 		 			dataCoursesTrainer = null;
+	 		 			
 	 		 			FacesUtils.addInfoMessage("Certificacion guardada satisfactoriamente");
 	
 	 		 		}//end if-else
@@ -659,11 +706,22 @@ public class UsersView implements Serializable {
 	 		 			businessDelegatorView.saveExperience(experience);
 	 		 			
 	 		 			Set<Experience> experiences = new HashSet();
+	 		 			Hibernate.initialize(trainer.getExperiences());
+	 		 			experiences = trainer.getExperiences();
 	 		 			experiences.add(experience);
 	 		        	
 	 		 			trainer.setExperiences(experiences);
 	 		 			
 	 		 			businessDelegatorView.updateTrainer(trainer);
+	 		 			
+	 		 			txtEmpresa.setValue(null);
+	 		 			txtCiudadExp.setValue(null);
+	 		 			txtCargo.setValue(null);
+	 		 			txtPeriodoInicio = null;
+	 		 			txtPeriodoFin = null;
+	 		 			
+	 		 			dataExperienceTrainer = null;
+	 		 			
 	 		 			FacesUtils.addInfoMessage("Experiencia laboral guardada satisfactoriamente");
 	
 	 		 		}//end if-else
@@ -1887,5 +1945,397 @@ public class UsersView implements Serializable {
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
+
+	public List<Category> getListCategoriesTrainer() {
+		
+		if(listCategoriesTrainer == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	listCategoriesTrainer = new ArrayList<Category>();
+		     		 	
+		     		 	dataCategory = new ArrayList<UsuariosCategoriasDTO>();
+		     	 		
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		Users usuario = businessDelegatorView.getUsers(idUser);
+		     	 		
+		     	 		Hibernate.initialize(usuario.getCategories());
+		     	 		Set<Category> categories = usuario.getCategories();
+		     	 		
+		     	 		if(rating < 5 && categories.size() > 0){
+		     	 			rating++;
+		     	 		}
+		     	 		
+		     	 		 for (Iterator<Category> it = categories.iterator(); it.hasNext(); ) {
+		            		 
+		     	 			Category act = it.next();
+		     	 			
+		     	 			listCategoriesTrainer.add(act);
+		            	        
+		            	 }//end for
+		     	 		
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+		}
+		
+		return listCategoriesTrainer;
+	}
+
+	public void setListCategoriesTrainer(List<Category> listCategoriesTrainer) {
+		this.listCategoriesTrainer = listCategoriesTrainer;
+	}
+
+	public String getNivelAcademicoDesc() {
+		return nivelAcademicoDesc;
+	}
+
+	public void setNivelAcademicoDesc(String nivelAcademicoDesc) {
+		this.nivelAcademicoDesc = nivelAcademicoDesc;
+	}
+
+	public String getAreaEstudioDesc() {
+		return areaEstudioDesc;
+	}
+
+	public void setAreaEstudioDesc(String areaEstudioDesc) {
+		this.areaEstudioDesc = areaEstudioDesc;
+	}
+
+	public List<Courses> getListCoursesTrainer() {
+		
+		if(listCoursesTrainer == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	listCoursesTrainer = new ArrayList<Courses>();
+		     		 	
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		
+		     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+								   null,
+								   null);
+
+		 		 		int idTrainer = 0;
+
+		 		 		for(Trainer trainer: list){
+		 		 			idTrainer = trainer.getIdtrainer();
+		 		 		}
+
+		 		 		if(idTrainer == 0){
+		 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		 		}else{
+		 		 			
+		 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 		 			
+		 		 			Hibernate.initialize(trainer.getCourseses());
+			     	 		Set<Courses> courses = trainer.getCourseses();
+			     	 	
+			     	 		if(rating < 5 && courses.size() > 0){
+			     	 			rating++;
+			     	 		}
+			     	 		
+			     	 		 for (Iterator<Courses> it = courses.iterator(); it.hasNext(); ) {
+			     	 			Courses course = it.next();
+			     	 			listCoursesTrainer.add(course);
+			            	 }//end for
+			     	 		
+		 		 		}
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+		}//end if
+		
+		return listCoursesTrainer;
+	}
+
+	public void setListCoursesTrainer(List<Courses> listCoursesTrainer) {
+		this.listCoursesTrainer = listCoursesTrainer;
+	}
+
+	public List<Experience> getListExperienceTrainer() {
+		
+		if(listExperienceTrainer == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	listExperienceTrainer = new ArrayList<Experience>();
+		     		 	
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		
+		     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+								   null,
+								   null);
+
+		 		 		int idTrainer = 0;
+
+		 		 		for(Trainer trainer: list){
+		 		 			idTrainer = trainer.getIdtrainer();
+		 		 		}
+
+		 		 		if(idTrainer == 0){
+		 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		 		}else{
+		 		 			
+		 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 		 			
+		 		 			Hibernate.initialize(trainer.getExperiences());
+			     	 		Set<Experience> experiences = trainer.getExperiences();
+			     	 		
+			     	 		if(rating < 5 && experiences.size() > 0){
+			     	 			rating++;
+			     	 		}
+			     	 		
+			     	 		 for (Iterator<Experience> it = experiences.iterator(); it.hasNext(); ) {
+			     	 			Experience experience = it.next();
+			     	 			listExperienceTrainer.add(experience);
+			            	 }//end for
+			     	 		
+		 		 		}
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+		}//end if
+		
+		return listExperienceTrainer;
+	}
+
+	public void setListExperienceTrainer(List<Experience> listExperienceTrainer) {
+		this.listExperienceTrainer = listExperienceTrainer;
+	}
+
+	public List<Courses> getDataCoursesTrainer() {
+		
+		if(dataCoursesTrainer == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	dataCoursesTrainer = new ArrayList<Courses>();
+		     		 	
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		
+		     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+								   null,
+								   null);
+
+		 		 		int idTrainer = 0;
+
+		 		 		for(Trainer trainer: list){
+		 		 			idTrainer = trainer.getIdtrainer();
+		 		 		}
+
+		 		 		if(idTrainer == 0){
+		 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		 		}else{
+		 		 			
+		 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 		 			
+		 		 			Hibernate.initialize(trainer.getCourseses());
+			     	 		Set<Courses> courses = trainer.getCourseses();
+			     	 		
+			     	 		 for (Iterator<Courses> it = courses.iterator(); it.hasNext(); ) {
+			     	 			Courses course = it.next();
+			     	 			dataCoursesTrainer.add(course);
+			            	 }//end for
+			     	 		
+		 		 		}
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+		}//end if
+		
+		return dataCoursesTrainer;
+	}
+	
+	public String action_delete_certification(ActionEvent evt) {
+        try {
+        	
+            selectedCertification = (Courses) (evt.getComponent().getAttributes()
+                                           .get("selectedCertificacion"));
+            if(usuarioapp == null){
+     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+            }else{
+     		 
+     	 		int idUser = usuarioapp.getIdusers();
+     	 		int idCourse = selectedCertification.getIdcourses();
+     	 		
+     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+						   null,
+						   null);
+
+		 		int idTrainer = 0;
+
+		 		for(Trainer trainer: list){
+		 			idTrainer = trainer.getIdtrainer();
+		 		}
+
+		 		if(idTrainer == 0){
+		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		}else{
+		 			
+		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 			
+		 			Hibernate.initialize(trainer.getCourseses());
+	     	 		Set<Courses> courses = trainer.getCourseses();
+	     	 		Set<Courses> coursesNew = new HashSet<Courses>();
+	     	 		
+	     	 		 for (Iterator<Courses> it = courses.iterator(); it.hasNext(); ) {
+	     	 			Courses course = it.next();
+	     	 			
+	     	 			if(course.getIdcourses() != idCourse){
+		     	 			coursesNew.add(course);
+	     	 			}
+	            	 }//end for
+	     	 		 
+	     	 		 trainer.setCourseses(coursesNew);
+	     	 		 businessDelegatorView.updateTrainer(trainer);
+	     	 		 
+	     	 		 Courses course = businessDelegatorView.getCourses(idCourse);
+	     	 		 businessDelegatorView.deleteCourses(course);
+	     	 		 
+	     	 		 dataCoursesTrainer = null;
+	     	 		 FacesUtils.addErrorMessage("Curso eliminado satisfactoriamente");
+	     	 		
+		 		}
+     	 }
+
+        } catch (Exception e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
+    }
+
+	public void setDataCoursesTrainer(List<Courses> dataCoursesTrainer) {
+		this.dataCoursesTrainer = dataCoursesTrainer;
+	}
+
+	public List<Experience> getDataExperienceTrainer() {
+		
+		if(dataExperienceTrainer == null){
+			try{
+				 if(usuarioapp == null){
+		     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+		     	 }else{
+		     		 
+		     		 	dataExperienceTrainer = new ArrayList<Experience>();
+		     		 	
+		     	 		int idUser = usuarioapp.getIdusers();
+		     	 		
+		     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+								   null,
+								   null);
+
+		 		 		int idTrainer = 0;
+
+		 		 		for(Trainer trainer: list){
+		 		 			idTrainer = trainer.getIdtrainer();
+		 		 		}
+
+		 		 		if(idTrainer == 0){
+		 		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		 		}else{
+		 		 			
+		 		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 		 			
+		 		 			Hibernate.initialize(trainer.getCourseses());
+			     	 		Set<Experience> experience = trainer.getExperiences();
+			     	 		
+			     	 		 for (Iterator<Experience> it = experience.iterator(); it.hasNext(); ) {
+			     	 			Experience exp = it.next();
+			     	 			dataExperienceTrainer.add(exp);
+			            	 }//end for
+			     	 		
+		 		 		}
+		     	 		
+		     	 }//end if-else
+			}catch(Exception e){
+				log.info(e.toString());
+			}
+		}//end if
+		
+		return dataExperienceTrainer;
+	}
+
+	public void setDataExperienceTrainer(List<Experience> dataExperienceTrainer) {
+		this.dataExperienceTrainer = dataExperienceTrainer;
+	}
+	
+	public String action_delete_experience(ActionEvent evt) {
+        try {
+        	
+            selectedExperience = (Experience) (evt.getComponent().getAttributes()
+                                           .get("selectedExperience"));
+            if(usuarioapp == null){
+     	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+            }else{
+     		 
+     	 		int idUser = usuarioapp.getIdusers();
+     	 		int idExperience = selectedExperience.getIdexperience();
+     	 		
+     	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+						   null,
+						   null);
+
+		 		int idTrainer = 0;
+
+		 		for(Trainer trainer: list){
+		 			idTrainer = trainer.getIdtrainer();
+		 		}
+
+		 		if(idTrainer == 0){
+		 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+		 		}else{
+		 			
+		 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		 			
+		 			Hibernate.initialize(trainer.getExperiences());
+	     	 		Set<Experience> experiences = trainer.getExperiences();
+	     	 		Set<Experience> experiencesNew = new HashSet<Experience>();
+	     	 		
+	     	 		 for (Iterator<Experience> it = experiences.iterator(); it.hasNext(); ) {
+	     	 			Experience exp = it.next();
+	     	 			
+	     	 			if(exp.getIdexperience() != idExperience){
+		     	 			experiencesNew.add(exp);
+	     	 			}
+	            	 }//end for
+	     	 		 
+	     	 		 trainer.setExperiences(experiencesNew);
+	     	 		 businessDelegatorView.updateTrainer(trainer);
+	     	 		 
+	     	 		 Experience experience = businessDelegatorView.getExperience(idExperience);
+	     	 		 businessDelegatorView.deleteExperience(experience);
+	     	 		 
+	     	 		 dataExperienceTrainer = null;
+	     	 		 FacesUtils.addErrorMessage("Experiencia laboral eliminada satisfactoriamente");
+	     	 		
+		 		}
+     	 }
+
+        } catch (Exception e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+
+        return "";
+    }
+	
+	
 
 }

@@ -40,10 +40,12 @@
 						<br/>
 						<p:tabView>
 							<p:tab title="Mi Perfil Virfit">
+								<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{usersView.dataTrainer}" var="users"></p:dataTable>
 								<h3>Calidad del perfil</h3>
     							<p:rating value="#{usersView.rating}" readonly="true" />
-    							<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{usersView.dataTrainer}" var="users"></p:dataTable>
-								<p:panel id="panelPersonalData" header="Datos Personales">
+    							<br/>
+    							<h3>Mejora la calidad de tu perfil completando los campos en las pestañas</h3>
+    							<p:panel id="panelPersonalData" header="Datos personales">
 									<p:panelGrid>
 										<p:row>
 											<p:column rowspan="6">FOTO</p:column>
@@ -82,17 +84,13 @@
 									</p:panelGrid>
 								</p:panel>
 								<br/>
-								<p:panel id="panelProfesionalData" header="Datos profesionales">
+								<p:panel id="panelProfesionalData" header="Modalidades que dicta">
 									<p:panelGrid>
-										<p:row>
-											<p:column><strong><h:outputText id="textTipoEntrenadorDesc" value=" TIPO DE ENTRENADOR" /></strong></p:column>
-											<p:column><h:outputText id="textTipoEntrenadorVal" value="ENTRENADOR PERSONALIZADO" /></p:column>
-										</p:row>
-										<p:row>
-											<p:column rowspan="3"><strong><h:outputText id="textDescPerfilDesc" value=" DESCRIPCION DEL PERFIL" /></strong></p:column>
-											<p:column><h:outputText id="textDescPerfilVal" value=" ME GUSTA ENTRENAR" /></p:column>
-										
-										</p:row>
+										<p:repeat value="#{usersView.listCategoriesTrainer}" var="cat">
+											<p:row>
+												<p:column><strong><h:outputText id="category#{cat.idcategory}" value="#{cat.description}" /></strong></p:column>
+											</p:row>
+										</p:repeat>
 									</p:panelGrid>
 								</p:panel>
 								<br/>
@@ -100,34 +98,32 @@
 									<p:panelGrid>
 										<p:row>
 											<p:column><strong><h:outputText id="textNivelEDesc" value=" NIVEL DE ESTUDIO" /></strong></p:column>
-											<p:column><h:outputText id="textNivelEVal" value="UNIVERSITARIO" /></p:column>
+											<p:column><h:outputText id="textNivelEVal" value="#{usersView.nivelAcademicoDesc}" /></p:column>
 											<p:column><strong><h:outputText id="textAreaEDesc" value=" AREA DE ESTUDIO" /></strong></p:column>
-											<p:column><h:outputText id="textAreaEVal" value=" INFORMATICA" /></p:column>
+											<p:column><h:outputText id="textAreaEVal" value=" #{usersView.areaEstudioDesc}" /></p:column>
 										</p:row>
 										<p:row>
-											<p:column colspan="4"><div align="center">CERTIFICACIONES</div></p:column>
+											<p:column colspan="4"><div align="center"><strong>CERTIFICACIONES</strong></div></p:column>
 										</p:row>
+										<p:repeat value="#{usersView.listCoursesTrainer}" var="course">
 										<p:row>
-											<p:column><strong><h:outputText id="textCertiDesc" value=" CERTIFICACIONES" /></strong></p:column>
-											<p:column><h:outputText id="textCertiVal" value="IBM" /></p:column>
-											<p:column><strong><h:outputText id="textCertiConsDesc" value=" DESCRIPCION" /></strong></p:column>
-											<p:column><h:outputText id="textCertiConsVal" value=" SABER PROGRAMAR" /></p:column>
-											<p:column><p:commandButton id="btnVerDiploma"
-											                           value="Ver certificado"
-											                           action="#{usersView.savePersonalData}" /></p:column>
+											<p:column><strong><h:outputText id="textCertiDesc" value=" CERTIFICACION" /></strong></p:column>
+											<p:column><h:outputText id="textCerti#{course.idcourses}" value="#{course.name}" /></p:column>
+											<p:column><strong><h:outputText id="textCertiConsDesc" value=" CERTIFICADOR" /></strong></p:column>
+											<p:column><h:outputText id="textCertiCons#{course.idcourses}" value="#{course.certificator}" /></p:column>
 										</p:row>
+										</p:repeat>
 									</p:panelGrid>
 								</p:panel>
 								<br/>
 								<p:panel id="panelProfesionalExperience" header="Experiencia profesional">
 									<p:panelGrid>
+									<p:repeat value="#{usersView.listExperienceTrainer}" var="experience">
 										<p:row>
 											<p:column><strong><h:outputText id="textEmpresaDesc" value=" EMPRESA O CENTRO DEPORTIVO" /></strong></p:column>
-											<p:column><h:outputText id="textEmpresaVal" value="COMERCIAL BELLOSO C.A" /></p:column>
-											<p:column><p:commandButton id="btnVerExperiencia"
-											                           value="Ver Expeciencia"
-											                           action="#{usersView.savePersonalData}" /></p:column>
+											<p:column><h:outputText id="textEmpresaVal#{experience.idexperience}" value="#{experience.company}" /></p:column>
 										</p:row>
+									</p:repeat>
 									</p:panelGrid>
 								</p:panel>
 							</p:tab>
@@ -324,12 +320,52 @@
 											                         value="Agregar"
 											                         ajax="false"
 											                         action="#{usersView.saveCertificacion}"
-											                         update="@form" />
+											                         update="@form, panelDataTableCertifications" />
 												</div>
 											</p:column>
 										</p:row>
 									</p:panelGrid>
 								</p:panel>
+								
+								<h:outputText value=""/>
+								<h:outputText value=""/>
+								<h:outputText value=""/>
+								
+								
+								<p:panel id="panelDataTableCertifications" header="Certificaciones ingresadas">
+									<p:dataTable value="#{usersView.dataCoursesTrainer}" var="cert" paginator="true" rows="5">
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Modalidad"/>
+										</f:facet>
+										 <h:outputText value="#{cert.name}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Certificador"/>
+										</f:facet>
+										 <h:outputText value="#{cert.certificator}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Fecha"/>
+										</f:facet>
+										 <h:outputText value="#{cert.datecertified}"/>
+										</p:column>
+										<p:column headerText="Opciones">
+										<p:commandButton id="btnDelete"									
+														title="Eliminar"
+														actionListener="#{usersView.action_delete_certification}"
+														onclick="if(!confirm('¿Esta seguro de eliminar esta certificacion?')){return false;}"
+														icon="ui-icon-trash"
+														ajax="false"
+														update="@form">
+										<f:attribute name="selectedCertificacion" value="#{cert}" />
+									</p:commandButton>
+								</p:column>	
+									</p:dataTable>
+								</p:panel>
+								
 							</p:tab>
 							<p:tab title="Experiencia profesional">
 								<p:panel header="Ingrese su perfil profesional">
@@ -370,6 +406,57 @@
 											</p:column>
 										</p:row>
 									</p:panelGrid>
+								</p:panel>
+								
+								<h:outputText value=""/>
+								<h:outputText value=""/>
+								<h:outputText value=""/>
+								
+								
+								<p:panel id="panelDataTableExperience" header="Experiencia laboral ingresada">
+									<p:dataTable value="#{usersView.dataExperienceTrainer}" var="exp" paginator="true" rows="5">
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Empresa"/>
+										</f:facet>
+										 <h:outputText value="#{exp.company}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Ciudad"/>
+										</f:facet>
+										 <h:outputText value="#{exp.city}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Cargo"/>
+										</f:facet>
+										 <h:outputText value="#{exp.job.name}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Fecha Inicio"/>
+										</f:facet>
+										 <h:outputText value="#{exp.startdate}"/>
+										</p:column>
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Fecha Fin"/>
+										</f:facet>
+										 <h:outputText value="#{exp.enddate}"/>
+										</p:column>
+										<p:column headerText="Opciones">
+										<p:commandButton id="btnDelete"									
+														title="Eliminar"
+														actionListener="#{usersView.action_delete_experience}"
+														onclick="if(!confirm('¿Esta seguro de eliminar esta experiencia laboral?')){return false;}"
+														icon="ui-icon-trash"
+														ajax="false"
+														update="@form">
+										<f:attribute name="selectedExperience" value="#{exp}" />
+									</p:commandButton>
+								</p:column>	
+									</p:dataTable>
 								</p:panel>
 							</p:tab>
 						</p:tabView>
