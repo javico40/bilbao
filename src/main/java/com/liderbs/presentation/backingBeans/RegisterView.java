@@ -156,8 +156,24 @@ public class RegisterView implements Serializable {
 							trainer.setUsersIdusers(userNew.getIdusers());
 							trainer.setAcademiclevel(academic);
 							trainer.setIdentification(identi);
+							trainer.setTrainerProfStatus(0);
 							
 							businessDelegatorView.saveTrainer(trainer);
+							
+							businessDelegatorView.sendMail("noreply@govirfit.com", userNew.getEmail(), "Bienvenido a Govirfit",
+		        							  "<style type=\"text/css\"></style>" + "<blockquote> "
+		        							+ "<p  align=\"left\"><font style=\" color: #505050; font-size: 13px; font-weight: bold; \">"
+		        							+ "Alcanza tus metas con Govirfit, entrena a otros y diviertete en el proceso" + "<br>" + "<br>"
+		        							+ "Somos una plataforma diseñada por personas que aman el fitness y el deporte<br>"
+		        							+ "por eso trabajamos constantemente para que nuestros afiliados mejoren sus ganancias<br>"
+		        							+ "<br>"
+		        							+ "<br>"
+		        							+ "<p>&nbsp;</p>"
+		        							+ "Agradecemos que hagas parte de nuestro equipo "
+		        							+ "<br>" + "Atentamente,<br>" + " Govirfit Team<br>" + "<br>"
+		        							+ "Si tienes alguna duda escribe a nuestro correo info@govirfit.com"
+		        							+ "<br>" + " </font> </p>" + " </blockquote>",
+		        					null);
 							
 							FacesUtils.addInfoMessage("Te has registrado satisfactoriamente, ingresa con tu usuario y contraseña.");
 							

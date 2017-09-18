@@ -560,7 +560,9 @@ public class UsersView implements Serializable {
         	 			
         	 				try {
         	 				
-        	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+        	 				//final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+        	 			    final String path = "/var/www/html/govirfit/appimg/";
+        	 				
         	 				
         	 				Date currentDate = new Date();
         	 				String formatedDate = formatImage.format(currentDate);

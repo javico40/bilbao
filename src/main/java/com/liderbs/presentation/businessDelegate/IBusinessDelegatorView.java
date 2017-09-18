@@ -711,6 +711,8 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberSkill() throws Exception;
 
     public List<SkillDTO> getDataSkill() throws Exception;
+    
+    public void sendMail(String from,String to,String subject,String text,List<Object[]> listAttachment)throws Exception;
 
 
 }
