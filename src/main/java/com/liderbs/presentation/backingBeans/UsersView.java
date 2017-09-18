@@ -187,6 +187,7 @@ public class UsersView implements Serializable {
     //Render tabs
     private boolean renderTabsEdit;
     private Integer recruitmentProcessStatus;
+    private String recruitmentMessage;
 
     public UsersView() {
         super();
@@ -237,8 +238,10 @@ public class UsersView implements Serializable {
 	 			
 	 			if(trainer.getTrainerProfStatus() == 0){
 	 				renderTabsEdit = true;
+	 				recruitmentMessage = "Mejora la calidad de tu perfil completando los campos en las pestañas.";
 	 			}else{
 	 				renderTabsEdit = false;
+	 				recruitmentMessage = "Tu perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.";
 	 			}
 	 			
 	 			
@@ -465,7 +468,7 @@ public class UsersView implements Serializable {
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
     	 			trainer.setTrainerProfStatus(1);
     	 			businessDelegatorView.updateTrainer(trainer);
-    	 			FacesUtils.addInfoMessage("Su perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
+    	 			FacesUtils.addInfoMessage("Tu perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
     	 		
     	 			String url = ("profile.xhtml");
         	    	FacesContext fc = FacesContext.getCurrentInstance();
@@ -2466,6 +2469,14 @@ public class UsersView implements Serializable {
 
 	public void setRecruitmentProcessStatus(Integer recruitmentProcessStatus) {
 		this.recruitmentProcessStatus = recruitmentProcessStatus;
+	}
+
+	public String getRecruitmentMessage() {
+		return recruitmentMessage;
+	}
+
+	public void setRecruitmentMessage(String recruitmentMessage) {
+		this.recruitmentMessage = recruitmentMessage;
 	}
 	
 	
