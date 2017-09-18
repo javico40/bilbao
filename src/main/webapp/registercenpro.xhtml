@@ -187,16 +187,17 @@
           	<p:inputText id="cenpro" binding="#{registerView.centroDeportivo}" class="form-control" placeholder="Centro deportivo" />
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
-		  <div class="form-group has-feedback">
-          	<p:inputText id="names" binding="#{registerView.names}" class="form-control" placeholder="Nombres y Apellidos" />
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
           <div class="form-group has-feedback">
-            <p:inputText id="usernames" binding="#{registerView.username}" class="form-control" placeholder="Correo / Email" />
+            <p:inputText id="usermail" binding="#{registerView.correo}" class="form-control" placeholder="Correo / Email" />
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>
+          
+		  <div class="form-group has-feedback">
+            <p:inputText id="username" binding="#{registerView.userlogin}" class="form-control" placeholder="Usuario" />
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <p:inputText id="password" binding="#{registerView.password}" class="form-control" placeholder="Contraseña" />
+            <p:password id="password" binding="#{registerView.password}" class="form-control" placeholder="Contraseña" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">

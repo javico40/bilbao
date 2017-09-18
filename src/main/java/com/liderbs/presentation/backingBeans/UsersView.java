@@ -401,90 +401,116 @@ public class UsersView implements Serializable {
     }
     
     public void savePersonalData(){
+    
     try{	
-    	 	if(usuarioapp == null){
-    	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
-    	 	}else{
-    	 		
-    	 		int idUser = usuarioapp.getIdusers();
-    	 		
-    	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
-    	 																		   null,
-    	 																		   null);
-    	 		
-    	 		int idTrainer = 0;
-    	 		
-    	 		for(Trainer trainer: list){
-    	 			idTrainer = trainer.getIdtrainer();
-    	 		}
-    	 		
-    	 		if(idTrainer == 0){
-    	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
-    	 		}else{
-    	 			
-    	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
-    	 			Identification identi = businessDelegatorView.getIdentification(selectIdentificacion);
-    	 			
-    	 			trainer.setName(txtName);
-    	 			trainer.setLastname(txtLastname);
-    	 			trainer.setIdentification(identi);
-    	 			trainer.setTrainer_id_number(txtNumeroIdentificacion);
-    	 			trainer.setLugar_nacimiento(txtLugarNacimiento);
-    	 			trainer.setBorndate(txtFechaNacimiento);
-    	 			trainer.setCountry(selectPais);
-    	 			trainer.setRegion(selectDepto);
-    	 			trainer.setCity(txtCiudad.toUpperCase());
-    	 			trainer.setAddress(txtDireccion.toUpperCase());
-    	 			
-    	 			if(trainerPic != null) {
-    	 				
-    	 				InputStream filecontent = null;
-    	 				String picName = "";
-    	 				OutputStream out = null;
-    	 			
-    	 				try {
-    	 				
-    	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
-    	 	            
-    	 				//picName = trainerPic.getFileName();
-    	 				picName = ""+trainer.getIdtrainer()+".jpg";
-    	 				filecontent = trainerPic.getInputstream();
-    	 				
-    	 				out = new FileOutputStream(new File(path + picName));
-    	 				
-    	 				int read = 0;
-    	 		        final byte[] bytes = new byte[1024];
-    	 				
-    	 				while ((read = filecontent.read(bytes)) != -1) {
-    	 		            out.write(bytes, 0, read);
-    	 		        }
-    	 				
-    	 		        //log.info("New file " + picName + " created at " + path);
-    	 				trainer.setTrainer_picture(path+picName);
-    	 		        
-    	 				 } catch (FileNotFoundException fne) {
-    	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
-    	 					log.info(fne.toString());
-    	 			    } finally {
-    	 			        if (out != null) {
-    	 			            out.close();
-    	 			        }
-    	 			        if (filecontent != null) {
-    	 			            filecontent.close();
-    	 			        }
-    	 			    }//end try catch  		
-    	 	        }//end picture upload
-    	 			
-    	 			businessDelegatorView.updateTrainer(trainer);
-    	 			FacesUtils.addInfoMessage("El entrenador ha sido actualizado satisfactoriamente");
-    	 			
-    	 		}//end if-else
-    	 	}//end user app detect
-    	 	
+    	
+    		if(txtName == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese su nombre");
+    		}else if(txtLastname == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese sus apellidos");
+    		}else if(selectIdentificacion == null){
+    			FacesUtils.addErrorMessage("Por favor seleccione un tipo de identificacion");
+    		}else if(txtNumeroIdentificacion == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese su numero de identificacion");
+    		}else if(txtLugarNacimiento == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese su lugar de nacimiento");
+    		}else if(txtFechaNacimiento == null){
+    			FacesUtils.addErrorMessage("Por favor seleccione su fecha de nacimiento");
+    		}else if(selectPais == null){
+    			FacesUtils.addErrorMessage("Por favor seleccione su pais de residencia");
+    		}else if(selectDepto == null){
+    			FacesUtils.addErrorMessage("Por favor seleccione su departamento de residencia");
+    		}else if(txtCiudad == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese su ciudad de residencia");
+    		}else if(txtDireccion == null){
+    			FacesUtils.addErrorMessage("Por favor ingrese una direccion valida");
+    		}else if(trainerPic == null){
+    			FacesUtils.addErrorMessage("Por favor adjunte una foto");
+    		}else{
+    				
+    		 	if(usuarioapp == null){
+        	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+        	 	}else{
+        	 		
+        	 		int idUser = usuarioapp.getIdusers();
+        	 		
+        	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+        	 																		   null,
+        	 																		   null);
+        	 		
+        	 		int idTrainer = 0;
+        	 		
+        	 		for(Trainer trainer: list){
+        	 			idTrainer = trainer.getIdtrainer();
+        	 		}
+        	 		
+        	 		if(idTrainer == 0){
+        	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+        	 		}else{
+        	 			
+        	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+        	 			Identification identi = businessDelegatorView.getIdentification(selectIdentificacion);
+        	 			
+        	 			trainer.setName(txtName);
+        	 			trainer.setLastname(txtLastname);
+        	 			trainer.setIdentification(identi);
+        	 			trainer.setTrainer_id_number(txtNumeroIdentificacion);
+        	 			trainer.setLugar_nacimiento(txtLugarNacimiento);
+        	 			trainer.setBorndate(txtFechaNacimiento);
+        	 			trainer.setCountry(selectPais);
+        	 			trainer.setRegion(selectDepto);
+        	 			trainer.setCity(txtCiudad.toUpperCase());
+        	 			trainer.setAddress(txtDireccion.toUpperCase());
+        	 			
+        	 			if(trainerPic != null) {
+        	 				
+        	 				InputStream filecontent = null;
+        	 				String picName = "";
+        	 				OutputStream out = null;
+        	 			
+        	 				try {
+        	 				
+        	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+        	 	            
+        	 				//picName = trainerPic.getFileName();
+        	 				picName = ""+trainer.getIdtrainer()+".jpg";
+        	 				filecontent = trainerPic.getInputstream();
+        	 				
+        	 				out = new FileOutputStream(new File(path + picName));
+        	 				
+        	 				int read = 0;
+        	 		        final byte[] bytes = new byte[1024];
+        	 				
+        	 				while ((read = filecontent.read(bytes)) != -1) {
+        	 		            out.write(bytes, 0, read);
+        	 		        }
+        	 				
+        	 		        //log.info("New file " + picName + " created at " + path);
+        	 				trainer.setTrainer_picture(path+picName);
+        	 		        
+        	 				 } catch (FileNotFoundException fne) {
+        	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+        	 					log.info(fne.toString());
+        	 			    } finally {
+        	 			        if (out != null) {
+        	 			            out.close();
+        	 			        }
+        	 			        if (filecontent != null) {
+        	 			            filecontent.close();
+        	 			        }
+        	 			    }//end try catch  		
+        	 	        }//end picture upload
+        	 			
+        	 			businessDelegatorView.updateTrainer(trainer);
+        	 			FacesUtils.addInfoMessage("Su perfil ha sido actualizado satisfactoriamente");
+        	 			
+        	 		}//end if-else
+        	 	}//end user app detect		
+    		}//end validations
+    	
     	}catch(Exception e){
     		log.info(e.toString());
     	}
-    	 	
     }
     
     public void saveDatosProf(){

@@ -187,8 +187,8 @@ public class RegisterView implements Serializable {
 
 		try {
 
-			if (FacesUtils.checkString(username) == null) {
-				FacesUtils.addErrorMessage("Ingrese su nombre y apellido");
+			if (FacesUtils.checkString(userlogin) == null) {
+				FacesUtils.addErrorMessage("Ingrese su nombre de usuario");
 			} else if (FacesUtils.checkString(correo) == null) {
 				FacesUtils.addErrorMessage("Ingrese un correo valido");
 			} else if (FacesUtils.checkString(password) == null) {
@@ -198,83 +198,96 @@ public class RegisterView implements Serializable {
 			} else {
 
 				String centro = FacesUtils.checkString(centroDeportivo);
-				String nombres = FacesUtils.checkString(username);
-				String user = FacesUtils.checkString(correo);
+				String usuario = FacesUtils.checkString(userlogin);
+				String email = FacesUtils.checkString(correo);
 				String pass = FacesUtils.checkString(password);
 
 				List<Users> list = businessDelegatorView
-						.findByCriteriaInUsers(new Object[] { "email", true, user, "=" }, null, null);
+						.findByCriteriaInUsers(new Object[] { "username", true, usuario, "=" }, null, null);
 
 				if (list.size() > 0) {
-					FacesUtils.addErrorMessage("El correo ya se encuentra registrado");
+					FacesUtils.addErrorMessage("El nombre de usuario ya se encuentra registrado");
 				} else {
-
-					// Crear el usuario
-
-					String hash = texMD5(pass);
-
-					Date today = new Date();
-					Users userNew = new Users();
-					userNew.setUsername(user.toUpperCase());
-					userNew.setName(nombres);
-					userNew.setPassword(hash);
-					userNew.setEmail(user);
-					userNew.setStatus(1);
-					userNew.setIstrainer(0);
-					userNew.setCreated(today);
-
-					businessDelegatorView.saveUsers(userNew);
-
-					// Buscar el perfil para usuarios
-					List<Profile> profileList = businessDelegatorView.findByCriteriaInProfile(
-							new Object[] { "profileName", true, "CENTROS DEPORTIVOS", "=" }, null, null);
-
-					int profileId = 0;
-
-					for (Profile perfil : profileList) {
-						profileId = perfil.getIdprofile();
-					}
-
-					if (profileId == 0) {
-						log.info("Pefil de usuarios no configurado, usuarios no pueden loguearse");
+					
+					list.clear();
+					
+					list = businessDelegatorView
+							.findByCriteriaInUsers(new Object[] { "email", true, email, "=" }, null, null);
+					
+					if (list.size() > 0) {
+						FacesUtils.addErrorMessage("El correo ya se encuentra registrado");
 					} else {
+						
+						// Crear el usuario
+						
+						Cities city = businessDelegatorView.getCities(1);
 
-						Profile perfil = businessDelegatorView.getProfile(profileId);
 
-						List<Users> listUser = new ArrayList<Users>();
-						listUser.add(userNew);
+						String hash = texMD5(pass);
 
-						// Crear su cuenta de usuario
+						Date today = new Date();
+						Users userNew = new Users();
+						userNew.setUsername(usuario.toUpperCase());
+						userNew.setPassword(hash);
+						userNew.setEmail(email);
+						userNew.setStatus(1);
+						userNew.setIstrainer(0);
+						userNew.setCreated(today);
+						userNew.setCities(city);
+						
 
-						Account cuenta = new Account();
-						cuenta.setAccountCreated(today);
-						cuenta.setAccountDefault(1);
-						cuenta.setAccountStatus(1);
-						cuenta.setAccountName(user);
-						cuenta.setAccountUserCreated("selfregister");
-						cuenta.setProfile(perfil);
-						cuenta.setUserses(new LinkedHashSet<Users>(listUser));
+						businessDelegatorView.saveUsers(userNew);
 
-						businessDelegatorView.saveAccount(cuenta);
+						// Buscar el perfil para usuarios
+						List<Profile> profileList = businessDelegatorView.findByCriteriaInProfile(
+								new Object[] { "profileName", true, "CENTROS DEPORTIVOS", "=" }, null, null);
 
-						// Crear el centro deportivo
+						int profileId = 0;
 
-						Place place = new Place();
-						place.setPlaceName(centro);
-						place.setPlaceStatus(1);
-						place.setPlaceOwner(userNew.getIdusers());
-						place.setPlaceIsVzone(0);
-						place.setAccountID(cuenta.getIdAccount());
+						for (Profile perfil : profileList) {
+							profileId = perfil.getIdprofile();
+						}
 
-						businessDelegatorView.savePlace(place);
+						if (profileId == 0) {
+							log.info("Pefil de usuarios no configurado, usuarios no pueden loguearse");
+						} else {
 
-						String url = ("login.xhtml");
-						FacesContext fc = FacesContext.getCurrentInstance();
-						ExternalContext ec = fc.getExternalContext();
-						ec.redirect(url);
+							Profile perfil = businessDelegatorView.getProfile(profileId);
 
-					} //
+							List<Users> listUser = new ArrayList<Users>();
+							listUser.add(userNew);
 
+							// Crear su cuenta de usuario
+
+							Account cuenta = new Account();
+							cuenta.setAccountCreated(today);
+							cuenta.setAccountDefault(1);
+							cuenta.setAccountStatus(1);
+							cuenta.setAccountName(usuario.toUpperCase());
+							cuenta.setAccountUserCreated("selfregister");
+							cuenta.setProfile(perfil);
+							cuenta.setUserses(new LinkedHashSet<Users>(listUser));
+
+							businessDelegatorView.saveAccount(cuenta);
+
+							// Crear el centro deportivo
+
+							Place place = new Place();
+							place.setPlaceName(centro);
+							place.setPlaceStatus(1);
+							place.setPlaceOwner(userNew.getIdusers());
+							place.setPlaceIsVzone(0);
+							place.setAccountID(cuenta.getIdAccount());
+
+							businessDelegatorView.savePlace(place);
+
+							String url = ("login.xhtml");
+							FacesContext fc = FacesContext.getCurrentInstance();
+							ExternalContext ec = fc.getExternalContext();
+							ec.redirect(url);
+
+						}//
+					}//end if-else
 				} // end if-else
 			}
 
