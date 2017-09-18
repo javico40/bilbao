@@ -97,6 +97,7 @@ public class UsersView implements Serializable {
     private IBusinessDelegatorView businessDelegatorView;
     
     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatImage = new SimpleDateFormat("ddMMyyyy");
     
     
     //Perfil virfit
@@ -181,8 +182,8 @@ public class UsersView implements Serializable {
     //Rating
     private Integer rating = 0;
     
-    
-    
+    //Render tabs
+    private boolean renderTabsEdit;
 
     public UsersView() {
         super();
@@ -192,7 +193,6 @@ public class UsersView implements Serializable {
     public void init(){
     try{
     	
-    
     	Users user = getUsuarioapp();
 		Set<Account> list = user.getAccounts();
 		
@@ -207,8 +207,37 @@ public class UsersView implements Serializable {
  		 	}
  	    }//end for 
 		 
-		minDate = format.parse("01/01/1950");
-		
+		 java.util.Calendar fechaInicio = java.util.Calendar.getInstance();
+		 fechaInicio.set(java.util.Calendar.YEAR, 1950);
+		 
+		 minDate = fechaInicio.getTime();
+		 
+		 int idUser = user.getIdusers();
+	 		
+	 	 List<Trainer> listTrainer = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+	 																		   null,
+	 																		   null);
+	 		
+	 		int idTrainer = 0;
+	 		
+	 		for(Trainer trainer: listTrainer){
+	 			idTrainer = trainer.getIdtrainer();
+	 		}
+	 		
+	 		if(idTrainer == 0){
+	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+	 		}else{
+	 			
+	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+	 			
+	 			if(trainer.getTrainerProfStatus() == 0){
+	 				renderTabsEdit = true;
+	 			}else{
+	 				renderTabsEdit = false;
+	 			}
+	 			
+	 			
+	 		}//end if
 		 
     	}catch(Exception e){
     		log.info(e.toString());
@@ -222,6 +251,7 @@ public class UsersView implements Serializable {
 		}
 		return usuarioapp;
 	}
+    
     
     
     public void search(){
@@ -349,6 +379,8 @@ public class UsersView implements Serializable {
      	 		    
      	 		    if(trainerPicDesc != null){
      	 		    	rating++;
+   	 				}else{
+   	 					trainerPicDesc = "user-icon.png";
    	 				}
      	 		    
      	 		    //Fill groupal class
@@ -398,6 +430,45 @@ public class UsersView implements Serializable {
      		log.info(e.toString());
      	 }
     	
+    }
+    
+    public void sendToValidate(){
+    	try{
+    		
+    		if(usuarioapp == null){
+    	 		FacesUtils.addErrorMessage("Error, no se pudo identificar el usuario, por favor utilice la opcion ayuda");
+    		}else if(rating < 3){
+    			FacesUtils.addErrorMessage("El perfil no tiene la calidad suficiente para ser evaluado, es necesario que complete mas informacion");
+    		}else{
+    	 		
+    	 		int idUser = usuarioapp.getIdusers();
+    	 		
+    	 		List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, idUser, "="},
+    	 																		   null,
+    	 																		   null);
+    	 		
+    	 		int idTrainer = 0;
+    	 		
+    	 		for(Trainer trainer: list){
+    	 			idTrainer = trainer.getIdtrainer();
+    	 		}
+    	 		
+    	 		if(idTrainer == 0){
+    	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
+    	 		}else{
+    	 			
+    	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+    	 			trainer.setTrainerProfStatus(1);
+    	 			businessDelegatorView.updateTrainer(trainer);
+    	 			FacesUtils.addErrorMessage("Su perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
+    	 		
+    	 		}//end validation trainer
+    	 		
+    	 	}//end validation user
+    		
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
     }
     
     public void savePersonalData(){
@@ -471,9 +542,12 @@ public class UsersView implements Serializable {
         	 				try {
         	 				
         	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+        	 				
+        	 				Date currentDate = new Date();
+        	 				String formatedDate = formatImage.format(currentDate);
         	 	            
         	 				//picName = trainerPic.getFileName();
-        	 				picName = ""+trainer.getIdtrainer()+".jpg";
+        	 				picName = ""+trainer.getIdtrainer()+""+formatedDate+".jpg";
         	 				filecontent = trainerPic.getInputstream();
         	 				
         	 				out = new FileOutputStream(new File(path + picName));
@@ -486,7 +560,7 @@ public class UsersView implements Serializable {
         	 		        }
         	 				
         	 		        //log.info("New file " + picName + " created at " + path);
-        	 				trainer.setTrainer_picture(path+picName);
+        	 				trainer.setTrainer_picture(picName);
         	 		        
         	 				 } catch (FileNotFoundException fne) {
         	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
@@ -2361,7 +2435,15 @@ public class UsersView implements Serializable {
 
         return "";
     }
-	
-	
 
+	public boolean isRenderTabsEdit() {
+		return renderTabsEdit;
+	}
+
+	public void setRenderTabsEdit(boolean renderTabsEdit) {
+		this.renderTabsEdit = renderTabsEdit;
+	}
+	
+	
+	
 }

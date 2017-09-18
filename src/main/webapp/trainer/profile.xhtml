@@ -45,10 +45,21 @@
     							<p:rating value="#{usersView.rating}" readonly="true" />
     							<br/>
     							<h3>Mejora la calidad de tu perfil completando los campos en las pestañas</h3>
+    							<br/>
+    							<br/>
+    							<p:commandButton id="btnSendToValidate"
+											     value="Enviar a evaluacion"
+											     ajax="false"
+											     action="#{usersView.sendToValidate}"
+											     update="@form" />
+    							
     							<p:panel id="panelPersonalData" header="Datos personales">
-									<p:panelGrid>
+									<p:panelGrid styleClass="noBorderGrid">
 										<p:row>
-											<p:column rowspan="6">FOTO</p:column>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column rowspan="8"><img src="http://www.govirfit.com/appimg/#{usersView.trainerPicDesc}" alt=""  width="108" height="120"/></p:column>
 											<p:column><strong><h:outputText id="textNamesDesc" value=" NOMBRES" /></strong></p:column>
 											<p:column><h:outputText id="textNamesVal" value="#{usersView.firstNameDesc}" /></p:column>
 											<p:column><strong><h:outputText id="textLastNamesDesc" value=" APELLIDOS" /></strong></p:column>
@@ -67,7 +78,13 @@
 											<p:column><h:outputText id="textFechaNacimientoVal" value="#{usersView.bornDateDesc}" /></p:column>
 										</p:row>
 										<p:row>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
+										</p:row>
+										<p:row>
 											<p:column colspan="4"><div align="center"><strong>LUGAR DE RESIDENCIA</strong></div></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
 										</p:row>
 										<p:row>
 											<p:column><strong><h:outputText id="textPaisDesc" value=" PAIS" /></strong></p:column>
@@ -85,7 +102,7 @@
 								</p:panel>
 								<br/>
 								<p:panel id="panelProfesionalData" header="Modalidades que dicta">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 										<p:repeat value="#{usersView.listCategoriesTrainer}" var="cat">
 											<p:row>
 												<p:column><strong><h:outputText id="category#{cat.idcategory}" value="#{cat.description}" /></strong></p:column>
@@ -95,7 +112,10 @@
 								</p:panel>
 								<br/>
 								<p:panel id="panelAcademicFormation" header="Formacion Academica">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
+										<p:row>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
+										</p:row>
 										<p:row>
 											<p:column><strong><h:outputText id="textNivelEDesc" value=" NIVEL DE ESTUDIO" /></strong></p:column>
 											<p:column><h:outputText id="textNivelEVal" value="#{usersView.nivelAcademicoDesc}" /></p:column>
@@ -103,7 +123,13 @@
 											<p:column><h:outputText id="textAreaEVal" value=" #{usersView.areaEstudioDesc}" /></p:column>
 										</p:row>
 										<p:row>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
+										</p:row>
+										<p:row>
 											<p:column colspan="4"><div align="center"><strong>CERTIFICACIONES</strong></div></p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="4"><h:outputText value="&#160;" /></p:column>
 										</p:row>
 										<p:repeat value="#{usersView.listCoursesTrainer}" var="course">
 										<p:row>
@@ -117,19 +143,31 @@
 								</p:panel>
 								<br/>
 								<p:panel id="panelProfesionalExperience" header="Experiencia profesional">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 									<p:repeat value="#{usersView.listExperienceTrainer}" var="experience">
 										<p:row>
 											<p:column><strong><h:outputText id="textEmpresaDesc" value=" EMPRESA O CENTRO DEPORTIVO" /></strong></p:column>
 											<p:column><h:outputText id="textEmpresaVal#{experience.idexperience}" value="#{experience.company}" /></p:column>
+											<p:column><strong><h:outputText id="textEmpresaCargoDesc" value=" CARGO" /></strong></p:column>
+											<p:column><h:outputText id="textCargoVal#{experience.job.idjob}" value="#{experience.job.name}" /></p:column>
+										</p:row>
+										<p:row>
+											<p:column><strong><h:outputText id="textStartDateDesc" value=" FECHA DE INICIO" /></strong></p:column>
+											<p:column><h:outputText id="textStartDateVal#{experience.idexperience}" value="#{experience.startdate}" >
+													  	<f:convertDateTime pattern="dd-MM-yyyy" />
+													  </h:outputText></p:column>
+											<p:column><strong><h:outputText id="textEndDateDesc" value=" FECHA DE FIN" /></strong></p:column>
+											<p:column><h:outputText id="textEndDateVal#{experience.idexperience}" value="#{experience.enddate}" >
+												<f:convertDateTime pattern="dd-MM-yyyy" />
+											</h:outputText></p:column>
 										</p:row>
 									</p:repeat>
 									</p:panelGrid>
 								</p:panel>
 							</p:tab>
-							<p:tab title="Datos personales">
+							<p:tab title="Datos personales" rendered="#{usersView.renderTabsEdit}">
 								<p:panel header="Ingrese sus datos personales">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
 											<p:column><h:outputText id="textNames" value=" Nombres" /></p:column>
 											<p:column><p:inputText id="txtNames" value="#{usersView.txtName}" /></p:column>
@@ -154,7 +192,7 @@
 											<p:column><h:outputText id="textNacionalidad" value=" Lugar de nacimiento" /></p:column>
 											<p:column><p:inputText id="txtLugarNacimiento" value="#{usersView.txtLugarNacimiento}" /></p:column>
 											<p:column><h:outputText id="textFechaNacimiento" value=" Fecha de nacimiento" /></p:column>
-											<p:column><p:calendar id="txtFechaNacimiento" pattern="dd/MM/yyyy" mindate="#{usersView.minDate}" navigator="true" value="#{usersView.txtFechaNacimiento}" /></p:column>
+											<p:column><p:calendar id="txtFechaNacimiento" pattern="dd/MM/yyyy" yearRange="c-100:c"  mindate="#{usersView.minDate}" navigator="true" value="#{usersView.txtFechaNacimiento}" /></p:column>
 										</p:row>
 										<p:row>
 											<p:column></p:column>
@@ -201,7 +239,7 @@
 										</p:row>
 										<p:row>
 											<p:column><h:outputText id="textFoto" value=" Foto" /></p:column>
-											<p:column><p:fileUpload value="#{usersView.trainerPic}" mode="simple" skinSimple="true"/></p:column>
+											<p:column><p:fileUpload value="#{usersView.trainerPic}" mode="simple" skinSimple="true" accept="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"/></p:column>
 											<p:column></p:column>
 											<p:column></p:column>
 										</p:row>
@@ -228,7 +266,7 @@
 							</p:tab>
 							<p:tab title="Modalidad deportiva">
 								<p:panel header="Ingrese las clases grupales que podra dictar">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
 											<p:column><h:outputText id="textTipoEntrenador" value=" MODALIDAD" /></p:column>
 											<p:column>
@@ -260,7 +298,7 @@
 							</p:tab>
 							<p:tab title="Formacion Academica">
 								<p:panel header="Ingrese su formacion academica">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
 											<p:column><h:outputText id="textNivelEstudio" value=" MAXIMO NIVEL DE ESTUDIOS" /></p:column>
 											<p:column>
@@ -327,9 +365,8 @@
 									</p:panelGrid>
 								</p:panel>
 								
-								<h:outputText value=""/>
-								<h:outputText value=""/>
-								<h:outputText value=""/>
+								<h:outputText value="&#160;" />
+								<h:outputText value="&#160;" />
 								
 								
 								<p:panel id="panelDataTableCertifications" header="Certificaciones ingresadas">
@@ -350,7 +387,9 @@
 										 <f:facet name="header">
 										<h:outputText value="Fecha"/>
 										</f:facet>
-										 <h:outputText value="#{cert.datecertified}"/>
+										 <h:outputText value="#{cert.datecertified}">
+										 	<f:convertDateTime pattern="dd-MM-yyyy" />
+										 </h:outputText>
 										</p:column>
 										<p:column headerText="Opciones">
 										<p:commandButton id="btnDelete"									
@@ -369,7 +408,7 @@
 							</p:tab>
 							<p:tab title="Experiencia profesional">
 								<p:panel header="Ingrese su perfil profesional">
-									<p:panelGrid>
+									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
 											<p:column><h:outputText id="textCentroDeportivo" value=" EMPRESA O CENTRO DEPORTIVO" /></p:column>
 											<p:column><p:inputText id="txtEmpresa" binding="#{usersView.txtEmpresa}" /></p:column>
@@ -408,10 +447,8 @@
 									</p:panelGrid>
 								</p:panel>
 								
-								<h:outputText value=""/>
-								<h:outputText value=""/>
-								<h:outputText value=""/>
-								
+								<h:outputText value="&#160;" />
+								<h:outputText value="&#160;" />
 								
 								<p:panel id="panelDataTableExperience" header="Experiencia laboral ingresada">
 									<p:dataTable value="#{usersView.dataExperienceTrainer}" var="exp" paginator="true" rows="5">
@@ -437,13 +474,17 @@
 										 <f:facet name="header">
 										<h:outputText value="Fecha Inicio"/>
 										</f:facet>
-										 <h:outputText value="#{exp.startdate}"/>
+										 <h:outputText value="#{exp.startdate}">
+										 	<f:convertDateTime pattern="dd-MM-yyyy" />
+										 </h:outputText>
 										</p:column>
 										<p:column>
 										 <f:facet name="header">
-										<h:outputText value="Fecha Fin"/>
+											<h:outputText value="Fecha Fin"/>
 										</f:facet>
-										 <h:outputText value="#{exp.enddate}"/>
+										 <h:outputText value="#{exp.enddate}">
+										 	<f:convertDateTime pattern="dd-MM-yyyy" />
+										 </h:outputText>
 										</p:column>
 										<p:column headerText="Opciones">
 										<p:commandButton id="btnDelete"									

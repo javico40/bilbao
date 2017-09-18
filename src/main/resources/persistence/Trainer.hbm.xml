@@ -56,6 +56,9 @@
         <property name="trainer_picture" type="java.lang.String">
             <column name="trainer_picture" length="1000" />
         </property>
+        <property name="trainerProfStatus" type="java.lang.Integer">
+            <column name="trainer_prof_status" />
+        </property>
         <set name="experiences" table="trainer_has_experience" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="trainer_idtrainer" not-null="true" />

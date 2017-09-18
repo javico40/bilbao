@@ -33,6 +33,7 @@ public class Trainer  implements java.io.Serializable {
      private String resumefile;
      private Integer usersIdusers;
      private String trainer_picture;
+     private Integer trainerProfStatus;
      private Set<Experience> experiences = new HashSet<Experience>(0);
      private Set<Courses> courseses = new HashSet<Courses>(0);
      private Set<Schedule> schedules = new HashSet<Schedule>(0);
@@ -216,6 +217,16 @@ public class Trainer  implements java.io.Serializable {
 
 	public void setTrainer_picture(String trainer_picture) {
 		this.trainer_picture = trainer_picture;
+	}
+
+
+	public Integer getTrainerProfStatus() {
+		return trainerProfStatus;
+	}
+
+
+	public void setTrainerProfStatus(Integer trainerProfStatus) {
+		this.trainerProfStatus = trainerProfStatus;
 	}
 
 

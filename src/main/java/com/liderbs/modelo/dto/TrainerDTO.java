@@ -35,6 +35,7 @@ public class TrainerDTO implements Serializable {
     private Integer idacademiclevel_Academiclevel;
     private Integer ididentification_Identification;
     private Integer idvprofile_Vprofile;
+    private Integer trainerProfStatus;
 
     public String getAcademicArea() {
         return academicArea;
@@ -166,4 +167,14 @@ public class TrainerDTO implements Serializable {
     public void setIdvprofile_Vprofile(Integer idvprofile_Vprofile) {
         this.idvprofile_Vprofile = idvprofile_Vprofile;
     }
+
+	public Integer getTrainerProfStatus() {
+		return trainerProfStatus;
+	}
+
+	public void setTrainerProfStatus(Integer trainerProfStatus) {
+		this.trainerProfStatus = trainerProfStatus;
+	}
+    
+    
 }

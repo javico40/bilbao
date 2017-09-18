@@ -98,5 +98,10 @@ background-color : red !important;
 .ui-steps.custom .ui-steps-item.ui-state-highlight .ui-steps-title {
     color: #555;
 }
+
+.noBorderGrid.ui-panelgrid>*>tr,
+.noBorderGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
     
 
