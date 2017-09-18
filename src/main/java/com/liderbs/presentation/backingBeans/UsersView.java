@@ -28,6 +28,7 @@ import org.springframework.security.core.userdetails.User;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -53,6 +54,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -184,6 +186,7 @@ public class UsersView implements Serializable {
     
     //Render tabs
     private boolean renderTabsEdit;
+    private Integer recruitmentProcessStatus;
 
     public UsersView() {
         super();
@@ -229,6 +232,8 @@ public class UsersView implements Serializable {
 	 		}else{
 	 			
 	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+	 			
+	 			recruitmentProcessStatus = trainer.getTrainerProfStatus();
 	 			
 	 			if(trainer.getTrainerProfStatus() == 0){
 	 				renderTabsEdit = true;
@@ -460,8 +465,19 @@ public class UsersView implements Serializable {
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
     	 			trainer.setTrainerProfStatus(1);
     	 			businessDelegatorView.updateTrainer(trainer);
-    	 			FacesUtils.addErrorMessage("Su perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
+    	 			FacesUtils.addInfoMessage("Su perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
     	 		
+    	 			String url = ("profile.xhtml");
+        	    	FacesContext fc = FacesContext.getCurrentInstance();
+        	    	ExternalContext ec = fc.getExternalContext();
+        	    	
+        	    	try {
+        	    			ec.redirect(url);
+        	    	} catch (IOException e) {
+        	    		e.printStackTrace();
+        	    	}
+        	    	
+    	 			
     	 		}//end validation trainer
     	 		
     	 	}//end validation user
@@ -2442,6 +2458,14 @@ public class UsersView implements Serializable {
 
 	public void setRenderTabsEdit(boolean renderTabsEdit) {
 		this.renderTabsEdit = renderTabsEdit;
+	}
+
+	public Integer getRecruitmentProcessStatus() {
+		return recruitmentProcessStatus;
+	}
+
+	public void setRecruitmentProcessStatus(Integer recruitmentProcessStatus) {
+		this.recruitmentProcessStatus = recruitmentProcessStatus;
 	}
 	
 	

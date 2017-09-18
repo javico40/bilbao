@@ -30,7 +30,7 @@
 					<section class="content">
 					<h:form id="form" enctype="multipart/form-data">
 					<p:growl id="growl" showDetail="false" sticky="true" />
-						<p:steps activeIndex="0" styleClass="custom" readonly="false">
+						<p:steps activeIndex="#{usersView.recruitmentProcessStatus}" styleClass="custom" readonly="false">
     							<p:menuitem value="Completar el perfil" url="#"/>
     							<p:menuitem value="Perfil por verificar" url="#"/>
     							<p:menuitem value="Perfil Aprobado" url="#"/>
@@ -41,17 +41,23 @@
 						<p:tabView>
 							<p:tab title="Mi Perfil Virfit">
 								<p:dataTable id="tableLoad" style="visibility: hidden;" value="#{usersView.dataTrainer}" var="users"></p:dataTable>
+								
+								<p:commandButton id="btnSendToValidate"
+												 rendered="#{usersView.renderTabsEdit}"
+											     value="Enviar a evaluacion"
+											     ajax="false"
+											     action="#{usersView.sendToValidate}"
+											     update="@form" />
+								
+								<br/>
+    							<br/>
 								<h3>Calidad del perfil</h3>
     							<p:rating value="#{usersView.rating}" readonly="true" />
     							<br/>
     							<h3>Mejora la calidad de tu perfil completando los campos en las pestañas</h3>
     							<br/>
     							<br/>
-    							<p:commandButton id="btnSendToValidate"
-											     value="Enviar a evaluacion"
-											     ajax="false"
-											     action="#{usersView.sendToValidate}"
-											     update="@form" />
+    							
     							
     							<p:panel id="panelPersonalData" header="Datos personales">
 									<p:panelGrid styleClass="noBorderGrid">
@@ -264,7 +270,7 @@
 									</p:panelGrid>
 								</p:panel>
 							</p:tab>
-							<p:tab title="Modalidad deportiva">
+							<p:tab title="Modalidad deportiva"  rendered="#{usersView.renderTabsEdit}">
 								<p:panel header="Ingrese las clases grupales que podra dictar">
 									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
@@ -296,7 +302,7 @@
 								</p:panel>
 								
 							</p:tab>
-							<p:tab title="Formacion Academica">
+							<p:tab title="Formacion Academica"  rendered="#{usersView.renderTabsEdit}">
 								<p:panel header="Ingrese su formacion academica">
 									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
@@ -406,7 +412,7 @@
 								</p:panel>
 								
 							</p:tab>
-							<p:tab title="Experiencia profesional">
+							<p:tab title="Experiencia profesional"  rendered="#{usersView.renderTabsEdit}">
 								<p:panel header="Ingrese su perfil profesional">
 									<p:panelGrid  styleClass="noBorderGrid">
 										<p:row>
