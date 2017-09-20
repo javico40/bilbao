@@ -42,7 +42,6 @@ import com.liderbs.modelo.control.IExperienceLogic;
 import com.liderbs.modelo.control.IIdentificationLogic;
 import com.liderbs.modelo.control.IJobLogic;
 import com.liderbs.modelo.control.ILevelLogic;
-import com.liderbs.modelo.control.IMailerLogic;
 import com.liderbs.modelo.control.IMenuLogic;
 import com.liderbs.modelo.control.IOptionsLogic;
 import com.liderbs.modelo.control.IPaisLogic;
@@ -205,8 +204,7 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private ICitiesLogic citiesLogic;
     @Autowired
     private ISkillLogic skillLogic;
-    @Autowired 
-    private IMailerLogic mailerLogic;
+    
 
 
     public List<Account> getAccount() throws Exception {
@@ -1594,7 +1592,5 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         return skillLogic.getDataSkill();
     }
     
-    public void sendMail(String from,String to,String subject,String text,List<Object[]> listAttachment)throws Exception{
-    	mailerLogic.sendMail(from, to, subject, text,listAttachment);
-    }
+   
 }

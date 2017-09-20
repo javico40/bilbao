@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
@@ -16,6 +17,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.password.Password;
@@ -52,6 +58,8 @@ public class RegisterView implements Serializable {
 	private InputText centroDeportivo;
 	private Integer city;
 	private List<SelectItem> cities;
+	
+	
 
 	public RegisterView() {
 		super();
@@ -160,7 +168,94 @@ public class RegisterView implements Serializable {
 							
 							businessDelegatorView.saveTrainer(trainer);
 							
-							businessDelegatorView.sendMail("noreply@govirfit.com", userNew.getEmail(), "Bienvenido a Govirfit",
+							
+							//EMAIL SEND
+							
+							 // Replace sender@example.com with your "From" address.
+						    // This address must be verified.
+						    final String FROM = "noreply@govirfit.com";
+						    final String FROMNAME = "Govirfit prueba correo";
+							
+						    // Replace recipient@example.com with a "To" address. If your account 
+						    // is still in the sandbox, this address must be verified.
+						    final String TO = "fortaleza40@gmail.com";
+						    
+						    // Replace smtp_username with your Amazon SES SMTP user name.
+						    final String SMTP_USERNAME = "AKIAJNZAR6WYMWWR75NA";
+						    
+						    // Replace smtp_password with your Amazon SES SMTP password.
+						    final String SMTP_PASSWORD = "AtsODaP/MZPQ2W+xpBpI9TR9sK3RHSl4sWjH0G0eeIbl";
+						    
+						    // The name of the Configuration Set to use for this message.
+						    // If you comment out or remove this variable, you will also need to
+						    // comment out or remove the header on line 65.
+						    //final String CONFIGSET = "ConfigSet";
+						    
+						    // Amazon SES SMTP host name. This example uses the US West (Oregon) Region.
+						    final String HOST = "email-smtp.us-west-2.amazonaws.com";
+						    
+						    // The port you will connect to on the Amazon SES SMTP endpoint. 
+						    final int PORT = 465;
+						    
+						    final String SUBJECT = "Amazon SES test (SMTP interface accessed using Java)";
+						    
+						    final String BODY = String.join(
+						    	    System.getProperty("line.separator"),
+						    	    "<h1>Amazon SES SMTP Email Test</h1>",
+						    	    "<p>This email was sent with Amazon SES using the ", 
+						    	    "<a href='https://github.com/javaee/javamail'>Javamail Package</a>",
+						    	    " for <a href='https://www.java.com'>Java</a>."
+						    	);
+							
+							 // Create a Properties object to contain connection configuration information.
+					    	Properties props = System.getProperties();
+					    	props.put("mail.transport.protocol", "smtp");
+					    	props.put("mail.smtp.port", PORT); 
+					    	props.put("mail.smtp.ssl.enable", "true");
+					    	props.put("mail.smtp.auth", "true");
+					    	
+					    	 // Create a Session object to represent a mail session with the specified properties. 
+					    	Session session = Session.getDefaultInstance(props);
+
+					        // Create a message with the specified information. 
+					        MimeMessage msg = new MimeMessage(session);
+					        msg.setFrom(new InternetAddress(FROM,FROMNAME));
+					        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+					        msg.setSubject(SUBJECT);
+					        msg.setContent(BODY,"text/html");
+					        
+					        // Add a configuration set header. Comment or delete the 
+					        // next line if you are not using a configuration set
+					        //msg.setHeader("X-SES-CONFIGURATION-SET", CONFIGSET);
+					            
+					        // Create a transport.
+					        Transport transport = session.getTransport();
+					        
+					        // Send the message.
+					        try
+					        {
+					            System.out.println("Sending...");
+					            
+					            // Connect to Amazon SES using the SMTP username and password you specified above.
+					            transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+					        	
+					            // Send the email.
+					            transport.sendMessage(msg, msg.getAllRecipients());
+					            System.out.println("Email sent!");
+					        }
+					        catch (Exception ex) {
+					            System.out.println("The email was not sent.");
+					            System.out.println("Error message: " + ex.getMessage());
+					        }
+					        finally
+					        {
+					            // Close and terminate the connection.
+					            transport.close();
+					        }
+					        
+					        /*
+							
+							businessDelegatorView.sendMail("noreply@govirfit.com", "fortaleza40@gmail.com", "Bienvenido a Govirfit",
 		        							  "<style type=\"text/css\"></style>" + "<blockquote> "
 		        							+ "<p  align=\"left\"><font style=\" color: #505050; font-size: 13px; font-weight: bold; \">"
 		        							+ "Alcanza tus metas con Govirfit, entrena a otros y diviertete en el proceso" + "<br>" + "<br>"
@@ -174,6 +269,8 @@ public class RegisterView implements Serializable {
 		        							+ "Si tienes alguna duda escribe a nuestro correo info@govirfit.com"
 		        							+ "<br>" + " </font> </p>" + " </blockquote>",
 		        					null);
+							
+							*/
 							
 							FacesUtils.addInfoMessage("Te has registrado satisfactoriamente, ingresa con tu usuario y contraseña.");
 							
