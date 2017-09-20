@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -58,6 +59,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 
 /**
@@ -468,6 +474,79 @@ public class UsersView implements Serializable {
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
     	 			trainer.setTrainerProfStatus(1);
     	 			businessDelegatorView.updateTrainer(trainer);
+    	 			
+    	 			//EMAIL SEND
+					
+					/*Mail parameters*/
+					
+					final String FROM = "noreply@govirfit.com";
+				    final String FROMNAME = "Govirfit";
+					final String TO = "fortaleza40@gmail.com, rubenzportilla@hotmail.com";
+				    final String SMTP_USERNAME = "AKIAJNZAR6WYMWWR75NA";
+				    final String SMTP_PASSWORD = "AtsODaP/MZPQ2W+xpBpI9TR9sK3RHSl4sWjH0G0eeIbl";
+				    final String HOST = "email-smtp.us-west-2.amazonaws.com";
+				    final int PORT = 465;
+				    final String SUBJECT = "Solicitud de validacion de entrenador";
+				    
+				    
+				    String usuarioSolicitud = "";
+				    
+				    if(trainer.getName() != null){
+				    	usuarioSolicitud = trainer.getName()+" "+trainer.getLastname();
+				    }else{
+				    	usuarioSolicitud = usuarioapp.getUsername()+" "+usuarioapp.getEmail();
+				    }
+				    
+				    final String BODY = String.join(
+				    	    System.getProperty("line.separator"),
+				    	    "<h1>Validacion de Usuarios Govirfit</h1>",
+				    	    "<p>El entrenador "+usuarioSolicitud+" ha solicitado ",
+				    	    "que sea validado su perfil de entrenador"
+				    	      );
+					
+					 // Create a Properties object to contain connection configuration information.
+			    	Properties props = System.getProperties();
+			    	props.put("mail.transport.protocol", "smtp");
+			    	props.put("mail.smtp.port", PORT); 
+			    	props.put("mail.smtp.ssl.enable", "true");
+			    	props.put("mail.smtp.auth", "true");
+			    	
+			    	// Create a Session object to represent a mail session with the specified properties. 
+			    	Session session = Session.getDefaultInstance(props);
+
+			        // Create a message with the specified information. 
+			        MimeMessage msg = new MimeMessage(session);
+			        msg.setFrom(new InternetAddress(FROM,FROMNAME));
+			        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+			        msg.setSubject(SUBJECT);
+			        msg.setContent(BODY,"text/html");
+			        
+			        // Add a configuration set header. Comment or delete the 
+			        // next line if you are not using a configuration set
+			        //msg.setHeader("X-SES-CONFIGURATION-SET", CONFIGSET);
+			            
+			        // Create a transport.
+			        Transport transport = session.getTransport();
+			        
+			        // Send the message.
+			        try
+			        {
+			            // Connect to Amazon SES using the SMTP username and password you specified above.
+			            transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+			        	
+			            // Send the email.
+			            transport.sendMessage(msg, msg.getAllRecipients());
+			           
+			        }
+			        catch (Exception ex) {
+			        	log.info("Correo no enviado "+ex.toString());
+			        }
+			        finally
+			        {
+			            // Close and terminate the connection.
+			            transport.close();
+			        }
+
     	 			FacesUtils.addInfoMessage("Tu perfil se encuentra en evaluacion, en los siguientes 5 dias habiles recibira una respuesta por correo electronico.");
     	 		
     	 			String url = ("profile.xhtml");
