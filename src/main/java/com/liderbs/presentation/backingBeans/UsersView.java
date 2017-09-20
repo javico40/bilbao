@@ -678,6 +678,7 @@ public class UsersView implements Serializable {
         	 			businessDelegatorView.updateTrainer(trainer);
         	 			FacesUtils.addInfoMessage("Su perfil ha sido actualizado satisfactoriamente");
         	 			
+        	 			populateData();
         	 		}//end if-else
         	 	}//end user app detect		
     		}//end validations
@@ -710,7 +711,8 @@ public class UsersView implements Serializable {
 	        	usuario.setCategories(categories);
 	        	businessDelegatorView.updateUsers(usuario);
 	        	FacesUtils.addInfoMessage("Modalidades asignadas satisfactoriamente");
-	        	
+	        	listCategoriesTrainer = null;
+	        	populateData();
 	        }//end if
 	 		
 	 	}//end if-else
@@ -760,7 +762,7 @@ public class UsersView implements Serializable {
 	 		 			
 	 		 			businessDelegatorView.updateTrainer(trainer);
 	 		 			FacesUtils.addInfoMessage("Nivel de estudios guardado satisfactoriamente");
-	
+	 		 			populateData();
 	 		 		}//end if-else
 	 		 		
 	 		 	}//end if
@@ -832,9 +834,11 @@ public class UsersView implements Serializable {
 	 		 			txtEnteCertificador.setValue(null);
 	 		 			txtCertificacionDesc.setValue(null);
 	 		 			dataCoursesTrainer = null;
+	 		 			listCoursesTrainer = null;
+	 		        	
 	 		 			
 	 		 			FacesUtils.addInfoMessage("Certificacion guardada satisfactoriamente");
-	
+	 		 			populateData();
 	 		 		}//end if-else
 	 		 		
 	 		 	}//end if
@@ -923,7 +927,8 @@ public class UsersView implements Serializable {
 	 		 			dataExperienceTrainer = null;
 	 		 			
 	 		 			FacesUtils.addInfoMessage("Experiencia laboral guardada satisfactoriamente");
-	
+	 		 			listExperienceTrainer = null;
+	 		 			populateData();
 	 		 		}//end if-else
 	 		 		
 	 		 	}//end if
