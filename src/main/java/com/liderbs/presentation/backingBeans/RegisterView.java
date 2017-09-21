@@ -175,20 +175,18 @@ public class RegisterView implements Serializable {
 							
 							final String FROM = "noreply@govirfit.com";
 						    final String FROMNAME = "	Govirfit";
-							final String TO = "fortaleza40@gmail.com, rubenzportilla@hotmail.com";
+							final String TO = "rubenzportilla@hotmail.com";
 						    final String SMTP_USERNAME = "AKIAJNZAR6WYMWWR75NA";
 						    final String SMTP_PASSWORD = "AtsODaP/MZPQ2W+xpBpI9TR9sK3RHSl4sWjH0G0eeIbl";
 						    final String HOST = "email-smtp.us-west-2.amazonaws.com";
 						    final int PORT = 465;
 						    final String SUBJECT = "Nuevo Usuario registrado en Govirfit";
 						    
-						    final String BODY = String.join(
-						    	    System.getProperty("line.separator"),
-						    	    "<h1>Registro de Usuarios Govirfit</h1>",
-						    	    "<p>El usuario "+userNew.getUsername()+" ",
-						    	    "con el correo "+userNew.getEmail()+" ",
-						    	    "se ha registrado en la plataforma"
-						    	      );
+						    final String BODY = ""+
+						    	    "<h1>Registro de Usuarios Govirfit</h1>"+
+						    	    "<p>El usuario "+userNew.getUsername()+" "+
+						    	    "con el correo "+userNew.getEmail()+" "+
+						    	    "se ha registrado en la plataforma";
 							
 							 // Create a Properties object to contain connection configuration information.
 					    	Properties props = System.getProperties();

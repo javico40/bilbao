@@ -481,7 +481,7 @@ public class UsersView implements Serializable {
 					
 					final String FROM = "noreply@govirfit.com";
 				    final String FROMNAME = "Govirfit";
-					final String TO = "fortaleza40@gmail.com, rubenzportilla@hotmail.com";
+					final String TO = "rubenzportilla@hotmail.com";
 				    final String SMTP_USERNAME = "AKIAJNZAR6WYMWWR75NA";
 				    final String SMTP_PASSWORD = "AtsODaP/MZPQ2W+xpBpI9TR9sK3RHSl4sWjH0G0eeIbl";
 				    final String HOST = "email-smtp.us-west-2.amazonaws.com";
@@ -497,12 +497,10 @@ public class UsersView implements Serializable {
 				    	usuarioSolicitud = usuarioapp.getUsername()+" "+usuarioapp.getEmail();
 				    }
 				    
-				    final String BODY = String.join(
-				    	    System.getProperty("line.separator"),
-				    	    "<h1>Validacion de Usuarios Govirfit</h1>",
-				    	    "<p>El entrenador "+usuarioSolicitud+" ha solicitado ",
-				    	    "que sea validado su perfil de entrenador"
-				    	      );
+				    final String BODY = 
+				    	    "<h1>Validacion de Usuarios Govirfit</h1>"+
+				    	    "<p>El entrenador "+usuarioSolicitud+" ha solicitado "+
+				    	    "que sea validado su perfil de entrenador";
 					
 					 // Create a Properties object to contain connection configuration information.
 			    	Properties props = System.getProperties();
