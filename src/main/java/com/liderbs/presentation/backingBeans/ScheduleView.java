@@ -1144,7 +1144,7 @@ public class ScheduleView implements Serializable {
 					
 					for(Autorization auth: listAuth){
 						
-						Users trainer = businessDelegatorView.getUsers(auth.getUsersIdusers());
+						Users user = businessDelegatorView.getUsers(auth.getUsersIdusers());
 						
 						String authStatus = "";
 						
@@ -1159,8 +1159,24 @@ public class ScheduleView implements Serializable {
 							authVisible = false;
 						}
 						
-						if(trainer != null){		
-							listTrainer.add(new SelectItem(trainer.getIdusers(), trainer.getName()));
+						if(user != null){
+							
+							//Buscar trainer
+		    				List<Trainer> list = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, user.getIdusers(), "="},
+									   null,
+									   null);
+
+		    				int idTrainer = 0;
+
+		    				for(Trainer trainer: list){
+		                         idTrainer = trainer.getIdtrainer();
+		                    }
+		    				
+		    				if(idTrainer != 0){
+		    					Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+		    					listTrainer.add(new SelectItem(user.getIdusers(), trainer.getName()+" "+trainer.getLastname()));
+		    				}
+							
 						}//end if
 					}// end for
 				}

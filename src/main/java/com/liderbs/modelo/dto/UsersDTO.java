@@ -31,6 +31,8 @@ public class UsersDTO implements Serializable {
     private Integer status;
     private String userid;
     private String username;
+    private Integer trainerProfileStatus;
+    private String trainerPic;
     
     
     public UsersDTO() {
@@ -38,10 +40,11 @@ public class UsersDTO implements Serializable {
 	}
     
     
-    public UsersDTO(Integer idusers, String username){
+    public UsersDTO(Integer idusers, String username, String trainerPic){
     	
     	this.idusers = idusers;
     	this.username = username;
+    	this.trainerPic = trainerPic;
     }
     
 
@@ -142,4 +145,22 @@ public class UsersDTO implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+	public Integer getTrainerProfileStatus() {
+		return trainerProfileStatus;
+	}
+	
+	public void setTrainerProfileStatus(Integer trainerProfileStatus) {
+		this.trainerProfileStatus = trainerProfileStatus;
+	}
+
+	public String getTrainerPic() {
+		return trainerPic;
+	}
+
+	public void setTrainerPic(String trainerPic) {
+		this.trainerPic = trainerPic;
+	}
+    
+    
 }

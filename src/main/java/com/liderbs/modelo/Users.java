@@ -31,6 +31,7 @@ public class Users  implements java.io.Serializable {
      private Float saldo;
      private Integer istrainer;
      private String foto;
+     private Integer trainerProfileStatus;
      private Set<Account> accounts = new HashSet<Account>(0);
      private Set<Category> categories = new HashSet<Category>(0);
      private Set<Schedule> schedules = new HashSet<Schedule>(0);
@@ -196,6 +197,16 @@ public class Users  implements java.io.Serializable {
     public void setCities(Cities cities) {
         this.cities = cities;
     }
+
+	public Integer getTrainerProfileStatus() {
+		return trainerProfileStatus;
+	}
+
+	public void setTrainerProfileStatus(Integer trainerProfileStatus) {
+		this.trainerProfileStatus = trainerProfileStatus;
+	}
+    
+    
 
 
 }

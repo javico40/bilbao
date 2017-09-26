@@ -50,6 +50,10 @@
         <property name="foto" type="java.lang.String">
             <column name="foto" length="45" />
         </property>
+        <property name="trainerProfileStatus" type="java.lang.Integer">
+            <column name="trainer_profile_status" />
+        </property>
+        
         
         <set name="accounts" table="users_has_account" inverse="false" lazy="false" fetch="select">
             <key>

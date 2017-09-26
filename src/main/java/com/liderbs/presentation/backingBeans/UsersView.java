@@ -290,6 +290,7 @@ public class UsersView implements Serializable {
 																									null,
 																									null);
     	
+    	String trainerPicture = "";
     	
     	for(Category cat: list){
     		
@@ -297,8 +298,37 @@ public class UsersView implements Serializable {
     		Set<Users> userses = cat.getUserses();
     		
     		for (Iterator<Users> it = userses.iterator(); it.hasNext(); ) {			
+    			
     			Users user = it.next();	
-    			this.listTrainers.add(new UsersDTO(user.getIdusers(), user.getName()));
+    			
+    			if(user.getTrainerProfileStatus() == 3){
+    				
+    				//Buscar trainer
+    				List<Trainer> listTrainer = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, user.getIdusers(), "="},
+							   null,
+							   null);
+
+    				int idTrainer = 0;
+
+    				for(Trainer trainer: listTrainer){
+                         idTrainer = trainer.getIdtrainer();
+                    }
+    				
+    				if(idTrainer != 0){
+    					Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
+    					
+    					if(trainer.getTrainer_picture() != null){
+    						trainerPicture = trainer.getTrainer_picture();
+       	 				}else{
+       	 					trainerPicture = "user-icon.png";
+       	 				}
+    					
+    					
+    					this.listTrainers.add(new UsersDTO(user.getIdusers(), trainer.getName()+" "+trainer.getLastname(), trainerPicture));
+    				}
+    				
+    			}
+    			
     		}
     		
     		
@@ -470,6 +500,11 @@ public class UsersView implements Serializable {
     	 		if(idTrainer == 0){
     	 			FacesUtils.addErrorMessage("No se pudo identificar su perfil de entrenador, por favor contacte con la opcion Ayuda");
     	 		}else{
+    	 			
+    	 			Users user = businessDelegatorView.getUsers(idUser);
+    	 			user.setTrainerProfileStatus(1);
+    	 			businessDelegatorView.updateUsers(user);
+    	 			
     	 			
     	 			Trainer trainer = businessDelegatorView.getTrainer(idTrainer);
     	 			trainer.setTrainerProfStatus(1);
