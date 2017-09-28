@@ -35,6 +35,13 @@
 							<p:growl id="men"/>				
 							<p:dataTable value="#{profileView.data}" var="profile"
 								paginator="true" rows="5">
+								
+										<p:column >
+										 <f:facet name="header">
+										<h:outputText value="ID"/>
+										</f:facet>
+										 <h:outputText value="#{profile.idprofile}"/>
+										</p:column>
 										
 										<p:column filterBy="#{profile.profileName}" sortBy="#{profile.profileName}" >
 										 <f:facet name="header">

@@ -21,8 +21,10 @@ import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
+import com.liderbs.modelo.Reservation;
 import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Skill;
+import com.liderbs.modelo.Specialclass;
 import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
@@ -49,8 +51,10 @@ import com.liderbs.modelo.control.IPlaceLogic;
 import com.liderbs.modelo.control.IPlaceservicesLogic;
 import com.liderbs.modelo.control.IPlacetypeLogic;
 import com.liderbs.modelo.control.IProfileLogic;
+import com.liderbs.modelo.control.IReservationLogic;
 import com.liderbs.modelo.control.IScheduleLogic;
 import com.liderbs.modelo.control.ISkillLogic;
+import com.liderbs.modelo.control.ISpecialclassLogic;
 import com.liderbs.modelo.control.ITimetableLogic;
 import com.liderbs.modelo.control.ITrainerLogic;
 import com.liderbs.modelo.control.IUsersLogic;
@@ -80,8 +84,10 @@ import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
+import com.liderbs.modelo.dto.ReservationDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.SkillDTO;
+import com.liderbs.modelo.dto.SpecialclassDTO;
 import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
@@ -204,6 +210,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private ICitiesLogic citiesLogic;
     @Autowired
     private ISkillLogic skillLogic;
+    @Autowired
+    private IReservationLogic reservationLogic;
+    @Autowired
+    private ISpecialclassLogic specialclassLogic;
     
 
 
@@ -1590,6 +1600,111 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 
     public List<SkillDTO> getDataSkill() throws Exception {
         return skillLogic.getDataSkill();
+    }
+    
+    public List<Reservation> getReservation() throws Exception {
+        return reservationLogic.getReservation();
+    }
+
+    public void saveReservation(Reservation entity) throws Exception {
+        reservationLogic.saveReservation(entity);
+    }
+
+    public void deleteReservation(Reservation entity) throws Exception {
+        reservationLogic.deleteReservation(entity);
+    }
+
+    public void updateReservation(Reservation entity) throws Exception {
+        reservationLogic.updateReservation(entity);
+    }
+
+    public Reservation getReservation(Integer idreservation)
+        throws Exception {
+        Reservation reservation = null;
+
+        try {
+            reservation = reservationLogic.getReservation(idreservation);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return reservation;
+    }
+
+    public List<Reservation> findByCriteriaInReservation(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return reservationLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Reservation> findPageReservation(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return reservationLogic.findPageReservation(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberReservation() throws Exception {
+        return reservationLogic.findTotalNumberReservation();
+    }
+
+    public List<ReservationDTO> getDataReservation() throws Exception {
+        return reservationLogic.getDataReservation();
+    }
+
+    public List<Specialclass> getSpecialclass() throws Exception {
+        return specialclassLogic.getSpecialclass();
+    }
+
+    public void saveSpecialclass(Specialclass entity) throws Exception {
+        specialclassLogic.saveSpecialclass(entity);
+    }
+
+    public void deleteSpecialclass(Specialclass entity)
+        throws Exception {
+        specialclassLogic.deleteSpecialclass(entity);
+    }
+
+    public void updateSpecialclass(Specialclass entity)
+        throws Exception {
+        specialclassLogic.updateSpecialclass(entity);
+    }
+
+    public Specialclass getSpecialclass(Integer idspecialclass)
+        throws Exception {
+        Specialclass specialclass = null;
+
+        try {
+            specialclass = specialclassLogic.getSpecialclass(idspecialclass);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return specialclass;
+    }
+
+    public List<Specialclass> findByCriteriaInSpecialclass(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return specialclassLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Specialclass> findPageSpecialclass(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return specialclassLogic.findPageSpecialclass(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberSpecialclass() throws Exception {
+        return specialclassLogic.findTotalNumberSpecialclass();
+    }
+
+    public List<SpecialclassDTO> getDataSpecialclass()
+        throws Exception {
+        return specialclassLogic.getDataSpecialclass();
     }
     
    

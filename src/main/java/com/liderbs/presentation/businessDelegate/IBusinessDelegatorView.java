@@ -21,8 +21,10 @@ import com.liderbs.modelo.Place;
 import com.liderbs.modelo.Placeservices;
 import com.liderbs.modelo.Placetype;
 import com.liderbs.modelo.Profile;
+import com.liderbs.modelo.Reservation;
 import com.liderbs.modelo.Schedule;
 import com.liderbs.modelo.Skill;
+import com.liderbs.modelo.Specialclass;
 import com.liderbs.modelo.Timetable;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
@@ -58,8 +60,10 @@ import com.liderbs.modelo.dto.PlaceDTO;
 import com.liderbs.modelo.dto.PlaceservicesDTO;
 import com.liderbs.modelo.dto.PlacetypeDTO;
 import com.liderbs.modelo.dto.ProfileDTO;
+import com.liderbs.modelo.dto.ReservationDTO;
 import com.liderbs.modelo.dto.ScheduleDTO;
 import com.liderbs.modelo.dto.SkillDTO;
+import com.liderbs.modelo.dto.SpecialclassDTO;
 import com.liderbs.modelo.dto.TimetableDTO;
 import com.liderbs.modelo.dto.TrainerDTO;
 import com.liderbs.modelo.dto.UsersDTO;
@@ -711,6 +715,55 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberSkill() throws Exception;
 
     public List<SkillDTO> getDataSkill() throws Exception;
+    
+    public List<Reservation> getReservation() throws Exception;
+
+    public void saveReservation(Reservation entity) throws Exception;
+
+    public void deleteReservation(Reservation entity) throws Exception;
+
+    public void updateReservation(Reservation entity) throws Exception;
+
+    public Reservation getReservation(Integer idreservation)
+        throws Exception;
+
+    public List<Reservation> findByCriteriaInReservation(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Reservation> findPageReservation(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberReservation() throws Exception;
+
+    public List<ReservationDTO> getDataReservation() throws Exception;
+
+    public List<Specialclass> getSpecialclass() throws Exception;
+
+    public void saveSpecialclass(Specialclass entity) throws Exception;
+
+    public void deleteSpecialclass(Specialclass entity)
+        throws Exception;
+
+    public void updateSpecialclass(Specialclass entity)
+        throws Exception;
+
+    public Specialclass getSpecialclass(Integer idspecialclass)
+        throws Exception;
+
+    public List<Specialclass> findByCriteriaInSpecialclass(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Specialclass> findPageSpecialclass(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberSpecialclass() throws Exception;
+
+    public List<SpecialclassDTO> getDataSpecialclass()
+        throws Exception;
     
    
 
