@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-sep-2017 22:04:37 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Reservation" table="reservation" catalog="liderbs_virfit">
+        <id name="idreservation" type="java.lang.Integer">
+            <column name="idreservation" />
+            <generator class="identity" />
+        </id>
+        <property name="reservationHolderName" type="java.lang.String">
+            <column name="reservation_holder_name" length="100" />
+        </property>
+        <property name="reservationHolderId" type="java.lang.String">
+            <column name="reservation_holder_id" length="100" />
+        </property>
+        <property name="reservationHolderTel" type="java.lang.String">
+            <column name="reservation_holder_tel" length="100" />
+        </property>
+        <property name="reservationHolderEmail" type="java.lang.String">
+            <column name="reservation_holder_email" length="100" />
+        </property>
+        <property name="reservationHolderCode" type="java.lang.String">
+            <column name="reservation_holder_code" length="100" />
+        </property>
+        <property name="reservationStatus" type="java.lang.Integer">
+            <column name="reservation_status" />
+        </property>
+        <property name="reservationIdclass" type="java.lang.Integer">
+            <column name="reservation_idclass" />
+        </property>
+    </class>
+</hibernate-mapping>

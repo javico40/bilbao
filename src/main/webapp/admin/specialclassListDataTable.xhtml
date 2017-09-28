@@ -1,0 +1,219 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Govirfit <small>entrena donde quieras</small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Clase especial</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableSpecialclass" header="Clases especiales">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{specialclassView.data}" var="specialclass"
+								paginator="true" rows="5">
+									
+									    <p:column filterBy="#{specialclass.idspecialclass}" sortBy="#{specialclass.idspecialclass}" >
+										 <f:facet name="header">
+										<h:outputText value="ID"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.idspecialclass}"/>
+										 </p:column>
+			                    		
+			                    		<p:column filterBy="#{specialclass.fecha}" sortBy="#{specialclass.fecha}" >
+										 <f:facet name="header">
+										<h:outputText value="FECHA"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.fecha}">
+										 	<f:convertDateTime pattern="dd-MM-yyyy" />
+										 </h:outputText>
+										</p:column>   
+			                    																									
+										<p:column filterBy="#{specialclass.classTitle}" sortBy="#{specialclass.classTitle}" >
+										 <f:facet name="header">
+										<h:outputText value="NOMBRE"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.classTitle}"/>
+										</p:column>   
+			                    		
+			                    		<p:column sortBy="#{specialclass.startHour}" >
+										 <f:facet name="header">
+										<h:outputText value="HORA INICIO"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.startHour}">
+										 	<f:convertDateTime locale="es" pattern="HH:mm" timeZone="America/Bogota" />
+										 </h:outputText>
+										</p:column>   
+			                    									
+										<p:column sortBy="#{specialclass.endHour}" >
+										 <f:facet name="header">
+										<h:outputText value="HORA FIN"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.endHour}">
+										 	<f:convertDateTime locale="es" pattern="HH:mm" timeZone="America/Bogota" />
+										 </h:outputText>
+										</p:column>   
+			                    																	
+										<p:column filterBy="#{specialclass.placeName}" sortBy="#{specialclass.placeName}" >
+										 <f:facet name="header">
+										<h:outputText value="LUGAR"/>
+										</f:facet>
+										 <h:outputText value="#{specialclass.placeName}"/>
+										</p:column>   
+			                    								
+											                    
+								<p:column headerText="Opciones">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogSpecialclass"
+										actionListener="#{specialclassView.action_edit}">
+										<f:attribute name="selectedSpecialclass" value="#{specialclass}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Borrar" actionListener="#{specialclassView.action_delete_datatable}"
+										onclick="if(!confirm('¿Desea borrar esta clase?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedSpecialclass" value="#{specialclass}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="Nueva"
+									action="#{specialclassView.action_new()}" update=":dialogSpecialclass" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogSpecialclass" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{specialclassView.showDialog}" resizable="false"
+						modal="true" width="800" position="top" style="margin:50px;">
+						<h:form id="formDialog"  enctype="multipart/form-data">
+							<p:messages id="msg" />
+							<p:panel id="panelSpecialclass" header="Nueva Clase">							
+							     <p:panelGrid>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgClassTitle" value=" Nombre de la clase"/></p:column>
+								    		<p:column colspan="3">
+								    				<p:inputText id="txtClassTitle" size="80" binding="#{specialclassView.txtClassTitle}"/>
+											</p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column colspan="4"><p:editor widgetVar="editor1" value="#{specialclassView.classDecription}" height="100" style="margin-bottom:10px"/></p:column>
+								    	</p:row>
+								    	<p:row>									
+								    		<p:column colspan="2"><h:outputText id="msgFecha" value=" Fecha"/></p:column>
+								    		<p:column colspan="2"><p:calendar showOn="button" navigator="true" locale="es" pattern="dd/MM/yyyy" mindate="#{specialclassView.currentDate}"
+																  binding="#{specialclassView.txtFecha}" /></p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgStartHour" value=" Hora inicio"/></p:column>
+								    		<p:column><p:calendar showOn="button" navigator="true" locale="en"  pattern="HH:mm" timeOnly="true"
+																  binding="#{specialclassView.txtStartHour}" >
+																<p:ajax event="dateSelect" listener="#{specialclassView.listener_txtStartHour}" />
+														</p:calendar>
+											</p:column>
+											<p:column><h:outputText id="msgEndHour" value=" Hora de fin"/></p:column>
+								    		<p:column><p:calendar showOn="button"
+								    		                      navigator="true"
+								    		                      locale="es" 
+								    		                      pattern="HH:mm"
+								    		                      timeOnly="true"
+																  binding="#{specialclassView.txtEndHour}" >
+														<p:ajax event="dateSelect" listener="#{specialclassView.listener_txtEndHour}" />
+													</p:calendar>
+											</p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgPlaceName" value=" Lugar"/></p:column>
+								    		<p:column><p:inputText id="txtPlaceName"  binding="#{specialclassView.txtPlaceName}"/></p:column>
+								    		<p:column><h:outputText id="msgPlaceAddress" value=" Direccion"/></p:column>
+								    		<p:column><p:inputText id="txtPlaceAddress" binding="#{specialclassView.txtPlaceAddress}"/>
+								   			 </p:column>
+								    	</p:row>	
+										<p:row>
+								    		<p:column><h:outputText id="msgLatitude" value=" Latitude"/></p:column>
+								    		<p:column><p:inputText id="txtLatitude" binding="#{specialclassView.txtLatitude}"/></p:column>
+								    		<p:column><h:outputText id="msgLongitud" value=" Longitud"/></p:column>
+								    		<p:column><p:inputText id="txtLongitud" binding="#{specialclassView.txtLongitud}"/></p:column>
+								    		
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgPrice" value=" Precio"/></p:column>
+								    		<p:column><p:inputText id="txtPrice"  binding="#{specialclassView.txtPrice}"/></p:column>
+								    		<p:column><h:outputText id="msgClassPicture" value=" Foto"/></p:column>
+								    		<p:column>
+								    				<p:fileUpload id="txtClassPicture" value="#{specialclassView.txtClassPicture}" mode="simple" skinSimple="true" accept="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"/>
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgHaveparkingcar" value=" Parqueadero Carros"/></p:column>
+								    		<p:column>
+								    				<p:selectBooleanCheckbox id="txtHaveparkingcar" value="#{specialclassView.txtHaveparkingcar}" />
+								    		</p:column>
+								    		<p:column><h:outputText id="msgHaveparkingbike" value=" Parqueadero Motos"/></p:column>
+								    		<p:column>
+								    				<p:selectBooleanCheckbox id="txtHaveparkingbike" value="#{specialclassView.txtHaveparkingbike}" />
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgHavebathroom" value=" Baños"/></p:column>
+								    		<p:column>
+								    				<p:selectBooleanCheckbox id="txtHavebathroom" value="#{specialclassView.txtHavebathroom}" />
+								    		</p:column>
+								    		<p:column><h:outputText id="msgHavechangeclothes" value=" Vestier"/></p:column>
+								    		<p:column>
+								    				<p:selectBooleanCheckbox id="txtHavechangeclothes" value="#{specialclassView.txtHavechangeclothes}" />
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>
+								    		<p:column><h:outputText id="msgHaveshower" value=" Duchas"/></p:column>
+								    		<p:column>
+								    				<p:selectBooleanCheckbox id="txtHaveshower" value="#{specialclassView.txtHaveshower}" />
+								    		</p:column>
+								    	</p:row>
+								    	
+								    </p:panelGrid> 
+
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" ajax="false" binding="#{specialclassView.btnSave}" value="Guardar" action="#{specialclassView.action_save()}" update=":dialogSpecialclass :frm:panelDataTableSpecialclass" />
+									<p:commandButton id="btnClear" value="Limpiar" action="#{specialclassView.action_clear()}" update=":dialogSpecialclass" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{specialclassView.action_closeDialog()}" update=":dialogSpecialclass" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				
+				</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

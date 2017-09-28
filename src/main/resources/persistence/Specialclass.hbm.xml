@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-sep-2017 22:04:37 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Specialclass" table="specialclass" catalog="liderbs_virfit">
+        <id name="idspecialclass" type="java.lang.Integer">
+            <column name="idspecialclass" />
+            <generator class="identity" />
+        </id>
+        <property name="classTitle" type="java.lang.String">
+            <column name="class_title" length="1000" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="startHour" type="java.util.Date">
+            <column name="start_hour" length="19" />
+        </property>
+        <property name="endHour" type="java.util.Date">
+            <column name="end_hour" length="19" />
+        </property>
+        <property name="placeName" type="java.lang.String">
+            <column name="place_name" length="1000" />
+        </property>
+        <property name="placeAddress" type="java.lang.String">
+            <column name="place_address" length="1000" />
+        </property>
+        <property name="latitude" type="java.lang.String">
+            <column name="latitude" length="100" />
+        </property>
+        <property name="longitud" type="java.lang.String">
+            <column name="longitud" length="100" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="description" length="10000" />
+        </property>
+        <property name="haveparkingcar" type="java.lang.Integer">
+            <column name="haveparkingcar" />
+        </property>
+        <property name="haveparkingbike" type="java.lang.Integer">
+            <column name="haveparkingbike" />
+        </property>
+        <property name="havechangeclothes" type="java.lang.Integer">
+            <column name="havechangeclothes" />
+        </property>
+        <property name="havebathroom" type="java.lang.Integer">
+            <column name="havebathroom" />
+        </property>
+        <property name="haveshower" type="java.lang.Integer">
+            <column name="haveshower" />
+        </property>
+        <property name="price" type="java.lang.Double">
+            <column name="price" precision="22" scale="0" />
+        </property>
+        <property name="classPicture" type="java.lang.String">
+            <column name="class_picture" length="5000" />
+        </property>
+    </class>
+</hibernate-mapping>
