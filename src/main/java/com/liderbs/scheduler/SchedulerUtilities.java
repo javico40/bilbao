@@ -83,7 +83,7 @@ public class SchedulerUtilities {
 			
 			//Si la clase ya se vencio
 			if(clase.getFecha().before(current)){
-				/*
+				
 				//Asignar la fecha de la clase a un dia
 				classDate.setTime(clase.getFecha());
 				//Incrementar a la siguiente semana
@@ -94,7 +94,7 @@ public class SchedulerUtilities {
 			    specClass.setFecha(classDate.getTime());
 			    //Actualizar la clase
 			    businessDelegatorView.updateSpecialclass(specClass);
-			    */
+			    
 			}
 		}//end for
 		
