@@ -18,11 +18,11 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Govirfit <small> Entrena donde quieras </small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-							<li class="active">Opciones</li>
+							<li class="active">Usuarios</li>
 						</ol>
 					</section>
 
@@ -33,8 +33,10 @@
 						
 						<p:panel id="panelDataTableUsers" header="Usuarios">
 							<p:growl id="men"/>				
-							<p:dataTable value="#{usersView.data}" var="users"
-								paginator="true" rows="5">
+							<p:dataTable value="#{usersView.data}"
+							 			 var="users"
+										 paginator="true"
+										 rows="5">
 										
 										<p:column filterBy="#{users.username}" sortBy="#{users.username}" >
 										 <f:facet name="header">
@@ -153,13 +155,13 @@
 								    <h:outputText value="&#160;" />
 								    
 									<h:outputText id="msgName" value=" Nombres"/>
-									<p:inputText id="txtName" binding="#{usersView.txtName}"/>
+									<p:inputText id="txtName" value="#{usersView.txtName}"/>
 									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
 								    
 									<h:outputText id="msgLastname" value=" Correo"/>
-									<p:inputText id="txtLastname" binding="#{usersView.txtLastname}"/>
+									<p:inputText id="txtLastname" value="#{usersView.txtLastname}"/>
 									
 									<h:outputText value="&#160;" />
 								    <h:outputText value="&#160;" />
