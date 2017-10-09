@@ -188,7 +188,7 @@
 								
 									<p:panel id="panelBotones">
 										<div align="center">					
-											<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_modify_cenpro}" update="@form" />
+											<p:commandButton id="btnSave" ajax="false" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_modify_cenpro}" update="@form" />
 											<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update="@form" />
 											<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update="@form" />
 										</div>
