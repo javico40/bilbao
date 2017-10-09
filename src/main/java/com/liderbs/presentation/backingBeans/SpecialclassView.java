@@ -84,7 +84,7 @@ public class SpecialclassView implements Serializable {
     private SpecialclassDTO selectedSpecialclass;
     private Specialclass entity;
     private boolean showDialog;
-    private Integer dayOfWeekClass; 
+    private boolean dayOfWeekClass; 
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
@@ -353,7 +353,17 @@ public class SpecialclassView implements Serializable {
         txtLatitude.setValue(selectedSpecialclass.getLatitude());
         txtLongitud.setValue(selectedSpecialclass.getLongitud());
         txtPrice.setValue(selectedSpecialclass.getPrice());
-        dayOfWeekClass = selectedSpecialclass.getDayWeek();
+        
+        int dweek = 0;
+        dweek = selectedSpecialclass.getDayWeek();
+        
+        if(dweek == 0){
+        	dayOfWeekClass = false;
+        }else{
+        	dayOfWeekClass = true;
+        }
+        
+        
         
         if(selectedSpecialclass.getClassPicture() != null && selectedSpecialclass.getClassPicture() != ""){
         	classPicturePath = selectedSpecialclass.getClassPicture();
@@ -475,10 +485,10 @@ public class SpecialclassView implements Serializable {
                 	entity.setHavechangeclothes(0);
                 }
                 
-                if(dayOfWeekClass == null){
+                if(dayOfWeekClass == false){
                 	entity.setDayWeek(0);
                 }else{
-                	entity.setDayWeek(dayOfWeekClass);
+                	entity.setDayWeek(1);
                 }
                 
                 
@@ -608,10 +618,10 @@ try {
                 	entity.setHavechangeclothes(0);
                 }
                 
-                if(dayOfWeekClass == null){
+                if(dayOfWeekClass == false){
                 	entity.setDayWeek(0);
                 }else{
-                	entity.setDayWeek(dayOfWeekClass);
+                	entity.setDayWeek(1);
                 }
                 
                 businessDelegatorView.updateSpecialclass(entity);
@@ -1015,11 +1025,11 @@ try {
 		this.currentDate = currentDate;
 	}
 
-	public Integer getDayOfWeekClass() {
+	public boolean getDayOfWeekClass() {
 		return dayOfWeekClass;
 	}
 
-	public void setDayOfWeekClass(Integer dayOfWeekClass) {
+	public void setDayOfWeekClass(boolean dayOfWeekClass) {
 		this.dayOfWeekClass = dayOfWeekClass;
 	}
 

@@ -83,18 +83,26 @@ public class SchedulerUtilities {
 			
 			//Si la clase ya se vencio
 			if(clase.getFecha().before(current)){
-				
 				//Asignar la fecha de la clase a un dia
 				classDate.setTime(clase.getFecha());
+				
+				//System.out.println("clase fecha "+clase.getFecha());
+				
 				//Incrementar a la siguiente semana
 				classDate.add(Calendar.DAY_OF_YEAR, 7);
+				
+				//System.out.println("clase fecha final "+classDate.getTime());
+				
 				//Buscar la clase a actualizar
-			    Specialclass specClass = businessDelegatorView.getSpecialclass(clase.getIdspecialclass());
-			    //Actualizar la fecha
-			    specClass.setFecha(classDate.getTime());
-			    //Actualizar la clase
-			    businessDelegatorView.updateSpecialclass(specClass);
 			    
+				Specialclass specClass = businessDelegatorView.getSpecialclass(clase.getIdspecialclass());
+			    
+				//Actualizar la fecha
+			    
+				specClass.setFecha(classDate.getTime());
+			    
+				//Actualizar la clase
+			    businessDelegatorView.updateSpecialclass(specClass);
 			}
 		}//end for
 		
