@@ -38,21 +38,21 @@
 										 paginator="true"
 										 rows="5">
 										
-										<p:column filterBy="#{users.username}" sortBy="#{users.username}" >
+										<p:column style="text-align:center" width="150" filterBy="#{users.username}" sortBy="#{users.username}" >
 										 <f:facet name="header">
 										<h:outputText value="Usuario"/>
 										</f:facet>
 										 <h:outputText value="#{users.username}"/>
 										</p:column>   
 			                    		
-			                    		<p:column filterBy="#{users.email}" sortBy="#{users.lastname}" >
+			                    		<p:column style="text-align:center" width="200" filterBy="#{users.email}" sortBy="#{users.lastname}" >
 										 <f:facet name="header">
 										<h:outputText value="Correo"/>
 										</f:facet>
 										 <h:outputText value="#{users.email}"/>
 										</p:column>   
 			                    		
-			                    		<p:column sortBy="#{users.fixedphone}" >
+			                    		<p:column style="text-align:center" width="100" sortBy="#{users.fixedphone}" >
 										 <f:facet name="header">
 										<h:outputText value="Telefono Fijo"/>
 										</f:facet>
@@ -60,49 +60,49 @@
 										</p:column>   
 			                    		
 																																	
-										<p:column sortBy="#{users.cellphone}" >
+										<p:column style="text-align:center" width="100" sortBy="#{users.cellphone}" >
 										 <f:facet name="header">
 										<h:outputText value="Celular"/>
 										</f:facet>
 										 <h:outputText value="#{users.cellphone}"/>
 										</p:column>   
 			                    															
-										<p:column sortBy="#{users.statusDescription}" >
+										<p:column style="text-align:center" width="100" sortBy="#{users.statusDescription}" >
 										 <f:facet name="header">
 										<h:outputText value="Estado"/>
 										</f:facet>
 										 <h:outputText value="#{users.statusDescription}"/>
 										</p:column>  
 										
-										<p:column sortBy="#{users.isTrainer}" >
+										<p:column style="text-align:center" width="100" sortBy="#{users.isTrainer}" >
 										 <f:facet name="header">
 										<h:outputText value="Entrenador"/>
 										</f:facet>
 										 <h:outputText value="#{users.isTrainer}"/>
 										</p:column> 
 										
-										<p:column sortBy="#{users.trainerProfileStatusDesc}" >
+										<p:column style="text-align:center" width="100" sortBy="#{users.trainerProfileStatusDesc}" >
 										 <f:facet name="header">
 										<h:outputText value="Estado Perfil"/>
 										</f:facet>
 										 <h:outputText value="#{users.trainerProfileStatusDesc}"/>
 										</p:column>   
 			                    	
-			                    		<p:column sortBy="#{users.created}" >
+			                    		<p:column style="text-align:center" width="200" sortBy="#{users.created}" >
 										 <f:facet name="header">
 										<h:outputText value="Creado"/>
 										</f:facet>
 										 <h:outputText value="#{users.created}"/>
 										</p:column>   
 			                    									
-										<p:column sortBy="#{users.userid}" >
+										<p:column style="text-align:center" width="200" sortBy="#{users.userid}" >
 										 <f:facet name="header">
 										<h:outputText value="Creado por"/>
 										</f:facet>
 										 <h:outputText value="#{users.userid}"/>
 										</p:column>   
 										
-										<p:column sortBy="#{users.lastlogin}" >
+										<p:column style="text-align:center" width="200" sortBy="#{users.lastlogin}" >
 										 <f:facet name="header">
 										<h:outputText value="Ultimo ingreso"/>
 										</f:facet>
