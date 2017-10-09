@@ -25,6 +25,18 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	
+	<util:properties id="scheduler" location="classpath:scheduler.properties" />
+	
+    <context:property-placeholder properties-ref="scheduler" />
+    
+    <bean id="schedulerUtilities" class="com.liderbs.scheduler.SchedulerUtilities" />
+ 
+    <task:scheduled-tasks>
+        <task:scheduled ref="schedulerUtilities" method="verificarClasesJob" cron="#{scheduler['scheduler.crontabEnsambleDetallado']}"></task:scheduled>
+    </task:scheduled-tasks>
+	
 
 	<context:component-scan base-package="com" scoped-proxy="interfaces" />
 
