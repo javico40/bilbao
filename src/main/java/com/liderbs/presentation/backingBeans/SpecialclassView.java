@@ -53,8 +53,11 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class SpecialclassView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
+    
     private static final Logger log = LoggerFactory.getLogger(SpecialclassView.class);
+    
     private UploadedFile txtClassPicture;
     private InputText txtClassTitle;
     private String classDecription;
@@ -81,12 +84,16 @@ public class SpecialclassView implements Serializable {
     private SpecialclassDTO selectedSpecialclass;
     private Specialclass entity;
     private boolean showDialog;
+    private Integer dayOfWeekClass; 
+    
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
     
     SimpleDateFormat formatImage = new SimpleDateFormat("ddMMyyyy");
 
     private Date currentDate;
+    
+    private String classPicturePath;
     
     public SpecialclassView() {
         super();
@@ -345,6 +352,15 @@ public class SpecialclassView implements Serializable {
         txtLongitud.setValue(selectedSpecialclass.getLongitud());
         txtPrice.setValue(selectedSpecialclass.getPrice());
         
+        if(selectedSpecialclass.getClassPicture() != null && selectedSpecialclass.getClassPicture() != ""){
+        	classPicturePath = selectedSpecialclass.getClassPicture();
+        }else{
+        	classPicturePath = null;
+        }
+  
+        
+        //txtClassPicture;
+        
         if(selectedSpecialclass.getHaveparkingcar() == 1){
         	txtHaveparkingcar = true;
         }else{
@@ -398,6 +414,7 @@ public class SpecialclassView implements Serializable {
     }
 
     public String action_create() {
+    	
         try {
         	
         	if(FacesUtils.checkString(txtClassTitle) == null){
@@ -583,9 +600,15 @@ try {
                 
                 businessDelegatorView.updateSpecialclass(entity);
                 
-                //Save picture
+                //Si tiene ya foto, y no se ha seleccionado una, asignar la que ya tiene
                 
-                if(txtClassPicture != null) {
+                if(classPicturePath != null && txtClassPicture == null){
+                	
+                	entity.setClassPicture(classPicturePath);
+                	businessDelegatorView.updateSpecialclass(entity);
+               
+                //Si no si selecciono una foto actualizarla, sino, dejarla en blanco
+                } else if(txtClassPicture != null) {
 	 				
 	 				InputStream filecontent = null;
 	 				String picName = "";
@@ -593,8 +616,8 @@ try {
 	 			
 	 				try {
 	 				
-	 				//final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
-	 			    final String path = "/var/www/html/govirfit/appimg/specialclass/";
+	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+	 			    //final String path = "/var/www/html/govirfit/appimg/specialclass/";
 	 				
 	 				
 	 				Date currentDate = new Date();
@@ -630,9 +653,10 @@ try {
 	 				
 	 				businessDelegatorView.updateSpecialclass(entity);
 	                
-	 	        }//end picture upload
+	 	        }else{
+	 	        	FacesUtils.addErrorMessage("No selecciono una foto de la clase");
+	 	        }
                
-        		
                  FacesUtils.addInfoMessage("Clase actualizada satisfactoriamente");
         	}//end if-else
         
@@ -974,8 +998,23 @@ try {
 	public void setCurrentDate(Date currentDate) {
 		this.currentDate = currentDate;
 	}
+
+	public Integer getDayOfWeekClass() {
+		return dayOfWeekClass;
+	}
+
+	public void setDayOfWeekClass(Integer dayOfWeekClass) {
+		this.dayOfWeekClass = dayOfWeekClass;
+	}
+
+	public String getClassPicturePath() {
+		return classPicturePath;
+	}
+
+	public void setClassPicturePath(String classPicturePath) {
+		this.classPicturePath = classPicturePath;
+	}
 	
 	
-    
-    
+	
 }

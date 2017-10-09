@@ -109,10 +109,10 @@
 		   			</h:form>
 					<p:dialog id="dialogSpecialclass" appendTo="@(body)" draggable="true"
 						closable="false" visible="#{specialclassView.showDialog}" resizable="false"
-						modal="true" width="800" position="top" style="margin:50px;">
+						modal="true" width="900" position="top" style="margin:50px;">
 						<h:form id="formDialog"  enctype="multipart/form-data">
 							<p:messages id="msg" />
-							<p:panel id="panelSpecialclass" header="Nueva Clase">							
+							<p:scrollPanel id="panelSpecialclass" header="Nueva Clase">							
 							     <p:panelGrid>
 								    	<p:row>
 								    		<p:column><h:outputText id="msgClassTitle" value=" Nombre de la clase"/></p:column>
@@ -194,10 +194,26 @@
 								    				<p:selectBooleanCheckbox id="txtHaveshower" value="#{specialclassView.txtHaveshower}" />
 								    		</p:column>
 								    	</p:row>
+								    	<p:row>
+								    		<p:column colspan="4">
+								    		    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+								    			 <p:selectOneRadio id="dayOfWeek" value="#{specialclassView.dayOfWeekClass}">
+           											 <f:selectItem itemLabel="Lunes" itemValue="1" />
+            										 <f:selectItem itemLabel="Martes" itemValue="2" />
+          										     <f:selectItem itemLabel="Miercoles" itemValue="3" />
+          										     <f:selectItem itemLabel="Jueves" itemValue="4" />
+          										     <f:selectItem itemLabel="Viernes" itemValue="5" />
+          										     <f:selectItem itemLabel="Sabado" itemValue="6" />
+          										     <f:selectItem itemLabel="Domingo" itemValue="7" />
+        										  </p:selectOneRadio>
+        										</h:panelGrid>
+								    		</p:column>
+								    	</p:row>
 								    	
 								    </p:panelGrid> 
 
-							</p:panel>						   
+							</p:scrollPanel>	
+												   
 							<p:panel id="panelBotones">
 								<div align="center">					
 									<p:commandButton id="btnSave" ajax="false" binding="#{specialclassView.btnSave}" value="Guardar" action="#{specialclassView.action_save()}" update=":dialogSpecialclass :frm:panelDataTableSpecialclass" />
