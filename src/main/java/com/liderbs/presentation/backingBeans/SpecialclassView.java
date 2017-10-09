@@ -338,9 +338,11 @@ public class SpecialclassView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
+    	
         selectedSpecialclass = (SpecialclassDTO) (evt.getComponent()
                                                      .getAttributes()
                                                      .get("selectedSpecialclass"));
+        
         txtClassTitle.setValue(selectedSpecialclass.getClassTitle());
         classDecription = selectedSpecialclass.getDescription(); 
         txtFecha.setValue(selectedSpecialclass.getFecha());
@@ -351,6 +353,7 @@ public class SpecialclassView implements Serializable {
         txtLatitude.setValue(selectedSpecialclass.getLatitude());
         txtLongitud.setValue(selectedSpecialclass.getLongitud());
         txtPrice.setValue(selectedSpecialclass.getPrice());
+        dayOfWeekClass = selectedSpecialclass.getDayWeek();
         
         if(selectedSpecialclass.getClassPicture() != null && selectedSpecialclass.getClassPicture() != ""){
         	classPicturePath = selectedSpecialclass.getClassPicture();
@@ -471,6 +474,13 @@ public class SpecialclassView implements Serializable {
                 }else{
                 	entity.setHavechangeclothes(0);
                 }
+                
+                if(dayOfWeekClass == null){
+                	entity.setDayWeek(0);
+                }else{
+                	entity.setDayWeek(dayOfWeekClass);
+                }
+                
                 
                 businessDelegatorView.saveSpecialclass(entity);
                 
@@ -596,6 +606,12 @@ try {
                 	entity.setHavechangeclothes(1);
                 }else{
                 	entity.setHavechangeclothes(0);
+                }
+                
+                if(dayOfWeekClass == null){
+                	entity.setDayWeek(0);
+                }else{
+                	entity.setDayWeek(dayOfWeekClass);
                 }
                 
                 businessDelegatorView.updateSpecialclass(entity);

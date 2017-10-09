@@ -36,6 +36,7 @@ public class SpecialclassDTO implements Serializable {
     private String placeName;
     private Double price;
     private Date startHour;
+    private Integer dayWeek;
 
     public String getClassPicture() {
         return classPicture;
@@ -172,4 +173,14 @@ public class SpecialclassDTO implements Serializable {
     public void setStartHour(Date startHour) {
         this.startHour = startHour;
     }
+
+	public Integer getDayWeek() {
+		return dayWeek;
+	}
+
+	public void setDayWeek(Integer dayWeek) {
+		this.dayWeek = dayWeek;
+	}
+    
+    
 }

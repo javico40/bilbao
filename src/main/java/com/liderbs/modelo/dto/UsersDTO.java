@@ -17,6 +17,7 @@ import java.util.Date;
 *
 */
 public class UsersDTO implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UsersDTO.class);
     private String cellphone;
@@ -33,6 +34,9 @@ public class UsersDTO implements Serializable {
     private String username;
     private Integer trainerProfileStatus;
     private String trainerPic;
+    private String statusDescription;
+    private String trainerProfileStatusDesc;
+    private String isTrainer;
     
     
     public UsersDTO() {
@@ -40,7 +44,34 @@ public class UsersDTO implements Serializable {
 	}
     
     
-    public UsersDTO(Integer idusers, String username, String trainerPic){
+    public UsersDTO(Integer idusers, String username, String password, String name, String cellphone, String email,
+			String fixedphone, Integer status, String statusDescription, Float saldo, Date created, Date lastlogin,
+			Integer trainerProfileStatus, String trainerPic, String trainerProfileStatusDesc, String isTrainer) {
+		
+    	super();
+		this.idusers = idusers;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.cellphone = cellphone;
+		this.email = email;
+		this.fixedphone = fixedphone;
+		this.status = status;
+		this.statusDescription = statusDescription;
+		this.saldo = saldo;
+		this.created = created;
+		this.lastlogin = lastlogin;
+		this.trainerProfileStatus = trainerProfileStatus;
+		this.trainerPic = trainerPic;
+		this.trainerProfileStatusDesc = trainerProfileStatusDesc;
+		this.isTrainer = isTrainer;
+		
+	}
+
+
+
+
+	public UsersDTO(Integer idusers, String username, String trainerPic){
     	
     	this.idusers = idusers;
     	this.username = username;
@@ -161,6 +192,31 @@ public class UsersDTO implements Serializable {
 	public void setTrainerPic(String trainerPic) {
 		this.trainerPic = trainerPic;
 	}
-    
-    
+
+	public String getStatusDescription() {
+		return statusDescription;
+	}
+
+	public void setStatusDescription(String statusDescription) {
+		this.statusDescription = statusDescription;
+	}
+
+	public String getTrainerProfileStatusDesc() {
+		return trainerProfileStatusDesc;
+	}
+
+	public void setTrainerProfileStatusDesc(String trainerProfileStatusDesc) {
+		this.trainerProfileStatusDesc = trainerProfileStatusDesc;
+	}
+
+	public String getIsTrainer() {
+		return isTrainer;
+	}
+
+	public void setIsTrainer(String isTrainer) {
+		this.isTrainer = isTrainer;
+	}
+	
+	
+	
 }

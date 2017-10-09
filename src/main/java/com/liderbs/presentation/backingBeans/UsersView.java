@@ -1553,10 +1553,79 @@ public class UsersView implements Serializable {
     public List<UsersDTO> getData() {
         try {
             if (data == null) {
-                data = businessDelegatorView.getDataUsers();
+            	
+            	data = new ArrayList<UsersDTO>();
+            	
+            	List<Users> list = businessDelegatorView.getUsers();
+            	
+            	String statusDescript = "";
+            	String trainerProfileStatusDesc = "";
+            	int idTrainer = 0;
+            	String isTrainer = "";
+            	List<Trainer> listTrainer = new ArrayList<Trainer>();
+            	
+            	for(Users user:list){
+            		
+            		if(user.getStatus() == 0){
+            			statusDescript = "Activo";
+            		}else{
+            			statusDescript = "Inactivo";
+            		}
+            		
+            		if(user.getTrainerProfileStatus() == 0){
+            			trainerProfileStatusDesc = "No iniciado";
+            		}else if(user.getTrainerProfileStatus() == 1){
+            			trainerProfileStatusDesc = "Enviado";
+            		}else if(user.getTrainerProfileStatus() == 2){
+            			trainerProfileStatusDesc = "Aprobado";
+            		}else if(user.getTrainerProfileStatus() == 3){
+            			trainerProfileStatusDesc = "Activo";
+            		}//end if-else
+            		
+            		//Verificar si es entrenador
+            		
+            		idTrainer = 0;
+            		listTrainer.clear();
+            		
+            		listTrainer = businessDelegatorView.findByCriteriaInTrainer(new Object[]{"usersIdusers",false, user.getIdusers(), "="},
+							   																null,
+							   																null);
+
+            		
+
+            		for(Trainer trainer: listTrainer){
+            			idTrainer = trainer.getIdtrainer();
+            		}
+            		
+            		if(idTrainer != 0){
+            			isTrainer = "Si";
+            		}else{
+            			isTrainer = "No";
+            		}
+            		
+            		
+            		data.add(new UsersDTO(user.getIdusers(),
+            							  user.getUsername(),
+            							  user.getPassword(),
+            							  user.getName(),
+            							  user.getCellphone(),
+            							  user.getEmail(),
+            							  user.getFixedphone(),
+            							  user.getStatus(),
+            							  statusDescript,
+            							  user.getSaldo(),
+            							  user.getCreated(),
+            							  user.getLastlogin(),
+            							  user.getTrainerProfileStatus(),
+            							  user.getFoto(),
+            							  trainerProfileStatusDesc,
+            							  isTrainer));
+            	}
+            	
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        	FacesUtils.addErrorMessage("Error al consultar data de usuarios");
+            log.info(e.toString());
         }
 
         return data;

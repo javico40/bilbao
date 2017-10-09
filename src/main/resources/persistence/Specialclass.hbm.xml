@@ -56,5 +56,8 @@
         <property name="classPicture" type="java.lang.String">
             <column name="class_picture" length="5000" />
         </property>
+        <property name="dayWeek" type="java.lang.Integer">
+            <column name="day_week" />
+        </property>
     </class>
 </hibernate-mapping>
