@@ -602,7 +602,7 @@ try {
                 
                 //Si tiene ya foto, y no se ha seleccionado una, asignar la que ya tiene
                 
-                if(classPicturePath != null && txtClassPicture == null){
+                if(classPicturePath != null){
                 	
                 	entity.setClassPicture(classPicturePath);
                 	businessDelegatorView.updateSpecialclass(entity);
