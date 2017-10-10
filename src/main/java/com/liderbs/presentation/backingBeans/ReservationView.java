@@ -47,8 +47,10 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 @ViewScoped
 public class ReservationView implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(ReservationView.class);
+    
     private InputText txtReservationHolderCode;
     private InputText txtReservationHolderEmail;
     private InputText txtReservationHolderId;
@@ -65,11 +67,94 @@ public class ReservationView implements Serializable {
     private ReservationDTO selectedReservation;
     private Reservation entity;
     private boolean showDialog;
+    private String txtCodigoReserva;
+    
+    
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
 
     public ReservationView() {
         super();
+    }
+    
+    public void activarReserva(ActionEvent evt){
+    	
+    	 selectedReservation = (ReservationDTO) (evt.getComponent()
+                 .getAttributes()
+                 .get("selectedReservation"));
+    	 
+    	 
+    	 
+    	 
+    }
+    
+    public void buscarReserva(){
+    
+    	try{
+    		if(txtCodigoReserva == null || txtCodigoReserva == ""){
+    			FacesUtils.addErrorMessage("Por favor ingrese un codigo de reserva");
+    		}else{
+    		
+    			if(data == null){
+    				data = new ArrayList<ReservationDTO>();
+    			}
+    			
+    			data.clear();
+    		
+    			String codigoReserva = txtCodigoReserva;
+    		
+    			List<Reservation> list = businessDelegatorView.findByCriteriaInReservation(new Object[]{"reservationHolderCode",true, codigoReserva, "="},
+    																				   null,
+    																				   null);
+    			
+    			String nombreClase = "";
+    			String estadoReserva = "";
+    			
+    			for(Reservation reserva: list){
+    				
+    				nombreClase = "";
+        			estadoReserva = "";
+    				
+    				if(reserva.getReservationIdclass() != null){
+    					
+    					Specialclass clase = businessDelegatorView.getSpecialclass(reserva.getReservationIdclass());
+    					
+    					if(clase != null){
+    						nombreClase = clase.getClassTitle();
+    					}
+    					
+    				}
+    				
+    				if(reserva.getReservationStatus() == null){
+    					if(reserva.getReservationStatus() == 0){
+    						estadoReserva = "Sin activar";
+    					}else{
+    						estadoReserva = "Activa";
+    					}
+    				}else{
+    					estadoReserva = "Indeterminada";
+    				}
+    				
+    				data.add(new ReservationDTO(reserva.getIdreservation(),
+    						                    reserva.getReservationIdclass(),
+    						                    reserva.getReservationHolderCode(),
+    						                    reserva.getReservationHolderEmail(),
+    						                    reserva.getReservationHolderId(),
+    						                    reserva.getReservationHolderName(),
+    						                    reserva.getReservationHolderTel(),
+    						                    reserva.getReservationStatus(),
+    						                    nombreClase,
+    						                    estadoReserva));
+    				
+    			}//end for
+    		
+    	}//end if
+    		
+    	}catch(Exception e){
+    		FacesUtils.addErrorMessage("Se ha presentado un error consultando la reserva, contactanos a soporte@govirfit.com para ayudarte");
+    		log.info(e.toString());
+    	}
+    		
     }
 
     public void rowEventListener(RowEditEvent e) {
@@ -506,14 +591,6 @@ public class ReservationView implements Serializable {
     }
 
     public List<ReservationDTO> getData() {
-        try {
-            if (data == null) {
-                data = businessDelegatorView.getDataReservation();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return data;
     }
 
@@ -581,4 +658,14 @@ public class ReservationView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public String getTxtCodigoReserva() {
+		return txtCodigoReserva;
+	}
+
+	public void setTxtCodigoReserva(String txtCodigoReserva) {
+		this.txtCodigoReserva = txtCodigoReserva;
+	}
+    
+    
 }

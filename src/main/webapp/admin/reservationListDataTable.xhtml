@@ -4,44 +4,50 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	</h:head>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
 
-	<h:body>
-		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
-		 
-		 	<ui:define name="body">	
-				<f:view>
-					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
-					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
-   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
-					</p:dialog>
+<h:body>
+	<ui:composition template="/WEB-INF/facelets/template.xhtml">
+		<ui:define name="body">
+			<f:view locale="es_ES">
+
+				<!-- Content Wrapper. Contains page content -->
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1>
+							Govirfit <small> Entrena donde quieras </small>
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+							<li class="active">Gestion de reservas</li>
+						</ol>
+					</section>
+
+					<!-- Main content -->
+					<section class="content">
 					
-					<!-- Expired session -->
-					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
-					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
-	   					<h:outputText value="The session is finished" />
-	                 	<input id="confirmBackToLogin" 
-	                 		type="button" 
-	                 		value="Sign in"
-	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
-					</p:dialog>
-					
-		  			<h:form id="frm">								  		
+		  			<h:form id="frm">
+		  			
+		  				<p:panel header="Buscar">
+						<h:panelGrid columns="7" id="panelGridInformation">
+							
+							<h:outputText id="msgReserva" value="Codigo de Reserva " />
+							<h:outputText value="&#160;" />
+							<p:inputText id="txtReserva" value="#{reservationView.txtCodigoReserva}" size="10" />
+							<h:outputText value="&#160;" />
+							<p:commandButton id="btnBuscar" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" actionListener="#{reservationView.buscarReserva}" value="Buscar" update="panelDataTableReservation" />
+						</h:panelGrid>
+						</p:panel>								  		
 						
 						<p:panel id="panelDataTableReservation" header="ReservationData">
 							<p:growl id="men"/>				
 							<p:dataTable value="#{reservationView.data}" var="reservation"
 								paginator="true" rows="5">
-																										<p:column filterBy="#{reservation.idreservation}" sortBy="#{reservation.idreservation}" >
-										 <f:facet name="header">
-										<h:outputText value="idreservation"/>
-										</f:facet>
-										 <h:outputText value="#{reservation.idreservation}"/>
-										 </p:column>
-			                    																									
-										<p:column filterBy="#{reservation.reservationHolderCode}" sortBy="#{reservation.reservationHolderCode}" >
+									  	
+									  	<p:column filterBy="#{reservation.reservationHolderCode}" sortBy="#{reservation.reservationHolderCode}" >
 										 <f:facet name="header">
 										<h:outputText value="ReservationHolderCode"/>
 										</f:facet>
@@ -62,41 +68,50 @@
 										 <h:outputText value="#{reservation.reservationHolderId}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{reservation.reservationHolderName}" sortBy="#{reservation.reservationHolderName}" >
+										<p:column>
 										 <f:facet name="header">
 										<h:outputText value="ReservationHolderName"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationHolderName}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{reservation.reservationHolderTel}" sortBy="#{reservation.reservationHolderTel}" >
+										<p:column>
 										 <f:facet name="header">
 										<h:outputText value="ReservationHolderTel"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationHolderTel}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{reservation.reservationIdclass}" sortBy="#{reservation.reservationIdclass}" >
+										<p:column >
 										 <f:facet name="header">
-										<h:outputText value="ReservationIdclass"/>
+										<h:outputText value="Clase"/>
 										</f:facet>
-										 <h:outputText value="#{reservation.reservationIdclass}"/>
+										 <h:outputText value="#{reservation.reservationClassName}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{reservation.reservationStatus}" sortBy="#{reservation.reservationStatus}" >
+										<p:column sortBy="#{reservation.reservationStatus}" >
 										 <f:facet name="header">
-										<h:outputText value="ReservationStatus"/>
+										<h:outputText value="Estado"/>
 										</f:facet>
-										 <h:outputText value="#{reservation.reservationStatus}"/>
+										 <h:outputText value="#{reservation.reservationStatusDesc}"/>
 										</p:column>   
 			                    			                    
 								<p:column headerText="Options">
-									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+								
+									<p:commandButton id="btnActivar"
+													 icon="ui-icon-check"
+													 update="@form"
+													 sactionListener="#{reservationView.activarReserva}">
+											<f:attribute name="selectedReservation" value="#{reservation}" />
+									</p:commandButton>
+								
+									<p:commandButton rendered="false" id="btnEdit" icon="ui-icon-check"
 										update=":dialogReservation"
 										actionListener="#{reservationView.action_edit}">
 										<f:attribute name="selectedReservation" value="#{reservation}" />
 									</p:commandButton>
-									<p:commandButton id="btnDelete"									
+									
+									<p:commandButton rendered="false" id="btnDelete"									
 										title="Delete" actionListener="#{reservationView.action_delete_datatable}"
 										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
 										icon="ui-icon-trash" update="@form">
@@ -105,7 +120,7 @@
 								</p:column>									                    
 							</p:dataTable>	
 						</p:panel>
-						<p:panel id="panelBoton">
+						<p:panel id="panelBoton" rendered="false">
 							<div align="center">
 								<p:commandButton id="btnNew" value="New"
 									action="#{reservationView.action_new()}" update=":dialogReservation" />
@@ -150,8 +165,14 @@
 							</p:panel>					
 						</h:form>
 					</p:dialog>
-				</f:view>
-			</ui:define>		
-		</ui:composition>	
-	</h:body>	
-</html>	
+							
+				</section>
+				</div>
+				<!-- /.content-wrapper -->
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
+				

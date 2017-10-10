@@ -27,8 +27,36 @@ public class ReservationDTO implements Serializable {
     private String reservationHolderTel;
     private Integer reservationIdclass;
     private Integer reservationStatus;
+    private String reservationClassName;
+    private String reservationStatusDesc;
+    
+   
+    public ReservationDTO() {
+		super();
+	}
+    
+    
 
-    public Integer getIdreservation() {
+	public ReservationDTO(Integer idreservation, Integer reservationIdclass, String reservationHolderCode,
+			String reservationHolderEmail, String reservationHolderId, String reservationHolderName,
+			String reservationHolderTel, Integer reservationStatus, String reservationClassName, String reservationStatusDesc) {
+		
+		super();
+		this.idreservation = idreservation;
+		this.reservationIdclass = reservationIdclass;
+		this.reservationHolderCode = reservationHolderCode;
+		this.reservationHolderEmail = reservationHolderEmail;
+		this.reservationHolderId = reservationHolderId;
+		this.reservationHolderName = reservationHolderName;
+		this.reservationHolderTel = reservationHolderTel;
+		this.reservationStatus = reservationStatus;
+		this.reservationClassName = reservationClassName;
+		this.reservationStatusDesc = reservationStatusDesc;
+	}
+
+
+
+	public Integer getIdreservation() {
         return idreservation;
     }
 
@@ -91,4 +119,13 @@ public class ReservationDTO implements Serializable {
     public void setReservationStatus(Integer reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
+
+	public String getReservationClassName() {
+		return reservationClassName;
+	}
+
+	public void setReservationClassName(String reservationClassName) {
+		this.reservationClassName = reservationClassName;
+	}
+    
 }
