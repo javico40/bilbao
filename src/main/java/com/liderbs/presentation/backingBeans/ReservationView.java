@@ -60,6 +60,7 @@ public class ReservationView implements Serializable {
     private InputText txtReservationHolderName;
     private InputText txtReservationHolderTel;
     private InputText txtReservationIdclass;
+    private InputText txtReservationClassDesc;
     private InputText txtReservationStatus;
     private InputText txtIdreservation;
     private CommandButton btnSave;
@@ -73,6 +74,7 @@ public class ReservationView implements Serializable {
     private String txtCodigoReserva;
     private Users usuarioapp;
     private Integer idAccount = 0;
+    private Integer tipoBusqueda;
     
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -108,67 +110,173 @@ public class ReservationView implements Serializable {
   		return usuarioapp;
   	}
     
-    public void activarReserva(ActionEvent evt){
+    public String action_consumo(ActionEvent evt) {
+    	   
+        try{
+       
+            selectedReservation = (ReservationDTO) (evt.getComponent()
+                                                       .getAttributes()
+                                                       .get("selectedReservation"));
+            
+            int idReservation = selectedReservation.getIdreservation();
+            
+            List<Consumption> listConsumption = businessDelegatorView.findByCriteriaInConsumption(new Object[]{"idreservation",false, idReservation, "="},
+            																					  null,
+            																					  null);
+            
+            int idConsumption = 0;
+            
+            for(Consumption consumo:listConsumption){
+            	idConsumption = consumo.getIdconsumption();
+            }
+            
+            //
+            if(idConsumption == 0){
+            	FacesUtils.addErrorMessage("No se encontraron consumos asociados pero la reserva esta activa, por favor contacte con soporte@govirfit.com");
+            }else{
+            	
+            	Consumption consumo = businessDelegatorView.getConsumption(idConsumption);
+            	
+            //Verificar el saldo
+            	int comprado = 0;
+            	int consumido = 0;
+            	int saldo = 0;
+            	
+            	comprado = consumo.getCantidad();
+            	consumido = consumo.getConsumido();
+            	saldo = comprado - consumido;
+            	
+            	if(saldo > 0){
+            		
+            		Date fecha = new Date();
+            		Users user = getUsuarioapp();
+            		
+            		consumido = consumido+1;
+            		consumo.setConsumido(consumido);
+            		businessDelegatorView.updateConsumption(consumo);
+            		
+            		ConsumptionDetail consumoDetail = new ConsumptionDetail();
+                  	 
+                  	consumoDetail.setIdconsumption(consumo.getIdconsumption());
+                  	consumoDetail.setFecha(fecha);
+                  	consumoDetail.setHora(fecha);
+                  	consumoDetail.setCantidad(1);
+                  	consumoDetail.setIdusuarioCreo(user.getIdusers());
+                  	consumoDetail.setUsuarioCreo(user.getUsername());
+                  	 
+                  	businessDelegatorView.saveConsumptionDetail(consumoDetail);
+            		
+            		FacesUtils.addErrorMessage("Se aplico el consumo satisfactoriamente");
+            		
+            	}else{
+            		FacesUtils.addErrorMessage("No es posible consumir la reserva saldo igual a "+saldo);
+            	}//End if-else
+            	
+            }//end if-else
+            
+        }catch(Exception e){
+        	log.info(e.toString());
+        }
+        
+        return "";
+     }
+    
+    public void activarReserva(){
     	
     try{
     	
-    	 selectedReservation = (ReservationDTO) (evt.getComponent()
-                 .getAttributes()
-                 .get("selectedReservation"));
+    	if(FacesUtils.checkString(txtReservationHolderCode) == null){
+    		FacesUtils.addErrorMessage("Ingrese un codigo de reserva");
+    	}else if(FacesUtils.checkString(txtReservationHolderId) == null){
+    		FacesUtils.addErrorMessage("Ingrese la identificacion del cliente");
+    	}else if(FacesUtils.checkString(txtReservationHolderName) == null){
+    		FacesUtils.addErrorMessage("Ingrese el nombre del cliente");
+    	}else if(FacesUtils.checkString(txtReservationHolderEmail) == null){
+    		FacesUtils.addErrorMessage("Ingrese el correo del cliente");
+    	}else if(FacesUtils.checkString(txtReservationHolderTel) == null){
+    		FacesUtils.addErrorMessage("Ingrese el telefono del cliente");
+    	}else if(FacesUtils.checkInteger(txtReservationIdclass) == null){
+    		FacesUtils.addErrorMessage("No se pudo identificar la clase, contacte con soporte@govirfit.com");
+    	}else if(FacesUtils.checkString(txtIdreservation) == null){
+    		FacesUtils.addErrorMessage("No se pudo identificar la reserva, contacte con soporte@govirfit.com");
+    	}else{
+    		
+       	 Users user = getUsuarioapp();
     	 
-    	 Users user = getUsuarioapp();
-    	 
-    	 int idReservation = selectedReservation.getIdreservation();
-    	 Date fechaReservation = new Date();
-    	 String usuarioNombre = selectedReservation.getReservationHolderName();
-    	 String codeReservation = selectedReservation.getReservationHolderCode();
-    	 
-    	 //Buscar si el usuario actual es un gimnasio
-    	 
-    	 List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
-    																			 null,
-    																			 null);
-        	
-    	 int idPlace = 0;
-    	 String placeName = "";
-    	 
-    	 
-    		if(placeList.size() > 0){
-    			for(Place place: placeList){
-    				idPlace = place.getIdPlace();
-    				placeName = place.getPlaceName();
-    			}
-    		}
-    	
-    	 //End buscar si es gimnasio
-    	 
-    	 Consumption consumo = new Consumption();
-    	 
-    	 consumo.setIdreservation(idReservation);
-    	 consumo.setFecha(fechaReservation);
-    	 consumo.setUsuariodocumento("");
-    	 consumo.setUsuarionombre(usuarioNombre);
-    	 consumo.setReservation(codeReservation);
-    	 consumo.setPlaceId(idPlace);
-    	 consumo.setPlaceName(placeName);
-    	 consumo.setCantidad(0);
-    	 consumo.setConsumido(0);
-    	 
-    	 businessDelegatorView.saveConsumption(consumo);
-    	 
-    	 ConsumptionDetail consumoDetail = new ConsumptionDetail();
-    	 
-    	 consumoDetail.setIdconsumption(consumo.getIdconsumption());
-    	 consumoDetail.setFecha(fechaReservation);
-    	 consumoDetail.setHora(fechaReservation);
-    	 consumoDetail.setCantidad(0);
-    	 consumoDetail.setIdusuarioCreo(user.getIdusers());
-    	 consumoDetail.setUsuarioCreo(user.getUsername());
-    	 
-    	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
-    	 
-    	 FacesUtils.addErrorMessage("Reserva activada satisfactoriamente");
-    	 
+       	 int idReservation = FacesUtils.checkInteger(txtIdreservation);
+       	 int idClass = FacesUtils.checkInteger(txtReservationIdclass);
+       	 
+       	 Reservation reserv = businessDelegatorView.getReservation(idReservation);
+       	 
+       	 Date fechaReservation = new Date();
+       	 String identificacionUsuario = FacesUtils.checkString(txtReservationHolderId);
+       	 String usuarioNombre = FacesUtils.checkString(txtReservationHolderName);
+       	 String codeReservation = FacesUtils.checkString(txtReservationHolderCode);
+       	 
+       	 Specialclass specClass= businessDelegatorView.getSpecialclass(idClass);
+       	 
+       	 //Buscar si el usuario actual es un gimnasio
+       	 
+       	 List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+       																			 null,
+       																			 null);
+           	
+       	 int idPlace = 0;
+       	 String placeName = "";
+       	 
+       	 
+       		if(placeList.size() > 0){
+       			for(Place place: placeList){
+       				idPlace = place.getIdPlace();
+       				placeName = place.getPlaceName();
+       			}
+       		}
+       	
+       	 //End buscar si es gimnasio
+       	 
+       	 Consumption consumo = new Consumption();
+       	 
+       	 consumo.setIdreservation(idReservation);
+       	 consumo.setFecha(fechaReservation);
+       	 consumo.setUsuariodocumento(identificacionUsuario);
+       	 consumo.setUsuarionombre(usuarioNombre);
+       	 consumo.setReservation(codeReservation);
+       	 consumo.setPlaceId(idPlace);
+       	 consumo.setPlaceName(placeName);
+       	 
+       	 if(specClass.getClassTitle().contains("VIRFIT")){
+       		consumo.setCantidad(8);
+          	consumo.setConsumido(1);
+       	 }else{
+       		consumo.setCantidad(1);
+          	consumo.setConsumido(1);
+       	 }
+       	 
+       	 businessDelegatorView.saveConsumption(consumo);
+       	 
+       	 ConsumptionDetail consumoDetail = new ConsumptionDetail();
+       	 
+       	 consumoDetail.setIdconsumption(consumo.getIdconsumption());
+       	 consumoDetail.setFecha(fechaReservation);
+       	 consumoDetail.setHora(fechaReservation);
+       	 consumoDetail.setCantidad(1);
+       	 consumoDetail.setIdusuarioCreo(user.getIdusers());
+       	 consumoDetail.setUsuarioCreo(user.getUsername());
+       	 
+       	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
+       	 
+       	if(specClass.getClassTitle().contains("VIRFIT")){
+       		reserv.setReservationStatus(1);
+       	 }else{
+       		reserv.setReservationStatus(2);
+       	 }
+       	 
+       	 businessDelegatorView.updateReservation(reserv);
+       	 
+       	 FacesUtils.addInfoMessage("Reserva activada satisfactoriamente");
+    		
+    	}//end if-else
+
     }catch(Exception e){
     	log.info(e.toString());
     }//end try-catch
@@ -178,65 +286,121 @@ public class ReservationView implements Serializable {
     public void buscarReserva(){
     
     	try{
-    		if(txtCodigoReserva == null || txtCodigoReserva == ""){
-    			FacesUtils.addErrorMessage("Por favor ingrese un codigo de reserva");
+    		
+    		int valid = 0;
+    		
+    		if(tipoBusqueda == null){
+    			FacesUtils.addErrorMessage("Seleccione un tipo de busqueda");
     		}else{
-    		
-    			if(data == null){
-    				data = new ArrayList<ReservationDTO>();
-    			}
     			
-    			data.clear();
-    		
-    			String codigoReserva = txtCodigoReserva;
-    		
-    			List<Reservation> list = businessDelegatorView.findByCriteriaInReservation(new Object[]{"reservationHolderCode",true, codigoReserva, "="},
-    																				   null,
-    																				   null);
-    			
-    			String nombreClase = "";
-    			String estadoReserva = "";
-    			
-    			for(Reservation reserva: list){
-    				
-    				nombreClase = "";
-        			estadoReserva = "";
-    				
-    				if(reserva.getReservationIdclass() != null){
-    					
-    					Specialclass clase = businessDelegatorView.getSpecialclass(reserva.getReservationIdclass());
-    					
-    					if(clase != null){
-    						nombreClase = clase.getClassTitle();
-    					}
-    					
-    				}
-    				
-    				if(reserva.getReservationStatus() == null){
-    					if(reserva.getReservationStatus() == 0){
-    						estadoReserva = "Sin activar";
-    					}else{
-    						estadoReserva = "Activa";
-    					}
-    				}else{
-    					estadoReserva = "Indeterminada";
-    				}
-    				
-    				data.add(new ReservationDTO(reserva.getIdreservation(),
-    						                    reserva.getReservationIdclass(),
-    						                    reserva.getReservationHolderCode(),
-    						                    reserva.getReservationHolderEmail(),
-    						                    reserva.getReservationHolderId(),
-    						                    reserva.getReservationHolderName(),
-    						                    reserva.getReservationHolderTel(),
-    						                    reserva.getReservationStatus(),
-    						                    nombreClase,
-    						                    estadoReserva));
-    				
-    			}//end for
-    		
-    	}//end if
-    		
+        		if(txtCodigoReserva == null || txtCodigoReserva == ""){
+        			if(tipoBusqueda == 1){
+        				FacesUtils.addErrorMessage("Por favor ingrese un codigo de reserva");
+        			}else{
+        				FacesUtils.addErrorMessage("Por favor ingrese un numero de identificacion");
+        			}
+        		}else{
+        		
+        			if(data == null){
+        				data = new ArrayList<ReservationDTO>();
+        			}
+        			
+        			data.clear();
+        		
+        			String codigoReserva = txtCodigoReserva;
+        			List<Reservation> list = new ArrayList<Reservation>();
+        			list.clear();
+        			
+        		
+        			if(tipoBusqueda == 1){
+        				
+        				list = businessDelegatorView.findByCriteriaInReservation(new Object[]{"reservationHolderCode",true, codigoReserva, "="},
+								   null,
+								   null);
+        				
+        			}else{
+        				
+        				list = businessDelegatorView.findByCriteriaInReservation(new Object[]{"reservationHolderId",true, codigoReserva, "="},
+								   null,
+								   null);
+        				
+        			}
+        			
+        			if(list.size() == 0){
+        				FacesUtils.addErrorMessage("No se encontraron reservas con los parametros ingresados");
+        			}else{
+        				
+              			String nombreClase = "";
+            			String estadoReserva = "";
+            			String renderReserveButton = "";
+            		    String renderConsumeButton = "";
+            			
+            			for(Reservation reserva: list){
+            				
+            				nombreClase = "";
+                			estadoReserva = "";
+                			renderReserveButton = "";
+                		    renderConsumeButton = "";
+            				
+            				if(reserva.getReservationIdclass() != null){
+            					
+            					Specialclass clase = businessDelegatorView.getSpecialclass(reserva.getReservationIdclass());
+            					
+            					if(clase != null){
+            						nombreClase = clase.getClassTitle();
+            					}
+            					
+            				}
+            				
+            				if(reserva.getReservationStatus() != null){
+            					if(reserva.getReservationStatus() == 1){
+            						estadoReserva = "Sin activar";
+            						renderReserveButton = "true";
+            						renderConsumeButton = "false";
+            					}else if(reserva.getReservationStatus() == 2){
+            						renderReserveButton = "false";
+            						renderConsumeButton = "true";
+            						estadoReserva = "Activa";
+            					}else if(reserva.getReservationStatus() == 3){
+            						renderReserveButton = "false";
+            						renderConsumeButton = "false";
+            						estadoReserva = "Completada";
+            					}else{
+            						renderReserveButton = "false";
+            						renderConsumeButton = "false";
+                					estadoReserva = "Indeterminada";
+            					}
+            				}else{
+            					renderReserveButton = "false";
+        						renderConsumeButton = "false";
+            					estadoReserva = "Indeterminada";
+            				}
+            				
+            				data.add(new ReservationDTO(reserva.getIdreservation(),
+            						                    reserva.getReservationIdclass(),
+            						                    reserva.getReservationHolderCode(),
+            						                    reserva.getReservationHolderEmail(),
+            						                    reserva.getReservationHolderId(),
+            						                    reserva.getReservationHolderName(),
+            						                    reserva.getReservationHolderTel(),
+            						                    reserva.getReservationStatus(),
+            						                    nombreClase,
+            						                    estadoReserva,
+            						                    renderReserveButton,
+            						                    renderConsumeButton));
+            				
+            			}//end for
+        				
+        				
+        			}//end list contains values
+        			
+        			
+  
+        		
+        	}//end if
+
+    	}//end tipo busqueda
+	
     	}catch(Exception e){
     		FacesUtils.addErrorMessage("Se ha presentado un error consultando la reserva, contactanos a soporte@govirfit.com para ayudarte");
     		log.info(e.toString());
@@ -412,10 +576,19 @@ public class ReservationView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
-    	
+   
+    try{
+   
         selectedReservation = (ReservationDTO) (evt.getComponent()
                                                    .getAttributes()
                                                    .get("selectedReservation"));
+        
+        txtIdreservation.setValue(selectedReservation.getIdreservation());
+        txtIdreservation.setDisabled(false);
+        
+        txtReservationIdclass.setValue(selectedReservation.getReservationIdclass());
+        txtReservationIdclass.setDisabled(false);
+        
         txtReservationHolderCode.setValue(selectedReservation.getReservationHolderCode());
         txtReservationHolderCode.setDisabled(false);
         
@@ -438,9 +611,26 @@ public class ReservationView implements Serializable {
         txtReservationStatus.setDisabled(false);
         
         txtIdreservation.setValue(selectedReservation.getIdreservation());
-        txtIdreservation.setDisabled(true);
+        txtIdreservation.setDisabled(false);
+        
+        String classDesc = "";
+        
+        if(selectedReservation.getReservationIdclass() != null){
+        	int idClase = 0;
+        	idClase = selectedReservation.getReservationIdclass();
+        	Specialclass claseEsp = businessDelegatorView.getSpecialclass(idClase);
+        	classDesc = claseEsp.getClassTitle();
+        }
+        
+        txtReservationClassDesc.setValue(classDesc);
+        txtReservationClassDesc.setDisabled(false);
         
         btnSave.setDisabled(false);
+        
+    	}catch(Exception e){
+    		log.info(e.toString());
+    	}
+        
         setShowDialog(true);
 
         return "";
@@ -761,6 +951,22 @@ public class ReservationView implements Serializable {
 
 	public void setTxtCodigoReserva(String txtCodigoReserva) {
 		this.txtCodigoReserva = txtCodigoReserva;
+	}
+
+	public InputText getTxtReservationClassDesc() {
+		return txtReservationClassDesc;
+	}
+
+	public void setTxtReservationClassDesc(InputText txtReservationClassDesc) {
+		this.txtReservationClassDesc = txtReservationClassDesc;
+	}
+
+	public Integer getTipoBusqueda() {
+		return tipoBusqueda;
+	}
+
+	public void setTipoBusqueda(Integer tipoBusqueda) {
+		this.tipoBusqueda = tipoBusqueda;
 	}
     
     

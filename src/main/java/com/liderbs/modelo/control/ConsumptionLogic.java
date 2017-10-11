@@ -69,6 +69,7 @@ public class ConsumptionLogic implements IConsumptionLogic {
         log.debug("saving Consumption instance");
 
         try {
+        	
             if ((entity.getPlaceName() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getPlaceName(), 100) == false)) {
@@ -95,10 +96,6 @@ public class ConsumptionLogic implements IConsumptionLogic {
                         entity.getUsuarionombre(), 100) == false)) {
                 throw new ZMessManager().new NotValidFormatException(
                     "usuarionombre");
-            }
-
-            if (getConsumption(entity.getIdconsumption()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
             consumptionDAO.save(entity);

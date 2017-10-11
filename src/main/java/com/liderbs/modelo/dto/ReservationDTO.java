@@ -29,6 +29,8 @@ public class ReservationDTO implements Serializable {
     private Integer reservationStatus;
     private String reservationClassName;
     private String reservationStatusDesc;
+    private String renderReserveButton;
+    private String renderConsumeButton;
     
    
     public ReservationDTO() {
@@ -39,7 +41,8 @@ public class ReservationDTO implements Serializable {
 
 	public ReservationDTO(Integer idreservation, Integer reservationIdclass, String reservationHolderCode,
 			String reservationHolderEmail, String reservationHolderId, String reservationHolderName,
-			String reservationHolderTel, Integer reservationStatus, String reservationClassName, String reservationStatusDesc) {
+			String reservationHolderTel, Integer reservationStatus, String reservationClassName,
+			String reservationStatusDesc, String renderReserveButton, String renderConsumeButton) {
 		
 		super();
 		this.idreservation = idreservation;
@@ -52,6 +55,8 @@ public class ReservationDTO implements Serializable {
 		this.reservationStatus = reservationStatus;
 		this.reservationClassName = reservationClassName;
 		this.reservationStatusDesc = reservationStatusDesc;
+		this.renderReserveButton = renderReserveButton;
+		this.renderConsumeButton = renderConsumeButton;
 	}
 
 
@@ -127,5 +132,39 @@ public class ReservationDTO implements Serializable {
 	public void setReservationClassName(String reservationClassName) {
 		this.reservationClassName = reservationClassName;
 	}
+
+	public String getReservationStatusDesc() {
+		return reservationStatusDesc;
+	}
+
+	public void setReservationStatusDesc(String reservationStatusDesc) {
+		this.reservationStatusDesc = reservationStatusDesc;
+	}
+
+
+
+	public String getRenderReserveButton() {
+		return renderReserveButton;
+	}
+
+
+
+	public void setRenderReserveButton(String renderReserveButton) {
+		this.renderReserveButton = renderReserveButton;
+	}
+
+
+
+	public String getRenderConsumeButton() {
+		return renderConsumeButton;
+	}
+
+
+
+	public void setRenderConsumeButton(String renderConsumeButton) {
+		this.renderConsumeButton = renderConsumeButton;
+	}
+	
+	
     
 }

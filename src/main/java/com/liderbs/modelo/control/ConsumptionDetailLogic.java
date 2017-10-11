@@ -78,9 +78,6 @@ public class ConsumptionDetailLogic implements IConsumptionDetailLogic {
                     "usuarioCreo");
             }
 
-            if (getConsumptionDetail(entity.getIdconsumptionDetail()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             consumptionDetailDAO.save(entity);
 

@@ -34,7 +34,13 @@
 		  				<p:panel header="Buscar">
 						<h:panelGrid columns="7" id="panelGridInformation">
 							
-							<h:outputText id="msgReserva" value="Codigo de Reserva " />
+							<h:outputText id="msgReserva" value="Buscar por " />
+							<h:outputText value="&#160;" />
+							<p:selectOneMenu id="console" value="#{reservationView.tipoBusqueda}" style="width:125px">
+            					<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            						<f:selectItem itemLabel="Reserva" itemValue="1" />
+            						<f:selectItem itemLabel="Cedula" itemValue="2" />
+        						</p:selectOneMenu>
 							<h:outputText value="&#160;" />
 							<p:inputText id="txtReserva" value="#{reservationView.txtCodigoReserva}" size="10" />
 							<h:outputText value="&#160;" />
@@ -49,45 +55,45 @@
 									  	
 									  	<p:column filterBy="#{reservation.reservationHolderCode}" sortBy="#{reservation.reservationHolderCode}" >
 										 <f:facet name="header">
-										<h:outputText value="ReservationHolderCode"/>
+										<h:outputText value="Condigo de Reserva"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationHolderCode}"/>
 										</p:column>   
+										
+										<p:column filterBy="#{reservation.reservationHolderId}" sortBy="#{reservation.reservationHolderId}" >
+										 <f:facet name="header">
+										<h:outputText value="Cedula / Pasaporte"/>
+										</f:facet>
+										 <h:outputText value="#{reservation.reservationHolderId}"/>
+										</p:column>   
+										
+										<p:column>
+										 <f:facet name="header">
+										<h:outputText value="Cliente"/>
+										</f:facet>
+										 <h:outputText value="#{reservation.reservationHolderName}"/>
+										</p:column>
 			                    									
 										<p:column filterBy="#{reservation.reservationHolderEmail}" sortBy="#{reservation.reservationHolderEmail}" >
 										 <f:facet name="header">
-										<h:outputText value="ReservationHolderEmail"/>
+										<h:outputText value="Email"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationHolderEmail}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{reservation.reservationHolderId}" sortBy="#{reservation.reservationHolderId}" >
-										 <f:facet name="header">
-										<h:outputText value="ReservationHolderId"/>
-										</f:facet>
-										 <h:outputText value="#{reservation.reservationHolderId}"/>
-										</p:column>   
-			                    									
 										<p:column>
 										 <f:facet name="header">
-										<h:outputText value="ReservationHolderName"/>
-										</f:facet>
-										 <h:outputText value="#{reservation.reservationHolderName}"/>
-										</p:column>   
-			                    									
-										<p:column>
-										 <f:facet name="header">
-										<h:outputText value="ReservationHolderTel"/>
+										<h:outputText value="Telefono"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationHolderTel}"/>
 										</p:column>   
 			                    									
-										<p:column >
+										 <p:column >
 										 <f:facet name="header">
 										<h:outputText value="Clase"/>
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationClassName}"/>
-										</p:column>   
+										</p:column>    
 			                    									
 										<p:column sortBy="#{reservation.reservationStatus}" >
 										 <f:facet name="header">
@@ -95,13 +101,28 @@
 										</f:facet>
 										 <h:outputText value="#{reservation.reservationStatusDesc}"/>
 										</p:column>   
-			                    			                    
+			                    									
+											                    
 								<p:column headerText="Options">
 								
 								
-									<p:commandButton id="btnEdit" icon="ui-icon-check"
-										update=":dialogReservation"
-										actionListener="#{reservationView.action_edit}">
+									<p:commandButton id="btnEdit"
+													 icon="ui-icon-check"
+													 rendered="#{reservation.renderReserveButton}"
+													 update=":dialogReservation"
+													 value="Activar Reserva"
+													 actionListener="#{reservationView.action_edit}">
+										<f:attribute name="selectedReservation" value="#{reservation}" />
+									</p:commandButton>
+									
+									<p:commandButton rendered="#{reservation.renderConsumeButton}"
+												    id="btnRegConsumo"									
+													title="RegConsumo"
+										 			actionListener="#{reservationView.action_consumo}"
+													onclick="if(!confirm('¿Desea aplicar 1 consumo a esta reserva?')){return false;}"
+													icon="ui-icon-plus"
+													value="Registrar Consumo"
+													update="@form">
 										<f:attribute name="selectedReservation" value="#{reservation}" />
 									</p:commandButton>
 									
@@ -132,12 +153,30 @@
 							   
 						<h:form id="formDialog">
 							<p:messages id="msg" />
-							<p:panel id="panelReservation" header="Datos de la Reserva">	
+							<p:panel id="panelReservation" header="Confirmacion de la reserva">	
 													
 							    <h:panelGrid columns="2" id="panelGrid" >
 							    
+							    	<h:outputText id="msgReservationId" rendered="false" value=" ID Reserva"/>
+									<p:inputText id="txtReservationId" rendered="false" binding="#{reservationView.txtIdreservation}"/>
+									
+									<h:outputText id="msgReservationIdClass" rendered="false" value=" ID Clase"/>
+									<p:inputText id="txtReservationIdClass" rendered="false" binding="#{reservationView.txtReservationIdclass}"/>
+									
+									<h:outputText id="msgReservationStatus" rendered="false" value=" Status"/>
+									<p:inputText id="txtReservationStatus" rendered="false" binding="#{reservationView.txtReservationStatus}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+							    
 							    	<h:outputText id="msgReservationHolderCode" value=" Codigo de la reserva"/>
-									<p:inputText id="txtReservationHolderCode" binding="#{reservationView.txtReservationHolderCode}"/>
+									<p:inputText id="txtReservationHolderCode" disabled="true" binding="#{reservationView.txtReservationHolderCode}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+									
+									<h:outputText id="msgReservationHolderId" value=" Documento de Identidad"/>
+									<p:inputText id="txtReservationHolderId" binding="#{reservationView.txtReservationHolderId}"/>
 									
 									<h:outputText value="&#160;" />
 									<h:outputText value="&#160;" />
@@ -156,14 +195,19 @@
 																		
 									<h:outputText id="msgReservationHolderTel" value=" Telefono"/>
 									<p:inputText id="txtReservationHolderTel" binding="#{reservationView.txtReservationHolderTel}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+																		
+									<h:outputText id="msgReservationHolderClass" value=" Clase"/>
+									<p:inputText id="txtReservationHolderClass" disabled="true" binding="#{reservationView.txtReservationClassDesc}"/>
 								
 								 </h:panelGrid>
 							</p:panel>						   
 							<p:panel id="panelBotones">
 								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{reservationView.btnSave}" value="Save" action="#{reservationView.action_save()}" update=":dialogReservation :frm:panelDataTableReservation" />
-									<p:commandButton id="btnClear" value="Clear" action="#{reservationView.action_clear()}" update=":dialogReservation" />
-									<p:commandButton id="btnExit" value="Exit" action="#{reservationView.action_closeDialog()}" update=":dialogReservation" />
+									<p:commandButton id="btnSave" binding="#{reservationView.btnSave}" value="Confirmar" action="#{reservationView.activarReserva()}" update=":dialogReservation :frm:panelDataTableReservation" />
+									<p:commandButton id="btnExit" value="Cerrar" action="#{reservationView.action_closeDialog()}" update=":dialogReservation" />
 								</div>
 							</p:panel>					
 						</h:form>
