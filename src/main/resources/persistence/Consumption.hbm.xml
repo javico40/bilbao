@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-oct-2017 14:25:00 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.Consumption" table="consumption" catalog="liderbs_virfit">
+        <id name="idconsumption" type="java.lang.Integer">
+            <column name="idconsumption" />
+            <generator class="identity" />
+        </id>
+        <property name="idreservation" type="java.lang.Integer">
+            <column name="idreservation" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="usuariodocumento" type="java.lang.String">
+            <column name="usuariodocumento" length="100" />
+        </property>
+        <property name="usuarionombre" type="java.lang.String">
+            <column name="usuarionombre" length="100" />
+        </property>
+        <property name="reservation" type="java.lang.String">
+            <column name="reservation" length="100" />
+        </property>
+        <property name="placeId" type="java.lang.Integer">
+            <column name="place_id" />
+        </property>
+        <property name="placeName" type="java.lang.String">
+            <column name="place_name" length="100" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="cantidad" />
+        </property>
+        <property name="consumido" type="java.lang.Integer">
+            <column name="consumido" />
+        </property>
+    </class>
+</hibernate-mapping>

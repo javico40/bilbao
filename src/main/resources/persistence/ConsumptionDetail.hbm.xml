@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-oct-2017 14:25:00 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.liderbs.modelo.ConsumptionDetail" table="consumption_detail" catalog="liderbs_virfit">
+        <id name="idconsumptionDetail" type="java.lang.Integer">
+            <column name="idconsumption_detail" />
+            <generator class="identity" />
+        </id>
+        <property name="idconsumption" type="java.lang.Integer">
+            <column name="idconsumption" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="hora" type="java.util.Date">
+            <column name="hora" length="19" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="cantidad" />
+        </property>
+        <property name="idusuarioCreo" type="java.lang.Integer">
+            <column name="idusuario_creo" />
+        </property>
+        <property name="usuarioCreo" type="java.lang.String">
+            <column name="usuario_creo" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

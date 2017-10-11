@@ -35,6 +35,8 @@
         <mapping resource="persistence/Cities.hbm.xml" />     
         <mapping resource="persistence/Specialclass.hbm.xml" />
         <mapping resource="persistence/Reservation.hbm.xml" />
+        <mapping resource="persistence/Consumption.hbm.xml" />
+        <mapping resource="persistence/ConsumptionDetail.hbm.xml" />
         
     </session-factory>
 </hibernate-configuration>

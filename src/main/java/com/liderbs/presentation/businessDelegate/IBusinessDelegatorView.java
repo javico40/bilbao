@@ -6,6 +6,8 @@ import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
 import com.liderbs.modelo.Cities;
+import com.liderbs.modelo.Consumption;
+import com.liderbs.modelo.ConsumptionDetail;
 import com.liderbs.modelo.Courses;
 import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
@@ -46,6 +48,8 @@ import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
 import com.liderbs.modelo.dto.CitiesDTO;
+import com.liderbs.modelo.dto.ConsumptionDTO;
+import com.liderbs.modelo.dto.ConsumptionDetailDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
 import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
@@ -763,6 +767,57 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberSpecialclass() throws Exception;
 
     public List<SpecialclassDTO> getDataSpecialclass()
+        throws Exception;
+    
+    public List<Consumption> getConsumption() throws Exception;
+
+    public void saveConsumption(Consumption entity) throws Exception;
+
+    public void deleteConsumption(Consumption entity) throws Exception;
+
+    public void updateConsumption(Consumption entity) throws Exception;
+
+    public Consumption getConsumption(Integer idconsumption)
+        throws Exception;
+
+    public List<Consumption> findByCriteriaInConsumption(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Consumption> findPageConsumption(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberConsumption() throws Exception;
+
+    public List<ConsumptionDTO> getDataConsumption() throws Exception;
+
+    public List<ConsumptionDetail> getConsumptionDetail()
+        throws Exception;
+
+    public void saveConsumptionDetail(ConsumptionDetail entity)
+        throws Exception;
+
+    public void deleteConsumptionDetail(ConsumptionDetail entity)
+        throws Exception;
+
+    public void updateConsumptionDetail(ConsumptionDetail entity)
+        throws Exception;
+
+    public ConsumptionDetail getConsumptionDetail(Integer idconsumptionDetail)
+        throws Exception;
+
+    public List<ConsumptionDetail> findByCriteriaInConsumptionDetail(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<ConsumptionDetail> findPageConsumptionDetail(
+        String sortColumnName, boolean sortAscending, int startRow,
+        int maxResults) throws Exception;
+
+    public Long findTotalNumberConsumptionDetail() throws Exception;
+
+    public List<ConsumptionDetailDTO> getDataConsumptionDetail()
         throws Exception;
     
    

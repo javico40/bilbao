@@ -98,14 +98,8 @@
 			                    			                    
 								<p:column headerText="Options">
 								
-									<p:commandButton id="btnActivar"
-													 icon="ui-icon-check"
-													 update="@form"
-													 sactionListener="#{reservationView.activarReserva}">
-											<f:attribute name="selectedReservation" value="#{reservation}" />
-									</p:commandButton>
 								
-									<p:commandButton rendered="false" id="btnEdit" icon="ui-icon-check"
+									<p:commandButton id="btnEdit" icon="ui-icon-check"
 										update=":dialogReservation"
 										actionListener="#{reservationView.action_edit}">
 										<f:attribute name="selectedReservation" value="#{reservation}" />
@@ -113,7 +107,7 @@
 									
 									<p:commandButton rendered="false" id="btnDelete"									
 										title="Delete" actionListener="#{reservationView.action_delete_datatable}"
-										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										onclick="if(!confirm('¿Deseas?')){return false;}"
 										icon="ui-icon-trash" update="@form">
 										<f:attribute name="selectedReservation" value="#{reservation}" />
 									</p:commandButton>
@@ -127,34 +121,43 @@
 							</div>
 						</p:panel>						
 		   			</h:form>
-					<p:dialog id="dialogReservation" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{reservationView.showDialog}" resizable="false"
-						modal="true" width="500">
+		   			
+					<p:dialog id="dialogReservation"
+							   appendTo="@(body)"
+							   draggable="true"
+							   closable="false"
+							   visible="#{reservationView.showDialog}" resizable="false"
+							   modal="true"
+							   width="500">
+							   
 						<h:form id="formDialog">
 							<p:messages id="msg" />
-							<p:panel id="panelReservation" header="Reservation">							
+							<p:panel id="panelReservation" header="Datos de la Reserva">	
+													
 							    <h:panelGrid columns="2" id="panelGrid" >
-																		 <h:outputText id="msgIdreservation" value="Idreservation"/>
-									 <p:inputText id="txtIdreservation" binding="#{reservationView.txtIdreservation}">
-									 <p:ajax update=":dialogReservation" listener="#{reservationView.listener_txtId}"/>
-									 </p:inputText>	
-																											
-																		<h:outputText id="msgReservationHolderCode" value=" ReservationHolderCode"/>
-									<p:inputText id="txtReservationHolderCode" disabled="true" binding="#{reservationView.txtReservationHolderCode}"/>
-																		<h:outputText id="msgReservationHolderEmail" value=" ReservationHolderEmail"/>
-									<p:inputText id="txtReservationHolderEmail" disabled="true" binding="#{reservationView.txtReservationHolderEmail}"/>
-																		<h:outputText id="msgReservationHolderId" value=" ReservationHolderId"/>
-									<p:inputText id="txtReservationHolderId" disabled="true" binding="#{reservationView.txtReservationHolderId}"/>
-																		<h:outputText id="msgReservationHolderName" value=" ReservationHolderName"/>
-									<p:inputText id="txtReservationHolderName" disabled="true" binding="#{reservationView.txtReservationHolderName}"/>
-																		<h:outputText id="msgReservationHolderTel" value=" ReservationHolderTel"/>
-									<p:inputText id="txtReservationHolderTel" disabled="true" binding="#{reservationView.txtReservationHolderTel}"/>
-																		<h:outputText id="msgReservationIdclass" value=" ReservationIdclass"/>
-									<p:inputText id="txtReservationIdclass" disabled="true" binding="#{reservationView.txtReservationIdclass}"/>
-																		<h:outputText id="msgReservationStatus" value=" ReservationStatus"/>
-									<p:inputText id="txtReservationStatus" disabled="true" binding="#{reservationView.txtReservationStatus}"/>
+							    
+							    	<h:outputText id="msgReservationHolderCode" value=" Codigo de la reserva"/>
+									<p:inputText id="txtReservationHolderCode" binding="#{reservationView.txtReservationHolderCode}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+									
+									<h:outputText id="msgReservationHolderName" value=" Cliente"/>
+									<p:inputText id="txtReservationHolderName" binding="#{reservationView.txtReservationHolderName}"/>
+									
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+																	
+									<h:outputText id="msgReservationHolderEmail" value=" Email cliente"/>
+									<p:inputText id="txtReservationHolderEmail" binding="#{reservationView.txtReservationHolderEmail}"/>
 																		
-																    </h:panelGrid>
+									<h:outputText value="&#160;" />
+									<h:outputText value="&#160;" />
+																		
+									<h:outputText id="msgReservationHolderTel" value=" Telefono"/>
+									<p:inputText id="txtReservationHolderTel" binding="#{reservationView.txtReservationHolderTel}"/>
+								
+								 </h:panelGrid>
 							</p:panel>						   
 							<p:panel id="panelBotones">
 								<div align="center">					

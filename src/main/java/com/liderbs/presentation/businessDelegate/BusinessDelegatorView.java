@@ -6,6 +6,8 @@ import com.liderbs.modelo.Autorization;
 import com.liderbs.modelo.Autorizationtype;
 import com.liderbs.modelo.Category;
 import com.liderbs.modelo.Cities;
+import com.liderbs.modelo.Consumption;
+import com.liderbs.modelo.ConsumptionDetail;
 import com.liderbs.modelo.Courses;
 import com.liderbs.modelo.Day;
 import com.liderbs.modelo.Estado;
@@ -37,6 +39,8 @@ import com.liderbs.modelo.control.IAutorizationLogic;
 import com.liderbs.modelo.control.IAutorizationtypeLogic;
 import com.liderbs.modelo.control.ICategoryLogic;
 import com.liderbs.modelo.control.ICitiesLogic;
+import com.liderbs.modelo.control.IConsumptionDetailLogic;
+import com.liderbs.modelo.control.IConsumptionLogic;
 import com.liderbs.modelo.control.ICoursesLogic;
 import com.liderbs.modelo.control.IDayLogic;
 import com.liderbs.modelo.control.IEstadoLogic;
@@ -70,6 +74,8 @@ import com.liderbs.modelo.dto.AutorizationDTO;
 import com.liderbs.modelo.dto.AutorizationtypeDTO;
 import com.liderbs.modelo.dto.CategoryDTO;
 import com.liderbs.modelo.dto.CitiesDTO;
+import com.liderbs.modelo.dto.ConsumptionDTO;
+import com.liderbs.modelo.dto.ConsumptionDetailDTO;
 import com.liderbs.modelo.dto.CoursesDTO;
 import com.liderbs.modelo.dto.DayDTO;
 import com.liderbs.modelo.dto.EstadoDTO;
@@ -157,7 +163,9 @@ import java.util.Set;
 @Scope("singleton")
 @Service("BusinessDelegatorView")
 public class BusinessDelegatorView implements IBusinessDelegatorView {
+	
     private static final Logger log = LoggerFactory.getLogger(BusinessDelegatorView.class);
+    
     @Autowired
     private IAccountLogic accountLogic;
     @Autowired
@@ -214,6 +222,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private IReservationLogic reservationLogic;
     @Autowired
     private ISpecialclassLogic specialclassLogic;
+    @Autowired
+    private IConsumptionLogic consumptionLogic;
+    @Autowired
+    private IConsumptionDetailLogic consumptionDetailLogic;
     
 
 
@@ -1705,6 +1717,113 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<SpecialclassDTO> getDataSpecialclass()
         throws Exception {
         return specialclassLogic.getDataSpecialclass();
+    }
+    
+    public List<Consumption> getConsumption() throws Exception {
+        return consumptionLogic.getConsumption();
+    }
+
+    public void saveConsumption(Consumption entity) throws Exception {
+        consumptionLogic.saveConsumption(entity);
+    }
+
+    public void deleteConsumption(Consumption entity) throws Exception {
+        consumptionLogic.deleteConsumption(entity);
+    }
+
+    public void updateConsumption(Consumption entity) throws Exception {
+        consumptionLogic.updateConsumption(entity);
+    }
+
+    public Consumption getConsumption(Integer idconsumption)
+        throws Exception {
+        Consumption consumption = null;
+
+        try {
+            consumption = consumptionLogic.getConsumption(idconsumption);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return consumption;
+    }
+
+    public List<Consumption> findByCriteriaInConsumption(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return consumptionLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<Consumption> findPageConsumption(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return consumptionLogic.findPageConsumption(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberConsumption() throws Exception {
+        return consumptionLogic.findTotalNumberConsumption();
+    }
+
+    public List<ConsumptionDTO> getDataConsumption() throws Exception {
+        return consumptionLogic.getDataConsumption();
+    }
+
+    public List<ConsumptionDetail> getConsumptionDetail()
+        throws Exception {
+        return consumptionDetailLogic.getConsumptionDetail();
+    }
+
+    public void saveConsumptionDetail(ConsumptionDetail entity)
+        throws Exception {
+        consumptionDetailLogic.saveConsumptionDetail(entity);
+    }
+
+    public void deleteConsumptionDetail(ConsumptionDetail entity)
+        throws Exception {
+        consumptionDetailLogic.deleteConsumptionDetail(entity);
+    }
+
+    public void updateConsumptionDetail(ConsumptionDetail entity)
+        throws Exception {
+        consumptionDetailLogic.updateConsumptionDetail(entity);
+    }
+
+    public ConsumptionDetail getConsumptionDetail(Integer idconsumptionDetail)
+        throws Exception {
+        ConsumptionDetail consumptionDetail = null;
+
+        try {
+            consumptionDetail = consumptionDetailLogic.getConsumptionDetail(idconsumptionDetail);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return consumptionDetail;
+    }
+
+    public List<ConsumptionDetail> findByCriteriaInConsumptionDetail(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception {
+        return consumptionDetailLogic.findByCriteria(variables,
+            variablesBetween, variablesBetweenDates);
+    }
+
+    public List<ConsumptionDetail> findPageConsumptionDetail(
+        String sortColumnName, boolean sortAscending, int startRow,
+        int maxResults) throws Exception {
+        return consumptionDetailLogic.findPageConsumptionDetail(sortColumnName,
+            sortAscending, startRow, maxResults);
+    }
+
+    public Long findTotalNumberConsumptionDetail() throws Exception {
+        return consumptionDetailLogic.findTotalNumberConsumptionDetail();
+    }
+
+    public List<ConsumptionDetailDTO> getDataConsumptionDetail()
+        throws Exception {
+        return consumptionDetailLogic.getDataConsumptionDetail();
     }
     
    

@@ -17,6 +17,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 
@@ -27,10 +28,12 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -68,6 +71,8 @@ public class ReservationView implements Serializable {
     private Reservation entity;
     private boolean showDialog;
     private String txtCodigoReserva;
+    private Users usuarioapp;
+    private Integer idAccount = 0;
     
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -77,15 +82,97 @@ public class ReservationView implements Serializable {
         super();
     }
     
+    @PostConstruct
+    public void init(){
+    	
+    	Users user = getUsuarioapp();
+		Set<Account> list = user.getAccounts();
+		
+		 for (Iterator<Account> it = list.iterator(); it.hasNext();) {
+ 		 	Account act = it.next();
+ 	        
+ 		 	//Si tiene cuenta activa
+ 		 	if(act.getAccountStatus() == 1){
+ 		 		if(act.getAccountDefault() == 1){
+ 		 			idAccount = act.getIdAccount();
+ 		 		}
+ 		 	}
+ 	    }//end for 
+    }
+    
+    public Users getUsuarioapp() {
+  		if(usuarioapp==null) {				
+  			  usuarioapp = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  			  //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rolsaldosefa_session", usuarioapp.get);				
+  		}
+  		return usuarioapp;
+  	}
+    
     public void activarReserva(ActionEvent evt){
+    	
+    try{
     	
     	 selectedReservation = (ReservationDTO) (evt.getComponent()
                  .getAttributes()
                  .get("selectedReservation"));
     	 
+    	 Users user = getUsuarioapp();
+    	 
+    	 int idReservation = selectedReservation.getIdreservation();
+    	 Date fechaReservation = new Date();
+    	 String usuarioNombre = selectedReservation.getReservationHolderName();
+    	 String codeReservation = selectedReservation.getReservationHolderCode();
+    	 
+    	 //Buscar si el usuario actual es un gimnasio
+    	 
+    	 List<Place> placeList = businessDelegatorView.findByCriteriaInPlace(new Object[]{"accountID",false, idAccount, "="},
+    																			 null,
+    																			 null);
+        	
+    	 int idPlace = 0;
+    	 String placeName = "";
     	 
     	 
+    		if(placeList.size() > 0){
+    			for(Place place: placeList){
+    				idPlace = place.getIdPlace();
+    				placeName = place.getPlaceName();
+    			}
+    		}
+    	
+    	 //End buscar si es gimnasio
     	 
+    	 Consumption consumo = new Consumption();
+    	 
+    	 consumo.setIdreservation(idReservation);
+    	 consumo.setFecha(fechaReservation);
+    	 consumo.setUsuariodocumento("");
+    	 consumo.setUsuarionombre(usuarioNombre);
+    	 consumo.setReservation(codeReservation);
+    	 consumo.setPlaceId(idPlace);
+    	 consumo.setPlaceName(placeName);
+    	 consumo.setCantidad(0);
+    	 consumo.setConsumido(0);
+    	 
+    	 businessDelegatorView.saveConsumption(consumo);
+    	 
+    	 ConsumptionDetail consumoDetail = new ConsumptionDetail();
+    	 
+    	 consumoDetail.setIdconsumption(consumo.getIdconsumption());
+    	 consumoDetail.setFecha(fechaReservation);
+    	 consumoDetail.setHora(fechaReservation);
+    	 consumoDetail.setCantidad(0);
+    	 consumoDetail.setIdusuarioCreo(user.getIdusers());
+    	 consumoDetail.setUsuarioCreo(user.getUsername());
+    	 
+    	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
+    	 
+    	 FacesUtils.addErrorMessage("Reserva activada satisfactoriamente");
+    	 
+    }catch(Exception e){
+    	log.info(e.toString());
+    }//end try-catch
+		
     }
     
     public void buscarReserva(){
@@ -325,25 +412,34 @@ public class ReservationView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
+    	
         selectedReservation = (ReservationDTO) (evt.getComponent()
                                                    .getAttributes()
                                                    .get("selectedReservation"));
         txtReservationHolderCode.setValue(selectedReservation.getReservationHolderCode());
         txtReservationHolderCode.setDisabled(false);
+        
         txtReservationHolderEmail.setValue(selectedReservation.getReservationHolderEmail());
         txtReservationHolderEmail.setDisabled(false);
+        
         txtReservationHolderId.setValue(selectedReservation.getReservationHolderId());
         txtReservationHolderId.setDisabled(false);
+        
         txtReservationHolderName.setValue(selectedReservation.getReservationHolderName());
         txtReservationHolderName.setDisabled(false);
+        
         txtReservationHolderTel.setValue(selectedReservation.getReservationHolderTel());
         txtReservationHolderTel.setDisabled(false);
+        
         txtReservationIdclass.setValue(selectedReservation.getReservationIdclass());
         txtReservationIdclass.setDisabled(false);
+        
         txtReservationStatus.setValue(selectedReservation.getReservationStatus());
         txtReservationStatus.setDisabled(false);
+        
         txtIdreservation.setValue(selectedReservation.getIdreservation());
         txtIdreservation.setDisabled(true);
+        
         btnSave.setDisabled(false);
         setShowDialog(true);
 
