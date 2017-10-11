@@ -271,6 +271,8 @@ public class ReservationView implements Serializable {
        		reserv.setReservationStatus(2);
        	 }
        	 
+       	 reserv.setReservationHolderId(identificacionUsuario);
+       	
        	 businessDelegatorView.updateReservation(reserv);
        	 
        	 FacesUtils.addInfoMessage("Reserva activada satisfactoriamente");
