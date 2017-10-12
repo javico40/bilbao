@@ -109,7 +109,7 @@
 									<p:commandButton id="btnEdit"
 													 icon="ui-icon-check"
 													 rendered="#{reservation.renderReserveButton}"
-													 update=":dialogReservation"
+													 update=":dialogReservation, :frm:panelDataTableReservation"
 													 value="Activar Reserva"
 													 actionListener="#{reservationView.action_edit}">
 										<f:attribute name="selectedReservation" value="#{reservation}" />

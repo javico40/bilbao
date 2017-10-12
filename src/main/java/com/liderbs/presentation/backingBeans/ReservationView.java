@@ -266,9 +266,9 @@ public class ReservationView implements Serializable {
        	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
        	 
        	if(specClass.getClassTitle().contains("VIRFIT")){
-       		reserv.setReservationStatus(1);
-       	 }else{
        		reserv.setReservationStatus(2);
+       	 }else{
+       		reserv.setReservationStatus(3);
        	 }
        	 
        	 reserv.setReservationHolderId(identificacionUsuario);
@@ -276,8 +276,14 @@ public class ReservationView implements Serializable {
        	 businessDelegatorView.updateReservation(reserv);
        	 
        	 FacesUtils.addInfoMessage("Reserva activada satisfactoriamente");
+       	 
+       	data = null;
+       	setShowDialog(false);
+    	action_clear();
     		
     	}//end if-else
+    	
+    	
 
     }catch(Exception e){
     	log.info(e.toString());
