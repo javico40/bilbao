@@ -193,13 +193,20 @@
 								    		<p:column>
 								    				<p:selectBooleanCheckbox id="txtHaveshower" value="#{specialclassView.txtHaveshower}" />
 								    		</p:column>
+								    		<p:column><h:outputText id="msgCheckIsPackage" value=" Paquete"/></p:column>
+								    		<p:column>
+								    			<p:selectBooleanCheckbox id="txtPackage" value="#{specialclassView.ispackage}" />
+								    		</p:column>
 								    	</p:row>
 								    	<p:row>
 								    		<p:column><h:outputText id="msgCheckAuto" value=" Autoupdate"/></p:column>
 								    		<p:column>
 								    			<p:selectBooleanCheckbox id="txtDayWeek" value="#{specialclassView.dayOfWeekClass}" />
 								    		</p:column>
-								    		
+								    		<p:column><h:outputText id="msgCantidadPack" value=" Cantidad Paquete"/></p:column>
+								    		<p:column>
+								    			<p:inputText id="txtCantidadPaquete" binding="#{specialclassView.txtCantidadPaquete}"/>
+								    		</p:column>
 								    	</p:row>
 								    	
 								    </p:panelGrid> 

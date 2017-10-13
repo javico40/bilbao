@@ -59,5 +59,11 @@
         <property name="dayWeek" type="java.lang.Integer">
             <column name="day_week" />
         </property>
+         <property name="ispackage" type="java.lang.Integer">
+            <column name="ispackage" />
+        </property>
+        <property name="cantidadPackage" type="java.lang.Integer">
+            <column name="cantidad_package" />
+        </property>
     </class>
 </hibernate-mapping>

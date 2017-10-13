@@ -73,6 +73,7 @@ public class SpecialclassView implements Serializable {
     private InputText txtPlaceName;
     private InputText txtPrice;
     private InputText txtIdspecialclass;
+    private InputText txtCantidadPaquete;
     private Calendar txtEndHour;
     private Calendar txtFecha;
     private Calendar txtStartHour;
@@ -84,7 +85,9 @@ public class SpecialclassView implements Serializable {
     private SpecialclassDTO selectedSpecialclass;
     private Specialclass entity;
     private boolean showDialog;
-    private boolean dayOfWeekClass; 
+    private boolean dayOfWeekClass;
+    private boolean ispackage;
+    
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
@@ -247,6 +250,11 @@ public class SpecialclassView implements Serializable {
             txtStartHour.setValue(null);
             txtStartHour.setDisabled(false);
         }
+        
+        if (txtCantidadPaquete != null) {
+            txtCantidadPaquete.setValue(null);
+            txtCantidadPaquete.setDisabled(false);
+        }
 
 
         if (btnSave != null) {
@@ -353,6 +361,7 @@ public class SpecialclassView implements Serializable {
         txtLatitude.setValue(selectedSpecialclass.getLatitude());
         txtLongitud.setValue(selectedSpecialclass.getLongitud());
         txtPrice.setValue(selectedSpecialclass.getPrice());
+        txtCantidadPaquete.setValue(selectedSpecialclass.getCantidadPackage());
         
         int dweek = 0;
         dweek = selectedSpecialclass.getDayWeek();
@@ -361,6 +370,16 @@ public class SpecialclassView implements Serializable {
         	dayOfWeekClass = false;
         }else{
         	dayOfWeekClass = true;
+        }
+        
+        if(selectedSpecialclass.getIspackage() == null){
+        	ispackage = false;
+        }else{
+        	if(selectedSpecialclass.getIspackage() == 1){
+            	ispackage= true;
+            }else{
+            	ispackage = false;
+            }
         }
         
         
@@ -442,110 +461,136 @@ public class SpecialclassView implements Serializable {
         		FacesUtils.addErrorMessage("Por favor ingrese la hora de fin de la clase");
         	}else{
         		
-        		entity = new Specialclass();
+        		int invalid = 0;
         		
-        		entity.setClassTitle(FacesUtils.checkString(txtClassTitle));
-                entity.setDescription(classDecription);
-                entity.setFecha(FacesUtils.checkDate(txtFecha));
-                entity.setStartHour(FacesUtils.checkDate(txtStartHour));
-                entity.setEndHour(FacesUtils.checkDate(txtEndHour));
-                entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
-                entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress)); 
-                entity.setLatitude(FacesUtils.checkString(txtLatitude));
-                entity.setLongitud(FacesUtils.checkString(txtLongitud));
-                entity.setPrice(FacesUtils.checkDouble(txtPrice));
-                
-                if(txtHaveparkingcar == true){
-                	entity.setHaveparkingcar(1);
-                }else{
-                	entity.setHaveparkingcar(0);
-                }
-                
-                if(txtHaveparkingbike == true){
-                	entity.setHaveparkingbike(1);
-                }else{
-                	entity.setHaveparkingbike(0);
-                }
-                
-                if(txtHaveshower == true){
-                	entity.setHaveshower(1);
-                }else{
-                	entity.setHaveshower(0);
-                }
-                
-                if(txtHavebathroom == true){
-                	entity.setHavebathroom(1);
-                }else{
-                	entity.setHavebathroom(0);
-                }
-                
-                if(txtHavechangeclothes == true){
-                	entity.setHavechangeclothes(1);
-                }else{
-                	entity.setHavechangeclothes(0);
-                }
-                
-                if(dayOfWeekClass == false){
-                	entity.setDayWeek(0);
-                }else{
-                	entity.setDayWeek(1);
-                }
-                
-                
-                businessDelegatorView.saveSpecialclass(entity);
-                
-                //Save picture
-                
-                if(txtClassPicture != null) {
-	 				
-	 				InputStream filecontent = null;
-	 				String picName = "";
-	 				OutputStream out = null;
-	 			
-	 				try {
-	 				
-	 				//final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
-	 			    final String path = "/var/www/html/govirfit/appimg/specialclass/";
-	 				
-	 				
-	 				Date currentDate = new Date();
-	 				String formatedDate = formatImage.format(currentDate);
-	 	            
-	 				//picName = trainerPic.getFileName();
-	 				picName = ""+entity.getIdspecialclass()+""+formatedDate+".jpg";
-	 				filecontent = txtClassPicture.getInputstream();
-	 				
-	 				out = new FileOutputStream(new File(path + picName));
-	 				
-	 				int read = 0;
-	 		        final byte[] bytes = new byte[1024];
-	 				
-	 				while ((read = filecontent.read(bytes)) != -1) {
-	 		            out.write(bytes, 0, read);
-	 		        }
-	 				
-	 		        //log.info("New file " + picName + " created at " + path);
-	 				entity.setClassPicture(picName);
-	 		        
-	 				 } catch (FileNotFoundException fne) {
-	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
-	 					log.info(fne.toString());
-	 			    } finally {
-	 			        if (out != null) {
-	 			            out.close();
-	 			        }
-	 			        if (filecontent != null) {
-	 			            filecontent.close();
-	 			        }
-	 			    }//end try catch  
-	 				
-	 				businessDelegatorView.updateSpecialclass(entity);
-	                
-	 	        }//end picture upload
-               
+        		if(ispackage == true){
+        			if(FacesUtils.checkInteger(txtCantidadPaquete) == null){
+        				FacesUtils.addErrorMessage("Por favor ingrese la cantidad del paquete");
+        				invalid = 1;
+        			}else if(FacesUtils.checkInteger(txtCantidadPaquete) == 0){
+        				FacesUtils.addErrorMessage("Por favor ingrese la cantidad del paquete");
+        				invalid = 1;
+        			}else{
+        				invalid = 0;
+        			}
+        		}//validate package
         		
-                 FacesUtils.addInfoMessage("Clase creada satisfactoriamente");   
-                action_clear();
+        		if(invalid == 0){
+        			
+            		entity = new Specialclass();
+            		
+            		entity.setClassTitle(FacesUtils.checkString(txtClassTitle));
+                    entity.setDescription(classDecription);
+                    entity.setFecha(FacesUtils.checkDate(txtFecha));
+                    entity.setStartHour(FacesUtils.checkDate(txtStartHour));
+                    entity.setEndHour(FacesUtils.checkDate(txtEndHour));
+                    entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
+                    entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress)); 
+                    entity.setLatitude(FacesUtils.checkString(txtLatitude));
+                    entity.setLongitud(FacesUtils.checkString(txtLongitud));
+                    entity.setPrice(FacesUtils.checkDouble(txtPrice));
+                    entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
+                    
+                    if(txtHaveparkingcar == true){
+                    	entity.setHaveparkingcar(1);
+                    }else{
+                    	entity.setHaveparkingcar(0);
+                    }
+                    
+                    if(txtHaveparkingbike == true){
+                    	entity.setHaveparkingbike(1);
+                    }else{
+                    	entity.setHaveparkingbike(0);
+                    }
+                    
+                    if(txtHaveshower == true){
+                    	entity.setHaveshower(1);
+                    }else{
+                    	entity.setHaveshower(0);
+                    }
+                    
+                    if(txtHavebathroom == true){
+                    	entity.setHavebathroom(1);
+                    }else{
+                    	entity.setHavebathroom(0);
+                    }
+                    
+                    if(txtHavechangeclothes == true){
+                    	entity.setHavechangeclothes(1);
+                    }else{
+                    	entity.setHavechangeclothes(0);
+                    }
+                    
+                    if(dayOfWeekClass == false){
+                    	entity.setDayWeek(0);
+                    }else{
+                    	entity.setDayWeek(1);
+                    }
+                    
+                    if(ispackage == true){
+                    	entity.setIspackage(1);
+                    }else{
+                    	entity.setIspackage(0);
+                    }
+                    
+                    
+                    businessDelegatorView.saveSpecialclass(entity);
+                    
+                    //Save picture
+                    
+                    if(txtClassPicture != null) {
+    	 				
+    	 				InputStream filecontent = null;
+    	 				String picName = "";
+    	 				OutputStream out = null;
+    	 			
+    	 				try {
+    	 				
+    	 				//final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+    	 			    final String path = "/var/www/html/govirfit/appimg/specialclass/";
+    	 				
+    	 				
+    	 				Date currentDate = new Date();
+    	 				String formatedDate = formatImage.format(currentDate);
+    	 	            
+    	 				//picName = trainerPic.getFileName();
+    	 				picName = ""+entity.getIdspecialclass()+""+formatedDate+".jpg";
+    	 				filecontent = txtClassPicture.getInputstream();
+    	 				
+    	 				out = new FileOutputStream(new File(path + picName));
+    	 				
+    	 				int read = 0;
+    	 		        final byte[] bytes = new byte[1024];
+    	 				
+    	 				while ((read = filecontent.read(bytes)) != -1) {
+    	 		            out.write(bytes, 0, read);
+    	 		        }
+    	 				
+    	 		        //log.info("New file " + picName + " created at " + path);
+    	 				entity.setClassPicture(picName);
+    	 		        
+    	 				 } catch (FileNotFoundException fne) {
+    	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+    	 					log.info(fne.toString());
+    	 			    } finally {
+    	 			        if (out != null) {
+    	 			            out.close();
+    	 			        }
+    	 			        if (filecontent != null) {
+    	 			            filecontent.close();
+    	 			        }
+    	 			    }//end try catch  
+    	 				
+    	 				businessDelegatorView.updateSpecialclass(entity);
+    	                
+    	 	        }//end picture upload
+                   
+            		
+                     FacesUtils.addInfoMessage("Clase creada satisfactoriamente");   
+                     action_clear();
+        			
+        		}//end package validator
+        
         	}//end if-else
         
         } catch (Exception e) {
@@ -572,118 +617,146 @@ try {
         		FacesUtils.addErrorMessage("Por favor ingrese la hora de fin de la clase");
         	}else{
         		
-        		if (entity == null) {
-                    Integer idspecialclass = new Integer(selectedSpecialclass.getIdspecialclass());
-                    entity = businessDelegatorView.getSpecialclass(idspecialclass);
-                }
+        		int invalid = 0;
         		
-        		entity.setClassTitle(FacesUtils.checkString(txtClassTitle));
-                entity.setDescription(classDecription);
-                entity.setFecha(FacesUtils.checkDate(txtFecha));
-                entity.setStartHour(FacesUtils.checkDate(txtStartHour));
-                entity.setEndHour(FacesUtils.checkDate(txtEndHour));
-                entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
-                entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress)); 
-                entity.setLatitude(FacesUtils.checkString(txtLatitude));
-                entity.setLongitud(FacesUtils.checkString(txtLongitud));
-                entity.setPrice(FacesUtils.checkDouble(txtPrice));
-                
-                if(txtHaveparkingcar == true){
-                	entity.setHaveparkingcar(1);
-                }else{
-                	entity.setHaveparkingcar(0);
-                }
-                
-                if(txtHaveparkingbike == true){
-                	entity.setHaveparkingbike(1);
-                }else{
-                	entity.setHaveparkingbike(0);
-                }
-                
-                if(txtHaveshower == true){
-                	entity.setHaveshower(1);
-                }else{
-                	entity.setHaveshower(0);
-                }
-                
-                if(txtHavebathroom == true){
-                	entity.setHavebathroom(1);
-                }else{
-                	entity.setHavebathroom(0);
-                }
-                
-                if(txtHavechangeclothes == true){
-                	entity.setHavechangeclothes(1);
-                }else{
-                	entity.setHavechangeclothes(0);
-                }
-                
-                if(dayOfWeekClass == false){
-                	entity.setDayWeek(0);
-                }else{
-                	entity.setDayWeek(1);
-                }
-                
-                businessDelegatorView.updateSpecialclass(entity);
-                
-                //Si tiene ya foto, y no se ha seleccionado una, asignar la que ya tiene
-                
-                if(classPicturePath != null){
-                	
-                	entity.setClassPicture(classPicturePath);
-                	businessDelegatorView.updateSpecialclass(entity);
-               
-                //Si no si selecciono una foto actualizarla, sino, dejarla en blanco
-                } else if(txtClassPicture != null) {
-	 				
-	 				InputStream filecontent = null;
-	 				String picName = "";
-	 				OutputStream out = null;
-	 			
-	 				try {
-	 				
-	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
-	 			    //final String path = "/var/www/html/govirfit/appimg/specialclass/";
-	 				
-	 				
-	 				Date currentDate = new Date();
-	 				String formatedDate = formatImage.format(currentDate);
-	 	            
-	 				//picName = trainerPic.getFileName();
-	 				picName = ""+entity.getIdspecialclass()+""+formatedDate+".jpg";
-	 				filecontent = txtClassPicture.getInputstream();
-	 				
-	 				out = new FileOutputStream(new File(path + picName));
-	 				
-	 				int read = 0;
-	 		        final byte[] bytes = new byte[1024];
-	 				
-	 				while ((read = filecontent.read(bytes)) != -1) {
-	 		            out.write(bytes, 0, read);
-	 		        }
-	 				
-	 		        //log.info("New file " + picName + " created at " + path);
-	 				entity.setClassPicture(picName);
-	 		        
-	 				 } catch (FileNotFoundException fne) {
-	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
-	 					log.info(fne.toString());
-	 			    } finally {
-	 			        if (out != null) {
-	 			            out.close();
-	 			        }
-	 			        if (filecontent != null) {
-	 			            filecontent.close();
-	 			        }
-	 			    }//end try catch  
-	 				
-	 				businessDelegatorView.updateSpecialclass(entity);
-	                
-	 	        }else{
-	 	        	FacesUtils.addErrorMessage("No selecciono una foto de la clase");
-	 	        }
-               
-                 FacesUtils.addInfoMessage("Clase actualizada satisfactoriamente");
+        		if(ispackage == true){
+        			if(FacesUtils.checkInteger(txtCantidadPaquete) == null){
+        				FacesUtils.addErrorMessage("Por favor ingrese la cantidad del paquete");
+        				invalid = 1;
+        			}else if(FacesUtils.checkInteger(txtCantidadPaquete) == 0){
+        				FacesUtils.addErrorMessage("Por favor ingrese la cantidad del paquete");
+        				invalid = 1;
+        			}else{
+        				invalid = 0;
+        			}
+        		}//validate package
+        		
+        		if(invalid == 0){
+        			
+        			if (entity == null) {
+                        Integer idspecialclass = new Integer(selectedSpecialclass.getIdspecialclass());
+                        entity = businessDelegatorView.getSpecialclass(idspecialclass);
+                    }
+            		
+            		entity.setClassTitle(FacesUtils.checkString(txtClassTitle));
+                    entity.setDescription(classDecription);
+                    entity.setFecha(FacesUtils.checkDate(txtFecha));
+                    entity.setStartHour(FacesUtils.checkDate(txtStartHour));
+                    entity.setEndHour(FacesUtils.checkDate(txtEndHour));
+                    entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
+                    entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress)); 
+                    entity.setLatitude(FacesUtils.checkString(txtLatitude));
+                    entity.setLongitud(FacesUtils.checkString(txtLongitud));
+                    entity.setPrice(FacesUtils.checkDouble(txtPrice));
+                    entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
+                    
+                    if(txtHaveparkingcar == true){
+                    	entity.setHaveparkingcar(1);
+                    }else{
+                    	entity.setHaveparkingcar(0);
+                    }
+                    
+                    if(txtHaveparkingbike == true){
+                    	entity.setHaveparkingbike(1);
+                    }else{
+                    	entity.setHaveparkingbike(0);
+                    }
+                    
+                    if(txtHaveshower == true){
+                    	entity.setHaveshower(1);
+                    }else{
+                    	entity.setHaveshower(0);
+                    }
+                    
+                    if(txtHavebathroom == true){
+                    	entity.setHavebathroom(1);
+                    }else{
+                    	entity.setHavebathroom(0);
+                    }
+                    
+                    if(txtHavechangeclothes == true){
+                    	entity.setHavechangeclothes(1);
+                    }else{
+                    	entity.setHavechangeclothes(0);
+                    }
+                    
+                    if(dayOfWeekClass == false){
+                    	entity.setDayWeek(0);
+                    }else{
+                    	entity.setDayWeek(1);
+                    }
+                    
+                    if(ispackage == true){
+                    	entity.setIspackage(1);
+                    }else{
+                    	entity.setIspackage(0);
+                    }
+                    
+                    businessDelegatorView.updateSpecialclass(entity);
+                    
+                    //Si tiene ya foto, y no se ha seleccionado una, asignar la que ya tiene
+                    
+                    if(classPicturePath != null){
+                    	
+                    	entity.setClassPicture(classPicturePath);
+                    	businessDelegatorView.updateSpecialclass(entity);
+                   
+                    //Si no si selecciono una foto actualizarla, sino, dejarla en blanco
+                    } else if(txtClassPicture != null) {
+    	 				
+    	 				InputStream filecontent = null;
+    	 				String picName = "";
+    	 				OutputStream out = null;
+    	 			
+    	 				try {
+    	 				
+    	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+    	 			    //final String path = "/var/www/html/govirfit/appimg/specialclass/";
+    	 				
+    	 				
+    	 				Date currentDate = new Date();
+    	 				String formatedDate = formatImage.format(currentDate);
+    	 	            
+    	 				//picName = trainerPic.getFileName();
+    	 				picName = ""+entity.getIdspecialclass()+""+formatedDate+".jpg";
+    	 				filecontent = txtClassPicture.getInputstream();
+    	 				
+    	 				out = new FileOutputStream(new File(path + picName));
+    	 				
+    	 				int read = 0;
+    	 		        final byte[] bytes = new byte[1024];
+    	 				
+    	 				while ((read = filecontent.read(bytes)) != -1) {
+    	 		            out.write(bytes, 0, read);
+    	 		        }
+    	 				
+    	 		        //log.info("New file " + picName + " created at " + path);
+    	 				entity.setClassPicture(picName);
+    	 		        
+    	 				 } catch (FileNotFoundException fne) {
+    	 					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+    	 					log.info(fne.toString());
+    	 			    } finally {
+    	 			        if (out != null) {
+    	 			            out.close();
+    	 			        }
+    	 			        if (filecontent != null) {
+    	 			            filecontent.close();
+    	 			        }
+    	 			    }//end try catch  
+    	 				
+    	 				businessDelegatorView.updateSpecialclass(entity);
+    	                
+    	 	        }else{
+    	 	        	FacesUtils.addErrorMessage("No selecciono una foto de la clase");
+    	 	        }
+                   
+                     FacesUtils.addInfoMessage("Clase actualizada satisfactoriamente");
+        			
+        		}//end validator invalid
+        		
+        		
+        
         	}//end if-else
         
         } catch (Exception e) {
@@ -1040,7 +1113,24 @@ try {
 	public void setClassPicturePath(String classPicturePath) {
 		this.classPicturePath = classPicturePath;
 	}
+
+	public boolean isIspackage() {
+		return ispackage;
+	}
+
+	public void setIspackage(boolean ispackage) {
+		this.ispackage = ispackage;
+	}
+
+	public InputText getTxtCantidadPaquete() {
+		return txtCantidadPaquete;
+	}
+
+	public void setTxtCantidadPaquete(InputText txtCantidadPaquete) {
+		this.txtCantidadPaquete = txtCantidadPaquete;
+	}
 	
 	
-	
+
+
 }

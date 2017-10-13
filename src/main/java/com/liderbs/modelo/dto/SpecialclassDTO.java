@@ -37,6 +37,8 @@ public class SpecialclassDTO implements Serializable {
     private Double price;
     private Date startHour;
     private Integer dayWeek;
+    private Integer ispackage;
+    private Integer cantidadPackage;
 
     public String getClassPicture() {
         return classPicture;
@@ -180,6 +182,22 @@ public class SpecialclassDTO implements Serializable {
 
 	public void setDayWeek(Integer dayWeek) {
 		this.dayWeek = dayWeek;
+	}
+
+	public Integer getIspackage() {
+		return ispackage;
+	}
+
+	public void setIspackage(Integer ispackage) {
+		this.ispackage = ispackage;
+	}
+
+	public Integer getCantidadPackage() {
+		return cantidadPackage;
+	}
+
+	public void setCantidadPackage(Integer cantidadPackage) {
+		this.cantidadPackage = cantidadPackage;
 	}
     
     

@@ -32,6 +32,8 @@ public class Specialclass  implements java.io.Serializable {
      private Double price;
      private String classPicture;
      private Integer dayWeek;
+     private Integer ispackage;
+     private Integer cantidadPackage;
 
     public Specialclass() {
     }
@@ -182,6 +184,24 @@ public class Specialclass  implements java.io.Serializable {
 	public void setDayWeek(Integer dayWeek) {
 		this.dayWeek = dayWeek;
 	}
+
+	public Integer getIspackage() {
+		return ispackage;
+	}
+
+	public void setIspackage(Integer ispackage) {
+		this.ispackage = ispackage;
+	}
+
+	public Integer getCantidadPackage() {
+		return cantidadPackage;
+	}
+
+	public void setCantidadPackage(Integer cantidadPackage) {
+		this.cantidadPackage = cantidadPackage;
+	}
+	
+	
 
 }
 
