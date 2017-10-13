@@ -244,8 +244,8 @@ public class ReservationView implements Serializable {
        	 consumo.setPlaceId(idPlace);
        	 consumo.setPlaceName(placeName);
        	 
-       	 if(specClass.getClassTitle().contains("VIRFIT")){
-       		consumo.setCantidad(8);
+       	 if(specClass.getIspackage() == 1){
+       		consumo.setCantidad(specClass.getCantidadPackage());
           	consumo.setConsumido(1);
        	 }else{
        		consumo.setCantidad(1);
@@ -265,7 +265,7 @@ public class ReservationView implements Serializable {
        	 
        	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
        	 
-       	if(specClass.getClassTitle().contains("VIRFIT")){
+       	if(specClass.getIspackage() == 1){
        		reserv.setReservationStatus(2);
        	 }else{
        		reserv.setReservationStatus(3);
