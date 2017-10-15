@@ -244,12 +244,17 @@ public class ReservationView implements Serializable {
        	 consumo.setPlaceId(idPlace);
        	 consumo.setPlaceName(placeName);
        	 
-       	 if(specClass.getIspackage() == 1){
-       		consumo.setCantidad(specClass.getCantidadPackage());
-          	consumo.setConsumido(1);
-       	 }else{
+       	 if(specClass.getIspackage() == null){
        		consumo.setCantidad(1);
-          	consumo.setConsumido(1);
+          	consumo.setConsumido(1); 
+       	 }else{
+       		if(specClass.getIspackage() == 1){
+           		consumo.setCantidad(specClass.getCantidadPackage());
+              	consumo.setConsumido(1);
+           	 }else{
+           		consumo.setCantidad(1);
+              	consumo.setConsumido(1);
+           	 }
        	 }
        	 
        	 businessDelegatorView.saveConsumption(consumo);
@@ -265,12 +270,16 @@ public class ReservationView implements Serializable {
        	 
        	 businessDelegatorView.saveConsumptionDetail(consumoDetail);
        	 
-       	if(specClass.getIspackage() == 1){
-       		reserv.setReservationStatus(2);
-       	 }else{
+       	if(specClass.getIspackage() == null){
        		reserv.setReservationStatus(3);
-       	 }
-       	 
+       	}else{
+       		if(specClass.getIspackage() == 1){
+           		reserv.setReservationStatus(2);
+           	 }else{
+           		reserv.setReservationStatus(3);
+           	 }
+       	}
+       	
        	 reserv.setReservationHolderId(identificacionUsuario);
        	
        	 businessDelegatorView.updateReservation(reserv);
