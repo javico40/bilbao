@@ -2,6 +2,7 @@ package com.liderbs.presentation.backingBeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -392,7 +393,17 @@ public class RegisterView implements Serializable {
 		byte[] defaultBytes = cadena.getBytes();
 		MessageDigest algorithm;
 		try {
+			
 			algorithm = MessageDigest.getInstance("MD5");
+			algorithm.update(cadena.getBytes());
+	        BigInteger hashi = new BigInteger(1, algorithm.digest());
+	        hash = hashi.toString(16);
+	        
+	        while(hash.length() < 32) { //40 for SHA-1
+	            hash = "0" + hash;
+	        }
+			
+			/*
 			algorithm.reset();
 			algorithm.update(defaultBytes);
 			byte messageDigest[] = algorithm.digest();
@@ -406,6 +417,8 @@ public class RegisterView implements Serializable {
 				// messageDigest[i]));
 			}
 			hash = hexString + "";
+			*/
+			
 			return hash;
 		} catch (NoSuchAlgorithmException e) {
 			return null;

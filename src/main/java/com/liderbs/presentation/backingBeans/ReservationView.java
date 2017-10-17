@@ -166,7 +166,7 @@ public class ReservationView implements Serializable {
                   	 
                   	businessDelegatorView.saveConsumptionDetail(consumoDetail);
             		
-            		FacesUtils.addErrorMessage("Se aplico el consumo satisfactoriamente");
+            		FacesUtils.addInfoMessage("Se aplico el consumo satisfactoriamente");
             		
             	}else{
             		FacesUtils.addErrorMessage("No es posible consumir la reserva saldo igual a "+saldo);
