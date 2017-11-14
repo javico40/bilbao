@@ -65,5 +65,8 @@
         <property name="cantidadPackage" type="java.lang.Integer">
             <column name="cantidad_package" />
         </property>
+        <property name="descripcionMovil" type="java.lang.String">
+            <column name="descripcion_movil" length="1000" />
+        </property>
     </class>
 </hibernate-mapping>

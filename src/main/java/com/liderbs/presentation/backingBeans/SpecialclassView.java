@@ -12,7 +12,7 @@ import com.liderbs.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -87,6 +87,7 @@ public class SpecialclassView implements Serializable {
     private boolean showDialog;
     private boolean dayOfWeekClass;
     private boolean ispackage;
+    private InputTextarea descripcionMovil;
     
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -209,6 +210,11 @@ public class SpecialclassView implements Serializable {
         if (txtDescription != null) {
             txtDescription.setValue(null);
             txtDescription.setDisabled(false);
+        }
+        
+        if (descripcionMovil != null) {
+            descripcionMovil.setValue(null);
+            descripcionMovil.setDisabled(false);
         }
 
         if (txtLatitude != null) {
@@ -362,6 +368,7 @@ public class SpecialclassView implements Serializable {
         txtLongitud.setValue(selectedSpecialclass.getLongitud());
         txtPrice.setValue(selectedSpecialclass.getPrice());
         txtCantidadPaquete.setValue(selectedSpecialclass.getCantidadPackage());
+        descripcionMovil.setValue(selectedSpecialclass.getDescripcionMovil());
         
         int dweek = 0;
         dweek = selectedSpecialclass.getDayWeek();
@@ -453,6 +460,8 @@ public class SpecialclassView implements Serializable {
         		FacesUtils.addErrorMessage("Por favor ingrese el nombre de la clase");
         	}else if(classDecription == null){
         		FacesUtils.addErrorMessage("Por favor ingrese la descripcion de la clase");
+        	}else if(FacesUtils.checkString(descripcionMovil) == null){
+        		FacesUtils.addErrorMessage("Por favor ingrese la descripcion para la aplicacion movil");
         	}else if(FacesUtils.checkDate(txtFecha) == null){
         		FacesUtils.addErrorMessage("Por favor ingrese la fecha de la clase");
         	}else if(FacesUtils.checkDate(txtStartHour) == null){
@@ -490,6 +499,7 @@ public class SpecialclassView implements Serializable {
                     entity.setLongitud(FacesUtils.checkString(txtLongitud));
                     entity.setPrice(FacesUtils.checkDouble(txtPrice));
                     entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
+                    entity.setDescripcionMovil(FacesUtils.checkString(descripcionMovil));
                     
                     if(txtHaveparkingcar == true){
                     	entity.setHaveparkingcar(1);
@@ -609,6 +619,8 @@ try {
         		FacesUtils.addErrorMessage("Por favor ingrese el nombre de la clase");
         	}else if(classDecription == null){
         		FacesUtils.addErrorMessage("Por favor ingrese la descripcion de la clase");
+        	}else if(FacesUtils.checkString(descripcionMovil) == null){
+        		FacesUtils.addErrorMessage("Por favor ingrese la descripcion para la aplicacion movil");
         	}else if(FacesUtils.checkDate(txtFecha) == null){
         		FacesUtils.addErrorMessage("Por favor ingrese la fecha de la clase");
         	}else if(FacesUtils.checkDate(txtStartHour) == null){
@@ -649,6 +661,8 @@ try {
                     entity.setLongitud(FacesUtils.checkString(txtLongitud));
                     entity.setPrice(FacesUtils.checkDouble(txtPrice));
                     entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
+                    entity.setDescripcionMovil(FacesUtils.checkString(descripcionMovil));
+                    
                     
                     if(txtHaveparkingcar == true){
                     	entity.setHaveparkingcar(1);
@@ -1128,6 +1142,14 @@ try {
 
 	public void setTxtCantidadPaquete(InputText txtCantidadPaquete) {
 		this.txtCantidadPaquete = txtCantidadPaquete;
+	}
+
+	public InputTextarea getDescripcionMovil() {
+		return descripcionMovil;
+	}
+
+	public void setDescripcionMovil(InputTextarea descripcionMovil) {
+		this.descripcionMovil = descripcionMovil;
 	}
 	
 	

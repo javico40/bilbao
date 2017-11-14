@@ -206,6 +206,8 @@ public class SpecialclassLogic implements ISpecialclassLogic {
                 specialclassDTO2.setStartHour(specialclassTmp.getStartHour());
                 specialclassDTO2.setDayWeek(specialclassTmp.getDayWeek());
                 specialclassDTO2.setIspackage(specialclassTmp.getIspackage());
+                specialclassDTO2.setDescripcionMovil((specialclassTmp.getDescripcionMovil() != null)
+                        ? specialclassTmp.getDescripcionMovil() : null);
                 
                 specialclassDTO2.setCantidadPackage(specialclassTmp.getCantidadPackage());
                 

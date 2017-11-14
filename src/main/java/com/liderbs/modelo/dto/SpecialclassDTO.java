@@ -39,6 +39,7 @@ public class SpecialclassDTO implements Serializable {
     private Integer dayWeek;
     private Integer ispackage;
     private Integer cantidadPackage;
+    private String descripcionMovil;
 
     public String getClassPicture() {
         return classPicture;
@@ -199,6 +200,15 @@ public class SpecialclassDTO implements Serializable {
 	public void setCantidadPackage(Integer cantidadPackage) {
 		this.cantidadPackage = cantidadPackage;
 	}
+
+	public String getDescripcionMovil() {
+		return descripcionMovil;
+	}
+
+	public void setDescripcionMovil(String descripcionMovil) {
+		this.descripcionMovil = descripcionMovil;
+	}
     
+	
     
 }

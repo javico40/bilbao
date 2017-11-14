@@ -123,6 +123,19 @@
 								    	<p:row>
 								    		<p:column colspan="4"><p:editor widgetVar="editor1" value="#{specialclassView.classDecription}" height="100" style="margin-bottom:10px"/></p:column>
 								    	</p:row>
+								    	<p:row>
+								    		<p:column colspan="2"><h:outputText id="msgDescMovil" value=" Descripcion Movil"/></p:column>
+								    		<p:column colspan="2">
+								    							<p:inputTextarea rows="5"
+								    											 cols="60"
+								    											 counter="display"
+								    											 maxlength="280"
+								    											 counterTemplate="{0} caracteres disponibles."
+								    											 autoResize="false"
+								    											 binding="#{specialclassView.descripcionMovil}" />
+								    							<h:outputText id="display" />
+								    		</p:column>
+								    	</p:row>
 								    	<p:row>									
 								    		<p:column colspan="2"><h:outputText id="msgFecha" value=" Fecha"/></p:column>
 								    		<p:column colspan="2"><p:calendar showOn="button" navigator="true" locale="es" pattern="dd/MM/yyyy" mindate="#{specialclassView.currentDate}"

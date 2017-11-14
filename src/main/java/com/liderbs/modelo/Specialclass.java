@@ -34,6 +34,7 @@ public class Specialclass  implements java.io.Serializable {
      private Integer dayWeek;
      private Integer ispackage;
      private Integer cantidadPackage;
+     private String descripcionMovil;
 
     public Specialclass() {
     }
@@ -199,6 +200,14 @@ public class Specialclass  implements java.io.Serializable {
 
 	public void setCantidadPackage(Integer cantidadPackage) {
 		this.cantidadPackage = cantidadPackage;
+	}
+
+	public String getDescripcionMovil() {
+		return descripcionMovil;
+	}
+
+	public void setDescripcionMovil(String descripcionMovil) {
+		this.descripcionMovil = descripcionMovil;
 	}
 	
 	
