@@ -178,6 +178,7 @@
 								    		<p:column><p:inputText id="txtPrice"  binding="#{specialclassView.txtPrice}"/></p:column>
 								    		<p:column><h:outputText id="msgClassPicture" value=" Foto"/></p:column>
 								    		<p:column>
+								    				<h:outputText id="msgActPic" value="#{specialclassView.classCurrentPicName}"/>
 								    				<p:fileUpload id="txtClassPicture" value="#{specialclassView.txtClassPicture}" mode="simple" skinSimple="true" accept="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"/>
 								    		</p:column>
 								    	</p:row>
@@ -219,6 +220,40 @@
 								    		<p:column><h:outputText id="msgCantidadPack" value=" Cantidad Paquete"/></p:column>
 								    		<p:column>
 								    			<p:inputText id="txtCantidadPaquete" binding="#{specialclassView.txtCantidadPaquete}"/>
+								    		</p:column>
+								    	</p:row>
+								    	
+								    	<p:row>
+								    		<p:column><h:outputText id="msgZona" value=" Zona"/></p:column>
+								    		<p:column>
+								    			<p:selectOneMenu id="zona" value="#{specialclassView.selectZona}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItem itemLabel="Norte" itemValue="1" />
+            										<f:selectItem itemLabel="Sur" itemValue="2" />
+           										    <f:selectItem itemLabel="Oeste" itemValue="3" />
+           										    <f:selectItem itemLabel="Oriente" itemValue="4" />
+        										</p:selectOneMenu>
+								    		</p:column>
+								    		<p:column><h:outputText id="msgClase" value=" Clase"/></p:column>
+								    		<p:column>
+								    			<p:selectOneMenu id="clase" value="#{specialclassView.selectClase}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItem itemLabel="Clase" itemValue="0" />
+            										<f:selectItem itemLabel="Baile" itemValue="1" />
+           										    <f:selectItem itemLabel="Funcionales" itemValue="2" />
+           										    <f:selectItem itemLabel="Artes de combate" itemValue="3" />
+           										    <f:selectItem itemLabel="Estiramiento" itemValue="4" />
+        										</p:selectOneMenu>
+								    		</p:column>
+								    	</p:row>	
+								    	<p:row>
+								    		<p:column><h:outputText id="msgTipo" value=" Tipo"/></p:column>
+								    		<p:column>
+								    			<p:selectOneMenu id="tipo" value="#{specialclassView.selectTipo}" style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            										<f:selectItem itemLabel="Paquete" itemValue="1" />
+            										<f:selectItem itemLabel="Clase especial" itemValue="2" />
+        										</p:selectOneMenu>
 								    		</p:column>
 								    	</p:row>
 								    	

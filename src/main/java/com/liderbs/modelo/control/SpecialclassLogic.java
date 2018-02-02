@@ -167,11 +167,12 @@ public class SpecialclassLogic implements ISpecialclassLogic {
     public List<SpecialclassDTO> getDataSpecialclass()
         throws Exception {
         try {
+        	
             List<Specialclass> specialclass = specialclassDAO.findAll();
-
             List<SpecialclassDTO> specialclassDTO = new ArrayList<SpecialclassDTO>();
 
             for (Specialclass specialclassTmp : specialclass) {
+            	
                 SpecialclassDTO specialclassDTO2 = new SpecialclassDTO();
 
                 specialclassDTO2.setIdspecialclass(specialclassTmp.getIdspecialclass());
@@ -208,9 +209,13 @@ public class SpecialclassLogic implements ISpecialclassLogic {
                 specialclassDTO2.setIspackage(specialclassTmp.getIspackage());
                 specialclassDTO2.setDescripcionMovil((specialclassTmp.getDescripcionMovil() != null)
                         ? specialclassTmp.getDescripcionMovil() : null);
-                
+                specialclassDTO2.setZona((specialclassTmp.getZona() != null)
+                        ? specialclassTmp.getZona() : null);
+                specialclassDTO2.setCategoria((specialclassTmp.getCategoria() != null)
+                        ? specialclassTmp.getCategoria() : null);
+                specialclassDTO2.setTipo((specialclassTmp.getTipo() != null)
+                        ? specialclassTmp.getTipo() : null);
                 specialclassDTO2.setCantidadPackage(specialclassTmp.getCantidadPackage());
-                
                 
                 specialclassDTO.add(specialclassDTO2);
             }

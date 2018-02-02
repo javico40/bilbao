@@ -17,6 +17,7 @@ import java.util.Date;
 *
 */
 public class SpecialclassDTO implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(SpecialclassDTO.class);
     private String classPicture;
@@ -40,6 +41,9 @@ public class SpecialclassDTO implements Serializable {
     private Integer ispackage;
     private Integer cantidadPackage;
     private String descripcionMovil;
+    private Integer zona;
+    private Integer categoria;
+    private Integer tipo;
 
     public String getClassPicture() {
         return classPicture;
@@ -207,6 +211,30 @@ public class SpecialclassDTO implements Serializable {
 
 	public void setDescripcionMovil(String descripcionMovil) {
 		this.descripcionMovil = descripcionMovil;
+	}
+
+	public Integer getZona() {
+		return zona;
+	}
+
+	public void setZona(Integer zona) {
+		this.zona = zona;
+	}
+
+	public Integer getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Integer categoria) {
+		this.categoria = categoria;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
 	}
     
 	

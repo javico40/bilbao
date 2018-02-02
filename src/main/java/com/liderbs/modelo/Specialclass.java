@@ -35,6 +35,9 @@ public class Specialclass  implements java.io.Serializable {
      private Integer ispackage;
      private Integer cantidadPackage;
      private String descripcionMovil;
+     private Integer zona;
+     private Integer categoria;
+     private Integer tipo;
 
     public Specialclass() {
     }
@@ -209,7 +212,30 @@ public class Specialclass  implements java.io.Serializable {
 	public void setDescripcionMovil(String descripcionMovil) {
 		this.descripcionMovil = descripcionMovil;
 	}
-	
+
+	public Integer getZona() {
+		return zona;
+	}
+
+	public void setZona(Integer zona) {
+		this.zona = zona;
+	}
+
+	public Integer getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Integer categoria) {
+		this.categoria = categoria;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
 	
 
 }

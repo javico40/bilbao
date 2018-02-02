@@ -68,5 +68,14 @@
         <property name="descripcionMovil" type="java.lang.String">
             <column name="descripcion_movil" length="1000" />
         </property>
+        <property name="zona" type="java.lang.Integer">
+            <column name="zona_id" />
+        </property>
+        <property name="categoria" type="java.lang.Integer">
+            <column name="categoria_id" />
+        </property>
+        <property name="tipo" type="java.lang.Integer">
+            <column name="tipo_id" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -88,6 +88,10 @@ public class SpecialclassView implements Serializable {
     private boolean dayOfWeekClass;
     private boolean ispackage;
     private InputTextarea descripcionMovil;
+    private Integer selectZona;
+    private Integer selectClase;
+    private Integer selectTipo;
+    private String classCurrentPicName;
     
     
     @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -370,6 +374,24 @@ public class SpecialclassView implements Serializable {
         txtCantidadPaquete.setValue(selectedSpecialclass.getCantidadPackage());
         descripcionMovil.setValue(selectedSpecialclass.getDescripcionMovil());
         
+        if(selectedSpecialclass.getClassPicture() != null) {
+        	classCurrentPicName = selectedSpecialclass.getClassPicture();
+        }
+        
+        
+        if(selectedSpecialclass.getZona() != null) {
+        	selectZona = selectedSpecialclass.getZona();
+        }
+        
+        if(selectedSpecialclass.getCategoria() != null) {
+        	selectClase = selectedSpecialclass.getCategoria();
+        }
+        
+        if(selectedSpecialclass.getTipo() != null) {
+        	selectTipo = selectedSpecialclass.getTipo();
+        }
+        
+        
         int dweek = 0;
         dweek = selectedSpecialclass.getDayWeek();
         
@@ -500,6 +522,9 @@ public class SpecialclassView implements Serializable {
                     entity.setPrice(FacesUtils.checkDouble(txtPrice));
                     entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
                     entity.setDescripcionMovil(FacesUtils.checkString(descripcionMovil));
+                    entity.setZona(selectZona);
+                    entity.setCategoria(selectClase);
+                    entity.setTipo(selectTipo);
                     
                     if(txtHaveparkingcar == true){
                     	entity.setHaveparkingcar(1);
@@ -613,7 +638,7 @@ public class SpecialclassView implements Serializable {
 
     public String action_modify() {
     	
-try {
+    try {
         	
         	if(FacesUtils.checkString(txtClassTitle) == null){
         		FacesUtils.addErrorMessage("Por favor ingrese el nombre de la clase");
@@ -662,7 +687,9 @@ try {
                     entity.setPrice(FacesUtils.checkDouble(txtPrice));
                     entity.setCantidadPackage(FacesUtils.checkInteger(txtCantidadPaquete));
                     entity.setDescripcionMovil(FacesUtils.checkString(descripcionMovil));
-                    
+                    entity.setZona(selectZona);
+                    entity.setCategoria(selectClase);
+                    entity.setTipo(selectTipo);
                     
                     if(txtHaveparkingcar == true){
                     	entity.setHaveparkingcar(1);
@@ -710,13 +737,15 @@ try {
                     
                     //Si tiene ya foto, y no se ha seleccionado una, asignar la que ya tiene
                     
-                    if(classPicturePath != null){
+                    long pictureFileSize = txtClassPicture.getSize();
+                    
+                    if(classPicturePath != null && pictureFileSize == 0){
                     	
                     	entity.setClassPicture(classPicturePath);
                     	businessDelegatorView.updateSpecialclass(entity);
                    
                     //Si no si selecciono una foto actualizarla, sino, dejarla en blanco
-                    } else if(txtClassPicture != null) {
+                    } else if(pictureFileSize > 0) {
     	 				
     	 				InputStream filecontent = null;
     	 				String picName = "";
@@ -728,6 +757,14 @@ try {
     	 			    //final String path = "/var/www/html/govirfit/appimg/specialclass/";
     	 				
     	 				
+    	 				//Detectar la foto actual, si existe borrarla
+    	 				File currentPic = new File(path+classPicturePath);
+    	 				
+    	 				if(currentPic.exists()) {
+    	 					currentPic.delete();
+    	 				}
+    	 				
+    	 				//Crear el archivo para la nueva foto
     	 				Date currentDate = new Date();
     	 				String formatedDate = formatImage.format(currentDate);
     	 	            
@@ -1151,8 +1188,37 @@ try {
 	public void setDescripcionMovil(InputTextarea descripcionMovil) {
 		this.descripcionMovil = descripcionMovil;
 	}
-	
-	
 
+	public Integer getSelectZona() {
+		return selectZona;
+	}
+
+	public void setSelectZona(Integer selectZona) {
+		this.selectZona = selectZona;
+	}
+
+	public Integer getSelectClase() {
+		return selectClase;
+	}
+
+	public void setSelectClase(Integer selectClase) {
+		this.selectClase = selectClase;
+	}
+
+	public Integer getSelectTipo() {
+		return selectTipo;
+	}
+
+	public void setSelectTipo(Integer selectTipo) {
+		this.selectTipo = selectTipo;
+	}
+
+	public String getClassCurrentPicName() {
+		return classCurrentPicName;
+	}
+
+	public void setClassCurrentPicName(String classCurrentPicName) {
+		this.classCurrentPicName = classCurrentPicName;
+	}
 
 }
