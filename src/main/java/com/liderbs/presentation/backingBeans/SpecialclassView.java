@@ -753,8 +753,8 @@ public class SpecialclassView implements Serializable {
     	 			
     	 				try {
     	 				
-    	 				final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
-    	 			    //final String path = "/var/www/html/govirfit/appimg/specialclass/";
+    	 				//final String path = "C:\\desarrollo\\workspaces\\trainerpics\\";
+    	 			    final String path = "/var/www/html/govirfit/appimg/specialclass/";
     	 				
     	 				
     	 				//Detectar la foto actual, si existe borrarla
