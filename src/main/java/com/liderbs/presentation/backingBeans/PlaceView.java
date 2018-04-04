@@ -14,6 +14,7 @@ import org.hibernate.Hibernate;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.extensions.component.inputnumber.InputNumber;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.RowEditEvent;
@@ -22,6 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import java.sql.*;
@@ -93,17 +99,34 @@ public class PlaceView implements Serializable {
     private Integer[] selectTiposCentro;
     private Map<String,Integer> tiposCentro;
     private Integer[] selectServicios;
-    private Map<String,Integer> tiposServicio;
-    
+    private Map<String,Integer> tiposServicio;    
     private Date horaEntradaLunesViernes;
     private Date horaSalidaLunesViernes;
     private Date horaEntradaSabado;
     private Date horaSalidaSabado;
     private Date horaEntradaDomingo;
     private Date horaSalidaDomingo;
-    
     private InputText dailyTrainCost;
     private InputText montlyTrainCost;
+    private InputText txtlatitud;
+    private InputText txtlongitud;
+    private InputText txtcode;
+    private InputText txtEmailGym;
+    private InputText txtpaytoken;
+    private String txtdescripcion;
+    private String txtlogo;
+    private String txtpic1;
+    private String txtpic2;
+    private String txtpic3;
+    private UploadedFile txtLogoGym;
+    private UploadedFile txtGymPicture1;
+    private UploadedFile txtGymPicture2;
+    private UploadedFile txtGymPicture3;
+    private Integer status;
+    SimpleDateFormat formatImage = new SimpleDateFormat("ddMMyyyyhhmmss");
+    private InputText txtMonthlyCost;
+    private InputText txtDailyCost;
+     
     
     private Place currentCenpro;
     
@@ -519,26 +542,38 @@ public class PlaceView implements Serializable {
     }
 
     public String action_edit(ActionEvent evt) {
+    	
         selectedPlace = (PlaceDTO) (evt.getComponent().getAttributes()
                                        .get("selectedPlace"));
+        
         txtPlaceAddress.setValue(selectedPlace.getPlaceAddress());
         txtPlaceAddress.setDisabled(false);
-        txtPlaceCreated.setValue(selectedPlace.getPlaceCreated());
-        txtPlaceCreated.setDisabled(false);
-        txtPlaceIsVzone.setValue(selectedPlace.getPlaceIsVzone());
-        txtPlaceIsVzone.setDisabled(false);
         txtPlaceName.setValue(selectedPlace.getPlaceName());
         txtPlaceName.setDisabled(false);
-        txtPlaceOwner.setValue(selectedPlace.getPlaceOwner());
-        txtPlaceOwner.setDisabled(false);
         txtPlacePhone.setValue(selectedPlace.getPlacePhone());
         txtPlacePhone.setDisabled(false);
-        txtPlacePhoneAlt.setValue(selectedPlace.getPlacePhoneAlt());
-        txtPlacePhoneAlt.setDisabled(false);
-        txtPlaceStatus.setValue(selectedPlace.getPlaceStatus());
-        txtPlaceStatus.setDisabled(false);
-        txtIdPlace.setValue(selectedPlace.getIdPlace());
-        txtIdPlace.setDisabled(true);
+        txtlatitud.setValue(selectedPlace.getLatitud());
+        txtlongitud.setValue(selectedPlace.getLongitud());
+        txtcode.setValue(selectedPlace.getCode());
+        txtpaytoken.setValue(selectedPlace.getPaytoken());
+        txtdescripcion = selectedPlace.getDescripcion();
+        selectPais.setDisabled(false);
+        getSelectPais();
+        selectPais.setValue(selectedPlace.getCountry());
+        buscarDepto();
+        selectDepto = selectedPlace.getProvince();
+        txtCiudad.setValue(selectedPlace.getCity());
+        txtPlaceNit.setValue(selectedPlace.getFiscalID());
+        txtlogo = selectedPlace.getLogo();
+        txtpic1 = selectedPlace.getPic1();
+        txtpic2 = selectedPlace.getPic2();
+        txtpic3 = selectedPlace.getPic3();
+        txtEmailGym.setValue(selectedPlace.getPlaceEmail());
+        status = selectedPlace.getPlaceStatus();
+        txtMonthlyCost.setDisabled(false);
+        txtMonthlyCost.setValue(selectedPlace.getMonthlyCost());;
+        txtDailyCost.setDisabled(false);
+        txtDailyCost.setValue(selectedPlace.getDailyCost());
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -692,21 +727,270 @@ public class PlaceView implements Serializable {
             entity = new Place();
             Date today = new Date();
             
-            entity.setAccountID(assocAct);
-            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
+            entity.setAccountID(1);
             entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
-            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
-            entity.setCountry(FacesUtils.checkInteger(selectPais));
-            //entity.setProvince(FacesUtils.checkInteger(selectDepto));
-            entity.setProvince(1722);
-            entity.setCity(FacesUtils.checkString(txtCiudad));
-            entity.setPlaceIsVzone(0);
+            entity.setPlaceOwner(FacesUtils.checkInteger(txtPlaceOwner));
             entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
-            entity.setPlaceOwner(assocAct);
-            entity.setPlaceCreated(today);
-            entity.setPlaceStatus(2);
+            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+            entity.setPlaceCreated(FacesUtils.checkDate(txtPlaceCreated));
+            entity.setPlaceIsVzone(FacesUtils.checkInteger(txtPlaceIsVzone));
+            entity.setPlaceStatus(FacesUtils.checkInteger(txtPlaceStatus));
+            entity.setLatitud(FacesUtils.checkString(txtlatitud));
+            entity.setLongitud(FacesUtils.checkString(txtlongitud));
+            entity.setCode(FacesUtils.checkString(txtcode));
+            entity.setPaytoken(FacesUtils.checkString(txtpaytoken));
+            entity.setDescripcion(txtdescripcion);
+            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
+            entity.setCountry(FacesUtils.checkInteger(selectPais));
+            entity.setProvince(selectDepto);
+            entity.setCity(FacesUtils.checkString(txtCiudad));
+            entity.setPlaceStatus(status);
+            entity.setPlaceEmail(FacesUtils.checkString(txtEmailGym));
+            entity.setMonthlyCost(FacesUtils.checkDouble(txtMonthlyCost));
+            entity.setDailyCost(FacesUtils.checkDouble(txtDailyCost));
+            
+            
             businessDelegatorView.savePlace(entity);
+            
+            //Seccion de fotos
+            
+            //Save picture
+            
+            InputStream filecontent = null;
+			String picName = "";
+			OutputStream out = null;
+			//final String path = "C:\\desarrollo\\workspaces\\gympics\\";
+ 			final String path = "/var/www/html/govirfit/appimg/gyms/";
+			
+			long size = 0;
+ 				
+			//Logo
+            
+            if(txtLogoGym != null) {
+            	
+            size =	txtLogoGym.getSize();
+ 				
+            if(size > 0) {
+            	
+            	try {
+     				
+     				Date currentDate = new Date();
+     				String formatedDate = formatImage.format(currentDate);
+     	            
+     				//picName = trainerPic.getFileName();
+     				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+     				filecontent = txtLogoGym.getInputstream();
+     				
+     				out = new FileOutputStream(new File(path + picName));
+     				
+     				int read = 0;
+     		        final byte[] bytes = new byte[1024];
+     				
+     				while ((read = filecontent.read(bytes)) != -1) {
+     		            out.write(bytes, 0, read);
+     		        }
+     				
+     		        //log.info("New file " + picName + " created at " + path);
+     				entity.setLogo(picName);
+     		        
+     				 } catch (FileNotFoundException fne) {
+     					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+     					log.info(fne.toString());
+     			    } finally {
+     			        if (out != null) {
+     			            out.close();
+     			        }
+     			        if (filecontent != null) {
+     			            filecontent.close();
+     			        }
+     			    }//end try catch
+     			
+     				//Check if an old image exist and remove it
+     				if(txtlogo != null) {
+     					File file = new File(path+txtlogo);
+     					if(file.exists()){
+     						file.delete();
+     					}
+     				}
+     				
+     				businessDelegatorView.updatePlace(entity);
+            	
+            }//end validador
+  
+ 	        }
+            
+            //Imagen 1
+            
+            if(txtGymPicture1 != null) {
+            	
+            	size =	txtGymPicture1.getSize();
+ 				
+                if(size > 0) {
+                	
+                	try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture1.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic1(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic1 != null) {
+         					File file = new File(path+txtpic1);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+					
+     		
+                    
+     	        }
+            
+            //Secound picture
+            
+            if(txtGymPicture2 != null) {
+            	
+            	size =	txtGymPicture2.getSize();
+ 				
+                if(size > 0) {
+                	
+            		try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture2.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic2(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic2 != null) {
+         					File file = new File(path+txtpic2);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+					
+     	
+                    
+     	        }
+            
+            //third picture
+            
+            if(txtGymPicture3 != null) {
+            	
+            	size =	txtGymPicture3.getSize();
+ 				
+                if(size > 0) {
+                	
+                	try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture3.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic3(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic3 != null) {
+         					File file = new File(path+txtpic3);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+			
+     	      }
+            
+            //End seccion de fotos
+            
             
             FacesUtils.addInfoMessage("Centro deportivo registrado satisfactoriamente");
             action_clear();
@@ -719,6 +1003,7 @@ public class PlaceView implements Serializable {
     }
 
     public String action_modify() {
+    	
         try {
         	
             if (entity == null) {
@@ -726,15 +1011,269 @@ public class PlaceView implements Serializable {
                 entity = businessDelegatorView.getPlace(idPlace);
             }
 
-            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
-            entity.setPlaceCreated(FacesUtils.checkDate(txtPlaceCreated));
-            entity.setPlaceIsVzone(FacesUtils.checkInteger(txtPlaceIsVzone));
             entity.setPlaceName(FacesUtils.checkString(txtPlaceName));
             entity.setPlaceOwner(FacesUtils.checkInteger(txtPlaceOwner));
             entity.setPlacePhone(FacesUtils.checkString(txtPlacePhone));
             entity.setPlacePhoneAlt(FacesUtils.checkString(txtPlacePhoneAlt));
+            entity.setPlaceAddress(FacesUtils.checkString(txtPlaceAddress));
+            entity.setPlaceCreated(FacesUtils.checkDate(txtPlaceCreated));
+            entity.setPlaceIsVzone(FacesUtils.checkInteger(txtPlaceIsVzone));
             entity.setPlaceStatus(FacesUtils.checkInteger(txtPlaceStatus));
+            entity.setLatitud(FacesUtils.checkString(txtlatitud));
+            entity.setLongitud(FacesUtils.checkString(txtlongitud));
+            entity.setCode(FacesUtils.checkString(txtcode));
+            entity.setPaytoken(FacesUtils.checkString(txtpaytoken));
+            entity.setDescripcion(txtdescripcion);
+            entity.setFiscalID(FacesUtils.checkString(txtPlaceNit));
+            entity.setCountry(FacesUtils.checkInteger(selectPais));
+            entity.setProvince(selectDepto);
+            entity.setCity(FacesUtils.checkString(txtCiudad));
+            entity.setPlaceStatus(status);
+            entity.setPlaceEmail(FacesUtils.checkString(txtEmailGym));
+            entity.setMonthlyCost(FacesUtils.checkDouble(txtMonthlyCost));
+            entity.setDailyCost(FacesUtils.checkDouble(txtDailyCost));
+            
+            
             businessDelegatorView.updatePlace(entity);
+            
+            //Seccion de fotos
+            
+            //Save picture
+            
+            InputStream filecontent = null;
+			String picName = "";
+			OutputStream out = null;
+			
+			//final String path = "C:\\desarrollo\\workspaces\\gympics\\";
+			final String path = "/var/www/html/govirfit/appimg/gyms/";
+			
+			long size = 0;
+ 				
+			//Logo
+            
+            if(txtLogoGym != null) {
+            	
+            size =	txtLogoGym.getSize();
+ 				
+            if(size > 0) {
+            	
+            	try {
+     				
+     				Date currentDate = new Date();
+     				String formatedDate = formatImage.format(currentDate);
+     	            
+     				//picName = trainerPic.getFileName();
+     				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+     				filecontent = txtLogoGym.getInputstream();
+     				
+     				out = new FileOutputStream(new File(path + picName));
+     				
+     				int read = 0;
+     		        final byte[] bytes = new byte[1024];
+     				
+     				while ((read = filecontent.read(bytes)) != -1) {
+     		            out.write(bytes, 0, read);
+     		        }
+     				
+     		        //log.info("New file " + picName + " created at " + path);
+     				entity.setLogo(picName);
+     		        
+     				 } catch (FileNotFoundException fne) {
+     					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+     					log.info(fne.toString());
+     			    } finally {
+     			        if (out != null) {
+     			            out.close();
+     			        }
+     			        if (filecontent != null) {
+     			            filecontent.close();
+     			        }
+     			    }//end try catch
+     			
+     				//Check if an old image exist and remove it
+     				if(txtlogo != null) {
+     					File file = new File(path+txtlogo);
+     					if(file.exists()){
+     						file.delete();
+     					}
+     				}
+     				
+     				businessDelegatorView.updatePlace(entity);
+            	
+            }//end validador
+  
+ 	        }
+            
+            //Imagen 1
+            
+            if(txtGymPicture1 != null) {
+            	
+            	size =	txtGymPicture1.getSize();
+ 				
+                if(size > 0) {
+                	
+                	try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture1.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic1(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic1 != null) {
+         					File file = new File(path+txtpic1);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+					
+     		
+                    
+     	        }
+            
+            //Secound picture
+            
+            if(txtGymPicture2 != null) {
+            	
+            	size =	txtGymPicture2.getSize();
+ 				
+                if(size > 0) {
+                	
+            		try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture2.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic2(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic2 != null) {
+         					File file = new File(path+txtpic2);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+					
+     	
+                    
+     	        }
+            
+            //third picture
+            
+            if(txtGymPicture3 != null) {
+            	
+            	size =	txtGymPicture3.getSize();
+ 				
+                if(size > 0) {
+                	
+                	try {
+         				
+         				Date currentDate = new Date();
+         				String formatedDate = formatImage.format(currentDate);
+         	            
+         				//picName = trainerPic.getFileName();
+         				picName = ""+entity.getIdPlace()+""+formatedDate+".jpg";
+         				filecontent = txtGymPicture3.getInputstream();
+         				
+         				out = new FileOutputStream(new File(path + picName));
+         				
+         				int read = 0;
+         		        final byte[] bytes = new byte[1024];
+         				
+         				while ((read = filecontent.read(bytes)) != -1) {
+         		            out.write(bytes, 0, read);
+         		        }
+         				
+         		        //log.info("New file " + picName + " created at " + path);
+         				entity.setPic3(picName);
+         		        
+         				 } catch (FileNotFoundException fne) {
+         					FacesUtils.addErrorMessage("Archivo seleccionado invalido o protegido");
+         					log.info(fne.toString());
+         			    } finally {
+         			        if (out != null) {
+         			            out.close();
+         			        }
+         			        if (filecontent != null) {
+         			            filecontent.close();
+         			        }
+         			    }//end try catch
+         			
+         				//Check if an old image exist and remove it
+         				if(txtpic3 != null) {
+         					File file = new File(path+txtpic3);
+         					if(file.exists()){
+         						file.delete();
+         					}
+         				}
+         				
+         				businessDelegatorView.updatePlace(entity);
+                	
+                }//end validador
+			
+     	      }
+            
+            //End seccion de fotos
             
             FacesUtils.addInfoMessage("Centro deportivo actualizado satisfactoriamente");
             
@@ -1305,5 +1844,144 @@ public class PlaceView implements Serializable {
 	public void setMontlyTrainCost(InputText montlyTrainCost) {
 		this.montlyTrainCost = montlyTrainCost;
 	}
+
+	public InputText getTxtlatitud() {
+		return txtlatitud;
+	}
+
+	public void setTxtlatitud(InputText txtlatitud) {
+		this.txtlatitud = txtlatitud;
+	}
+
+	public InputText getTxtlongitud() {
+		return txtlongitud;
+	}
+
+	public void setTxtlongitud(InputText txtlongitud) {
+		this.txtlongitud = txtlongitud;
+	}
+
+	public InputText getTxtcode() {
+		return txtcode;
+	}
+
+	public void setTxtcode(InputText txtcode) {
+		this.txtcode = txtcode;
+	}
+
+	public InputText getTxtpaytoken() {
+		return txtpaytoken;
+	}
+
+	public void setTxtpaytoken(InputText txtpaytoken) {
+		this.txtpaytoken = txtpaytoken;
+	}
+
+
+	public String getTxtdescripcion() {
+		return txtdescripcion;
+	}
+
+	public void setTxtdescripcion(String txtdescripcion) {
+		this.txtdescripcion = txtdescripcion;
+	}
+
+	public UploadedFile getTxtLogoGym() {
+		return txtLogoGym;
+	}
+
+	public void setTxtLogoGym(UploadedFile txtLogoGym) {
+		this.txtLogoGym = txtLogoGym;
+	}
+
+	public UploadedFile getTxtGymPicture1() {
+		return txtGymPicture1;
+	}
+
+	public void setTxtGymPicture1(UploadedFile txtGymPicture1) {
+		this.txtGymPicture1 = txtGymPicture1;
+	}
+
+	public UploadedFile getTxtGymPicture2() {
+		return txtGymPicture2;
+	}
+
+	public void setTxtGymPicture2(UploadedFile txtGymPicture2) {
+		this.txtGymPicture2 = txtGymPicture2;
+	}
+
+	public UploadedFile getTxtGymPicture3() {
+		return txtGymPicture3;
+	}
+
+	public void setTxtGymPicture3(UploadedFile txtGymPicture3) {
+		this.txtGymPicture3 = txtGymPicture3;
+	}
+
+	public String getTxtlogo() {
+		return txtlogo;
+	}
+
+	public void setTxtlogo(String txtlogo) {
+		this.txtlogo = txtlogo;
+	}
+
+	public String getTxtpic1() {
+		return txtpic1;
+	}
+
+	public void setTxtpic1(String txtpic1) {
+		this.txtpic1 = txtpic1;
+	}
+
+	public String getTxtpic2() {
+		return txtpic2;
+	}
+
+	public void setTxtpic2(String txtpic2) {
+		this.txtpic2 = txtpic2;
+	}
+
+	public String getTxtpic3() {
+		return txtpic3;
+	}
+
+	public void setTxtpic3(String txtpic3) {
+		this.txtpic3 = txtpic3;
+	}
+
+	public InputText getTxtEmailGym() {
+		return txtEmailGym;
+	}
+
+	public void setTxtEmailGym(InputText txtEmailGym) {
+		this.txtEmailGym = txtEmailGym;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public InputText getTxtMonthlyCost() {
+		return txtMonthlyCost;
+	}
+
+	public void setTxtMonthlyCost(InputText txtMonthlyCost) {
+		this.txtMonthlyCost = txtMonthlyCost;
+	}
+
+	public InputText getTxtDailyCost() {
+		return txtDailyCost;
+	}
+
+	public void setTxtDailyCost(InputText txtDailyCost) {
+		this.txtDailyCost = txtDailyCost;
+	}
+	
+	
 
 }

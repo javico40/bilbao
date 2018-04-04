@@ -52,6 +52,17 @@ public class PlaceDTO implements Serializable {
     private Date outSunday;
     private Double dailyCost;
     private Double monthlyCost;
+    private String latitud;
+    private String longitud;
+    private String code;
+    private String paytoken;
+    private String descripcion;
+    private String logo;
+    private String pic1;
+    private String pic2;
+    private String pic3;
+    private String placeEmail;
+    
     private Set<Placetype> placetypes = new HashSet<Placetype>(0);
     private Set<Placeservices> placeserviceses = new HashSet<Placeservices>(0);
     
@@ -306,7 +317,85 @@ public class PlaceDTO implements Serializable {
 	public void setInSaturday(Date inSaturday) {
 		this.inSaturday = inSaturday;
 	}
-	
-	
+
+	public String getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
+	}
+
+	public String getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getPaytoken() {
+		return paytoken;
+	}
+
+	public void setPaytoken(String paytoken) {
+		this.paytoken = paytoken;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public String getPic1() {
+		return pic1;
+	}
+
+	public void setPic1(String pic1) {
+		this.pic1 = pic1;
+	}
+
+	public String getPic2() {
+		return pic2;
+	}
+
+	public void setPic2(String pic2) {
+		this.pic2 = pic2;
+	}
+
+	public String getPic3() {
+		return pic3;
+	}
+
+	public void setPic3(String pic3) {
+		this.pic3 = pic3;
+	}
+
+	public String getPlaceEmail() {
+		return placeEmail;
+	}
+
+	public void setPlaceEmail(String placeEmail) {
+		this.placeEmail = placeEmail;
+	}
 	
 }

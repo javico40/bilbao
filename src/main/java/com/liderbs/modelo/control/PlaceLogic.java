@@ -199,8 +199,37 @@ public class PlaceLogic implements IPlaceLogic {
                     ? placeTmp.getPlacePhone() : null);
                 placeDTO2.setPlacePhoneAlt((placeTmp.getPlacePhoneAlt() != null)
                     ? placeTmp.getPlacePhoneAlt() : null);
+                placeDTO2.setCountry((placeTmp.getCountry() != null)
+                        ? placeTmp.getCountry() : null);
+                placeDTO2.setProvince((placeTmp.getProvince() != null)
+                        ? placeTmp.getProvince() : null);
+                placeDTO2.setCity((placeTmp.getCity() != null)
+                        ? placeTmp.getCity() : null);
+                placeDTO2.setFiscalID((placeTmp.getFiscalID() != null)
+                        ? placeTmp.getFiscalID() : null);
                 placeDTO2.setPlaceStatus((placeTmp.getPlaceStatus() != null)
                     ? placeTmp.getPlaceStatus() : null);
+                placeDTO2.setLatitud((placeTmp.getLatitud() != null)
+                        ? placeTmp.getLatitud() : null);
+                placeDTO2.setLongitud((placeTmp.getLongitud() != null)
+                        ? placeTmp.getLongitud() : null);      
+                placeDTO2.setCode((placeTmp.getCode() != null)
+                        ? placeTmp.getCode() : null);
+                placeDTO2.setPaytoken((placeTmp.getPaytoken() != null)
+                        ? placeTmp.getPaytoken() : null);
+                placeDTO2.setDescripcion((placeTmp.getDescripcion() != null)
+                        ? placeTmp.getDescripcion() : null);
+                placeDTO2.setLogo((placeTmp.getLogo() != null)
+                        ? placeTmp.getLogo() : null);
+                placeDTO2.setPic1((placeTmp.getPic1() != null)
+                        ? placeTmp.getPic1() : null);
+                placeDTO2.setPic2((placeTmp.getPic2() != null)
+                        ? placeTmp.getPic2() : null);
+                placeDTO2.setPic3((placeTmp.getPic3() != null)
+                        ? placeTmp.getPic3() : null);
+                placeDTO2.setPlaceEmail((placeTmp.getPlaceEmail() != null)
+                        ? placeTmp.getPlaceEmail() : null);
+                
                 placeDTO.add(placeDTO2);
             }
 

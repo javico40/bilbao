@@ -18,7 +18,7 @@
 					<!-- Content Header (Page header) -->
 					<section class="content-header">
 						<h1>
-							Virfit <small>Lider Business Group</small>
+							Bilbao <small>Govirfit S.A.S</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -28,71 +28,40 @@
 
 					<!-- Main content -->
 					<section class="content">
-					<h:form id="form">							  		
+					<h:form id="form"  enctype="multipart/form-data">							  		
 						
 						<p:panel id="panelDataTablePlace" header="Centros deportivos">
 							<p:growl id="men"/>				
 							<p:dataTable value="#{placeView.data}" var="place"
 								paginator="true" rows="5">
 										
-										<p:column filterBy="#{place.idPlace}" sortBy="#{place.idPlace}" >
-										 <f:facet name="header">
-										<h:outputText value="idPlace"/>
-										</f:facet>
-										 <h:outputText value="#{place.idPlace}"/>
-										 </p:column>
-			                    		
 			                    		<p:column filterBy="#{place.placeName}" sortBy="#{place.placeName}" >
 										 <f:facet name="header">
-										<h:outputText value="PlaceName"/>
+										<h:outputText value="NIT"/>
+										</f:facet>
+										 <h:outputText value="#{place.fiscalID}"/>
+										</p:column>
+										
+			                    		<p:column filterBy="#{place.placeName}" sortBy="#{place.placeName}" >
+										 <f:facet name="header">
+										<h:outputText value="Nombre"/>
 										</f:facet>
 										 <h:outputText value="#{place.placeName}"/>
 										</p:column>
 										
-										<p:column filterBy="#{place.placePhone}" sortBy="#{place.placePhone}" >
+										<p:column>
 										 <f:facet name="header">
-										<h:outputText value="PlacePhone"/>
+										<h:outputText value="Telefono"/>
 										</f:facet>
 										 <h:outputText value="#{place.placePhone}"/>
 										</p:column>   
 			                    									
-										<p:column filterBy="#{place.placePhoneAlt}" sortBy="#{place.placePhoneAlt}" >
+										<p:column>
 										 <f:facet name="header">
-										<h:outputText value="PlacePhoneAlt"/>
-										</f:facet>
-										 <h:outputText value="#{place.placePhoneAlt}"/>
-										</p:column>   
-			                    		
-			                    																																
-										<p:column filterBy="#{place.placeAddress}" sortBy="#{place.placeAddress}" >
-										 <f:facet name="header">
-										<h:outputText value="PlaceAddress"/>
-										</f:facet>
-										 <h:outputText value="#{place.placeAddress}"/>
-										</p:column>   
-			                    									
-																	
-										<p:column filterBy="#{place.placeIsVzone}" sortBy="#{place.placeIsVzone}" >
-										 <f:facet name="header">
-										<h:outputText value="PlaceIsVzone"/>
-										</f:facet>
-										 <h:outputText value="#{place.placeIsVzone}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{place.placeStatus}" sortBy="#{place.placeStatus}" >
-										 <f:facet name="header">
-										<h:outputText value="PlaceStatus"/>
+										<h:outputText value="Estado"/>
 										</f:facet>
 										 <h:outputText value="#{place.placeStatus}"/>
 										</p:column>   
-			                    		
-			                    		<p:column filterBy="#{place.placeCreated}" sortBy="#{place.placeCreated}" >
-										 <f:facet name="header">
-										<h:outputText value="PlaceCreated"/>
-										</f:facet>
-										 <h:outputText value="#{place.placeCreated}"/>
-										</p:column>   
-			                    		
 			                    			                    
 								<p:column headerText="Opciones">
 									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
@@ -116,109 +85,155 @@
 							</div>
 						</p:panel>						
 		   			</h:form>
-					<p:dialog id="dialogPlace" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{placeView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
+					<p:dialog id="dialogPlace"
+							  appendTo="@(body)"
+							  draggable="true"
+							  closable="false"
+							  visible="#{placeView.showDialog}"
+							  resizable="false"
+							  modal="true"
+							  width="850"
+							  position="top"
+							  style="margin:50px;">
+						<h:form id="formDialog" enctype="multipart/form-data">
 							<p:messages id="msg" />
-							<p:panel id="panelPlace" header="Centro deportivo">							
-							    <h:panelGrid columns="2" id="panelGrid" >
+							<p:scrollPanel id="panelPlace" header="Centro deportivo">							
 							    
-							    	<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-								    
-								    <h:outputText id="msgAssocAct" value=" Cuenta asociada"/>
-									<p:inputText id="txtAssocAct"
-												 binding="#{placeView.txtAssocAct}"
-												 onkeypress="if (event.keyCode == 13) { onchange(); return false; }else if(event.which &lt; 48 || event.which &gt; 57 ){if(event.which != 8){return false;}}">
-										<p:ajax event="change"
-												listener="#{placeView.buscarAssocAct}"
-												update="txtAssocActOwner" />
-									
-									</p:inputText>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									<h:outputText id="msgAssocActOwner" value=" Dueño de cuenta"/>
-									<p:inputText id="txtAssocActOwner" disabled="true" binding="#{placeView.txtAssocActOwner}"/>
-									
-							    
-							    	<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-							    	<h:outputText id="msgPlaceNit" value=" Identificador Fiscal"/>
-									<p:inputText id="txtPlaceNit" binding="#{placeView.txtPlaceNit}"/>
-									
-							    
-							    	<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									<h:outputText id="msgPlaceName" value=" Razon social"/>
-									<p:inputText id="txtPlaceName" binding="#{placeView.txtPlaceName}"/>
-									 									
-									 <h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />									
-									 																		
-									<h:outputText id="msgPlaceAddress" value=" Direccion"/>
-									<p:inputText id="txtPlaceAddress" binding="#{placeView.txtPlaceAddress}"/>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-								    
-								    <h:outputText id="textPais" value=" PAIS" />
-								    <p:selectOneMenu id="selectPais" binding="#{placeView.selectPais}" style="width:125px">
-            									<f:selectItem itemLabel="Seleccionar" itemValue="" />
-            									<f:selectItems value="#{placeView.listPaises}" />
-            									<p:ajax event="change"
-														listener="#{placeView.buscarDepto}" process="@this"
-															update="selectDepto" />
-        									</p:selectOneMenu>
-								    
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-								    
-									<h:outputText id="textDepto" value=" DEPARTAMENTO" />
-									<p:selectOneMenu id="selectDepto" disabled="#{placeView.lockDepto}" binding="#{placeView.selectDepto}"
-									                 style="width:125px">
-            										 <f:selectItem itemLabel="Seleccionar" itemValue="" />
-            										<f:selectItems value="#{placeView.listDeptos}" >
-            										</f:selectItems>
-            						<p:ajax event="change"
-											listener="#{placeView.validarDepto}" process="@this"
-											update="selectDepto" />
-        							</p:selectOneMenu>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-								    
-								    <h:outputText id="textCiudad" value=" CIUDAD" />
-								    <p:inputText id="txtCiudad" binding="#{placeView.txtCiudad}" />
-								    
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									
-									<h:outputText id="msgPlacePhone" value=" Telefono"/>
-									<p:inputText id="txtPlacePhone"  binding="#{placeView.txtPlacePhone}"/>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-									<h:outputText id="msgPlacePhoneAlt" value=" Telefono alternativo"/>
-									<p:inputText id="txtPlacePhoneAlt" binding="#{placeView.txtPlacePhoneAlt}"/>
-									
-									<h:outputText value="&#160;" />
-								    <h:outputText value="&#160;" />
-									
-								
-																		
-								</h:panelGrid>
-							</p:panel>						   
+							    <p:panelGrid>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgPlaceNit" value=" NIT"/></p:column>
+								    		<p:column><p:inputText id="txtPlaceNit" binding="#{placeView.txtPlaceNit}"/></p:column>
+								    		<p:column><h:outputText id="msgPlaceName" value=" Razon social"/></p:column>
+								    		<p:column><p:inputText id="txtPlaceName" binding="#{placeView.txtPlaceName}"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgEmailGym" value=" Email:"/></p:column>
+								    		<p:column><p:inputText id="txtEmailGym" binding="#{placeView.txtEmailGym}"/></p:column>
+								    		<p:column><h:outputText id="msgStatusGym" value=" Estado:"/></p:column>
+								    		<p:column>
+								    			<p:selectOneMenu id="console" 
+								    							 value="#{placeView.status}"
+								    							 style="width:125px">
+            										<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            											<f:selectItem itemLabel="Activo" itemValue="1" />
+            											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+        										</p:selectOneMenu>
+ 
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column colspan="4"><p:editor widgetVar="editor1" value="#{placeView.txtdescripcion}" height="100" style="margin-bottom:10px"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgPlaceAddress" value=" Direccion"/></p:column>
+								    		<p:column><p:inputText id="txtPlaceAddress" binding="#{placeView.txtPlaceAddress}"/></p:column>
+								    		<p:column><h:outputText id="textPais" value=" Pais" /></p:column>
+								    		<p:column>
+								    				<p:selectOneMenu id="selectPais" binding="#{placeView.selectPais}" style="width:125px">
+            												<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            												<f:selectItems value="#{placeView.listPaises}" />
+            												<p:ajax event="change"
+																	listener="#{placeView.buscarDepto}" process="@this"
+																	update="selectDepto" />
+        											</p:selectOneMenu>
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="textDepto" value=" Departamento" /></p:column>
+								    		<p:column>
+								    				<p:selectOneMenu id="selectDepto"
+								    								 disabled="#{placeView.lockDepto}"
+								    								 value="#{placeView.selectDepto}"
+									                 				style="width:125px">
+            										 		<f:selectItem itemLabel="Seleccionar" itemValue="" />
+            													<f:selectItems value="#{placeView.listDeptos}" >
+            												</f:selectItems>
+            											<p:ajax event="change"
+																listener="#{placeView.validarDepto}" process="@this"
+																update="selectDepto" />
+        											</p:selectOneMenu>
+								    		</p:column>
+								    		<p:column><h:outputText id="textCiudad" value=" Ciudad" /></p:column>
+								    		<p:column><p:inputText id="txtCiudad" binding="#{placeView.txtCiudad}" /></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgMonthlyCost" value=" Costo Mensualidad"/></p:column>
+								    		<p:column><p:inputText id="txtMonthlyCost"  binding="#{placeView.txtMonthlyCost}"/></p:column>
+								    		<p:column><h:outputText id="msgDailyCost" value=" Costo Diario"/></p:column>
+								    		<p:column><p:inputText id="txtDailyCost" binding="#{placeView.txtDailyCost}"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgPlacePhone" value=" Telefono"/></p:column>
+								    		<p:column><p:inputText id="txtPlacePhone"  binding="#{placeView.txtPlacePhone}"/></p:column>
+								    		<p:column><h:outputText id="msgPlacePhoneAlt" value=" Telefono alternativo"/></p:column>
+								    		<p:column><p:inputText id="txtPlacePhoneAlt" binding="#{placeView.txtPlacePhoneAlt}"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgLatitud" value=" Latitud"/></p:column>
+								    		<p:column><p:inputText id="txtlatitud"  binding="#{placeView.txtlatitud}"/></p:column>
+								    		<p:column><h:outputText id="msgLongitud" value=" Longitud"/></p:column>
+								    		<p:column><p:inputText id="txtlongitud"  binding="#{placeView.txtlongitud}"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgCode" value=" Code"/></p:column>
+								    		<p:column><p:inputText id="txtcode"  binding="#{placeView.txtcode}"/></p:column>
+								    		<p:column><h:outputText id="msgPayToken" value=" Token"/></p:column>
+								    		<p:column><p:inputText id="txtpaytoken"  binding="#{placeView.txtpaytoken}"/></p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgLogoGym" value=" Logo Gym"/></p:column>
+								    		<p:column>
+								    				<h:outputText id="msglogoGymUploadName"
+								    							  value="#{placeView.txtlogo}"/>
+								    				<p:fileUpload id="txtlogoGymPicture"
+								    							  value="#{placeView.txtLogoGym}"
+								    							  mode="simple"
+								    							  skinSimple="true"
+								    							  accept="/(\.|\/)(gif|jpe?g|png)$/"
+								    							  sizeLimit="100000"/>
+								    		</p:column>
+								    		<p:column><h:outputText id="msgPicGym1" value=" Foto Gym 1:"/></p:column>
+								    		<p:column>
+								    				<h:outputText id="msgPhotoGym1"
+								    							  value="#{placeView.txtpic1}"/>
+								    				<p:fileUpload id="txtGymPicture1"
+								    							  value="#{placeView.txtGymPicture1}"
+								    							  mode="simple"
+								    							  skinSimple="true"
+								    							  accept="/(\.|\/)(gif|jpe?g|png)$/"
+								    							  sizeLimit="100000"/>
+								    		</p:column>
+								    	</p:row>
+								    	<p:row>	
+								    		<p:column><h:outputText id="msgPicGym2" value=" Foto Gym 2"/></p:column>
+								    		<p:column>
+								    				<h:outputText id="msgPhotoGym2"
+								    							  value="#{placeView.txtpic2}"/>
+								    				<p:fileUpload id="txtGymPicture2"
+								    							  value="#{placeView.txtGymPicture2}"
+								    							  mode="simple"
+								    							  skinSimple="true"
+								    							  accept="/(\.|\/)(gif|jpe?g|png)$/"
+								    							  sizeLimit="100000"/>
+								    		</p:column>
+								    		<p:column><h:outputText id="msgPicGym3" value=" Foto Gym 3:"/></p:column>
+								    		<p:column>
+								    				<h:outputText id="msgPhotoGym3"
+								    							  value="#{placeView.txtpic3}"/>
+								    				<p:fileUpload id="txtGymPicture3"
+								    							  value="#{placeView.txtGymPicture3}"
+								    							  mode="simple"
+								    							  skinSimple="true"
+								    							  accept="/(\.|\/)(gif|jpe?g|png)$/"
+								    							  sizeLimit="100000"/>
+								    		</p:column>
+								    	</p:row>
+								    	
+								 </p:panelGrid>
+							</p:scrollPanel>						   
 							<p:panel id="panelBotones">
 								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" value="Guardar" action="#{placeView.action_save()}" update=":dialogPlace :form:panelDataTablePlace" />
+									<p:commandButton id="btnSave" binding="#{placeView.btnSave}" ajax="false" value="Guardar" action="#{placeView.action_save()}" update=":dialogPlace :form:panelDataTablePlace" />
 									<p:commandButton id="btnClear" value="Limpiar" action="#{placeView.action_clear()}" update=":dialogPlace" />
 									<p:commandButton id="btnExit" value="Cerrar" action="#{placeView.action_closeDialog()}" update=":dialogPlace" />
 								</div>

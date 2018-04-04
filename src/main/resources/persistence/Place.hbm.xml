@@ -83,6 +83,38 @@
         <property name="monthlyCost" type="java.lang.Double">
             <column name="monthlyCost" />
         </property>
+        
+        
+        <property name="latitud" type="java.lang.String">
+            <column name="place_latitud" length="100" />
+        </property>
+        <property name="longitud" type="java.lang.String">
+            <column name="place_longitud" length="100" />
+        </property>
+        <property name="code" type="java.lang.String">
+            <column name="place_code" length="45" />
+        </property>
+        <property name="paytoken" type="java.lang.String">
+            <column name="paytoken" length="5000" />
+        </property>
+        <property name="descripcion" type="java.lang.String">
+            <column name="place_description" length="1000" />
+        </property>
+        <property name="logo" type="java.lang.String">
+            <column name="place_logo" length="1000" />
+        </property>
+        <property name="pic1" type="java.lang.String">
+            <column name="place_pic1" length="1000" />
+        </property>
+        <property name="pic2" type="java.lang.String">
+            <column name="place_pic2" length="1000" />
+        </property>
+        <property name="pic3" type="java.lang.String">
+            <column name="place_pic3" length="1000" />
+        </property>
+        <property name="placeEmail" type="java.lang.String">
+            <column name="place_email" length="1000" />
+        </property>
        
         <set name="autorizations" table="autorization" inverse="true" lazy="false" fetch="select">
             <key>
