@@ -48,9 +48,9 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
         String password = (String) authentication.getCredentials();  
        
         Object[] busqueda=new Object[8];
-        busqueda[0]="username";
+        busqueda[0]="email";
         busqueda[1]=true;
-        busqueda[2]=username.toUpperCase();
+        busqueda[2]=username;
         busqueda[3]="=";
         busqueda[4]="status";
         busqueda[5]=false;
@@ -59,14 +59,14 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
         
         try {
         	
-			Users user =businessDelegatorView.findByCriteriaInUsers(new Object[]{"username",true, username.toUpperCase(), "=","status",false, 1, "="},
+			Users user =businessDelegatorView.findByCriteriaInUsers(new Object[]{"email",true, username, "=","status",false, 1, "="},
 																	null,
 																	null).get(0);
 	
 			if(password==null||password.trim().equals("")){
 				throw new BadCredentialsException("Contraseña invalida");	
 			}else if (user == null){
-				throw new BadCredentialsException("Usuario no valido");	        	           
+				throw new BadCredentialsException("Correo no valido");	        	           
 	        }else{	
 	        	
 	        	 String hash = password;
@@ -109,7 +109,7 @@ public class CustomAuthenticationProviderLDAP implements AuthenticationProvider 
 	            	 }*/
 	            	 
 	            	 if(list.size() == 0){
-	            		 throw new BadCredentialsException("Su usuario no tiene una cuenta asociada");     
+	            		 throw new BadCredentialsException("Usuario no tiene una cuenta asociada");     
 	            	 }else{
 	            		 
 	            		 String profileDescription = "";

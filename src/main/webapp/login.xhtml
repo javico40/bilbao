@@ -168,13 +168,13 @@
         <p class="login-box-msg">#{msg['iniciosesion']}</p>
         <form id="loginForm" name="loginForm" action="j_spring_security_check" method="post" class="form-signin">
          <div class="form-group has-feedback">
-          <h:outputText rendered="${param.authfailed eq 'true'}" value="Usuario invalido o contraseña errada" styleClass="alert alert-danger alert-dismissable" />
+          <h:outputText rendered="${param.authfailed eq 'true'}" value="Correo invalido o contraseña errada" styleClass="alert alert-danger alert-dismissable" />
 		  <h:outputText rendered="${param.loggedout eq 'true'}" value="Salio del sistema correctamente" styleClass="alert alert-danger alert-dismissable" />
 		  <h:outputText rendered="${param.exceededAllowed eq 'true'}" value="Numero de intentos de acceso excedidos" styleClass="alert alert-danger alert-dismissable" />
 		  </div>	
           <div class="form-group has-feedback">
-            <input id="usernameField" name="j_username" type="text" class="form-control" placeholder="Usuario"/>
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <input id="usernameField" name="j_username" type="text" class="form-control" placeholder="Correo"/>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
             <input id="passwordField" name="j_password"  type="password" class="form-control" placeholder="Password"/>
@@ -189,7 +189,7 @@
           </div>
         </form>
 
-        <a href="#" target="_blank">¿Olvidaste tu contraseña?</a><br/>
+        <a href="forgotpass.xhtml" class="text-center">¿Olvidaste tu contraseña?</a><br/>
         <a href="register.xhtml" class="text-center">Registrate como Entrenador</a><br/>
        
       </div><!-- /.login-box-body -->

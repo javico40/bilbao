@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
@@ -41,6 +42,7 @@ import com.liderbs.modelo.Profile;
 import com.liderbs.modelo.Trainer;
 import com.liderbs.modelo.Users;
 import com.liderbs.modelo.Vprofile;
+import com.liderbs.presentation.businessDelegate.BusinessDelegatorView;
 import com.liderbs.presentation.businessDelegate.IBusinessDelegatorView;
 
 @ManagedBean
@@ -56,6 +58,7 @@ public class RegisterView implements Serializable {
 	private InputText userlogin;
 	private InputText correo;
 	private Password password;
+	private Password password2;
 	private InputText centroDeportivo;
 	private Integer city;
 	private List<SelectItem> cities;
@@ -73,38 +76,156 @@ public class RegisterView implements Serializable {
 	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
 		this.businessDelegatorView = businessDelegatorView;
 	}
+	
+	protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+    }
+	
+	public void recoverPass() {
+		try {
+			
+			if (FacesUtils.checkString(correo) == null) {
+				FacesUtils.addErrorMessage("Ingrese un correo valido");
+			} else {
+				
+				String email = FacesUtils.checkString(correo);
+				
+				List<Users> list = businessDelegatorView.findByCriteriaInUsers(new Object[] { "email", true, email, "=" }, null, null);
+
+				if (list.size() == 0) {
+					FacesUtils.addErrorMessage("El correo ingresado no se encuentra registrado en nuestra base de datos");
+				} else {
+					
+					int userId = 0;
+					
+					for(Users usuario:list) {
+						userId = usuario.getIdusers();
+					}
+					
+					//Obtener usuario
+					Users user = businessDelegatorView.getUsers(userId);
+					
+					if(user!=null) {
+						
+						//Generar nueva contraseña
+						String newPass = "";
+						newPass = getSaltString();
+						String hash = texMD5(newPass);
+						//Asignarla al usuario
+						user.setPassword(hash);
+						businessDelegatorView.updateUsers(user);
+						
+						
+						//Enviarla por correo
+						
+						//EMAIL SEND
+						
+						/*Mail parameters*/
+						
+						final String FROM = "info@govirfit.com";
+					    final String FROMNAME = "Govirfit";
+						final String TO = user.getEmail();
+					    final String SMTP_USERNAME = "AKIAJNZAR6WYMWWR75NA";
+					    final String SMTP_PASSWORD = "AtsODaP/MZPQ2W+xpBpI9TR9sK3RHSl4sWjH0G0eeIbl";
+					    final String HOST = "email-smtp.us-west-2.amazonaws.com";
+					    final int PORT = 465;
+					    final String SUBJECT = "Recuperar contraseña en Govirfit";
+					    
+					    final String BODY = ""+
+					    	    "<h1>Su contraseña para acceder a Govirfit</h1>"+
+					    	    "<p>Hola "+user.getEmail()+"<br/> "+
+					    	    "Tu nueva contraseña para acceder a nuestra plataforma es "+newPass;
+						
+						 // Create a Properties object to contain connection configuration information.
+				    	Properties props = System.getProperties();
+				    	props.put("mail.transport.protocol", "smtp");
+				    	props.put("mail.smtp.port", PORT); 
+				    	props.put("mail.smtp.ssl.enable", "true");
+				    	props.put("mail.smtp.auth", "true");
+				    	
+				    	// Create a Session object to represent a mail session with the specified properties. 
+				    	Session session = Session.getDefaultInstance(props);
+
+				        // Create a message with the specified information. 
+				        MimeMessage msg = new MimeMessage(session);
+				        msg.setFrom(new InternetAddress(FROM,FROMNAME));
+				        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+				        msg.setSubject(SUBJECT);
+				        msg.setContent(BODY,"text/html");
+				        
+				        // Add a configuration set header. Comment or delete the 
+				        // next line if you are not using a configuration set
+				        //msg.setHeader("X-SES-CONFIGURATION-SET", CONFIGSET);
+				            
+				        // Create a transport.
+				        Transport transport = session.getTransport();
+				        
+				        // Send the message.
+				        try
+				        {
+				            // Connect to Amazon SES using the SMTP username and password you specified above.
+				            transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+				        	
+				            // Send the email.
+				            transport.sendMessage(msg, msg.getAllRecipients());
+				           
+				        }
+				        catch (Exception ex) {
+				        	log.info("Correo no enviado "+ex.toString());
+				        }
+				        finally
+				        {
+				            // Close and terminate the connection.
+				            transport.close();
+				        }
+				        
+				        FacesUtils.addInfoMessage("Hemos enviado tu nueva contraseña al correo electronico registrado");
+						
+					}else {
+						FacesUtils.addErrorMessage("No se pudo encontrar un usuario asociado al correo electronico ingresado, contactenos a info@govirfit.com");
+					}//end validate user
+				}//validacion correo no existe
+			}//end validacion correo
+		}catch(Exception e) {
+			FacesUtils.addErrorMessage("Error en el proceso de recuperar contraseña, contactenos a info@govirfit.com");
+		}
+	}
 
 	public void register() {
 
 		try {
 
-			if (FacesUtils.checkString(userlogin) == null) {
-				FacesUtils.addErrorMessage("Ingrese un nombre de usuario valido");
-			} else if (FacesUtils.checkString(correo) == null) {
+			if (FacesUtils.checkString(correo) == null) {
 				FacesUtils.addErrorMessage("Ingrese un correo valido");
 			} else if (FacesUtils.checkString(password) == null) {
 				FacesUtils.addErrorMessage("Ingrese una contraseña valida");
 			} else {
 
-				String usern = FacesUtils.checkString(userlogin);
 				String email = FacesUtils.checkString(correo);
 				String pass = FacesUtils.checkString(password);
+				String pass2 = FacesUtils.checkString(password2);
+				
+				if(!pass.equalsIgnoreCase(pass2)) {
+					FacesUtils.addErrorMessage("La confirmacion de la contraseña debe ser igual a la contraseña ingresada");
+				}else {
+					
+				}//fin validacion doble password
 
 				// Buscar el si el nombre de usuario ya se encuentra registrado
 
-				List<Users> list = businessDelegatorView
-						.findByCriteriaInUsers(new Object[] { "username", true, usern.toUpperCase(), "=" }, null, null);
+				List<Users> list = businessDelegatorView.findByCriteriaInUsers(new Object[] { "email", true, email, "=" }, null, null);
 
 				if (list.size() > 0) {
-					FacesUtils.addErrorMessage("El nombre de usuario ya se encuentra registrado");
+					FacesUtils.addErrorMessage("El correo ingresado ya se encuentra registrado");
 				} else {
-
-					list = businessDelegatorView.findByCriteriaInUsers(new Object[] { "email", true, email, "=" }, null,
-							null);
-
-					if (list.size() > 0) {
-						FacesUtils.addErrorMessage("El correo ya se encuentra registrado");
-					} else {
 
 						// Crear el usuario
 						
@@ -114,7 +235,7 @@ public class RegisterView implements Serializable {
 
 						Date today = new Date();
 						Users userNew = new Users();
-						userNew.setUsername(usern.toUpperCase());
+						userNew.setUsername("automatic");
 						userNew.setPassword(hash);
 						userNew.setEmail(email);
 						userNew.setStatus(1);
@@ -149,7 +270,7 @@ public class RegisterView implements Serializable {
 							cuenta.setAccountCreated(today);
 							cuenta.setAccountDefault(1);
 							cuenta.setAccountStatus(1);
-							cuenta.setAccountName(usern.toUpperCase());
+							cuenta.setAccountName(email);
 							cuenta.setAccountUserCreated("selfregister");
 							cuenta.setProfile(perfil);
 							cuenta.setUserses(new LinkedHashSet<Users>(listUser));
@@ -185,8 +306,7 @@ public class RegisterView implements Serializable {
 						    
 						    final String BODY = ""+
 						    	    "<h1>Registro de Usuarios Govirfit</h1>"+
-						    	    "<p>El usuario "+userNew.getUsername()+" "+
-						    	    "con el correo "+userNew.getEmail()+" "+
+						    	    "<p>El usuario"+"con el correo "+userNew.getEmail()+" "+
 						    	    "se ha registrado en la plataforma";
 							
 							 // Create a Properties object to contain connection configuration information.
@@ -251,23 +371,19 @@ public class RegisterView implements Serializable {
 							
 							*/
 							
-							FacesUtils.addInfoMessage("Te has registrado satisfactoriamente, ingresa con tu usuario y contraseña.");
+							FacesUtils.addInfoMessage("Te has registrado satisfactoriamente, ingresa con tu usuario y contraseña haciendo click en ya estoy registrado.");
 							
 							//Send email welcome govirfit
 							
 							//End Send email
 
-							String url = ("login.xhtml");
-							FacesContext fc = FacesContext.getCurrentInstance();
-							ExternalContext ec = fc.getExternalContext();
-							ec.redirect(url);
+							//String url = ("login.xhtml");
+							//FacesContext fc = FacesContext.getCurrentInstance();
+							//ExternalContext ec = fc.getExternalContext();
+							//ec.redirect(url);
 
 						} //
-
-					} // end if-else
-
 				} // end user name validation
-
 			}
 
 		} catch (Exception e) {
@@ -504,6 +620,14 @@ public class RegisterView implements Serializable {
 
 	public void setUserlogin(InputText userlogin) {
 		this.userlogin = userlogin;
+	}
+
+	public Password getPassword2() {
+		return password2;
+	}
+
+	public void setPassword2(Password password2) {
+		this.password2 = password2;
 	}
 	
 	

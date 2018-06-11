@@ -172,10 +172,10 @@
  
            <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>Bienvenido a Govirfit</b></a>
+        <a href="../../index2.html"><b>Registro de entrenadores</b></a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">Registro de Entrenadores</p>
+        <p class="login-box-msg">Ingresa un correo valido, una contraseña, y confirma la contraseña</p>
         <h:form>
         <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
         <!--<form id="loginForm" name="loginForm" method="post" class="form-signin">-->
@@ -183,18 +183,18 @@
           <h:outputText rendered="${param.authfailed eq 'true'}" value="#{msg['authfailed']}" styleClass="alert alert-danger alert-dismissable" />
 		  <h:outputText rendered="${param.loggedout eq 'true'}" value="#{msg['loggedout']}" styleClass="alert alert-danger alert-dismissable" />
 		  <h:outputText rendered="${param.exceededAllowed eq 'true'}" value="#{msg['exceededAllowed']}" styleClass="alert alert-danger alert-dismissable" />
-		  </div>	
+		  </div>
+		  <div class="form-group has-feedback">
+            <p:inputText id="usermail" binding="#{registerView.correo}" class="form-control" placeholder="Ingrese su email" />
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>	
           <div class="form-group has-feedback">
-            <p:inputText id="username" binding="#{registerView.userlogin}" class="form-control" placeholder="Usuario" />
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <p:password id="password" binding="#{registerView.password}" class="form-control" placeholder="Contraseña" />
+            <p:password id="password" binding="#{registerView.password}" class="form-control" placeholder="Ingrese una contraseña" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-   		  <div class="form-group has-feedback">
-            <p:inputText id="usermail" binding="#{registerView.correo}" class="form-control" placeholder="Correo / Email" />
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          <div class="form-group has-feedback">
+            <p:password id="password2" binding="#{registerView.password2}" class="form-control" placeholder="Confirme su contraseña" />
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">
             <div class="col-xs-8">                                   

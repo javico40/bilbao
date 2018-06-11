@@ -14,6 +14,7 @@
 	<http security="none" pattern="/accessdenied.xhtml" />
 	<http security="none" pattern="/register.xhtml" />
 	<http security="none" pattern="/registercenpro.xhtml" />
+	<http security="none" pattern="/forgotpass.xhtml" />
 	<http security="none" pattern="/sucess.xhtml" />
 	<http security="none" pattern="/video.xhtml" />
 	<http security="none" pattern="/promo.mp4" />
